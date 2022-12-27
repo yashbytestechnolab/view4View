@@ -121,7 +121,7 @@ export const ViewLanding = () => {
 
     getPlayVideoList()
       .then((res: any) => {
-        const add_Video_Url: any[] = []
+        const add_Video_Url: Array<any> = []
         res._docs?.filter((res: any) => {
           if (res?._data?.userId !== userId && !id?.includes(res?._data?.uniquWatchVideoID)) {
             add_Video_Url.push(res?._data)
