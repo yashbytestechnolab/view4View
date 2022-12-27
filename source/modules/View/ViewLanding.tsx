@@ -1,0 +1,192 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text } from 'react-native';
+import YoutubePlayer from 'react-native-youtube-iframe';
+import { Header, Loader } from '../../components';
+import { String } from '../../constants';
+import { styles } from './style';
+import auth from '@react-native-firebase/auth';
+import { addWatchUrl, getNewUpdatedViewCount, getPlayVideoList, get_coins } from '../../services/FireStoreServices';
+
+export const ViewLanding = () => {
+  const [playing, setPlaying] = useState<boolean>(false);
+  const [start, setStart]: any = useState(false);
+  const [playVideoList, setPlayVideoList] = useState<any>();
+  const controlRef = useRef<any>();
+  const firstStart = useRef<boolean>(true);
+  const [getWatchUniqId, setGetWatchUniqId] = useState<any>([]);
+  const [nextVideo, setNextVideo] = useState(0);
+  const [timer, setTimer] = useState<number>(
+    playVideoList?.[nextVideo]?.requireDuration,
+  );
+
+  const userId = auth().currentUser?.uid;
+  const GetCoins = async () => {
+    let resCoinUpdate = 0;
+    await get_coins().then((res: any) => {console.log(res)
+
+      videoList(res?._data?.isWatchVideoId);
+      resCoinUpdate = res?._data?.coin;
+      setGetWatchUniqId(res?._data?.isWatchVideoId)
+    })
+
+    return resCoinUpdate;
+
+  }
+
+  useEffect(() => {
+    if (firstStart.current) {
+      firstStart.current = !firstStart.current;
+      return;
+    }
+    if (start) {
+      controlRef.current = setInterval(() => {
+        if (timer > 0) {
+          setTimer(timer - 1);
+        }
+      }, 100);
+    } else {
+      clearInterval(controlRef.current);
+    }
+    return () => clearInterval(controlRef.current);
+  }, [start, controlRef, timer]);
+
+  useEffect(() => {
+    if (timer === 0) {
+      GetEarning();
+    }
+
+  }, [timer]);
+  const SetCoins = () => {
+    return parseInt(playVideoList?.[nextVideo]?.requireDuration / 1.1);
+  };
+
+  const GetEarning = async () => {
+    const getVideoId: any = playVideoList?.[nextVideo]?.uniquWatchVideoID;
+    let remiderView: any = playVideoList?.[nextVideo]?.remiderView
+    if (timer === 0) {
+      GetCoins().then((res: number) => {
+        setTimer(0);
+        clearInterval(controlRef?.current);
+        setPlaying(false);
+        let totalAmount = res + SetCoins();
+
+        addWatchUrl({ totalAmount, getWatchUniqId, getVideoId }).then((res: any) => {
+        }).catch((err) => {
+        })
+
+      });
+      getNewUpdatedViewCount({ getVideoId, remiderView }).then((res: any) => { }).catch((err: any) => {
+      })
+
+    }
+  };
+
+  const onStateChange = async (state: any) => {
+    if (state === 'playing') {
+      setPlaying(true);
+      setStart(true);
+    }
+    if (state === 'ended') {
+      setPlaying(false);
+      setStart(false);
+    }
+    if (state === 'paused') {
+      setPlaying(false);
+      setStart(false);
+    }
+    if (state === 'buffering') {
+      setPlaying(false);
+      setStart(false);
+    }
+    if (state === 'unstarted') {
+      setPlaying(false);
+      setStart(false);
+    }
+    if (state === 'video cued') {
+      setPlaying(false);
+      setStart(false);
+    }
+  };
+
+  useEffect(() => {
+
+    GetCoins();
+  }, []);
+
+  const videoList = async (id: any) => {
+
+    getPlayVideoList()
+      .then((res: any) => {
+        let add_Video_Url: Array<any> =  []
+        res._docs?.filter((res: any) => {
+          if (res?._data?.userId !== userId && !id?.includes(res?._data?.uniquWatchVideoID)) {
+            add_Video_Url.push(res?._data)
+            return res?._data
+          }
+        });
+        let sortListByCoin = add_Video_Url?.sort((res1: any, res2: any) => res2?.coin - res1?.coin);
+
+        setPlayVideoList(sortListByCoin)
+        setTimer(add_Video_Url[0]?.requireDuration);
+
+      });
+  };
+  const PrevVideoList = () => {
+    if (nextVideo > 0) {
+      setNextVideo(nextVideo - 1);
+      setTimer(playVideoList?.[nextVideo - 1]?.requireDuration);
+    }
+  };
+  const NextVideoList = () => {
+    if (nextVideo < playVideoList?.length - 1) {
+      setNextVideo(nextVideo + 1);
+      setTimer(playVideoList?.[nextVideo + 1]?.requireDuration);
+    }
+  };
+
+  return (<>
+    <View style={styles.container}>
+      <Header title={String?.headerTitle?.view} />
+      <YoutubePlayer
+        height={400}
+        videoId={playVideoList?.[nextVideo]?.videoId[0]}
+        ref={controlRef}
+        play={playing}
+        onChangeState={onStateChange}
+      />
+      {/* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingHorizontal: 20,
+        }}>
+        <Text
+          style={styles.textStyle}
+          onPress={() => {
+            PrevVideoList();
+          }}>
+          Prev
+        </Text>
+        <Text
+          style={styles.textStyle}
+          onPress={() => {
+            NextVideoList();
+          }}>
+          Next
+        </Text>
+      </View>
+      <View style={styles.timeWrapper}>
+        <Text style={styles.textStyle}>
+          {timer + ' ' + String?.viewTab?.second}
+        </Text>
+        <View style={styles.redLine} />
+        <Text style={styles.textStyle}>
+          {SetCoins() + ' ' + String?.viewTab?.coin}
+        </Text>
+      </View>
+    </View>
+    {playVideoList?.[nextVideo]?.videoId[0] == undefined && <Loader />}
+  </>
+  );
+};

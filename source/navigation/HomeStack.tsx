@@ -1,0 +1,21 @@
+import * as React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import {ROUTES} from '../constants/NavigationRoutes';
+import {CreateCampaign, HomeLanding} from '../modules/Home';
+
+const Stack: any = createStackNavigator();
+
+export const HomeStack = () => {
+  return (
+    <Stack.Navigator
+
+      screenOptions={{
+        cardOverlayEnabled: false,
+        headerShown: false,
+        gestureEnabled: true,
+      }}>
+      <Stack.Screen name={ROUTES.HOME_LANDING} component={HomeLanding} />
+      <Stack.Screen name={ROUTES.CREATE_CAMPAIGN} component={CreateCampaign} />
+    </Stack.Navigator>
+  );
+};
