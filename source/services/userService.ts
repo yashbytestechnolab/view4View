@@ -51,7 +51,7 @@ export const postAPIRequest = async (requestURL: string, payload: object|string|
  * @param payload 
  * @returns 
  */
-export const put = async (requestURL: String, payload: any) => {
+export const put = async (requestURL: string, payload: any) => {
     requestOptionsPut.body = payload
     const token = await getValue('accessToken')
     myHeaders.append("Authorization", `Bearer ${token}`);

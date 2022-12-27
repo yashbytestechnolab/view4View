@@ -12,7 +12,7 @@ import { EyeIcon } from '../../assets/icons/EyeIcon';
 export const HomeLanding = () => {
   const [showUrl, setShowUrl] = useState<boolean>(false);
   const [getUrl, setGetUrl] = useState<string>();
-  const [expectedView, setExpectedView]: any = useState<string>('');
+  const [expectedView, setExpectedView]= useState<string>('');
   const navigation = useNavigation<any>();
 
   const AddVideoUrl = () => {
@@ -41,7 +41,7 @@ export const HomeLanding = () => {
 
   const getVideoUrl = async () => {
     GetVideoCampaign().then((res: any) => {
-      let getVideoUrl: Array<any> = []
+      const getVideoUrl:any = []
       res._docs?.filter((res: any) => {
         if (res?._data?.remiderView > 0) {
           getVideoUrl.push(res?._data)

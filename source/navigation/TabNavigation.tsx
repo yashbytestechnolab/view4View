@@ -60,7 +60,7 @@ export const TabNavigation = () => {
             },
           })}
           options={{
-            tabBarLabel: ({focused}: any) => (
+            tabBarLabel: ({focused}) => (
               <Text style={focused ? styles.tabBarLabelStyle : styles.tabText}>
                 {String?.headerTitle?.view}
               </Text>
@@ -76,7 +76,7 @@ export const TabNavigation = () => {
             },
           })}
           options={{
-            tabBarLabel: ({focused}: any) => (
+            tabBarLabel: ({focused}) => (
               <Text style={focused ? styles.tabBarLabelStyle : styles.tabText}>
                 {String?.headerTitle?.earnCoin}
               </Text>

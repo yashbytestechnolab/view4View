@@ -12,9 +12,9 @@ interface myArray{
 }
 export const ViewLanding = () => {
   const [playing, setPlaying] = useState<boolean>(false);
-  const [start, setStart]: any = useState(false);
+  const [start, setStart] = useState<boolean>(false);
   const [playVideoList, setPlayVideoList] = useState<any>();
-  const controlRef = useRef<any>();
+  const controlRef = useRef<boolean>();
   const firstStart = useRef<boolean>(true);
   const [getWatchUniqId, setGetWatchUniqId] = useState<any>([]);
   const [nextVideo, setNextVideo] = useState<number>(0);
@@ -74,18 +74,18 @@ export const ViewLanding = () => {
         setPlaying(false);
         let totalAmount = res + SetCoins();
 
-        addWatchUrl({ totalAmount, getWatchUniqId, getVideoId }).then((res: any) => {
-        }).catch((err) => {
+        addWatchUrl({ totalAmount, getWatchUniqId, getVideoId }).then(() => {
+        }).catch(() => {
         })
 
       });
-      getNewUpdatedViewCount({ getVideoId, remiderView }).then((res: any) => { }).catch((err: any) => {
+      getNewUpdatedViewCount({ getVideoId, remiderView }).then(() => { }).catch(() => {
       })
 
     }
   };
 
-  const onStateChange = async (state: any) => {
+  const onStateChange = async (state: string) => {
     if (state === 'playing') {
       setPlaying(true);
       setStart(true);

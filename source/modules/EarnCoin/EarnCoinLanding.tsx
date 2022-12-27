@@ -1,7 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
-import remoteConfig from '@react-native-firebase/remote-config';
-import VersionInfo from 'react-native-version-info';
+import React from 'react';
 import { Header } from '../../components';
 import {  ROUTES, String } from '../../constants';
 import { style } from './style';
