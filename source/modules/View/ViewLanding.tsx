@@ -62,7 +62,7 @@ export const ViewLanding = () => {
 
   const GetEarning = async () => {
     const getVideoId: any = playVideoList?.[nextVideo]?.uniquWatchVideoID;
-    let remiderView: any = playVideoList?.[nextVideo]?.remiderView
+    const remiderView: any = playVideoList?.[nextVideo]?.remiderView
     if (timer === 0) {
       GetCoins().then((res: number) => {
         setTimer(0);
@@ -117,14 +117,14 @@ export const ViewLanding = () => {
 
     getPlayVideoList()
       .then((res: any) => {
-        let add_Video_Url: Array<any> =  []
+        const add_Video_Url: Array<any> =  []
         res._docs?.filter((res: any) => {
           if (res?._data?.userId !== userId && !id?.includes(res?._data?.uniquWatchVideoID)) {
             add_Video_Url.push(res?._data)
             return res?._data
           }
         });
-        let sortListByCoin = add_Video_Url?.sort((res1: any, res2: any) => res2?.coin - res1?.coin);
+        const sortListByCoin = add_Video_Url?.sort((res1: any, res2: any) => res2?.coin - res1?.coin);
 
         setPlayVideoList(sortListByCoin)
         setTimer(add_Video_Url[0]?.requireDuration);
@@ -144,7 +144,8 @@ export const ViewLanding = () => {
     }
   };
 
-  return (<>
+  return (
+  <>
     <View style={styles.container}>
       <Header title={String?.headerTitle?.view} />
       <YoutubePlayer

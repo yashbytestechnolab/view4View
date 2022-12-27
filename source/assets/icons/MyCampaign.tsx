@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-export const MyCampaign = (props: any) => {
+export const MyCampaign = () => {
   return (
     <Svg
       width={26}
@@ -9,7 +9,7 @@ export const MyCampaign = (props: any) => {
       viewBox="0 0 26 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
+
     >
       <Path
         d="M13.07 11.517c-.004-.005-.005-.01-.01-.014L8.882 7.49V4.97a.689.689 0 00-.215-.497L4.272.206a.755.755 0 00-.798-.152.703.703 0 00-.452.65v2.108H.775a.732.732 0 00-.676.434.682.682 0 00.159.767L4.7 8.278a.748.748 0 00.518.206h2.626l4.18 4.013c.004.004.01.005.014.01a.742.742 0 001.008 0 .674.674 0 00.023-.99z"

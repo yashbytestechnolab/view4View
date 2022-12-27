@@ -1,6 +1,5 @@
 import React from 'react';
 import {Image, StyleSheet, Text} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Images} from '../assets/image';
 import {String, ROUTES} from '../constants';
@@ -8,8 +7,7 @@ import {HomeStack, ViewStack, EarnCoinStack} from '.';
 
 export const TabNavigation = () => {
   const Tab = createBottomTabNavigator();
-  const getRouteIcon = (routeName: string) => {
-    let Image: string = Images?.homeTab;
+  const getRouteIcon = (routeName: string) => {let Image: string = Images?.homeTab;
 
     switch (routeName) {
       case ROUTES.HOME:
@@ -26,7 +24,6 @@ export const TabNavigation = () => {
   };
 
   return (
-    // <NavigationContainer independent={true}>
       <Tab.Navigator
         initialRouteName={ROUTES.HOME}
         screenOptions={({route}) => ({
@@ -87,7 +84,6 @@ export const TabNavigation = () => {
           }}
         />
       </Tab.Navigator>
-    // </NavigationContainer>
   );
 };
 const styles = StyleSheet.create({

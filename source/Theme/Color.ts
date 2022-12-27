@@ -1,12 +1,7 @@
 export const Colors = {
-    redFF5371: '#FF5371',
-    redFF8377: '#FF8377',
-    black121212: '#121212',
-    green3ABA6D: '#3ABA6D',
-    redErrorFF5B5B: '#FF5B5B',
-    yellowFFC75B: '#FFC75B',
-    grayCED4DA: '#CED4DA',
-    whiteFFFFFF: '#FFFFFF',
+    primaryRed: '#FF5371',
+    pinkHeaderBorder:'#FFE9ED',
+    paginationGray:'#CED4DA',
     red: '#ff4d4d',
     pink: '#DC143C',
     white: "#FFFFFF",
@@ -14,8 +9,9 @@ export const Colors = {
     green: '#336600',
     gray: '#808080',
     darkRed: 'CC0000',
-    linear_gradientFF7B76: "#FF7B76",
+    linear_gradient: "#FF7B76",
     GrayLightC2C9D1: "#C2C9D1",
     greyD8D8D8: "#D8D8D8",
-    black16233A: "#16233A"
+    black16233A: "#16233A",
+    placeHolderTextBlack:'#121212',
 }

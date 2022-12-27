@@ -6,15 +6,17 @@ import { ROUTES, String } from '../../../constants';
 import { useNavigation } from '@react-navigation/native';
 import { IntroductionData } from '../../../services/jsonfile';
 import { styles } from './style';
+import { ButtonComponent } from '../../../components';
+
 
 export const Introduction = () => {
 
     const pageRef: any = useRef();
     const navigation: any = useNavigation();
     const [getCurrentIndex, setGetCurrentIndex] = useState()
-    
+
     const buttonHandler = () => {
-        let index: any = pageRef.current?.getCurrentIndex();
+        const index: any = pageRef.current?.getCurrentIndex();
         if (index === IntroductionData?.length - 1) {
 
             navigation.reset({
@@ -60,9 +62,9 @@ export const Introduction = () => {
                     onChangeIndex={() => {
                         setGetCurrentIndex(pageRef.current?.getCurrentIndex())
                     }}
-                    showPagination paginationActiveColor={Colors?.redFF5371}
+                    showPagination paginationActiveColor={Colors?.primaryRed}
                     paginationStyleItem={styles.paginationStyle}
-                    paginationDefaultColor={Colors.grayCED4DA}
+                    paginationDefaultColor={Colors.paginationGray}
                     autoplayDelay={2}
                     autoplayLoop
                     index={0}
@@ -70,14 +72,8 @@ export const Introduction = () => {
                     renderItem={({ item }) => (renderDesign(item))}
                 />
             </View>
-            <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => { buttonHandler() }}
-                style={styles.nextButtoun}>
-                <Text style={{ color: "#FFFFFF", textAlign: "center", alignSelf: 'center' }} >
-                    {getCurrentIndex == 3 ? String?.introduction_swipeList?.getStartedNow : String?.introduction_swipeList?.next}
-                </Text>
-            </TouchableOpacity>
+            <ButtonComponent onPrees={() => { buttonHandler() }} wrapperStyle={styles.nextButtoun} buttonTitle={getCurrentIndex == 3 ? String?.introduction_swipeList?.getStartedNow : String?.introduction_swipeList?.next}
+            />
         </SafeAreaView>
     )
 }

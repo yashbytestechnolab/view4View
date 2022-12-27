@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import SplashScreen from 'react-native-splash-screen';
+import React from 'react';
 import {  RootNavigation  } from './source/navigation/RootNavigation';
 import CommonContext from './source/context/CommonContext';
 

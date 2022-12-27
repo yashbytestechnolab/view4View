@@ -12,13 +12,12 @@ export const CreateCampaign = () => {
   const [getCoin, setGetCoin]: any = useState<string>();
   const navigation: any = useNavigation();
   const focus: any = useIsFocused();
-  var splitUrl = route?.params?.url.split('/').slice(3)
-  let imageUrl = "http://img.youtube.com/vi/" + splitUrl?.slice(3) + "/0.jpg";
-  let videoUrl = route?.params?.url
+  const splitUrl = route?.params?.url.split('/').slice(3)
+  const imageUrl = "http://img.youtube.com/vi/" + splitUrl?.slice(3) + "/0.jpg";
+  const videoUrl = route?.params?.url
 
   useEffect(() => {
     get_coins().then((res: any) => {
-      console.log(res?._data.coin)
       setGetCoin(res?._data.coin)
     })
   }, [focus, getCoin]);

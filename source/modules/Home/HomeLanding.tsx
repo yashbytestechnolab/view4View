@@ -5,7 +5,7 @@ import { Header } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { GetVideoCampaign } from '../../services/FireStoreServices';
-import { PlusIcon, Slider3, Star } from '../../assets/icons';
+import { PlusIcon,  Star } from '../../assets/icons';
 import { EyeIcon } from '../../assets/icons/EyeIcon';
 
 

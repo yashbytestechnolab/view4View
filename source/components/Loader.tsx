@@ -3,7 +3,7 @@ import React from 'react';
 import {Colors} from '../Theme';
 
 interface loder {
-  spinnerColor?: String;
+  spinnerColor?: string;
   backGroundColor?: string;
 }
 export const Loader = (props: loder) => {

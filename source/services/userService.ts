@@ -1,18 +1,18 @@
 import { getValue } from './LocalStorage';
-let myHeaders = new Headers();
+const myHeaders = new Headers();
 
-let requestOptionsGet = {
+const requestOptionsGet = {
     method: 'GET',
 };
 
-let requestOptionsPost: any = {
+const requestOptionsPost: any = {
     method: 'POST',
     headers: myHeaders,
     body: {},
     redirect: 'follow'
 };
 
-let requestOptionsPut: any = {
+const requestOptionsPut: any = {
     method: 'PUT',
     headers: myHeaders,
     body: {},

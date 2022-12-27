@@ -7,8 +7,6 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import SplashScreen from 'react-native-splash-screen';
 
-import CommonContext from '../context/CommonContext';
-
 export const RootNavigation = () => {
   const Stack = createStackNavigator();
   const [UserId, setUserId] = useState<null | undefined | string>(null);
