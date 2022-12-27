@@ -113,8 +113,7 @@ export const ViewLanding = () => {
   };
 
   useEffect(() => {
-
-    GetCoins();
+ GetCoins();
   }, []);
 
   const videoList = async (id: any) => {
