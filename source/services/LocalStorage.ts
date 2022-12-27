@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const store: object = {};
+interface storeType{
+
+}
+const store: storeType = {};
 
 /**
  * Storing Object Value

@@ -7,6 +7,9 @@ import { styles } from './style';
 import auth from '@react-native-firebase/auth';
 import { addWatchUrl, getNewUpdatedViewCount, getPlayVideoList, get_coins } from '../../services/FireStoreServices';
 
+interface myArray{
+  coin:number
+}
 export const ViewLanding = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart]: any = useState(false);
@@ -14,7 +17,7 @@ export const ViewLanding = () => {
   const controlRef = useRef<any>();
   const firstStart = useRef<boolean>(true);
   const [getWatchUniqId, setGetWatchUniqId] = useState<any>([]);
-  const [nextVideo, setNextVideo] = useState(0);
+  const [nextVideo, setNextVideo] = useState<number>(0);
   const [timer, setTimer] = useState<number>(
     playVideoList?.[nextVideo]?.requireDuration,
   );
@@ -118,14 +121,14 @@ export const ViewLanding = () => {
 
     getPlayVideoList()
       .then((res: any) => {
-        const add_Video_Url: Array<any> = []
+        const add_Video_Url: any[] = []
         res._docs?.filter((res: any) => {
           if (res?._data?.userId !== userId && !id?.includes(res?._data?.uniquWatchVideoID)) {
             add_Video_Url.push(res?._data)
             return res?._data
           }
         });
-        const sortListByCoin = add_Video_Url?.sort((res1: Array<object> | any, res2: Array<object> | any) => res2?.coin - res1?.coin);
+        const sortListByCoin = add_Video_Url?.sort((res1:myArray, res2:myArray) => res2?.coin - res1?.coin);
 
         setPlayVideoList(sortListByCoin)
         setTimer(add_Video_Url[0]?.requireDuration);
