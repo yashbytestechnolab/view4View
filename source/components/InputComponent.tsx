@@ -8,7 +8,7 @@ interface props {
     placeholder: string,
     value: string | number|undefined ,
     inputTitle: string
-    onChangeText: (value: any) => {} ,
+    onChangeText: () =>  void ,
     viewStyle?: StyleProp<ViewStyle>,
     isSecureIcon?: boolean,
     isSecureEntry?: boolean,

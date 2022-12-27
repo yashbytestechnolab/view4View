@@ -6,23 +6,20 @@ import { Header } from '../../components';
 import {  ROUTES, String } from '../../constants';
 import { style } from './style';
 import * as LocalStorage from '../../services/LocalStorage';
-import { AuthContext } from '../../context/AuthContext';
 
 export const EarnCoinLanding = ({ navigation }) => {
-  const [key, setKey] = useState('');
-  const getVersionNo = VersionInfo.appVersion;
-  const { signOut }: any = useContext(AuthContext);
-  const handleConfigData = async () => {
-    await remoteConfig().setDefaults({});
-    const getConfigValue: any = remoteConfig().getValue(
-      String?.earnCoinTab?.versionNumber,
-    );
+  // const [key, setKey] = useState('');
+  // const getVersionNo = VersionInfo.appVersion;
+  // const handleConfigData = async () => {
+  //   await remoteConfig().setDefaults({});
+  //   const getConfigValue: any = remoteConfig().getValue(
+  //     String?.earnCoinTab?.versionNumber,
+  //   );
 
-    getConfigValue.asString() === getVersionNo
-      ? setKey(String?.earnCoinTab?.alreadyUpdated)
-      : setKey(String?.earnCoinTab?.pleaseUpdateYourApp);
-  };
-  useEffect(() => { }, [signOut]);
+  //   getConfigValue.asString() === getVersionNo
+  //     ? setKey(String?.earnCoinTab?.alreadyUpdated)
+  //     : setKey(String?.earnCoinTab?.pleaseUpdateYourApp);
+  // };
 
   return (
     <View style={style.main}>

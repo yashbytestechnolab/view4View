@@ -5,7 +5,7 @@ import { Colors, F60016 } from '../Theme'
 
 interface buttonProps {
     buttonTitle: string,
-    onPrees: () => {} | any,
+    onPrees: () => void,
     isRewardIconShow?: boolean
     wrapperStyle?:object
 }

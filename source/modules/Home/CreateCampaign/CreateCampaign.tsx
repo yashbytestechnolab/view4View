@@ -8,22 +8,24 @@ import { styles } from './style';
 import { createCampaign, get_coins, payCoin } from '../../../services/FireStoreServices';
 
 export const CreateCampaign = () => {
-  const route = useRoute<any>();
+  const route = useRoute<{
+    params: any; key: string; name: string; path?: string | undefined; 
+}>();
   const [getCoin, setGetCoin]: any = useState<string>();
   const navigation: any = useNavigation();
-  const focus: any = useIsFocused();
+  const focus: boolean = useIsFocused();
   const splitUrl = route?.params?.url.split('/').slice(3)
   const imageUrl = "http://img.youtube.com/vi/" + splitUrl?.slice(3) + "/0.jpg";
   const videoUrl = route?.params?.url
 
   useEffect(() => {
-    get_coins().then((res: any) => {
+    get_coins().then((res) => {
       setGetCoin(res?._data.coin)
     })
   }, [focus, getCoin]);
 
   const TotalCost = () => {
-    payCoin(getCoin).then((res: any) => {
+    payCoin(getCoin).then(() => {
       navigation?.navigate(ROUTES?.HOME_LANDING, {
         imageId: imageUrl
       });
@@ -32,9 +34,9 @@ export const CreateCampaign = () => {
 
   const AddVideo = async () => {
     createCampaign({ videoUrl, splitUrl })
-      .then((res: any) => {
+      .then(() => {
         TotalCost()
-      }).catch((err: any) => { })
+      }).catch(( ) => { })
   }
   return (
     <>
