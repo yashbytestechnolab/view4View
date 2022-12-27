@@ -22,7 +22,8 @@ export const ViewLanding = () => {
   const userId = auth().currentUser?.uid;
   const GetCoins = async () => {
     let resCoinUpdate = 0;
-    await get_coins().then((res: any) => {console.log(res)
+    await get_coins().then((res: any) => {
+      console.log(res)
 
       videoList(res?._data?.isWatchVideoId);
       resCoinUpdate = res?._data?.coin;
@@ -61,8 +62,8 @@ export const ViewLanding = () => {
   };
 
   const GetEarning = async () => {
-    const getVideoId: any = playVideoList?.[nextVideo]?.uniquWatchVideoID;
-    const remiderView: any = playVideoList?.[nextVideo]?.remiderView
+    const getVideoId: string | number = playVideoList?.[nextVideo]?.uniquWatchVideoID;
+    const remiderView: string | number = playVideoList?.[nextVideo]?.remiderView
     if (timer === 0) {
       GetCoins().then((res: number) => {
         setTimer(0);
@@ -117,14 +118,14 @@ export const ViewLanding = () => {
 
     getPlayVideoList()
       .then((res: any) => {
-        const add_Video_Url: Array<any> =  []
+        const add_Video_Url: Array<any> = []
         res._docs?.filter((res: any) => {
           if (res?._data?.userId !== userId && !id?.includes(res?._data?.uniquWatchVideoID)) {
             add_Video_Url.push(res?._data)
             return res?._data
           }
         });
-        const sortListByCoin = add_Video_Url?.sort((res1: any, res2: any) => res2?.coin - res1?.coin);
+        const sortListByCoin = add_Video_Url?.sort((res1: Array<object> | any, res2: Array<object> | any) => res2?.coin - res1?.coin);
 
         setPlayVideoList(sortListByCoin)
         setTimer(add_Video_Url[0]?.requireDuration);
@@ -145,49 +146,49 @@ export const ViewLanding = () => {
   };
 
   return (
-  <>
-    <View style={styles.container}>
-      <Header title={String?.headerTitle?.view} />
-      <YoutubePlayer
-        height={400}
-        videoId={playVideoList?.[nextVideo]?.videoId[0]}
-        ref={controlRef}
-        play={playing}
-        onChangeState={onStateChange}
-      />
-      {/* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */}
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          paddingHorizontal: 20,
-        }}>
-        <Text
-          style={styles.textStyle}
-          onPress={() => {
-            PrevVideoList();
+    <>
+      <View style={styles.container}>
+        <Header title={String?.headerTitle?.view} />
+        <YoutubePlayer
+          height={400}
+          videoId={playVideoList?.[nextVideo]?.videoId[0]}
+          ref={controlRef}
+          play={playing}
+          onChangeState={onStateChange}
+        />
+        {/* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingHorizontal: 20,
           }}>
-          Prev
-        </Text>
-        <Text
-          style={styles.textStyle}
-          onPress={() => {
-            NextVideoList();
-          }}>
-          Next
-        </Text>
+          <Text
+            style={styles.textStyle}
+            onPress={() => {
+              PrevVideoList();
+            }}>
+            Prev
+          </Text>
+          <Text
+            style={styles.textStyle}
+            onPress={() => {
+              NextVideoList();
+            }}>
+            Next
+          </Text>
+        </View>
+        <View style={styles.timeWrapper}>
+          <Text style={styles.textStyle}>
+            {timer + ' ' + String?.viewTab?.second}
+          </Text>
+          <View style={styles.redLine} />
+          <Text style={styles.textStyle}>
+            {SetCoins() + ' ' + String?.viewTab?.coin}
+          </Text>
+        </View>
       </View>
-      <View style={styles.timeWrapper}>
-        <Text style={styles.textStyle}>
-          {timer + ' ' + String?.viewTab?.second}
-        </Text>
-        <View style={styles.redLine} />
-        <Text style={styles.textStyle}>
-          {SetCoins() + ' ' + String?.viewTab?.coin}
-        </Text>
-      </View>
-    </View>
-    {playVideoList?.[nextVideo]?.videoId[0] == undefined && <Loader />}
-  </>
+      {playVideoList?.[nextVideo]?.videoId[0] == undefined && <Loader />}
+    </>
   );
 };

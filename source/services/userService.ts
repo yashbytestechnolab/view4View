@@ -12,7 +12,7 @@ const requestOptionsPost: any = {
     redirect: 'follow'
 };
 
-const requestOptionsPut: any = {
+const requestOptionsPut:any= {
     method: 'PUT',
     headers: myHeaders,
     body: {},
@@ -36,7 +36,7 @@ export const getAPIRequest = async (requestURL: string) => {
  * @param payload 
  * @returns 
  */
-export const postAPIRequest = async (requestURL: string, payload: any) => {
+export const postAPIRequest = async (requestURL: string, payload: object|string|number) => {
     requestOptionsPost.body = payload
     const token = await getValue('accessToken')
     myHeaders.append("Authorization", `Bearer ${token}`);

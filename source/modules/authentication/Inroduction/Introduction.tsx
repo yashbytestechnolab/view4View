@@ -11,12 +11,13 @@ import { ButtonComponent } from '../../../components';
 
 export const Introduction = () => {
 
-    const pageRef: any = useRef();
-    const navigation: any = useNavigation();
-    const [getCurrentIndex, setGetCurrentIndex] = useState()
+    const pageRef: React.MutableRefObject<undefined>  = useRef();
+    const navigation:any = useNavigation();
+    const [getCurrentIndex, setGetCurrentIndex] = useState<number>()
 
     const buttonHandler = () => {
-        const index: any = pageRef.current?.getCurrentIndex();
+        const index: number = pageRef.current?.getCurrentIndex();
+        
         if (index === IntroductionData?.length - 1) {
 
             navigation.reset({
@@ -24,7 +25,7 @@ export const Introduction = () => {
                 routes: [{ name: ROUTES?.LOGIN }]
             })
         } else {
-            pageRef?.current?.scrollToIndex({
+            pageRef.current.scrollToIndex({
                 index: index + 1,
                 animated: true,
             });
@@ -37,7 +38,7 @@ export const Introduction = () => {
         })
     }
 
-    const renderDesign = (item: any) => {
+    const renderDesign = (item:  { svg: JSX.IntrinsicAttributes|object; title: string ; subTitle: string  }) => {
         return (
             <View style={styles.child}>
                 <TouchableOpacity onPress={skipHandler}>
