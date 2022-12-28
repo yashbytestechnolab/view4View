@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { FC, createContext, useReducer } from 'react'
+
+import React, {  createContext, useReducer } from 'react'
 import { type } from '../constants/types'
 
 export const InputContextProvide: any = createContext({})
@@ -48,4 +48,3 @@ const CommonContext = ({ children }: any) => {
 
 export default CommonContext
 
-const styles = StyleSheet.create({})

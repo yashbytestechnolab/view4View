@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-export const Awards = (props: any) => {
+export const Awards = () => {
     return (
         <Svg
             width={27}

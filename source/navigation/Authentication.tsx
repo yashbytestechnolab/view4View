@@ -7,7 +7,7 @@ import * as LocalStorage from '../services/LocalStorage';
 import { Introduction } from '../modules/authentication/Inroduction';
 import { Loader } from '../components';
 
-const Stack: any = createStackNavigator();
+const Stack = createStackNavigator();
 
 export const Authentication = () => {
   const [isFirstTimeLogInUser, setIsFirstTimeLoginUser] = useState<boolean>();

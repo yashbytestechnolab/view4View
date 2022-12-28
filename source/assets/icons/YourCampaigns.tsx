@@ -2,7 +2,7 @@
 import * as React from "react"
 import Svg, { Path, G, Defs, LinearGradient, Stop } from "react-native-svg"
 
-export const YourCampaigns = (props: any) => {
+export const YourCampaigns = () => {
 
     return (
         <Svg

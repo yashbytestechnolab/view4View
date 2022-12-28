@@ -1,16 +1,12 @@
-import { View, StyleSheet, ScrollView, Text, SafeAreaView, Alert } from 'react-native';
-import React, { useContext, useState } from 'react';
+import { View, ScrollView, Text, SafeAreaView, Alert } from 'react-native';
+import React, { useContext } from 'react';
 import {
   GoogleSignin,
-  GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import { config } from '../../config';
 import { Colors, F40012, F40014, F60024 } from '../../Theme';
 import auth from '@react-native-firebase/auth';
-import { Loader } from '../../components';
-import { AuthContext } from '../../context/AuthContext';
 import { loginUser } from '../../services/FireStoreServices';
-// import { setValue } from '../../services/LocalStorage';
 import { useNavigation } from '@react-navigation/native';
 import { LocalStorageKeys, ROUTES, String } from '../../constants';
 import * as LocalStorage from '../../services/LocalStorage';
@@ -20,17 +16,13 @@ import { InputComponent } from '../../components/InputComponent';
 import { InputContextProvide } from '../../context/CommonContext';
 import { type } from '../../constants/types';
 import { ButtonComponent } from '../../components/ButtonComponent';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Google } from '../../assets/icons/Google';
 import { SocialMediaButton } from '../../components/SocialMediaButton';
 import { Apple } from '../../assets/icons/Apple';
 import Back from '../../assets/icons/Back';
 
 export const Login = () => {
-  let { storeCreator: { userInput, dispatch } }: any = useContext(InputContextProvide)
-
-  const [loader, setLoader]: any = useState(false);
-  const { signIn }: any = useContext(AuthContext);
+  const { storeCreator: { userInput, dispatch } } = useContext(InputContextProvide)
   const navigation = useNavigation()
   GoogleSignin.configure({
     webClientId: config?.googlewebClientId,
@@ -40,25 +32,23 @@ export const Login = () => {
 
   const googleLogin = async () => {
     try {
-      // setLoader(true);
       await GoogleSignin.hasPlayServices();
-      const { accessToken, idToken }: any = await GoogleSignin.signIn();
+      const { accessToken, idToken } = await GoogleSignin.signIn();
       const credential = auth.GoogleAuthProvider.credential(
         idToken,
         accessToken,
       );
       await auth()
         .signInWithCredential(credential)
-        .then(async (res: any) => {
-          let userDetail = res?.user?._user
+        .then(async function (res) {
+          const userDetail = res?.user?._user;
 
           if (res?.additionalUserInfo?.isNewUser) {
-            // setLoader(false);
             loginUser(userDetail).then(() => {
-              console.log("loginUser", res)
+              console.log("loginUser", res);
             }).catch((err) => {
               console.log("loginUser", err);
-            })
+            });
 
           }
           await LocalStorage.setValue("userLoginId", userDetail?.uid);
@@ -73,8 +63,8 @@ export const Login = () => {
     }
   };
 
-  const handleLoginFlow: Function = () => {
-    let emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+  const handleLoginFlow = () => {
+    const emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
       Alert.alert("Provide valid email")
     }
@@ -184,7 +174,6 @@ export const Login = () => {
         </ScrollView>
       </View>
 
-      {/* {loader && <Loader />} */}
     </>
   );
 };

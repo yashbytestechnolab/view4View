@@ -5,14 +5,14 @@ import { Header } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { GetVideoCampaign } from '../../services/FireStoreServices';
-import { PlusIcon, Slider3, Star } from '../../assets/icons';
+import { PlusIcon,  Star } from '../../assets/icons';
 import { EyeIcon } from '../../assets/icons/EyeIcon';
 
 
 export const HomeLanding = () => {
   const [showUrl, setShowUrl] = useState<boolean>(false);
   const [getUrl, setGetUrl] = useState<string>();
-  const [expectedView, setExpectedView]: any = useState<string>('');
+  const [expectedView, setExpectedView]= useState<string>('');
   const navigation = useNavigation<any>();
 
   const AddVideoUrl = () => {
@@ -41,7 +41,7 @@ export const HomeLanding = () => {
 
   const getVideoUrl = async () => {
     GetVideoCampaign().then((res: any) => {
-      let getVideoUrl: Array<any> = []
+      const getVideoUrl:any = []
       res._docs?.filter((res: any) => {
         if (res?._data?.remiderView > 0) {
           getVideoUrl.push(res?._data)
@@ -57,7 +57,7 @@ export const HomeLanding = () => {
   const CheckUniqUrl = () => {
     let expetedViewNotRepeat = false
     expectedView &&
-      expectedView?.map((res: any) => {
+      expectedView?.map((res: { videoUrl: string | undefined; }) => {
 
         res?.videoUrl == getUrl ?
           expetedViewNotRepeat = true : null
@@ -76,7 +76,7 @@ export const HomeLanding = () => {
       {!showUrl && (
         <View style={{ flex: 1 }}>
           {
-            expectedView && expectedView.map((res: any) => {
+            expectedView && expectedView.map((res: { videoId: string[]; remiderView: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; expectedView: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
               return (
                 <View>
                   <Image source={{ uri: "http://img.youtube.com/vi/" + res?.videoId[0] + "/0.jpg" }} style={{ height: 80, width: 150, alignItems: 'center', marginHorizontal: 20, marginTop: 10 }} />
@@ -85,9 +85,7 @@ export const HomeLanding = () => {
               )
             })
           }
-          <Star/>
-          <PlusIcon/>
-          <EyeIcon/>
+         
           <TouchableOpacity
             style={styles.iconWrapper}
             activeOpacity={1}

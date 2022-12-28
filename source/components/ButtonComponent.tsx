@@ -5,17 +5,18 @@ import { Colors, F60016 } from '../Theme'
 
 interface buttonProps {
     buttonTitle: string,
-    onPrees: () => {} | any,
+    onPrees: () => void,
     isRewardIconShow?: boolean
+    wrapperStyle?:object
 }
 
 export const ButtonComponent = (props: buttonProps) => {
-    let { isRewardIconShow, onPrees, buttonTitle = false } = props
+const { isRewardIconShow, onPrees, buttonTitle = false,wrapperStyle } = props
     return (
         <TouchableOpacity
             activeOpacity={0.6}
             onPress={onPrees}
-            style={innerStyles.main}>
+            style={[innerStyles.main,wrapperStyle]}>
             {
                 isRewardIconShow &&
                 <View style={innerStyles.reward}>
@@ -32,7 +33,7 @@ export const ButtonComponent = (props: buttonProps) => {
 const innerStyles = StyleSheet.create({
     main: {
         padding: 16,
-        backgroundColor: Colors.redFF5371,
+        backgroundColor: Colors.primaryRed,
         borderRadius: 8,
         marginHorizontal: 10,
         paddingHorizontal: 12, justifyContent: "center",
