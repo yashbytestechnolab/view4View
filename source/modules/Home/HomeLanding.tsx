@@ -85,9 +85,7 @@ export const HomeLanding = () => {
               )
             })
           }
-          <Star/>
-          <PlusIcon/>
-          <EyeIcon/>
+         
           <TouchableOpacity
             style={styles.iconWrapper}
             activeOpacity={1}

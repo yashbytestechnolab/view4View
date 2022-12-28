@@ -47,7 +47,7 @@ export const ViewLanding = () => {
         if (timer > 0) {
           setTimer(timer - 1);
         }
-      }, 100);
+      }, 1000);
     } else {
       clearInterval(controlRef.current);
     }
