@@ -5,8 +5,8 @@ import Svg, { Rect, Path, Defs, LinearGradient, Stop } from "react-native-svg"
 export const Logo = () => {
     return (
         <Svg
-            width={119}
-            height={100}
+            width={100}
+            height={90}
             viewBox="0 0 119 100"
             fill="none" >
             <Rect width={118.919} height={100} rx={16} fill="#FFD8D8" />

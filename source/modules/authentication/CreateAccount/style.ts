@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "../../Theme";
+import { Colors } from "../../../Theme";
 
 export const style = StyleSheet.create({
     main: {
@@ -19,9 +19,6 @@ export const style = StyleSheet.create({
     height: {
         height: 20
     },
-    welcomeHeader: {
-        alignItems: "center"
-    },
     welcome: {
         marginTop: 40,
         justifyContent: "center",
@@ -34,39 +31,26 @@ export const style = StyleSheet.create({
         paddingBottom: 200
     },
     mainLogo: {
-        height: "40%",
+        height: "25%",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: Colors.linear_gradientFF7B76
     },
-    safeArea: {
-        backgroundColor: "red"
-    },
+    safeArea: {},
     wrapperView: {
         backgroundColor: Colors.linear_gradientFF7B76,
         flex: 0.6
     },
     container: {
         flex: 1,
-        backgroundColor: "pink"
+        backgroundColor: Colors.pinkShader
     },
     innerContainer: {
         marginTop: 30,
         bottom: 12
     },
-    signUpHeader: { marginTop: 12, justifyContent: "center", flexDirection: "row" },
     forgotPassword: { marginTop: 16, alignSelf: "flex-end", marginHorizontal: 16 },
     signIn: { marginTop: 24 },
-    bottomLine: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 29, marginHorizontal: 16,
-    },
-    line: {
-        height: 1,
-        width: 143,
-        marginTop: 4,
-        backgroundColor: Colors.greyD8D8D8,
-    },
-    socialMedia: { flexDirection: "row" }
-});
+    marginTop33: { marginTop: 33 },
+    socialMedia: { flexDirection: "row", justifyContent: "space-around" }
+})

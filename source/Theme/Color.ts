@@ -17,5 +17,6 @@ export const Colors = {
     linear_gradientFF7B76: "#FF7B76",
     GrayLightC2C9D1: "#C2C9D1",
     greyD8D8D8: "#D8D8D8",
-    black16233A: "#16233A"
+    black16233A: "#16233A",
+    pinkShader: "#FFC0CB"
 }

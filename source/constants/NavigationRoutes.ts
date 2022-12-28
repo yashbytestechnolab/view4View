@@ -10,8 +10,9 @@ interface IRoutes {
     TABLIST: string,
     LOGOUT: string,
     AUTH: string;
-    ONBORDING: string
-    INTRODUCATION: string
+    ONBORDING: string;
+    INTRODUCATION: string;
+    CREATEACCOUNT: String
 
 }
 export const ROUTES: IRoutes = {
@@ -27,5 +28,6 @@ export const ROUTES: IRoutes = {
     LOGOUT: 'LOGOUT',
     AUTH: 'AUTH',
     ONBORDING: "ONBORDING",
-    INTRODUCATION:'INTRODUCATION'
+    INTRODUCATION: 'INTRODUCATION',
+    CREATEACCOUNT: "CREATEACCOUNT"
 }
