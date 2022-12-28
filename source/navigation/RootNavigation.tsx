@@ -12,10 +12,12 @@ export const RootNavigation = () => {
   const [UserId, setUserId] = useState<null | undefined | string>(null);
   const authFlow = async () => {
     await LocalStorage.getValue("userLoginId").then(res => res ? setUserId(res) : setUserId(""))
-    SplashScreen.hide();
+    // SplashScreen.hide();
   }
   useEffect(() => {
     authFlow()
+    SplashScreen.hide();
+
   }, [UserId]);
 
 
