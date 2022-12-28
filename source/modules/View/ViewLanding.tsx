@@ -72,7 +72,7 @@ export const ViewLanding = () => {
         setTimer(0);
         clearInterval(controlRef?.current);
         setPlaying(false);
-        let totalAmount = res + SetCoins();
+        const totalAmount = res + SetCoins();
 
         addWatchUrl({ totalAmount, getWatchUniqId, getVideoId }).then(() => {
         }).catch(() => {
@@ -116,7 +116,7 @@ export const ViewLanding = () => {
  GetCoins();
   }, []);
 
-  const videoList = async (id: any) => {
+  const videoList = async (id: string) => {
 
     getPlayVideoList()
       .then((res: any) => {

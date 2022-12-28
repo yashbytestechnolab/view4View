@@ -68,5 +68,5 @@ export const style = StyleSheet.create({
         marginTop: 4,
         backgroundColor: Colors.greyD8D8D8,
     },
-    socialMedia: { flexDirection: "row" }
+    socialMedia: { flexDirection: "row",justifyContent:"space-around" }
 });

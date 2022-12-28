@@ -57,7 +57,7 @@ export const HomeLanding = () => {
   const CheckUniqUrl = () => {
     let expetedViewNotRepeat = false
     expectedView &&
-      expectedView?.map((res: any) => {
+      expectedView?.map((res: { videoUrl: string | undefined; }) => {
 
         res?.videoUrl == getUrl ?
           expetedViewNotRepeat = true : null
@@ -76,7 +76,7 @@ export const HomeLanding = () => {
       {!showUrl && (
         <View style={{ flex: 1 }}>
           {
-            expectedView && expectedView.map((res: any) => {
+            expectedView && expectedView.map((res: { videoId: string[]; remiderView: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; expectedView: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
               return (
                 <View>
                   <Image source={{ uri: "http://img.youtube.com/vi/" + res?.videoId[0] + "/0.jpg" }} style={{ height: 80, width: 150, alignItems: 'center', marginHorizontal: 20, marginTop: 10 }} />
