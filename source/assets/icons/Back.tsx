@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Path, Svg } from 'react-native-svg'
 
@@ -12,4 +11,3 @@ const Back = () => {
 
 export default Back
 
-const styles = StyleSheet.create({})

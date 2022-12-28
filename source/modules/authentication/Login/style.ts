@@ -4,7 +4,7 @@ import { Colors } from "../../../Theme";
 export const style = StyleSheet.create({
     main: {
         flex: 1,
-        backgroundColor: Colors.linear_gradientFF7B76
+        backgroundColor: Colors.linear_gradient
     },
     text: { margin: 10, fontSize: 30, color: Colors?.green, textAlign: 'center' },
     header: { justifyContent: "center", alignItems: "center", flex: 0.35, },
@@ -34,13 +34,13 @@ export const style = StyleSheet.create({
         height: "40%",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: Colors.linear_gradientFF7B76
+        backgroundColor: Colors.linear_gradient
     },
     safeArea: {
         backgroundColor: "red"
     },
     wrapperView: {
-        backgroundColor: Colors.linear_gradientFF7B76,
+        backgroundColor: Colors.linear_gradient,
         flex: 0.6
     },
     container: {

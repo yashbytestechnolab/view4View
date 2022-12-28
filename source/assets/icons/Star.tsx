@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-export const Star = (props: any) => {
+export const Star = () => {
 
   return (
     <Svg width="21" height="20" viewBox="0 0 21 20" fill="none">

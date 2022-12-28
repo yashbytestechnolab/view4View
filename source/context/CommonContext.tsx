@@ -59,4 +59,3 @@ const CommonContext = ({ children }: any) => {
 
 export default CommonContext
 
-const styles = StyleSheet.create({})

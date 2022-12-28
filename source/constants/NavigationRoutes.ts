@@ -2,7 +2,7 @@ interface IRoutes {
     HOME: string;
     VIEW: string;
     EARNCOINS: string;
-    HOME_LANDING: String;
+    HOME_LANDING: string;
     VIEW_LANDING: string;
     EARNCOINS_LANDING: string;
     CREATE_CAMPAIGN: string;

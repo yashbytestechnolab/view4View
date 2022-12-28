@@ -16,11 +16,13 @@ export const RootNavigation = () => {
    */
   const authFlow = async () => {
     await LocalStorage.getValue("userLoginId").then(res => res ? setUserId(res) : setUserId(""))
-    SplashScreen.hide();
+    // SplashScreen.hide();
   }
 
   useEffect(() => {
     authFlow()
+    SplashScreen.hide();
+
   }, [UserId]);
 
   return (

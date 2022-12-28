@@ -7,14 +7,17 @@ import { styles } from './style';
 import auth from '@react-native-firebase/auth';
 import { addWatchUrl, getNewUpdatedViewCount, getPlayVideoList, get_coins } from '../../services/FireStoreServices';
 
+interface myArray{
+  coin:number
+}
 export const ViewLanding = () => {
   const [playing, setPlaying] = useState<boolean>(false);
-  const [start, setStart]: any = useState(false);
-  const [playVideoList, setPlayVideoList] = useState<any>();
-  const controlRef = useRef<any>();
+  const [start, setStart] = useState<boolean>(false);
+  const [playVideoList, setPlayVideoList]= useState();
+  const controlRef = useRef<boolean>();
   const firstStart = useRef<boolean>(true);
-  const [getWatchUniqId, setGetWatchUniqId] = useState<any>([]);
-  const [nextVideo, setNextVideo] = useState(0);
+  const [getWatchUniqId, setGetWatchUniqId] = useState([]);
+  const [nextVideo, setNextVideo] = useState<number>(0);
   const [timer, setTimer] = useState<number>(
     playVideoList?.[nextVideo]?.requireDuration,
   );
@@ -22,7 +25,8 @@ export const ViewLanding = () => {
   const userId = auth().currentUser?.uid;
   const GetCoins = async () => {
     let resCoinUpdate = 0;
-    await get_coins().then((res: any) => {console.log(res)
+    await get_coins().then((res) => {
+      console.log(res)
 
       videoList(res?._data?.isWatchVideoId);
       resCoinUpdate = res?._data?.coin;
@@ -43,7 +47,7 @@ export const ViewLanding = () => {
         if (timer > 0) {
           setTimer(timer - 1);
         }
-      }, 100);
+      }, 1000);
     } else {
       clearInterval(controlRef.current);
     }
@@ -61,27 +65,27 @@ export const ViewLanding = () => {
   };
 
   const GetEarning = async () => {
-    const getVideoId: any = playVideoList?.[nextVideo]?.uniquWatchVideoID;
-    let remiderView: any = playVideoList?.[nextVideo]?.remiderView
+    const getVideoId: string | number = playVideoList?.[nextVideo]?.uniquWatchVideoID;
+    const remiderView: string | number = playVideoList?.[nextVideo]?.remiderView
     if (timer === 0) {
       GetCoins().then((res: number) => {
         setTimer(0);
         clearInterval(controlRef?.current);
         setPlaying(false);
-        let totalAmount = res + SetCoins();
+        const totalAmount = res + SetCoins();
 
-        addWatchUrl({ totalAmount, getWatchUniqId, getVideoId }).then((res: any) => {
-        }).catch((err) => {
+        addWatchUrl({ totalAmount, getWatchUniqId, getVideoId }).then(() => {
+        }).catch(() => {
         })
 
       });
-      getNewUpdatedViewCount({ getVideoId, remiderView }).then((res: any) => { }).catch((err: any) => {
+      getNewUpdatedViewCount({ getVideoId, remiderView }).then(() => { }).catch(() => {
       })
 
     }
   };
 
-  const onStateChange = async (state: any) => {
+  const onStateChange = async (state: string) => {
     if (state === 'playing') {
       setPlaying(true);
       setStart(true);
@@ -109,22 +113,21 @@ export const ViewLanding = () => {
   };
 
   useEffect(() => {
-
-    GetCoins();
+ GetCoins();
   }, []);
 
-  const videoList = async (id: any) => {
+  const videoList = async (id: string) => {
 
     getPlayVideoList()
       .then((res: any) => {
-        let add_Video_Url: Array<any> =  []
+        const add_Video_Url: Array<any> = []
         res._docs?.filter((res: any) => {
           if (res?._data?.userId !== userId && !id?.includes(res?._data?.uniquWatchVideoID)) {
             add_Video_Url.push(res?._data)
             return res?._data
           }
         });
-        let sortListByCoin = add_Video_Url?.sort((res1: any, res2: any) => res2?.coin - res1?.coin);
+        const sortListByCoin = add_Video_Url?.sort((res1:myArray, res2:myArray) => res2?.coin - res1?.coin);
 
         setPlayVideoList(sortListByCoin)
         setTimer(add_Video_Url[0]?.requireDuration);
@@ -144,49 +147,50 @@ export const ViewLanding = () => {
     }
   };
 
-  return (<>
-    <View style={styles.container}>
-      <Header title={String?.headerTitle?.view} />
-      <YoutubePlayer
-        height={400}
-        videoId={playVideoList?.[nextVideo]?.videoId[0]}
-        ref={controlRef}
-        play={playing}
-        onChangeState={onStateChange}
-      />
-      {/* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */}
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          paddingHorizontal: 20,
-        }}>
-        <Text
-          style={styles.textStyle}
-          onPress={() => {
-            PrevVideoList();
+  return (
+    <>
+      <View style={styles.container}>
+        <Header title={String?.headerTitle?.view} />
+        <YoutubePlayer
+          height={400}
+          videoId={playVideoList?.[nextVideo]?.videoId[0]}
+          ref={controlRef}
+          play={playing}
+          onChangeState={onStateChange}
+        />
+        {/* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingHorizontal: 20,
           }}>
-          Prev
-        </Text>
-        <Text
-          style={styles.textStyle}
-          onPress={() => {
-            NextVideoList();
-          }}>
-          Next
-        </Text>
+          <Text
+            style={styles.textStyle}
+            onPress={() => {
+              PrevVideoList();
+            }}>
+            Prev
+          </Text>
+          <Text
+            style={styles.textStyle}
+            onPress={() => {
+              NextVideoList();
+            }}>
+            Next
+          </Text>
+        </View>
+        <View style={styles.timeWrapper}>
+          <Text style={styles.textStyle}>
+            {timer + ' ' + String?.viewTab?.second}
+          </Text>
+          <View style={styles.redLine} />
+          <Text style={styles.textStyle}>
+            {SetCoins() + ' ' + String?.viewTab?.coin}
+          </Text>
+        </View>
       </View>
-      <View style={styles.timeWrapper}>
-        <Text style={styles.textStyle}>
-          {timer + ' ' + String?.viewTab?.second}
-        </Text>
-        <View style={styles.redLine} />
-        <Text style={styles.textStyle}>
-          {SetCoins() + ' ' + String?.viewTab?.coin}
-        </Text>
-      </View>
-    </View>
-    {playVideoList?.[nextVideo]?.videoId[0] == undefined && <Loader />}
-  </>
+      {playVideoList?.[nextVideo]?.videoId[0] == undefined && <Loader />}
+    </>
   );
 };

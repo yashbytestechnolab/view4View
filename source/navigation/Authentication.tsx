@@ -8,7 +8,7 @@ import { Introduction } from '../modules/authentication/Inroduction';
 import { Loader } from '../components';
 import { CreateAccount } from '../modules/authentication/CreateAccount';
 
-const Stack: any = createStackNavigator();
+const Stack = createStackNavigator();
 
 export const Authentication = () => {
   const [isFirstTimeLogInUser, setIsFirstTimeLoginUser] = useState<boolean>();

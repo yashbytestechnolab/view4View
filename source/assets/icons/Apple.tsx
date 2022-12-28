@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { ClipPath, Defs, G, Path, Rect, Svg } from 'react-native-svg'
 
@@ -17,7 +16,3 @@ export const Apple = () => {
         </Svg>
     )
 }
-
-
-
-const styles = StyleSheet.create({})

@@ -1,18 +1,18 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React from 'react'
-import { String } from '../constants'
 import { Colors, F50012 } from '../Theme'
 import { EyeIcon } from '../assets/icons/EyeIcon'
 
+
 interface props {
     placeholder: string,
-    value: string | number | any,
+    value: string | number | undefined,
     inputTitle: string
-    onChangeText: (value: any) => {} | any,
-    viewStyle?: any,
+    onChangeText: (value: any) => void,
+    viewStyle?: StyleProp<ViewStyle>,
     isSecureIcon?: boolean,
     isSecureEntry?: boolean,
-    onPrees?: (value: any) => {},
+    onPrees?: void,
     errorMessage?: string
 }
 

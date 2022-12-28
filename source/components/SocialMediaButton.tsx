@@ -4,8 +4,8 @@ import { Colors, F40014 } from '../Theme';
 
 interface socialMediaProps {
     buttonTitle: string;
-    onPress?: () => {} | any;
-    socialMediaIcon?: any
+    onPress?: () => void;
+    socialMediaIcon?: object| JSX.IntrinsicAttributes|undefined;
 }
 
 export const SocialMediaButton = (props: socialMediaProps) => {
