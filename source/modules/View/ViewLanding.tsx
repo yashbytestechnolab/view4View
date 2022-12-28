@@ -13,10 +13,10 @@ interface myArray{
 export const ViewLanding = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
-  const [playVideoList, setPlayVideoList] = useState<any>();
+  const [playVideoList, setPlayVideoList]= useState();
   const controlRef = useRef<boolean>();
   const firstStart = useRef<boolean>(true);
-  const [getWatchUniqId, setGetWatchUniqId] = useState<any>([]);
+  const [getWatchUniqId, setGetWatchUniqId] = useState([]);
   const [nextVideo, setNextVideo] = useState<number>(0);
   const [timer, setTimer] = useState<number>(
     playVideoList?.[nextVideo]?.requireDuration,
@@ -25,7 +25,7 @@ export const ViewLanding = () => {
   const userId = auth().currentUser?.uid;
   const GetCoins = async () => {
     let resCoinUpdate = 0;
-    await get_coins().then((res: any) => {
+    await get_coins().then((res) => {
       console.log(res)
 
       videoList(res?._data?.isWatchVideoId);

@@ -52,7 +52,7 @@ export const GetVideoCampaign = async () => {
 export const addWatchUrl = async (payload: { totalAmount: string|number; getWatchUniqId: string; getVideoId:string|number; }) => {
   return await UserListTable.update({
     coin: payload?.totalAmount,
-    isWatchVideoId: [...payload?.getWatchUniqId, payload?.getVideoId]
+    isWatchVideoId: [...payload.getWatchUniqId, payload?.getVideoId]
   })
 
 }

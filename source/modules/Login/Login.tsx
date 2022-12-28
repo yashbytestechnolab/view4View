@@ -22,7 +22,7 @@ import { Apple } from '../../assets/icons/Apple';
 import Back from '../../assets/icons/Back';
 
 export const Login = () => {
-  const { storeCreator: { userInput, dispatch } }: any = useContext(InputContextProvide)
+  const { storeCreator: { userInput, dispatch } } = useContext(InputContextProvide)
   const navigation = useNavigation()
   GoogleSignin.configure({
     webClientId: config?.googlewebClientId,
@@ -33,22 +33,22 @@ export const Login = () => {
   const googleLogin = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const { accessToken, idToken }: any = await GoogleSignin.signIn();
+      const { accessToken, idToken } = await GoogleSignin.signIn();
       const credential = auth.GoogleAuthProvider.credential(
         idToken,
         accessToken,
       );
       await auth()
         .signInWithCredential(credential)
-        .then(async (res: any) => {
-          const userDetail = res?.user?._user
+        .then(async function (res) {
+          const userDetail = res?.user?._user;
 
           if (res?.additionalUserInfo?.isNewUser) {
             loginUser(userDetail).then(() => {
-              console.log("loginUser", res)
+              console.log("loginUser", res);
             }).catch((err) => {
               console.log("loginUser", err);
-            })
+            });
 
           }
           await LocalStorage.setValue("userLoginId", userDetail?.uid);
@@ -63,7 +63,7 @@ export const Login = () => {
     }
   };
 
-  const handleLoginFlow: Function = () => {
+  const handleLoginFlow = () => {
     const emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
       Alert.alert("Provide valid email")
