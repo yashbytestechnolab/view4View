@@ -39,7 +39,7 @@ const innerStyle = StyleSheet.create({
         width: 160,
         borderWidth: 1,
         borderRadius: 8,
-        borderColor: Colors.redFF8377
+        borderColor: Colors.borderColor
     },
     logo: { right: 8 }
 })
