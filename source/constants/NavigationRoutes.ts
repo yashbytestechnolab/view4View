@@ -10,10 +10,10 @@ interface IRoutes {
     TABLIST: string,
     LOGOUT: string,
     AUTH: string;
-    ONBORDING: string
-    INTRODUCATION: string
-    FORGOTPASSWORD:string
-    CREATEACCOUNT: String
+    ONBORDING: string;
+    INTRODUCATION: string;
+    FORGOTPASSWORD:string;
+    CREATEACCOUNT: String;
 
 }
 export const ROUTES: IRoutes = {
