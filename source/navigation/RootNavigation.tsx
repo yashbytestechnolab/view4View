@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Authentication, OnBording } from '.';
-import { ROUTES } from '../constants';
+import { LocalStorageKeys, ROUTES } from '../constants';
 import * as LocalStorage from '../services/LocalStorage';
 import { useState, useEffect } from 'react';
 import React from 'react';
@@ -9,17 +9,19 @@ import SplashScreen from 'react-native-splash-screen';
 
 export const RootNavigation = () => {
   const Stack = createStackNavigator();
-  const [UserId, setUserId] = useState<null | undefined | string>(null);
+  const [UserId, setUserId] = useState(null);
+
+  /**
+   * This Function Check user id is in localstorage
+   */
   const authFlow = async () => {
-    await LocalStorage.getValue("userLoginId").then(res => res ? setUserId(res) : setUserId(""))
-    // SplashScreen.hide();
+    await LocalStorage.getValue(LocalStorageKeys.UserId).then(res => res ? setUserId(res) : setUserId(""))
+    SplashScreen.hide();
   }
+
   useEffect(() => {
     authFlow()
-    SplashScreen.hide();
-
   }, [UserId]);
-
 
   return (
     <>

@@ -6,21 +6,23 @@ import { EyeIcon } from '../assets/icons/EyeIcon'
 
 interface props {
     placeholder: string,
-    value: string | number|undefined ,
-    inputTitle: string
-    onChangeText: () =>  void ,
+    value: string | number | undefined,
+    inputTitle: string,
+    onChangeText: (value: string|number|any) => void,
     viewStyle?: StyleProp<ViewStyle>,
     isSecureIcon?: boolean,
     isSecureEntry?: boolean,
-    onPrees?: () => void;
+    onPrees?: void,
+    errorMessage?: string
 }
 
 export const InputComponent = (props: props) => {
-    const { inputTitle, viewStyle, onChangeText, value, placeholder, isSecureIcon, isSecureEntry, onPrees } = props
+    const { errorMessage, inputTitle, viewStyle, onChangeText, value, placeholder, isSecureIcon, isSecureEntry, onPrees } = props
     return (
         <View style={[innerStyles.main, viewStyle]}>
             <Text style={F50012.main}>{inputTitle}</Text>
             <TextInput
+                placeholderTextColor={Colors.GrayLightC2C9D1}
                 secureTextEntry={isSecureEntry}
                 onChangeText={onChangeText}
                 value={value}
@@ -35,6 +37,12 @@ export const InputComponent = (props: props) => {
                     style={innerStyles.eye}>
                     <EyeIcon />
                 </TouchableOpacity>
+            }
+            {
+                errorMessage?.length > 0 &&
+                <Text style={{ color: "red", marginTop: 5 }}>
+                    {errorMessage}
+                </Text>
             }
         </View>
     )
@@ -52,6 +60,7 @@ const innerStyles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "400",
         borderRadius: 8,
+        color: Colors.placeHolderTextBlack,
         height: 44,
         marginTop: 8,
         borderWidth: 1,

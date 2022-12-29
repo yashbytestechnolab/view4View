@@ -5,9 +5,9 @@ export const String = {
         EarnCoins: 'Earn Coins',
         signInnow: 'Sign in now',
         subTitle: 'Lorem Ipsum is simply dummy text of the\n printing and  simply dum industry.',
-        skip:'skip',
-        getStartedNow:'Get Started Now',
-        next:'Next'
+        skip: 'skip',
+        getStartedNow: 'Get Started Now',
+        next: 'Next'
 
     },
     headerTitle: {
@@ -43,10 +43,19 @@ export const String = {
         email: "Email",
         Enteryouremail: "Enter your email",
         Enteryourpassword: "Enter your password",
+        Enterconfirmpassword: "Enter confirm password",
         Password: "Password",
+        ConfirmPassword: "Confirm Password",
         ForgotPassword: "Forgot Password?",
         Google: "Google",
         Apple: "Apple",
-        handled: "handled"
+        handled: "handled",
+        Enterfullname: "Enter full name",
+        Fullname: "Full Name",
+        Createanaccount: "Create an account",
+        PleaseProvideValidEmailMsg: "Please provide valid email",
+        fullnameErrorMsg: "Please fill your name",
+        PasswordErrorMsg: "Password must be 8 character",
+        ConfirmPasswordErrorMsg: "Password Should not match"
     }
 }

@@ -5,12 +5,12 @@ import { Colors } from "./Color";
 
 export const F40014 = StyleSheet.create({
     main: {
-        color: Colors.black121212,
+        color: Colors.placeHolderTextBlack,
         fontSize: 14,
         fontWeight: "400"
     },
     color: {
-        color: Colors.redFF5371,
+        color: Colors.primaryRed,
         left: 2
     },
     colorBlack: {
@@ -24,7 +24,7 @@ export const F40012 = StyleSheet.create({
         fontWeight: "400",
     },
     color: {
-        color: Colors.redFF5371,
+        color: Colors.primaryRed,
         left: 2
     },
     bottom: {
@@ -35,19 +35,19 @@ export const F40012 = StyleSheet.create({
 
 export const F50012 = StyleSheet.create({
     main: {
-        color: Colors.black121212,
+        color: Colors.placeHolderTextBlack,
         fontSize: 12,
         fontWeight: "500"
     },
     color: {
-        color: Colors.redFF5371,
+        color: Colors.primaryRed,
         left: 2
     }
 })
 
 export const F60024 = StyleSheet.create({
     textStyle: {
-        color: Colors.black121212,
+        color: Colors.placeHolderTextBlack,
         fontSize: 24,
         fontWeight: "600"
     },

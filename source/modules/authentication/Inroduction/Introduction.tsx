@@ -22,7 +22,7 @@ export const Introduction = () => {
 
             navigation.reset({
                 index: 0,
-                routes: [{ name: ROUTES?.LOGIN }]
+                routes: [{ name: ROUTES?.CREATEACCOUNT }]
             })
         } else {
             pageRef.current.scrollToIndex({
