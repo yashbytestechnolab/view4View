@@ -1,4 +1,4 @@
-export const String = {
+export const String:any = {
     introduction_swipeList: {
         youtubeVideos: 'Youtube Videos',
         yourCampaignsHere: 'Your Campaigns here',
@@ -15,6 +15,7 @@ export const String = {
         view: 'View',
         earnCoin: 'Earn Coins',
         createCampaign: 'Create Campaign',
+        forgotPassword:'Forgot Password'
     },
     homeTab: {
         plus: '+',
@@ -44,9 +45,11 @@ export const String = {
         Enteryouremail: "Enter your email",
         Enteryourpassword: "Enter your password",
         Password: "Password",
-        ForgotPassword: "Forgot Password?",
+        ForgotPassword: "Forgot Password",
         Google: "Google",
         Apple: "Apple",
-        handled: "handled"
+        handled: "handled",
+        submit:'Submit',
+        backTo:'Back to '
     }
 }

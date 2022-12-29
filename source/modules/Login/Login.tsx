@@ -142,11 +142,11 @@ export const Login = () => {
                     placeholder={String.commonString.ForgotPassword} />
 
 
-                  <View style={style.forgotPassword}>
+                  <TouchableOpacity style={style.forgotPassword}activeOpacity={1} onPress={()=>{navigation.navigate(ROUTES?.FORGOTPASSWORD)}} >
                     <Text style={[F40014.main, F40014.color]}>
                       {String.commonString.ForgotPassword}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
 
                   <View style={style.signIn}>
                     <ButtonComponent onPrees={() => { handleLoginFlow() }} buttonTitle={String.commonString.SignIn} />
@@ -184,7 +184,6 @@ export const Login = () => {
         </ScrollView>
       </View>
 
-      {/* {loader && <Loader />} */}
     </>
   );
 };
