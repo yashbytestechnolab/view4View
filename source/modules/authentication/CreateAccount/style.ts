@@ -36,7 +36,9 @@ export const style = StyleSheet.create({
         alignItems: "center",
         backgroundColor: Colors.linear_gradient
     },
-    safeArea: {},
+    safeArea: {
+      backgroundColor:Colors.linear_gradient
+    },
     wrapperView: {
         backgroundColor: Colors.linear_gradient,
         flex: 0.6

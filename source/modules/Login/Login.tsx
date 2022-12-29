@@ -42,7 +42,6 @@ export const Login = () => {
         .signInWithCredential(credential)
         .then(async function (res) {
           const userDetail = res?.user?._user;
-
           if (res?.additionalUserInfo?.isNewUser) {
             loginUser(userDetail).then(() => {
               console.log("loginUser", res);

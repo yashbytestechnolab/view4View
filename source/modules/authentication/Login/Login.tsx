@@ -77,9 +77,10 @@ export const Login = () => {
     <>
       <SafeAreaView style={style.safeArea} />
       <View style={style.main}>
-        <View style={style.headerBack}>
+        {/** Back Icon Header */}
+        {/* <View style={style.headerBack}>
           <Back />
-        </View>
+        </View> */}
         <ScrollView
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps={String.commonString.handled}

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { Colors } from "../../../Theme";
 
 export const style = StyleSheet.create({
@@ -28,7 +28,7 @@ export const style = StyleSheet.create({
     headerBack: { position: "absolute", zIndex: 999, top: 34, left: 16 },
     scrollContain: {
         flexGrow: 1,
-        paddingBottom: 200
+        paddingBottom: Platform.OS === "ios" ? 220 : 180
     },
     mainLogo: {
         height: "40%",
@@ -37,7 +37,7 @@ export const style = StyleSheet.create({
         backgroundColor: Colors.linear_gradient
     },
     safeArea: {
-        backgroundColor: "red"
+        backgroundColor: Colors.linear_gradient
     },
     wrapperView: {
         backgroundColor: Colors.linear_gradient,

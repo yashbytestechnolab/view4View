@@ -60,7 +60,7 @@ const innerStyles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "400",
         borderRadius: 8,
-        color: Colors.GrayLightC2C9D1,
+        color: Colors.placeHolderTextBlack,
         height: 44,
         marginTop: 8,
         borderWidth: 1,

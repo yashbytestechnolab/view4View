@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, SafeAreaView, Alert } from 'react-native';
+import { View, ScrollView, Text, SafeAreaView, TouchableOpacity } from 'react-native';
 import React, { useContext } from 'react'
 import { style } from '../CreateAccount/style'
 import Back from '../../../assets/icons/Back';
@@ -47,7 +47,7 @@ export const CreateAccount = () => {
             then(async (userResponse: any) => {
                 let userDetail = userResponse?.user?._user
                 await loginUser(userDetail)
-                await LocalStorage.setValue("userLoginId", userDetail?.uid);
+                await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);
                 await LocalStorage.setValue(LocalStorageKeys?.isFirstTimeLogin, true);
                 navigation.reset({
                     index: 0,
@@ -63,10 +63,14 @@ export const CreateAccount = () => {
     */
     const handleCreateAccountFlow = () => {
         let isNotValidForm: boolean = false
-        userInput?.fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, String.commonString.fullnameErrorMsg));
-        (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) && (isNotValidForm = true, dispatchHandler(type.EMAIL_ERROR, String.commonString.PleaseProvideValidEmailMsg));
-        (userInput?.password?.length <= 0 || userInput?.password?.length < 8) && (isNotValidForm = true, dispatchHandler(type.PASSWORD_ERROR, String.commonString.PasswordErrorMsg));
-        (userInput?.confirmPassword?.length <= 0 || userInput?.confirmPassword?.length < 8 && userInput?.password !== userInput?.confirmPassword) && (isNotValidForm = true, dispatchHandler(type.CONFIRM_PASSWORD_ERROR, String.commonString.ConfirmPasswordErrorMsg));
+        const { fullName, email, password, confirmPassword } = userInput
+        console.log("confirmPass", password !== confirmPassword);
+        console.log(confirmPassword?.length <= 0 || confirmPassword?.length < 8);
+
+        fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, String.commonString.fullnameErrorMsg));
+        (email?.length <= 0 || !emailPattern.test(email)) && (isNotValidForm = true, dispatchHandler(type.EMAIL_ERROR, String.commonString.PleaseProvideValidEmailMsg));
+        (password?.length <= 0 || password?.length < 8) && (isNotValidForm = true, dispatchHandler(type.PASSWORD_ERROR, String.commonString.PasswordErrorMsg));
+        (password !== confirmPassword) && (isNotValidForm = true, dispatchHandler(type.CONFIRM_PASSWORD_ERROR, String.commonString.ConfirmPasswordErrorMsg));
         !isNotValidForm && handleCreateUserRequest()
     }
 
@@ -74,9 +78,12 @@ export const CreateAccount = () => {
         <>
             <SafeAreaView style={style.safeArea} />
             <View style={style.main}>
-                <View style={style.headerBack}>
+
+                <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    style={style.headerBack}>
                     <Back />
-                </View>
+                </TouchableOpacity>
 
                 <ScrollView
                     showsVerticalScrollIndicator={false}
@@ -150,7 +157,9 @@ export const CreateAccount = () => {
                                     </View>
 
                                     <View style={style.signIn}>
-                                        <ButtonComponent loading={loading} onPrees={() => handleCreateAccountFlow()} buttonTitle={String.commonString.SignIn} />
+                                        <ButtonComponent loading={loading}
+                                            onPrees={() => handleCreateAccountFlow()}
+                                            buttonTitle={String.commonString.SignIn} />
                                     </View>
                                     <ORtitle />
 
