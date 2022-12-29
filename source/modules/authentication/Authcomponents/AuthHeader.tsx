@@ -6,8 +6,8 @@ import { F40014, F60024 } from '../../../Theme';
 interface headerProps {
     mainTitle: string;
     miniTitle: string;
-    actionTitle: string
-    onPress: () => {} | void
+    actionTitle: string,
+    onPress: (value:string|any|number) => {} | void
 }
 
 export const AuthHeader = (pros: headerProps) => {

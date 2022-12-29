@@ -48,7 +48,7 @@ export const CreateAccount = () => {
                 let userDetail = userResponse?.user?._user
                 await loginUser(userDetail)
                 await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);
-                await LocalStorage.setValue(LocalStorageKeys?.isFirstTimeLogin, true);
+                await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
                 navigation.reset({
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],

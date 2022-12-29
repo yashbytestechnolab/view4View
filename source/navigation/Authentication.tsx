@@ -15,7 +15,7 @@ export const Authentication = () => {
   const [loading, setLoading] = useState<boolean | null>(null)
  
     const onBord = async () => {
-      await LocalStorage.getValue(LocalStorageKeys?.isFirstTimeLogin).then((res) => {
+      await LocalStorage.getValue(LocalStorageKeys?.IsFirstTimeLogin).then((res) => {
         setLoading(true)
         if (res == true)
           setIsFirstTimeLoginUser(res == true ? true : false)

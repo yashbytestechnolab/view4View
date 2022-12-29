@@ -9,7 +9,7 @@ interface input {
     fullName?: number | string | any,
     email?: number | string | any,
     password?: number | string | any,
-    confirmPassword?: number | string | any
+    confirmPassword?: number | string | any,
     showPassword: boolean;
     confirmPasswordShow: boolean
 }

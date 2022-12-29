@@ -7,8 +7,8 @@ import { EyeIcon } from '../assets/icons/EyeIcon'
 interface props {
     placeholder: string,
     value: string | number | undefined,
-    inputTitle: string
-    onChangeText: (value: any) => void,
+    inputTitle: string,
+    onChangeText: (value: string|number|any) => void,
     viewStyle?: StyleProp<ViewStyle>,
     isSecureIcon?: boolean,
     isSecureEntry?: boolean,

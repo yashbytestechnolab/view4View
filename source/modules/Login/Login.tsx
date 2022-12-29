@@ -55,7 +55,7 @@ export const Login = () => {
             index: 0,
             routes: [{ name: ROUTES.TABLIST }],
           });
-          await LocalStorage.setValue(LocalStorageKeys?.isFirstTimeLogin, true);
+          await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
         });
     } catch (error) {
       // setLoader(false);
