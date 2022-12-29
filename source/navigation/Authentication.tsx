@@ -4,8 +4,8 @@ import { LocalStorageKeys, ROUTES } from '../constants';
 import { Login } from '../modules/authentication/Login/Login';
 import { TabNavigation } from './TabNavigation';
 import * as LocalStorage from '../services/LocalStorage';
-import { Introduction } from '../modules/authentication/Inroduction';
 import { Loader } from '../components';
+import {Introduction, ForgotPassword } from '../modules/authentication';
 import { CreateAccount } from '../modules/authentication/CreateAccount';
 
 const Stack = createStackNavigator();
@@ -41,6 +41,7 @@ export const Authentication = () => {
             }}>
             <Stack.Screen name={ROUTES.INTRODUCATION} component={Introduction} />
             <Stack.Screen name={ROUTES.LOGIN} component={Login} />
+            <Stack.Screen name={ROUTES.FORGOTPASSWORD} component={ForgotPassword} />
             <Stack.Screen name={ROUTES.CREATEACCOUNT} component={CreateAccount} />
             <Stack.Screen name={ROUTES.TABLIST} component={TabNavigation} />
           </Stack.Navigator>

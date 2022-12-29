@@ -16,6 +16,8 @@ import java.util.List;
 import cx.evermeet.versioninfo.RNVersionInfoPackage;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.BV.LinearGradient.LinearGradientPackage; 
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -33,6 +35,8 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
            new SplashScreenReactPackage();  //here
           new RNVersionInfoPackage() ;// here
+          new LinearGradientPackage() ;// <---- and This!
+
           return packages;
         }
 

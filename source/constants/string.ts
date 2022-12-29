@@ -1,4 +1,4 @@
-export const String = {
+export const String: any = {
     introduction_swipeList: {
         youtubeVideos: 'Youtube Videos',
         yourCampaignsHere: 'Your Campaigns here',
@@ -15,6 +15,7 @@ export const String = {
         view: 'View',
         earnCoin: 'Earn Coins',
         createCampaign: 'Create Campaign',
+        forgotPassword: 'Forgot Password'
     },
     homeTab: {
         plus: '+',
@@ -45,11 +46,13 @@ export const String = {
         Enteryourpassword: "Enter your password",
         Enterconfirmpassword: "Enter confirm password",
         Password: "Password",
-        ConfirmPassword: "Confirm Password",
-        ForgotPassword: "Forgot Password?",
+        ForgotPassword: "Forgot Password",
         Google: "Google",
         Apple: "Apple",
         handled: "handled",
+        submit: 'Submit',
+        backTo: 'Back to ',
+        ConfirmPassword: "Confirm Password",
         Enterfullname: "Enter full name",
         Fullname: "Full Name",
         Createanaccount: "Create an account",
@@ -57,5 +60,14 @@ export const String = {
         fullnameErrorMsg: "Please fill your name",
         PasswordErrorMsg: "Password must be 8 character",
         ConfirmPasswordErrorMsg: "Password Should not match"
+    },
+    flashMessage: {
+        forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
+        success: 'success',
+        danger: 'danger',
+    },
+    validationMsg: {
+        validEmail: "Please enter valid email",
+
     }
 }

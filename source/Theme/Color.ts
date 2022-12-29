@@ -3,7 +3,7 @@ export const Colors = {
     pinkHeaderBorder: '#FFE9ED',
     paginationGray: '#CED4DA',
     red: '#ff4d4d',
-    pink: '#DC143C',
+    pink: 'pink',
     white: "#FFFFFF",
     black: '#000000',
     green: '#336600',
@@ -14,6 +14,9 @@ export const Colors = {
     greyD8D8D8: "#D8D8D8",
     black16233A: "#16233A",
     placeHolderTextBlack: '#121212',
+    gradient1: '#FF7B76',
+    gradient2: '#FF7976',
+    gradient3: '#FF5071',
     borderColor: "#FF8377",
     lightPink: "#FFB6C1"
 }

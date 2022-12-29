@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Fonts } from "../assets/fonts";
 import { Colors } from "./Color";
 
 
@@ -37,7 +38,8 @@ export const F50012 = StyleSheet.create({
     main: {
         color: Colors.placeHolderTextBlack,
         fontSize: 12,
-        fontWeight: "500"
+        fontWeight: "500",
+        fontFamily:Fonts?.InterMedium
     },
     color: {
         color: Colors.primaryRed,
@@ -47,9 +49,10 @@ export const F50012 = StyleSheet.create({
 
 export const F60024 = StyleSheet.create({
     textStyle: {
-        color: Colors.placeHolderTextBlack,
+        color: Colors?.placeHolderTextBlack,
         fontSize: 24,
-        fontWeight: "600"
+        fontWeight: "600",
+        fontFamily:Fonts?.InterSemiBold
     },
 })
 
@@ -57,7 +60,8 @@ export const F60016 = StyleSheet.create({
     textStyle: {
         color: Colors.white,
         fontSize: 16,
-        fontWeight: "600"
+        fontWeight: "600",
+        fontFamily:Fonts?.InterSemiBold
     },
 })
 

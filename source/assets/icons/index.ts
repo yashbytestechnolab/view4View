@@ -11,5 +11,11 @@ export * from './YourCampaigns'
 export * from './EarnCoins'
 export * from './SignInNow'
 export * from './Logo'
+export * from './Awards'
+export * from './Back'
+export * from './Google'
+export * from './Apple'
+
+
 
 
