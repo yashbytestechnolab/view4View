@@ -1,11 +1,13 @@
 import * as React from "react"
 import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg"
 
-export const SignInNow = () => {
+export const SignInNow = (props:any) => {
     return (
         <Svg
-            width={344}
-            height={306}
+            // width={344}
+            // height={306}
+            width={props?.width?props?.width:343 }
+            height={props?.height?props?.height:306}
             viewBox="0 0 344 306"
             fill="none" >
             <Path

@@ -2,12 +2,12 @@
 import * as React from "react"
 import Svg, { Path, G, Defs, LinearGradient, Stop } from "react-native-svg"
 
-export const YourCampaigns = () => {
+export const YourCampaigns = (props:any) => {
 
     return (
         <Svg
-            width={343}
-            height={301}
+            width={props?.width?props?.width:343 }
+            height={props?.height?props?.height:301}
             viewBox="0 0 343 231"
             fill="none"
         >

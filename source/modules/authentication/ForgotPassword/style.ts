@@ -5,7 +5,8 @@ export const style = StyleSheet.create({
     containerWrapper: {
         borderTopEndRadius: 30,
         borderTopStartRadius: 30,
-        flex: 1, backgroundColor: Colors?.white
+        flex: 1, backgroundColor: Colors?.white,
+        paddingBottom:50
     },
 
     backToLoginTextWrapper: { flexDirection: 'row', justifyContent: 'center', paddingTop: 24 },
@@ -13,9 +14,7 @@ export const style = StyleSheet.create({
         alignItems: "center", paddingTop: 30
     },
     scrollContain: {
-        flexGrow: 1,
-        backgroundColor: 'pink',
-    },
+        backgroundColor:Colors?.gradient1 },
     signIn: { marginTop: 24 },
     bottomLine: {
         flexDirection: "row",

@@ -1,7 +1,7 @@
-import { View, Text, SafeAreaView } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView } from 'react-native'
 import React, { useContext } from 'react'
 import { Apple, Google, } from '../../../assets/icons'
-import { F40012, F40014, F60024 } from '../../../Theme'
+import { Colors, F40012, F40014, F60024 } from '../../../Theme'
 import { emailPattern, ROUTES, String } from '../../../constants'
 import { InputContextProvide } from '../../../context/CommonContext'
 import { type } from '../../../constants/types'
@@ -41,7 +41,12 @@ export const ForgotPassword = () => {
   return (
     <>
       <BackButton />
-      <SafeAreaView style={style.scrollContain}>
+      <SafeAreaView style={style.scrollContain}/>
+      <ScrollView howsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps={String.commonString.handled}
+          style={{backgroundColor:Colors?.gradient1}}
+          scrollEnabled={true}
+          contentContainerStyle={{backgroundColor:'pink',flexGrow:1,}}>
         <GradientHeader />
         <View style={style.containerWrapper} >
           <View style={style.welcomeHeader}>
@@ -77,7 +82,8 @@ export const ForgotPassword = () => {
             />
           </View>
         </View>
-      </SafeAreaView>
+        </ScrollView>
+        {/* <SafeAreaView style={{backgroundColor:'white'}}/> */}
     </>
   )
 }
