@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, SafeAreaView, Alert } from 'react-native';
+import { View, ScrollView, Text, SafeAreaView, Alert, TouchableOpacity } from 'react-native';
 import React, { useContext } from 'react';
 import {
   GoogleSignin,
@@ -132,7 +132,8 @@ export const Login = () => {
                     placeholder={String.commonString.ForgotPassword} />
 
 
-                  <TouchableOpacity style={style.forgotPassword}activeOpacity={1} onPress={()=>{navigation.navigate(ROUTES?.FORGOTPASSWORD)}} >
+                  <TouchableOpacity style={style.forgotPassword}activeOpacity={1}
+                   onPress={()=>{navigation.navigate(ROUTES?.FORGOTPASSWORD)}} >
                     <Text style={[F40014.main, F40014.color]}>
                       {String.commonString.ForgotPassword}
                     </Text>
