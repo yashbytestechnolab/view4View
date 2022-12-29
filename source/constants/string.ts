@@ -1,13 +1,13 @@
-export const String:any = {
+export const String: any = {
     introduction_swipeList: {
         youtubeVideos: 'Youtube Videos',
         yourCampaignsHere: 'Your Campaigns here',
         EarnCoins: 'Earn Coins',
         signInnow: 'Sign in now',
         subTitle: 'Lorem Ipsum is simply dummy text of the\n printing and  simply dum industry.',
-        skip:'skip',
-        getStartedNow:'Get Started Now',
-        next:'Next'
+        skip: 'skip',
+        getStartedNow: 'Get Started Now',
+        next: 'Next'
 
     },
     headerTitle: {
@@ -15,7 +15,7 @@ export const String:any = {
         view: 'View',
         earnCoin: 'Earn Coins',
         createCampaign: 'Create Campaign',
-        forgotPassword:'Forgot Password'
+        forgotPassword: 'Forgot Password'
     },
     homeTab: {
         plus: '+',
@@ -49,7 +49,15 @@ export const String:any = {
         Google: "Google",
         Apple: "Apple",
         handled: "handled",
-        submit:'Submit',
-        backTo:'Back to '
+        submit: 'Submit',
+        backTo: 'Back to '
+    },
+    flashMessage: {
+        forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
+        success: 'success',
+        danger: 'danger',
+    },
+    validationMsg:{
+        validEmail:"Please enter valid email"
     }
 }
