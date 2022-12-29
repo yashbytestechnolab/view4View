@@ -10,6 +10,7 @@ import { BackButton, ButtonComponent, GradientHeader, InputComponent, SocialMedi
 import { style } from './style'
 import { firebase } from '@react-native-firebase/auth'
 import { showMessage } from 'react-native-flash-message'
+import { ORtitle } from '../Authcomponents'
 
 export const ForgotPassword = () => {
   const { storeCreator: { userInput, dispatch } }: any = useContext(InputContextProvide)
@@ -62,13 +63,7 @@ export const ForgotPassword = () => {
             <Text style={F40014.main}>{String.commonString?.backTo}</Text>
             <Text onPress={() => { navigation.navigate(ROUTES?.LOGIN) }} style={[F40014.main, F40014?.color]}>{String.commonString?.SignIn}</Text>
           </View>
-          <View style={style.bottomLine}>
-            <View style={style.line} />
-            <Text style={[F40012.main, F40012.bottom]} >
-              OR
-            </Text>
-            <View style={style.line} />
-          </View>
+          <ORtitle />
           <View style={style.socialMedia}>
             <SocialMediaButton
               socialMediaIcon={<Google />}

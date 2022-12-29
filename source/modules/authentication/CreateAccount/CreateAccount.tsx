@@ -150,7 +150,7 @@ export const CreateAccount = () => {
 
                                     <View style={style.forgotPassword}>
                                         <Text
-                                            onPress={() => { }}
+                                            onPress={() => { navigation?.navigate(ROUTES?.FORGOTPASSWORD) }}
                                             style={[F40014.main, F40014.color]}>
                                             {String.commonString.ForgotPassword}
                                         </Text>

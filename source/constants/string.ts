@@ -51,20 +51,8 @@ export const String: any = {
         Apple: "Apple",
         handled: "handled",
         submit: 'Submit',
-        backTo: 'Back to '
-    },
-    flashMessage: {
-        forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
-        success: 'success',
-        danger: 'danger',
-    },
-    validationMsg:{
-        validEmail:"Please enter valid email",
+        backTo: 'Back to ',
         ConfirmPassword: "Confirm Password",
-        ForgotPassword: "Forgot Password?",
-        Google: "Google",
-        Apple: "Apple",
-        handled: "handled",
         Enterfullname: "Enter full name",
         Fullname: "Full Name",
         Createanaccount: "Create an account",
@@ -72,5 +60,14 @@ export const String: any = {
         fullnameErrorMsg: "Please fill your name",
         PasswordErrorMsg: "Password must be 8 character",
         ConfirmPasswordErrorMsg: "Password Should not match"
+    },
+    flashMessage: {
+        forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
+        success: 'success',
+        danger: 'danger',
+    },
+    validationMsg: {
+        validEmail: "Please enter valid email",
+
     }
 }
