@@ -7,16 +7,17 @@ interface buttonProps {
     buttonTitle: string,
     onPrees: () => void,
     isRewardIconShow?: boolean
-    wrapperStyle?:object
+    wrapperStyle?: object,
+    loading?: boolean
 }
 
 export const ButtonComponent = (props: buttonProps) => {
-const { isRewardIconShow, onPrees, buttonTitle = false,wrapperStyle,loading } = props
+    const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading } = props
     return (
         <TouchableOpacity
             activeOpacity={0.6}
             onPress={onPrees}
-            style={[innerStyles.main,wrapperStyle]}>
+            style={[innerStyles.main, wrapperStyle]}>
             {
                 isRewardIconShow &&
                 <View style={innerStyles.reward}>
