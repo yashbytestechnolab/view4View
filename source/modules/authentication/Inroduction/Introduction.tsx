@@ -8,14 +8,16 @@ import { IntroductionData } from '../../../services/jsonfile';
 import { styles } from './style';
 import { ButtonComponent } from '../../../components';
 
+
 export const Introduction = () => {
 
-    const pageRef: any = useRef();
-    const navigation: any = useNavigation();
-    const [getCurrentIndex, setGetCurrentIndex] = useState()
+    const pageRef: React.MutableRefObject<undefined>  = useRef();
+    const navigation:any = useNavigation();
+    const [getCurrentIndex, setGetCurrentIndex] = useState<number>()
 
     const buttonHandler = () => {
-        let index: any = pageRef.current?.getCurrentIndex();
+        const index: number = pageRef.current?.getCurrentIndex();
+        
         if (index === IntroductionData?.length - 1) {
 
             navigation.reset({
@@ -23,7 +25,7 @@ export const Introduction = () => {
                 routes: [{ name: ROUTES?.LOGIN }]
             })
         } else {
-            pageRef?.current?.scrollToIndex({
+            pageRef.current.scrollToIndex({
                 index: index + 1,
                 animated: true,
             });
@@ -36,7 +38,7 @@ export const Introduction = () => {
         })
     }
 
-    const renderDesign = (item: any) => {
+    const renderDesign = (item:  { svg: JSX.IntrinsicAttributes|object; title: string ; subTitle: string  }) => {
         return (
             <View style={styles.child}>
                 <TouchableOpacity onPress={skipHandler}>
@@ -63,7 +65,7 @@ export const Introduction = () => {
                     }}
                     showPagination paginationActiveColor={Colors?.primaryRed}
                     paginationStyleItem={styles.paginationStyle}
-                    paginationDefaultColor={Colors?.paginationGray}
+                    paginationDefaultColor={Colors.paginationGray}
                     autoplayDelay={2}
                     autoplayLoop
                     index={0}
@@ -71,9 +73,8 @@ export const Introduction = () => {
                     renderItem={({ item }) => (renderDesign(item))}
                 />
             </View>
-
-            <ButtonComponent wrapperStyle={styles.nextButtoun} onPrees={() => {buttonHandler() }} buttonTitle={getCurrentIndex == 3 ? String?.introduction_swipeList?.getStartedNow : String?.introduction_swipeList?.next} />
-
+            <ButtonComponent onPrees={() => { buttonHandler() }} wrapperStyle={styles.nextButtoun} buttonTitle={getCurrentIndex == 3 ? String?.introduction_swipeList?.getStartedNow : String?.introduction_swipeList?.next}
+            />
         </SafeAreaView>
     )
 }

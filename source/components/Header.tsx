@@ -12,9 +12,9 @@ interface IheaderProps {
 export const Header = (props: IheaderProps) => {
   const { title } = props;
   const [getCoin, setGetCoin] = useState<number>(0);
-  const focus: any = useIsFocused();
+  const focus:boolean = useIsFocused();
   useEffect(() => {
-    get_coins().then((res: any) => {
+    get_coins().then((res) => {
       setGetCoin(res?._data?.coin)
     })
 

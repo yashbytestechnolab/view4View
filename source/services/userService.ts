@@ -1,18 +1,18 @@
 import { getValue } from './LocalStorage';
-let myHeaders = new Headers();
+const myHeaders = new Headers();
 
-let requestOptionsGet = {
+const requestOptionsGet = {
     method: 'GET',
 };
 
-let requestOptionsPost: any = {
+const requestOptionsPost: any = {
     method: 'POST',
     headers: myHeaders,
     body: {},
     redirect: 'follow'
 };
 
-let requestOptionsPut: any = {
+const requestOptionsPut:any= {
     method: 'PUT',
     headers: myHeaders,
     body: {},
@@ -36,7 +36,7 @@ export const getAPIRequest = async (requestURL: string) => {
  * @param payload 
  * @returns 
  */
-export const postAPIRequest = async (requestURL: string, payload: any) => {
+export const postAPIRequest = async (requestURL: string, payload: object|string|number) => {
     requestOptionsPost.body = payload
     const token = await getValue('accessToken')
     myHeaders.append("Authorization", `Bearer ${token}`);
@@ -51,7 +51,7 @@ export const postAPIRequest = async (requestURL: string, payload: any) => {
  * @param payload 
  * @returns 
  */
-export const put = async (requestURL: String, payload: any) => {
+export const put = async (requestURL: string, payload: any) => {
     requestOptionsPut.body = payload
     const token = await getValue('accessToken')
     myHeaders.append("Authorization", `Bearer ${token}`);

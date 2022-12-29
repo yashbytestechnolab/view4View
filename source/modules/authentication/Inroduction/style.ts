@@ -5,7 +5,7 @@ import { Colors } from "../../../Theme";
 const { height } = Dimensions.get('window');
 const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: 'white', },
+    container: { flex: 1, backgroundColor: Colors?.white, },
     child: { width, paddingHorizontal: 16, paddingVertical: 30 },
     text: { fontSize: width * 0.5, textAlign: 'center' },
     paginationStyle: { height: 10, width: 10 },

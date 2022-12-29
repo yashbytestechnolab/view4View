@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Path, Svg } from 'react-native-svg'
 
@@ -25,4 +24,3 @@ const EarnCoin = () => {
 
 export default EarnCoin
 
-const styles = StyleSheet.create({})

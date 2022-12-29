@@ -31,6 +31,8 @@ target 'view4view' do
   pod 'Firebase/Auth', :modular_headers => true
   pod 'GoogleSignIn', :modular_headers => true
   pod 'Firebase/Firestore', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+
   $RNFirebaseAsStaticFramework = true
 
 

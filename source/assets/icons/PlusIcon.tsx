@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-export const PlusIcon =(props:any)=> {
+export const PlusIcon =()=> {
   return (
     <Svg
       width={26}
@@ -9,7 +9,7 @@ export const PlusIcon =(props:any)=> {
       viewBox="0 0 26 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
+     
     >
       <Path
         d="M13.209 24c-.324 0-.634-.123-.863-.343a1.149 1.149 0 01-.358-.829V1.172c0-.31.129-.609.358-.829.229-.22.54-.343.863-.343.324 0 .634.123.863.343.23.22.358.518.358.829v21.656c0 .31-.129.609-.358.829-.229.22-.54.343-.863.343z"
