@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { Colors } from "../../../Theme";
 
 export const style = StyleSheet.create({
@@ -6,8 +6,11 @@ export const style = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.linear_gradient
     },
-    text: { margin: 10, fontSize: 30, color: Colors?.green, textAlign: 'center' },
-    header: { justifyContent: "center", alignItems: "center", flex: 0.35, },
+    header: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 0.35,
+    },
     borderRadius: {
         borderTopEndRadius: 30,
         borderTopStartRadius: 30,
@@ -24,24 +27,32 @@ export const style = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-    scroll: { backgroundColor: Colors.white },
-    headerBack: { position: "absolute", zIndex: 999, top: 34, left: 16 },
+    scroll: {
+        backgroundColor: Colors.white
+    },
+    headerBack: {
+        position: "absolute",
+        zIndex: 999,
+        top: 34,
+        left: 16
+    },
     scrollContain: {
         flexGrow: 1,
-        paddingBottom: 200
+        paddingBottom: Platform.OS === "ios" ? 180 : 195
     },
     mainLogo: {
-        height: "25%",
+        height: "30%",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: Colors.linear_gradient
     },
     safeArea: {
-      backgroundColor:Colors.linear_gradient
+        backgroundColor: Colors.linear_gradient
     },
     wrapperView: {
-        backgroundColor: Colors.linear_gradient,
-        flex: 0.6
+        backgroundColor: "pink",
+        // flex: 0.6,
+        height: "60%"
     },
     container: {
         flex: 1,

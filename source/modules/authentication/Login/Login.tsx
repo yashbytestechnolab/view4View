@@ -18,6 +18,8 @@ import { emailPattern } from '../../../regex/Regex';
 import { googleLogin } from '../../../services/GoogleLoginServices';
 import auth from '@react-native-firebase/auth';
 import * as LocalStorage from '../../../services/LocalStorage';
+import { handleFirebaseError } from '../../../services';
+import { GradientHeader } from '../../../components';
 
 export const Login = () => {
   /**
@@ -46,9 +48,9 @@ export const Login = () => {
           index: 0,
           routes: [{ name: ROUTES.TABLIST }],
         });
-        await LocalStorage.setValue(LocalStorageKeys?.isFirstTimeLogin, true);
+        await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
       }).
-      catch((userError) => console.log("error", userError)).
+      catch((userError) => handleFirebaseError(userError.code)).
       finally(() => setLoading(false))
   }
 
@@ -77,10 +79,7 @@ export const Login = () => {
     <>
       <SafeAreaView style={style.safeArea} />
       <View style={style.main}>
-        {/** Back Icon Header */}
-        {/* <View style={style.headerBack}>
-          <Back />
-        </View> */}
+
         <ScrollView
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps={String.commonString.handled}
@@ -88,73 +87,69 @@ export const Login = () => {
           scrollEnabled={true}
           contentContainerStyle={style.scrollContain}>
 
-          <View style={style.mainLogo}>
-            <Logo />
-          </View>
+          <GradientHeader />
 
           <View style={style.wrapperView} >
-            <View style={[style.container, style.borderRadius]}>
-              <View style={[style.borderRadius, { backgroundColor: Colors?.white, marginTop: 20, flex: 1 }]}>
-                <View style={style.innerContainer} >
-                  <AuthHeader
-                    mainTitle={String.commonString.WelcomeBack}
-                    miniTitle={String.commonString.Donthaveanaccount}
-                    actionTitle={String.commonString.SignUp}
-                    onPress={() => { navigation.navigate(ROUTES.CREATEACCOUNT); dispatch({ type: type.EMPTY_STATE }); dispatchError({ type: type.EMPTY_STATE }) }}
-                  />
+          <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
+            <View style={style.innerContainer} >
+              <AuthHeader
+                mainTitle={String.commonString.WelcomeBack}
+                miniTitle={String.commonString.Donthaveanaccount}
+                actionTitle={String.commonString.SignUp}
+                onPress={() => { navigation.navigate(ROUTES.CREATEACCOUNT); dispatch({ type: type.EMPTY_STATE }); dispatchError({ type: type.EMPTY_STATE }) }}
+              />
 
-                  <InputComponent
-                    inputTitle={String.commonString.email}
-                    placeholder={String.commonString.Enteryouremail}
-                    value={userInput?.email}
-                    onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }); dispatchError({ type: type.EMAIL_ERROR, payload: "" }) }}
-                    errorMessage={userInputError?.emailError}
-                    viewStyle={style.top33}
-                  />
+              <InputComponent
+                inputTitle={String.commonString.email}
+                placeholder={String.commonString.Enteryouremail}
+                value={userInput?.email}
+                onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }); dispatchError({ type: type.EMAIL_ERROR, payload: "" }) }}
+                errorMessage={userInputError?.emailError}
+                viewStyle={style.top33}
+              />
 
-                  <InputComponent
-                    inputTitle={String.commonString.Password}
-                    placeholder={String.commonString.ForgotPassword}
-                    value={userInput?.password}
-                    onChangeText={(value) => { dispatch({ type: type.PASSWORD, payload: value }); dispatchError({ type: type.PASSWORD_ERROR, payload: "" }) }}
-                    isSecureIcon={true}
-                    isSecureEntry={userInput?.showPassword}
-                    onPrees={() => dispatch({ type: type.SHOW_PASSWORD, payload: !userInput?.showPassword })}
-                    errorMessage={userInputError?.passwordError}
-                  />
+              <InputComponent
+                inputTitle={String.commonString.Password}
+                placeholder={String.commonString.ForgotPassword}
+                value={userInput?.password}
+                onChangeText={(value) => { dispatch({ type: type.PASSWORD, payload: value }); dispatchError({ type: type.PASSWORD_ERROR, payload: "" }) }}
+                isSecureIcon={true}
+                isSecureEntry={userInput?.showPassword}
+                onPrees={() => dispatch({ type: type.SHOW_PASSWORD, payload: !userInput?.showPassword })}
+                errorMessage={userInputError?.passwordError}
+              />
 
 
-                  <View style={style.forgotPassword}>
-                    <Text
-                      onPress={() => { navigation?.navigate(ROUTES?.FORGOTPASSWORD) }}
-                      style={[F40014.main, F40014.color]}>
-                      {String.commonString.ForgotPassword}
-                    </Text>
-                  </View>
+              <View style={style.forgotPassword}>
+                <Text
+                  onPress={() => { navigation?.navigate(ROUTES?.FORGOTPASSWORD) }}
+                  style={[F40014.main, F40014.color]}>
+                  {String.commonString.ForgotPassword}
+                </Text>
+              </View>
 
-                  <View style={style.signIn}>
-                    <ButtonComponent
-                      loading={loading}
-                      onPrees={() => handleLoginFlow()} buttonTitle={String.commonString.SignIn} />
-                  </View>
-                  <ORtitle />
+              <View style={style.signIn}>
+                <ButtonComponent
+                  loading={loading}
+                  onPrees={() => handleLoginFlow()} buttonTitle={String.commonString.SignIn} />
+              </View>
+              <ORtitle />
 
-                  {/* Google and ios button */}
-                  <View style={style.socialMedia}>
-                    <SocialMediaButton
-                      socialMediaIcon={<Google />}
-                      buttonTitle={String.commonString.Google}
-                      onPress={() => { googleLogin(navigation) }}
-                    />
-                    <SocialMediaButton
-                      socialMediaIcon={<Apple />}
-                      buttonTitle={String.commonString.Apple}
-                      onPress={() => { }}
-                    />
-                  </View>
-                </View>
+              {/* Google and ios button */}
+              <View style={style.socialMedia}>
+                <SocialMediaButton
+                  socialMediaIcon={<Google />}
+                  buttonTitle={String.commonString.Google}
+                  onPress={() => { googleLogin(navigation) }}
+                />
+                <SocialMediaButton
+                  socialMediaIcon={<Apple />}
+                  buttonTitle={String.commonString.Apple}
+                  onPress={() => { }}
+                />
               </View>
             </View>
+          </View>
           </View>
         </ScrollView>
       </View>

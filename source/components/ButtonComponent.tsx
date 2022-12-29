@@ -15,7 +15,7 @@ export const ButtonComponent = (props: buttonProps) => {
     const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading } = props
     return (
         <TouchableOpacity
-            activeOpacity={0.6}
+            activeOpacity={0.8}
             onPress={onPrees}
             style={[innerStyles.main, wrapperStyle]}>
             {

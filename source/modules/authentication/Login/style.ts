@@ -6,11 +6,11 @@ export const style = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.linear_gradient
     },
-    text: { margin: 10, fontSize: 30, color: Colors?.green, textAlign: 'center' },
     header: { justifyContent: "center", alignItems: "center", flex: 0.35, },
     borderRadius: {
         borderTopEndRadius: 30,
         borderTopStartRadius: 30,
+        // flex: 1,
     },
     welcomeTop: {
         flex: 0.7,
@@ -28,10 +28,11 @@ export const style = StyleSheet.create({
     headerBack: { position: "absolute", zIndex: 999, top: 34, left: 16 },
     scrollContain: {
         flexGrow: 1,
-        paddingBottom: Platform.OS === "ios" ? 220 : 180
+        backgroundColor: Colors.white,
+        paddingBottom: Platform.OS === "ios" ? 200 : 180
     },
     mainLogo: {
-        height: "40%",
+        height: "30%",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: Colors.linear_gradient
@@ -40,8 +41,8 @@ export const style = StyleSheet.create({
         backgroundColor: Colors.linear_gradient
     },
     wrapperView: {
-        backgroundColor: Colors.linear_gradient,
-        flex: 0.6
+        backgroundColor: "pink",
+        height: "60%"
     },
     container: {
         flex: 1,
@@ -51,7 +52,7 @@ export const style = StyleSheet.create({
         marginTop: 30,
         bottom: 12
     },
-    forgotPassword: { marginTop: 16, alignSelf: "flex-end", marginHorizontal: 11,padding:5 },
+    forgotPassword: { marginTop: 16, alignSelf: "flex-end", marginHorizontal: 11, padding: 5 },
     signIn: { marginTop: 24 },
     top33: { marginTop: 33 },
     socialMedia: { flexDirection: "row" }
