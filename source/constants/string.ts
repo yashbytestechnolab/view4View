@@ -44,6 +44,7 @@ export const String: any = {
         email: "Email",
         Enteryouremail: "Enter your email",
         Enteryourpassword: "Enter your password",
+        Enterconfirmpassword: "Enter confirm password",
         Password: "Password",
         ForgotPassword: "Forgot Password",
         Google: "Google",
@@ -58,6 +59,18 @@ export const String: any = {
         danger: 'danger',
     },
     validationMsg:{
-        validEmail:"Please enter valid email"
+        validEmail:"Please enter valid email",
+        ConfirmPassword: "Confirm Password",
+        ForgotPassword: "Forgot Password?",
+        Google: "Google",
+        Apple: "Apple",
+        handled: "handled",
+        Enterfullname: "Enter full name",
+        Fullname: "Full Name",
+        Createanaccount: "Create an account",
+        PleaseProvideValidEmailMsg: "Please provide valid email",
+        fullnameErrorMsg: "Please fill your name",
+        PasswordErrorMsg: "Password must be 8 character",
+        ConfirmPasswordErrorMsg: "Password Should not match"
     }
 }

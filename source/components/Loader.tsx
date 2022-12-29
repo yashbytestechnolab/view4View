@@ -1,13 +1,13 @@
-import {View,  ActivityIndicator, StyleSheet} from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import React from 'react';
-import {Colors} from '../Theme';
+import { Colors } from '../Theme';
 
 interface loder {
   spinnerColor?: string;
   backGroundColor?: string;
 }
 export const Loader = (props: loder) => {
-  const {spinnerColor, backGroundColor} = props;
+  const { spinnerColor, backGroundColor } = props;
   return (
     <View
       style={[
@@ -27,6 +27,5 @@ const style = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    
   },
 });

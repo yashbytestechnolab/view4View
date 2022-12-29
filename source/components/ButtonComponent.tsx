@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React from 'react'
 import EarnCoin from '../assets/icons/EarnCoin'
 import { Colors, F60016 } from '../Theme'
@@ -6,27 +6,29 @@ import { Colors, F60016 } from '../Theme'
 interface buttonProps {
     buttonTitle: string,
     onPrees: () => void,
-    isRewardIconShow?: boolean
-    wrapperStyle?:object
+    isRewardIconShow?: boolean,
+    wrapperStyle?: StyleProp<ViewStyle|TouchableOpacity>,
+    loading?: boolean
 }
 
 export const ButtonComponent = (props: buttonProps) => {
-const { isRewardIconShow, onPrees, buttonTitle = false,wrapperStyle } = props
+    const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading } = props
     return (
         <TouchableOpacity
             activeOpacity={0.6}
             onPress={onPrees}
-            style={[innerStyles.main,wrapperStyle]}>
+            style={[innerStyles.main, wrapperStyle]}>
             {
                 isRewardIconShow &&
                 <View style={innerStyles.reward}>
                     <EarnCoin />
                 </View>
             }
-            <Text style={F60016.textStyle} >
-                {buttonTitle}
-            </Text>
-        </TouchableOpacity>
+            {loading ? <ActivityIndicator color={Colors.white} /> :
+                < Text style={F60016.textStyle} >
+                    {buttonTitle}
+                </Text>}
+        </TouchableOpacity >
     )
 }
 

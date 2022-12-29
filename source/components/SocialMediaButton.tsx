@@ -13,6 +13,7 @@ export const SocialMediaButton = (props: socialMediaProps) => {
     return (
         <View style={innerStyle.main}>
             <TouchableOpacity
+            activeOpacity={0.8}
                 onPress={onPress}
                 style={innerStyle.buttonView}>
                 <View style={innerStyle.logo}>
@@ -38,7 +39,7 @@ const innerStyle = StyleSheet.create({
         width: 160,
         borderWidth: 1,
         borderRadius: 8,
-        borderColor: Colors.redFF8377
+        borderColor: Colors.borderColor
     },
     logo: { right: 8 }
 })

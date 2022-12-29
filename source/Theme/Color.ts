@@ -1,7 +1,7 @@
 export const Colors = {
     primaryRed: '#FF5371',
-    pinkHeaderBorder:'#FFE9ED',
-    paginationGray:'#CED4DA',
+    pinkHeaderBorder: '#FFE9ED',
+    paginationGray: '#CED4DA',
     red: '#ff4d4d',
     pink: 'pink',
     white: "#FFFFFF",
@@ -17,5 +17,6 @@ export const Colors = {
     gradient1: '#FF7B76',
     gradient2: '#FF7976',
     gradient3: '#FF5071',
-
+    borderColor: "#FF8377",
+    lightPink: "#FFB6C1"
 }

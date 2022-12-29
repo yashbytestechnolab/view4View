@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { Colors } from "../../Theme";
+import { Platform, StyleSheet } from "react-native";
+import { Colors } from "../../../Theme";
 
 export const style = StyleSheet.create({
     main: {
@@ -19,9 +19,6 @@ export const style = StyleSheet.create({
     height: {
         height: 20
     },
-    welcomeHeader: {
-        alignItems: "center"
-    },
     welcome: {
         marginTop: 40,
         justifyContent: "center",
@@ -31,7 +28,7 @@ export const style = StyleSheet.create({
     headerBack: { position: "absolute", zIndex: 999, top: 34, left: 16 },
     scrollContain: {
         flexGrow: 1,
-        paddingBottom: 200
+        paddingBottom: Platform.OS === "ios" ? 220 : 180
     },
     mainLogo: {
         height: "40%",
@@ -40,7 +37,7 @@ export const style = StyleSheet.create({
         backgroundColor: Colors.linear_gradient
     },
     safeArea: {
-        backgroundColor: "red"
+        backgroundColor: Colors.linear_gradient
     },
     wrapperView: {
         backgroundColor: Colors.linear_gradient,
@@ -54,19 +51,8 @@ export const style = StyleSheet.create({
         marginTop: 30,
         bottom: 12
     },
-    signUpHeader: { marginTop: 12, justifyContent: "center", flexDirection: "row" },
     forgotPassword: { marginTop: 16, alignSelf: "flex-end", marginHorizontal: 16 },
     signIn: { marginTop: 24 },
-    bottomLine: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 29, marginHorizontal: 16,
-    },
-    line: {
-        height: 1,
-        width: 143,
-        marginTop: 4,
-        backgroundColor: Colors.greyD8D8D8,
-    },
-    socialMedia: { flexDirection: "row",justifyContent:"space-around" }
+    top33: { marginTop: 33 },
+    socialMedia: { flexDirection: "row" }
 });

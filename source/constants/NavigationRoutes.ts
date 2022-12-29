@@ -13,6 +13,7 @@ interface IRoutes {
     ONBORDING: string
     INTRODUCATION: string
     FORGOTPASSWORD:string
+    CREATEACCOUNT: String
 
 }
 export const ROUTES: IRoutes = {
@@ -29,5 +30,6 @@ export const ROUTES: IRoutes = {
     AUTH: 'AUTH',
     ONBORDING: "ONBORDING",
     INTRODUCATION:'INTRODUCATION',
-    FORGOTPASSWORD:'FORGOTPASSWORD'
+    FORGOTPASSWORD:'FORGOTPASSWORD',
+    CREATEACCOUNT: "CREATEACCOUNT"
 }
