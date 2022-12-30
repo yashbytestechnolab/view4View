@@ -1,7 +1,7 @@
-import { View, Text, SafeAreaView } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView } from 'react-native'
 import React, { useContext } from 'react'
 import { Apple, Google, } from '../../../assets/icons'
-import { F40012, F40014, F60024 } from '../../../Theme'
+import { Colors, F40014, F60024 } from '../../../Theme'
 import { emailPattern, ROUTES, String } from '../../../constants'
 import { InputContextProvide } from '../../../context/CommonContext'
 import { type } from '../../../constants/types'
@@ -9,31 +9,32 @@ import { useNavigation } from '@react-navigation/native'
 import { BackButton, ButtonComponent, GradientHeader, InputComponent, SocialMediaButton } from '../../../components'
 import { style } from './style'
 import { firebase } from '@react-native-firebase/auth'
-import { showMessage } from 'react-native-flash-message'
 import { ORtitle } from '../Authcomponents'
+import { googleLogin, handleFirebaseError } from '../../../services'
 
 export const ForgotPassword = () => {
+  /**
+  * Context to give userinput data and error message
+  */
   const { storeCreator: { userInput, dispatch } }: any = useContext(InputContextProvide)
   const navigation = useNavigation()
 
+  /**
+   * user reset password
+   * @returns firebase share link in user gmail and user change password 
+   */
+
   const handlePasswordReset = async () => {
     if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
-      showMessage({
-        message: String?.validationMsg?.validEmail,
-        type: String.flashMessage?.danger,
-      });
+    
+      handleFirebaseError("WrongEmail")
+
     } else {
       return await firebase.auth().sendPasswordResetEmail(userInput?.email).then((response) => {
-        showMessage({
-          message: String.flashMessage?.forgotPwdSuccessMsg,
-          type: String.flashMessage?.success,
-        });
-
-      }).catch((e) => {
-        showMessage({
-          message: e?.message,
-          type: String.flashMessage?.danger,
-        });
+        handleFirebaseError("ForgotSucess")
+        dispatch({ type: type.EMPTY_STATE });
+      }).catch((forgotError) => {
+        handleFirebaseError(forgotError.code)
       })
     }
 
@@ -41,7 +42,12 @@ export const ForgotPassword = () => {
   return (
     <>
       <BackButton />
-      <SafeAreaView style={style.scrollContain}>
+      <SafeAreaView style={style.backGroundColor} />
+      <ScrollView howsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps={String.commonString.handled}
+        style={{ backgroundColor: Colors?.gradient1 }}
+        scrollEnabled={true}
+        contentContainerStyle={style.scrollContain}>
         <GradientHeader />
         <View style={style.containerWrapper} >
           <View style={style.welcomeHeader}>
@@ -51,7 +57,7 @@ export const ForgotPassword = () => {
           </View>
           <InputComponent
             inputTitle={String.commonString.email}
-            viewStyle={{ marginTop: 33 }}
+            viewStyle={style.marginTop}
             value={userInput?.email}
             onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }) }}
             placeholder={String.commonString.Enteryouremail}
@@ -68,7 +74,7 @@ export const ForgotPassword = () => {
             <SocialMediaButton
               socialMediaIcon={<Google />}
               buttonTitle={String.commonString.Google}
-              onPress={() => { }}
+              onPress={() => { googleLogin(navigation) }}
             />
             <SocialMediaButton
               socialMediaIcon={<Apple />}
@@ -77,7 +83,7 @@ export const ForgotPassword = () => {
             />
           </View>
         </View>
-      </SafeAreaView>
+      </ScrollView>
     </>
   )
 }
