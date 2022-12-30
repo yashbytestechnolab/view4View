@@ -46,7 +46,7 @@ export const String: any = {
         Enteryourpassword: "Enter your password",
         Enterconfirmpassword: "Enter confirm password",
         Password: "Password",
-        ForgotPassword: "Forgot Password",
+        ForgotPassword: "Forgot Password?",
         Google: "Google",
         Apple: "Apple",
         handled: "handled",
@@ -59,15 +59,18 @@ export const String: any = {
         PleaseProvideValidEmailMsg: "Please provide valid email",
         fullnameErrorMsg: "Please fill your name",
         PasswordErrorMsg: "Password must be 8 character",
-        ConfirmPasswordErrorMsg: "Password Should not match"
+        ConfirmPasswordErrorMsg: "Password Should not match",
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
         success: 'success',
         danger: 'danger',
+        tooManyRequest: "Too many request",
+        passError: "Wrong password",
+        userNotFound: "User not found",
+        emailAlredyInUser: "Email already in use"
     },
     validationMsg: {
         validEmail: "Please enter valid email",
-
-    }
+    },
 }
