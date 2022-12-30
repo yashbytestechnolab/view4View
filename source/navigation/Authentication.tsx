@@ -62,6 +62,8 @@ export const OnBording = () => {
       }}>
       <Stack.Screen name={ROUTES.TABLIST} component={TabNavigation} />
       <Stack.Screen name={ROUTES.LOGIN} component={Login} />
+      <Stack.Screen name={ROUTES.FORGOTPASSWORD} component={ForgotPassword} />
+      <Stack.Screen name={ROUTES.CREATEACCOUNT} component={CreateAccount} />
     </Stack.Navigator>
   );
 }

@@ -1,12 +1,13 @@
 import * as React from "react"
 import Svg, { Path, G, Defs, LinearGradient, Stop, } from "react-native-svg"
 
-export const EarnCoins = () => {
+export const EarnCoins = (props:any) => {
 
     return (
         <Svg
-            width={343}
-            height={330}
+           
+            width={props?.width?props?.width:343 }
+            height={props?.height?props?.height:330}
             viewBox="0 0 343 338"
             fill="none">
             <Path
