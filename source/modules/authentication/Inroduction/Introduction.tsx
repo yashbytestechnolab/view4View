@@ -49,7 +49,7 @@ export const Introduction = () => {
                 {/* <View style={styles.svgWrapper}>
                     <item.svg />
                 </View> */}
-                <item.svg height={height -500} />
+                <item.svg height={height -480} />
                 <View style={styles.alignItems}>
                     <Text style={styles.title}>{item?.title}</Text>
                     <Text style={styles.subTitle}>{item?.subTitle}</Text>
