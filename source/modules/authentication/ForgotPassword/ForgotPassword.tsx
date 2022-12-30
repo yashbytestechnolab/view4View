@@ -41,12 +41,12 @@ export const ForgotPassword = () => {
   return (
     <>
       <BackButton />
-      <SafeAreaView style={style.scrollContain}/>
+      <SafeAreaView style={style.backGroundColor} />
       <ScrollView howsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps={String.commonString.handled}
-          style={{backgroundColor:Colors?.gradient1}}
-          scrollEnabled={true}
-          contentContainerStyle={{backgroundColor:'pink',flexGrow:1,}}>
+        keyboardShouldPersistTaps={String.commonString.handled}
+        style={{ backgroundColor: Colors?.gradient1 }}
+        scrollEnabled={true}
+        contentContainerStyle={style.scrollContain}>
         <GradientHeader />
         <View style={style.containerWrapper} >
           <View style={style.welcomeHeader}>
@@ -56,7 +56,7 @@ export const ForgotPassword = () => {
           </View>
           <InputComponent
             inputTitle={String.commonString.email}
-            viewStyle={{ marginTop: 33 }}
+            viewStyle={style.marginTop}
             value={userInput?.email}
             onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }) }}
             placeholder={String.commonString.Enteryouremail}
@@ -82,8 +82,7 @@ export const ForgotPassword = () => {
             />
           </View>
         </View>
-        </ScrollView>
-        {/* <SafeAreaView style={{backgroundColor:'white'}}/> */}
+      </ScrollView>
     </>
   )
 }
