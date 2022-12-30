@@ -43,7 +43,7 @@ export const Login = () => {
     auth().signInWithEmailAndPassword(userInput?.email, userInput?.password).
       then(async (userResponse: any) => {
         let userDetail = userResponse?.user?._user
-        await LocalStorage.setValue("userLoginId", userDetail?.uid);
+        await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
         navigation.reset({
           index: 0,
           routes: [{ name: ROUTES.TABLIST }],
