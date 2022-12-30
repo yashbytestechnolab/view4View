@@ -7,24 +7,25 @@ interface alertMessage {
     tooManyRequest: string,
     danger: string,
     userNotFound: string,
-    emailAlredyInUser: string
+    emailAlredyInUser: string,
+    validEmail:string
 }
 
 export const handleFirebaseError = (type: string) => {
-    console.log("handleFirebaseError", type);
-    const { passError, tooManyRequest, danger, userNotFound,emailAlredyInUser }: alertMessage = String.flashMessage
+
+    const { passError, tooManyRequest, danger, userNotFound, emailAlredyInUser, forgotPwdSuccessMsg, success,validEmail }: alertMessage = String.flashMessage
     switch (type) {
         case "auth/wrong-password": return AlertMessage(passError, danger)
         case "auth/too-many-requests": return AlertMessage(tooManyRequest, danger)
         case "auth/user-not-found": return AlertMessage(userNotFound, danger)
         case "auth/email-already-in-use": return AlertMessage(emailAlredyInUser, danger)
+        case "ForgotSucess": return AlertMessage(forgotPwdSuccessMsg, success)
+        case "WrongEmail": return AlertMessage(validEmail, danger)
         default: return type
     }
 }
 
 const AlertMessage = (...params: Array<string>) => {
-    console.log("params", params);
-    console.log(params);
     showMessage({
         message: params[0],
         type: params[1],

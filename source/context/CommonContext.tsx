@@ -1,5 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { FC, createContext, useReducer, useState } from 'react'
+import React, { createContext, useReducer, useState } from 'react'
 import { type } from '../constants/types'
 import { ValidationFnc } from './ValidationFnc'
 

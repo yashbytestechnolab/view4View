@@ -68,9 +68,8 @@ export const String: any = {
         tooManyRequest: "Too many request",
         passError: "Wrong password",
         userNotFound: "User not found",
-        emailAlredyInUser: "Email already in use"
-    },
-    validationMsg: {
+        emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
     },
+
 }
