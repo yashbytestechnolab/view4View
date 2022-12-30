@@ -36,7 +36,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
                         console.log("loginUser", err);
                     })
                 }
-                await LocalStorage.setValue("userLoginId", userDetail?.uid);
+                await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
                 navigation.reset({
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],

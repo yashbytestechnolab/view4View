@@ -8,7 +8,8 @@ export const F40014 = StyleSheet.create({
     main: {
         color: Colors.placeHolderTextBlack,
         fontSize: 14,
-        fontWeight: "400"
+        fontWeight: "400",
+        fontFamily: Fonts?.InterRegular
     },
     color: {
         color: Colors.primaryRed,
@@ -39,7 +40,7 @@ export const F50012 = StyleSheet.create({
         color: Colors.placeHolderTextBlack,
         fontSize: 12,
         fontWeight: "500",
-        fontFamily:Fonts?.InterMedium
+        fontFamily: Fonts?.InterMedium
     },
     color: {
         color: Colors.primaryRed,
@@ -52,7 +53,7 @@ export const F60024 = StyleSheet.create({
         color: Colors?.placeHolderTextBlack,
         fontSize: 24,
         fontWeight: "600",
-        fontFamily:Fonts?.InterSemiBold
+        fontFamily: Fonts?.InterSemiBold
     },
 })
 
@@ -61,7 +62,7 @@ export const F60016 = StyleSheet.create({
         color: Colors.white,
         fontSize: 16,
         fontWeight: "600",
-        fontFamily:Fonts?.InterSemiBold
+        fontFamily: Fonts?.InterSemiBold
     },
 })
 
