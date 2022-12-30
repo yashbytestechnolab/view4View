@@ -3,7 +3,14 @@ import { Fonts } from "../assets/fonts";
 import { Colors } from "./Color";
 
 
-
+export const ActiveTabText=StyleSheet.create({
+    main: {
+        color: Colors?.primaryRed,
+        fontSize: 10,
+        fontWeight: "500",
+        fontFamily:Fonts?.InterMedium
+    },
+})
 export const F40014 = StyleSheet.create({
     main: {
         color: Colors.placeHolderTextBlack,
@@ -33,7 +40,32 @@ export const F40012 = StyleSheet.create({
     }
 })
 
+export const F50010 = StyleSheet.create({
+    main: {
+        color: Colors.GrayLightC2C9D1,
+        fontSize: 10,
+        fontWeight: "500",
+        fontFamily:Fonts?.InterMedium
+    },
+    color: {
+        color: Colors.primaryRed,
+        left: 2
+    }
+})
+export const F50018 = StyleSheet.create({
+    main: {
+        color: Colors.white,
+        fontSize: 18,
+        fontWeight: "500",
+        fontFamily:Fonts?.InterMedium
+    },
+    color: {
+        color: Colors.placeHolderTextBlack,
+        left: 2
+    }
+})
 
+ 
 export const F50012 = StyleSheet.create({
     main: {
         color: Colors.placeHolderTextBlack,
@@ -46,6 +78,8 @@ export const F50012 = StyleSheet.create({
         left: 2
     }
 })
+
+
 
 export const F60024 = StyleSheet.create({
     textStyle: {

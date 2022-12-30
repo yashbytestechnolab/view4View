@@ -11,11 +11,13 @@ export const String: any = {
 
     },
     headerTitle: {
-        home: 'Home',
+       
         view: 'View',
-        earnCoin: 'Earn Coins',
+        earnCoin: 'Earn Coin',
         createCampaign: 'Create Campaign',
-        forgotPassword: 'Forgot Password'
+        forgotPassword: 'Forgot Password',
+        myCampaign:'My Campaign',
+        setting:'Setting'
     },
     homeTab: {
         plus: '+',
