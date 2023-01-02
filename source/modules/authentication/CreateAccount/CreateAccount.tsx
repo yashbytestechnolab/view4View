@@ -119,14 +119,24 @@ export const CreateAccount = () => {
                                     inputTitle={String.commonString.email}
                                     placeholder={String.commonString.Enteryouremail}
                                     value={userInput?.email}
-                                    onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }); dispatchError({ type: type.EMAIL_ERROR, payload: "" }) }}
+                                    onChangeText={(value) => {
+                                        dispatch({ type: type.EMAIL, payload: value });
+                                        if (value?.length > 0 && emailPattern.test(value)) {
+                                            dispatchError({ type: type.EMAIL_ERROR, payload: "" })
+                                        }
+                                    }}
                                     errorMessage={userInputError?.emailError}
                                 />
                                 <InputComponent
                                     inputTitle={String.commonString.Password}
                                     placeholder={String.commonString.Enteryouremail}
                                     value={userInput?.password}
-                                    onChangeText={(value) => { dispatch({ type: type.PASSWORD, payload: value }); dispatchError({ type: type.PASSWORD_ERROR, payload: "" }) }}
+                                    onChangeText={(value) => {
+                                        dispatch({ type: type.PASSWORD, payload: value });
+                                        if (value?.length > 7) {
+                                            dispatchError({ type: type.PASSWORD_ERROR, payload: "" })
+                                        }
+                                    }}
                                     onPrees={() => dispatch({ type: type.SHOW_PASSWORD, payload: !userInput?.showPassword })}
                                     isSecureIcon={true}
                                     isSecureEntry={userInput?.showPassword}
@@ -137,7 +147,12 @@ export const CreateAccount = () => {
                                     placeholder={String.commonString.Enterconfirmpassword}
                                     inputTitle={String.commonString.ConfirmPassword}
                                     value={userInput?.confirmPassword}
-                                    onChangeText={(value) => { dispatch({ type: type.CONFIRM_PASSWORD, payload: value }); dispatchError({ type: type.CONFIRM_PASSWORD_ERROR, payload: "" }) }}
+                                    onChangeText={(value) => {
+                                        dispatch({ type: type.CONFIRM_PASSWORD, payload: value });
+                                        if (value?.length > 7 && value == userInput?.password) {
+                                            dispatchError({ type: type.CONFIRM_PASSWORD_ERROR, payload: "" })
+                                        }
+                                    }}
                                     onPrees={() => dispatch({ type: type.CONFIRM_PASSWORD_SHOW, payload: !userInput?.confirmPasswordShow })}
                                     isSecureEntry={userInput?.confirmPasswordShow}
                                     isSecureIcon={true}
