@@ -5,8 +5,9 @@ import { Header } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { GetVideoCampaign } from '../../services/FireStoreServices';
-import { PlusIcon,  Star } from '../../assets/icons';
+import { Campaign, EarnCoins, Home, PlusIcon,  Setting,  Star, TabEarnCoin } from '../../assets/icons';
 import { EyeIcon } from '../../assets/icons/EyeIcon';
+import EarnCoin from '../../assets/icons/EarnCoin';
 
 
 export const HomeLanding = () => {
@@ -85,7 +86,11 @@ export const HomeLanding = () => {
               )
             })
           }
-         
+         <Home/>
+         <Campaign/>
+         <EarnCoin/>
+         <TabEarnCoin/>
+         <Setting/>
           <TouchableOpacity
             style={styles.iconWrapper}
             activeOpacity={1}
