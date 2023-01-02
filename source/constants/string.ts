@@ -11,7 +11,6 @@ export const String: any = {
 
     },
     headerTitle: {
-       
         view: 'View',
         earnCoin: 'Earn Coin',
         createCampaign: 'Create Campaign',

@@ -86,10 +86,10 @@ export const Login = () => {
           style={style.scroll}
           scrollEnabled={true}
           contentContainerStyle={style.scrollContain}>
-
           <GradientHeader />
-
+        
           <View style={style.wrapperView} >
+        
           <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
             <View style={style.innerContainer} >
               <AuthHeader

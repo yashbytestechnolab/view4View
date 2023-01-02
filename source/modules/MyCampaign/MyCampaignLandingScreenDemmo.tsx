@@ -10,7 +10,7 @@ import { EyeIcon } from '../../assets/icons/EyeIcon';
 import EarnCoin from '../../assets/icons/EarnCoin';
 
 
-export const HomeLanding = () => {
+export const MyCampaignLandingScreenDemo = () => {
   const [showUrl, setShowUrl] = useState<boolean>(false);
   const [getUrl, setGetUrl] = useState<string>();
   const [expectedView, setExpectedView]= useState<string>('');
