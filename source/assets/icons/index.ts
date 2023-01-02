@@ -18,6 +18,8 @@ export * from './Apple'
 export * from './TabEarnCoin'
 export * from './Setting'
 export * from './EarnCoin'
+export * from './CoinIcon'
+export * from './SecondsIcon'
 
 
 

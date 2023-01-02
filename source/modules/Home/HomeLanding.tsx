@@ -86,11 +86,7 @@ export const HomeLanding = () => {
               )
             })
           }
-         <Home/>
-         <Campaign/>
-         <EarnCoin/>
-         <TabEarnCoin/>
-         <Setting/>
+        
           <TouchableOpacity
             style={styles.iconWrapper}
             activeOpacity={1}
