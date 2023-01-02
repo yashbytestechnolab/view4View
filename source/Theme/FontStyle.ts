@@ -40,6 +40,16 @@ export const F40012 = StyleSheet.create({
         bottom: 5
     }
 })
+export const F40012Black = StyleSheet.create({
+    main: {
+        color: Colors.black,
+        fontSize: 12,
+        fontWeight: "400",
+        fontFamily:Fonts?.InterRegular,
+        lineHeight:31
+    },
+  
+})
 
 export const F50010 = StyleSheet.create({
     main: {
@@ -99,5 +109,12 @@ export const F60016 = StyleSheet.create({
         fontFamily: Fonts?.InterSemiBold
     },
 })
-
+export const F70032=StyleSheet.create({
+    textStyle: {
+        color: Colors.primaryRed,
+        fontSize: 32,
+        fontWeight: "700",
+        fontFamily: Fonts?.InterBold
+    },
+})
 

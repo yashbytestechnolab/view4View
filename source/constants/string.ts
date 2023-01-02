@@ -14,14 +14,15 @@ export const String: any = {
 
     },
     headerTitle: {
-       
+
         view: 'View',
         earnCoin: 'Earn Coin',
         createCampaign: 'Create Campaign',
         forgotPassword: 'Forgot Password',
-        myCampaign:'My Campaign',
-        setting:'Setting',
-        view4view:'view4view'
+        myCampaign: 'My Campaign',
+        setting: 'Setting',
+        view4view: 'view4view',
+        YourCoin: 'Your Coin'
     },
     homeTab: {
         plus: '+',
@@ -34,7 +35,7 @@ export const String: any = {
     viewTab: {
         coin: 'Coins',
         second: 'Seconds',
-        nextVideo:'Next Video'
+        nextVideo: 'Next Video'
 
     },
     earnCoinTab: {
@@ -78,5 +79,19 @@ export const String: any = {
         emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
     },
+    StatusBar: {
+        darkContent: 'dark-content'
+    },
+    viewCoinScreen: {
+        yourCoins: 'Your Coins!',
+        title: 'How can you use them?',
+        subLine1: 'Earn free coins by sending invites and watching videos.',
+        subLine2: 'Users can buy coins from the app itself too.',
+        subLine3:'Use coins to create future campaigns for your videos.',
+        subLine4:'Boost views on added videos.',
+        subLine5:'Grow your YouTube channel and reap rewards.',
+        bottomsubLine:'See enjoy & win rewards coins',
+        buttonText:'Earn 50 points now'
+    }
 
 }

@@ -148,7 +148,7 @@ export const ViewLanding = () => {
     <>
       <StatusBar backgroundColor={Colors?.gradient1} />
       <SafeAreaView style={styles.container}>
-        <Header title={String?.headerTitle?.view4view} showBacKIcon={true} />
+        <Header title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
           <View style={styles.videoWrapper}>
             <YoutubePlayer
