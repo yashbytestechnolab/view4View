@@ -24,4 +24,20 @@ export const styles = StyleSheet.create({
         backgroundColor: Colors?.pink,
         borderRadius: 50,
     },
+    videoWrapper: {
+        backgroundColor: Colors?.black, justifyContent: 'center', paddingTop: 60, borderRadius: 8
+    },
+    main: {
+        paddingHorizontal: 12, paddingTop: 24,
+    },
+    iconRow: {
+        marginTop: 40, marginHorizontal: 42, flexDirection: 'row', justifyContent: 'space-between',
+    },
+    iconWrapper: { flexDirection: 'row', alignItems: 'center' },
+    marginLeft: {
+        marginLeft: 16
+    },
+    marginTop: {
+        marginTop: 32
+    }
 });
