@@ -42,9 +42,7 @@ export const Introduction = () => {
     const renderDesign = (item: { svg: JSX.IntrinsicAttributes | object; title: string; subTitle: string }) => {
         return (
             <View style={styles.child}>
-                <TouchableOpacity onPress={skipHandler}>
-                    <Text style={styles.skipText}>{String?.introduction_swipeList?.skip}</Text>
-                </TouchableOpacity>
+
                 <item.svg height={height - 480} />
                 <View style={styles.alignItems}>
                     <Text style={styles.title}>{item?.title}</Text>
@@ -72,6 +70,12 @@ export const Introduction = () => {
                     data={IntroductionData}
                     renderItem={({ item }) => (renderDesign(item))}
                 />
+                {
+                    getCurrentIndex != 3 && <TouchableOpacity onPress={skipHandler} style={{ position: 'absolute', top: 30, right: 16 }}>
+                        <Text style={styles.skipText}>{String?.introduction_swipeList?.skip}</Text>
+                    </TouchableOpacity>
+                }
+
             </View>
             <ButtonComponent onPrees={() => { buttonHandler() }} wrapperStyle={styles.nextButtoun} buttonTitle={getCurrentIndex == 3 ? String?.introduction_swipeList?.getStartedNow : String?.introduction_swipeList?.next}
             />
