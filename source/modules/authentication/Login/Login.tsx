@@ -20,6 +20,7 @@ import auth from '@react-native-firebase/auth';
 import * as LocalStorage from '../../../services/LocalStorage';
 import { handleFirebaseError } from '../../../services';
 import { GradientHeader } from '../../../components';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const Login = () => {
   /**
@@ -79,8 +80,8 @@ export const Login = () => {
     <>
       <SafeAreaView style={style.safeArea} />
       <View style={style.main}>
-
-        <ScrollView
+        <KeyboardAwareScrollView
+          alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps={String.commonString.handled}
           style={style.scroll}
@@ -164,7 +165,7 @@ export const Login = () => {
               </View>
             </View>
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
     </>
   );

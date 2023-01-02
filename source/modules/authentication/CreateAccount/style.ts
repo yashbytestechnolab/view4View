@@ -38,7 +38,7 @@ export const style = StyleSheet.create({
     },
     scrollContain: {
         flexGrow: 1,
-        paddingBottom: Platform.OS === "ios" ? 180 : 210
+        paddingBottom: Platform.OS === "ios" ? 200 : 210
     },
     mainLogo: {
         height: "30%",
@@ -62,8 +62,19 @@ export const style = StyleSheet.create({
         marginTop: 30,
         bottom: 12
     },
-    forgotPassword: { marginTop: 16, alignSelf: "flex-end", marginHorizontal: 16 },
-    signIn: { marginTop: 24 },
-    marginTop33: { marginTop: 33 },
-    socialMedia: { flexDirection: "row", justifyContent: "space-around" }
+    forgotPassword: {
+        marginTop: 16,
+        alignSelf: "flex-end",
+        marginHorizontal: 16
+    },
+    signIn: {
+        marginTop: 24
+    },
+    marginTop33: {
+        marginTop: 33
+    },
+    socialMedia: {
+        flexDirection: "row",
+        justifyContent: "space-around"
+    }
 })

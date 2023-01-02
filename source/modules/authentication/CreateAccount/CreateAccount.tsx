@@ -1,16 +1,15 @@
-import { View, ScrollView, Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, SafeAreaView, TouchableOpacity } from 'react-native';
 import React, { useContext } from 'react'
 import { style } from '../CreateAccount/style'
 import Back from '../../../assets/icons/Back';
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { AuthHeader, ORtitle } from '../Authcomponents';
 import { InputComponent } from '../../../components/InputComponent';
-import { Colors, F40014 } from '../../../Theme';
+import { Colors } from '../../../Theme';
 import { SocialMediaButton } from '../../../components/SocialMediaButton';
 import { Google } from '../../../assets/icons/Google';
 import { ButtonComponent } from '../../../components/ButtonComponent';
 import { Apple } from '../../../assets/icons/Apple';
-import { Logo } from '../../../assets/icons';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +19,7 @@ import auth from '@react-native-firebase/auth';
 import { loginUser } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
 import { GradientHeader } from '../../../components';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const CreateAccount = () => {
     const navigation = useNavigation()
@@ -86,7 +86,7 @@ export const CreateAccount = () => {
                     <Back />
                 </TouchableOpacity>
 
-                <ScrollView
+                <KeyboardAwareScrollView
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps={String.commonString.handled}
                     style={style.scroll}
@@ -159,18 +159,6 @@ export const CreateAccount = () => {
                                     errorMessage={userInputError?.confirmPasswordError}
                                 />
 
-                                <View style={style.forgotPassword}>
-                                    <Text
-                                        onPress={() => {
-                                            navigation?.navigate(ROUTES?.FORGOTPASSWORD);
-                                            dispatch({ type: type.EMPTY_STATE });
-                                            dispatchError({ type: type.EMPTY_STATE })
-                                        }}
-                                        style={[F40014.main, F40014.color]}>
-                                        {String.commonString.ForgotPassword}
-                                    </Text>
-                                </View>
-
                                 <View style={style.signIn}>
                                     <ButtonComponent loading={loading}
                                         onPrees={() => handleCreateAccountFlow()}
@@ -194,7 +182,7 @@ export const CreateAccount = () => {
                             </View>
                         </View>
                     </View>
-                </ScrollView>
+                </KeyboardAwareScrollView>
             </View>
         </>
     );

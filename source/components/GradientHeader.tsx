@@ -9,7 +9,6 @@ export const GradientHeader = () => {
     return (
         <>
             <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={styles.linearGradient}>
-
                 <View style={styles.Icon}>
                     <Logo />
                 </View>
