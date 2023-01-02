@@ -14,9 +14,9 @@ export const Header = (props: IheaderProps) => {
   const { title } = props;
   const [getCoin, setGetCoin] = useState<number>(0);
   const focus: boolean = useIsFocused();
- /**
-  * return total coins
-  */
+  /**
+   * return total coins
+   */
   useEffect(() => {
     get_coins().then((res) => {
       setGetCoin(res?._data?.coin)
@@ -46,10 +46,10 @@ const style = StyleSheet.create({
   header: {
     backgroundColor: Colors?.pink,
     height: 60,
-    paddingHorizontal: 19,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  titleText: { textAlign: 'center', paddingRight: 55 },
+  titleText: { textAlign: 'center', },
   text: {
     textAlign: 'center',
     paddingRight: 8,

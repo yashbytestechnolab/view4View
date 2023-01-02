@@ -13,10 +13,10 @@ export const Loader = (props: loder) => {
       style={[
         style.main,
         {
-          backgroundColor: backGroundColor ? backGroundColor : Colors.gray,
+          backgroundColor: backGroundColor ? backGroundColor : Colors.white,
         },
       ]}>
-      <ActivityIndicator color={spinnerColor || Colors.pink} size={'large'} />
+      <ActivityIndicator color={spinnerColor || Colors.primaryRed} size={'large'} />
     </View>
   );
 };

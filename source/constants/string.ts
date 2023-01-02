@@ -17,7 +17,8 @@ export const String: any = {
         createCampaign: 'Create Campaign',
         forgotPassword: 'Forgot Password',
         myCampaign:'My Campaign',
-        setting:'Setting'
+        setting:'Setting',
+        view4view:'view4view'
     },
     homeTab: {
         plus: '+',
