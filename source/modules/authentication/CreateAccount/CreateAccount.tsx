@@ -78,7 +78,10 @@ export const CreateAccount = () => {
             <View style={style.main}>
 
                 <TouchableOpacity
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {
+                        navigation.goBack(); dispatch({ type: type.EMPTY_STATE });
+                        dispatchError({ type: type.EMPTY_STATE })
+                    }}
                     style={style.headerBack}>
                     <Back />
                 </TouchableOpacity>
@@ -143,7 +146,11 @@ export const CreateAccount = () => {
 
                                 <View style={style.forgotPassword}>
                                     <Text
-                                        onPress={() => { navigation?.navigate(ROUTES?.FORGOTPASSWORD) }}
+                                        onPress={() => {
+                                            navigation?.navigate(ROUTES?.FORGOTPASSWORD);
+                                            dispatch({ type: type.EMPTY_STATE });
+                                            dispatchError({ type: type.EMPTY_STATE })
+                                        }}
                                         style={[F40014.main, F40014.color]}>
                                         {String.commonString.ForgotPassword}
                                     </Text>

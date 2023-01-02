@@ -38,7 +38,7 @@ export const style = StyleSheet.create({
     },
     scrollContain: {
         flexGrow: 1,
-        paddingBottom: Platform.OS === "ios" ? 180 : 195
+        paddingBottom: Platform.OS === "ios" ? 180 : 210
     },
     mainLogo: {
         height: "30%",

@@ -18,9 +18,9 @@ export const String: any = {
         earnCoin: 'Earn Coin',
         createCampaign: 'Create Campaign',
         forgotPassword: 'Forgot Password',
-        myCampaign:'My Campaign',
-        setting:'Setting',
-        view4view:'view4view'
+        myCampaign: 'My Campaign',
+        setting: 'Setting',
+        view4view: 'view4view'
     },
     homeTab: {
         plus: '+',
@@ -33,7 +33,7 @@ export const String: any = {
     viewTab: {
         coin: 'Coins',
         second: 'Seconds',
-        nextVideo:'Next Video'
+        nextVideo: 'Next Video'
 
     },
     earnCoinTab: {
@@ -62,10 +62,10 @@ export const String: any = {
         Enterfullname: "Enter full name",
         Fullname: "Full Name",
         Createanaccount: "Create an account",
-        PleaseProvideValidEmailMsg: "Please provide valid email",
-        fullnameErrorMsg: "Please fill your name",
-        PasswordErrorMsg: "Password must be 8 character",
-        ConfirmPasswordErrorMsg: "Password Should not match",
+        PleaseProvideValidEmailMsg: "Please enter a valid email address",
+        fullnameErrorMsg: "Please enter your full name",
+        PasswordErrorMsg: "Your password must be at least 8 characters long",
+        ConfirmPasswordErrorMsg: "Confirm password doesn't match",
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
