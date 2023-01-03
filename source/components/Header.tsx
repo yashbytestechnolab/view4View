@@ -8,7 +8,7 @@ import { Back, EarnCoin } from '../assets/icons';
 
 interface IheaderProps {
   title?: string;
-  showBacKIcon?: boolean;
+  showBacKIcon?: boolean | any;
   showCoin?: boolean
 }
 export const Header = (props: IheaderProps) => {
@@ -34,7 +34,7 @@ export const Header = (props: IheaderProps) => {
           {showBacKIcon && <TouchableOpacity activeOpacity={1} onPress={() => {
             navigation.goBack()
           }} style={style.backButtonWrapper}>
-            <Back color={Colors?.white}/>
+            <Back color={Colors?.white} />
           </TouchableOpacity>}
           <View style={style.titleWrapper}>
             <Text numberOfLines={1} style={[F50018.main, style.titleText]}>{title}</Text>

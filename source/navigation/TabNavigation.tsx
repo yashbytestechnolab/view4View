@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { String, ROUTES } from '../constants';
-import { ViewStack, EarnCoinStack, SettingStack, MyCampaignStack } from '.';
+import { ViewStack, EarnCoinStack, SettingStack,MyCampaignLanding } from '.';
 import { Home, MyCampaign, Setting, TabEarnCoin } from '../assets/icons';
 import { SvgProps } from 'react-native-svg';
 import { ActiveTabText, Colors, F50010, F50012 } from '../Theme';
@@ -63,7 +63,7 @@ export const TabNavigation = () => {
       />
       <Tab.Screen
         name={ROUTES?.MYCAMPAIGN}
-        component={MyCampaignStack}
+        component={MyCampaignLanding}
         options={{
           tabBarLabel: ({ focused }) => (
             <Text style={[focused ? ActiveTabText.main : F50010.main]}>

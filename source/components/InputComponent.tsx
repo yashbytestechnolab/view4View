@@ -40,7 +40,7 @@ export const InputComponent = (props: props) => {
             }
             {
                 errorMessage?.length > 0 &&
-                <Text style={{ color: "red", marginTop: 5 }}>
+                <Text numberOfLines={1} style={{ color: "red", marginTop: 5 }}>
                     {errorMessage}
                 </Text>
             }

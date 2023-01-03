@@ -23,6 +23,7 @@ export const String: any = {
         setting: 'Setting',
         view4view: 'view4view',
         YourCoin: 'Your Coin'
+
     },
     homeTab: {
         plus: '+',
@@ -64,10 +65,10 @@ export const String: any = {
         Enterfullname: "Enter full name",
         Fullname: "Full Name",
         Createanaccount: "Create an account",
-        PleaseProvideValidEmailMsg: "Please provide valid email",
-        fullnameErrorMsg: "Please fill your name",
-        PasswordErrorMsg: "Password must be 8 character",
-        ConfirmPasswordErrorMsg: "Password Should not match",
+        PleaseProvideValidEmailMsg: "Please enter a valid email address",
+        fullnameErrorMsg: "Please enter your full name",
+        PasswordErrorMsg: "Your password must be at least 8 characters long",
+        ConfirmPasswordErrorMsg: "Confirm password doesn't match",
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
@@ -87,11 +88,11 @@ export const String: any = {
         title: 'How can you use them?',
         subLine1: 'Earn free coins by sending invites and watching videos.',
         subLine2: 'Users can buy coins from the app itself too.',
-        subLine3:'Use coins to create future campaigns for your videos.',
-        subLine4:'Boost views on added videos.',
-        subLine5:'Grow your YouTube channel and reap rewards.',
-        bottomsubLine:'See enjoy & win rewards coins',
-        buttonText:'Earn 50 points now'
+        subLine3: 'Use coins to create future campaigns for your videos.',
+        subLine4: 'Boost views on added videos.',
+        subLine5: 'Grow your YouTube channel and reap rewards.',
+        bottomsubLine: 'See enjoy & win rewards coins',
+        buttonText: 'Earn 50 points now'
     }
 
 }

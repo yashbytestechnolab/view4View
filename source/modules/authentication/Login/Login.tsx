@@ -20,6 +20,7 @@ import auth from '@react-native-firebase/auth';
 import * as LocalStorage from '../../../services/LocalStorage';
 import { handleFirebaseError } from '../../../services';
 import { GradientHeader } from '../../../components';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const Login = () => {
   /**
@@ -79,79 +80,92 @@ export const Login = () => {
     <>
       <SafeAreaView style={style.safeArea} />
       <View style={style.main}>
-
-        <ScrollView
+        <KeyboardAwareScrollView
+          alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps={String.commonString.handled}
           style={style.scroll}
           scrollEnabled={true}
           contentContainerStyle={style.scrollContain}>
-
           <GradientHeader />
 
           <View style={style.wrapperView} >
-          <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
-            <View style={style.innerContainer} >
-              <AuthHeader
-                mainTitle={String.commonString.WelcomeBack}
-                miniTitle={String.commonString.Donthaveanaccount}
-                actionTitle={String.commonString.SignUp}
-                onPress={() => { navigation.navigate(ROUTES.CREATEACCOUNT); dispatch({ type: type.EMPTY_STATE }); dispatchError({ type: type.EMPTY_STATE }) }}
-              />
 
-              <InputComponent
-                inputTitle={String.commonString.email}
-                placeholder={String.commonString.Enteryouremail}
-                value={userInput?.email}
-                onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }); dispatchError({ type: type.EMAIL_ERROR, payload: "" }) }}
-                errorMessage={userInputError?.emailError}
-                viewStyle={style.top33}
-              />
-
-              <InputComponent
-                inputTitle={String.commonString.Password}
-                placeholder={String.commonString.ForgotPassword}
-                value={userInput?.password}
-                onChangeText={(value) => { dispatch({ type: type.PASSWORD, payload: value }); dispatchError({ type: type.PASSWORD_ERROR, payload: "" }) }}
-                isSecureIcon={true}
-                isSecureEntry={userInput?.showPassword}
-                onPrees={() => dispatch({ type: type.SHOW_PASSWORD, payload: !userInput?.showPassword })}
-                errorMessage={userInputError?.passwordError}
-              />
-
-
-              <View style={style.forgotPassword}>
-                <Text
-                  onPress={() => { navigation?.navigate(ROUTES?.FORGOTPASSWORD) }}
-                  style={[F40014.main, F40014.color]}>
-                  {String.commonString.ForgotPassword}
-                </Text>
-              </View>
-
-              <View style={style.signIn}>
-                <ButtonComponent
-                  loading={loading}
-                  onPrees={() => handleLoginFlow()} buttonTitle={String.commonString.SignIn} />
-              </View>
-              <ORtitle />
-
-              {/* Google and ios button */}
-              <View style={style.socialMedia}>
-                <SocialMediaButton
-                  socialMediaIcon={<Google />}
-                  buttonTitle={String.commonString.Google}
-                  onPress={() => { googleLogin(navigation) }}
+            <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
+              <View style={style.innerContainer} >
+                <AuthHeader
+                  mainTitle={String.commonString.WelcomeBack}
+                  miniTitle={String.commonString.Donthaveanaccount}
+                  actionTitle={String.commonString.SignUp}
+                  onPress={() => { navigation.navigate(ROUTES.CREATEACCOUNT); dispatch({ type: type.EMPTY_STATE }); dispatchError({ type: type.EMPTY_STATE }) }}
                 />
-                <SocialMediaButton
-                  socialMediaIcon={<Apple />}
-                  buttonTitle={String.commonString.Apple}
-                  onPress={() => { }}
+
+                <InputComponent
+                  inputTitle={String.commonString.email}
+                  placeholder={String.commonString.Enteryouremail}
+                  value={userInput?.email}
+                  onChangeText={(value) => {
+                    dispatch({ type: type.EMAIL, payload: value });
+                    if (value?.length > 0 && emailPattern.test(value)) {
+                      dispatchError({ type: type.EMAIL_ERROR, payload: "" })
+                    }
+                  }}
+                  errorMessage={userInputError?.emailError}
+                  viewStyle={style.top33}
                 />
+
+                <InputComponent
+                  inputTitle={String.commonString.Password}
+                  placeholder={String.commonString.ForgotPassword}
+                  value={userInput?.password}
+                  onChangeText={(value) => {
+                    dispatch({ type: type.PASSWORD, payload: value });
+                    if (value?.length > 7) {
+                      dispatchError({ type: type.PASSWORD_ERROR, payload: "" })
+                    }
+                  }}
+                  isSecureIcon={true}
+                  isSecureEntry={userInput?.showPassword}
+                  onPrees={() => dispatch({ type: type.SHOW_PASSWORD, payload: !userInput?.showPassword })}
+                  errorMessage={userInputError?.passwordError}
+                />
+
+                <View style={style.forgotPassword}>
+                  <Text
+                    onPress={() => {
+                      navigation?.navigate(ROUTES?.FORGOTPASSWORD);
+                      dispatch({ type: type.EMPTY_STATE });
+                      dispatchError({ type: type.EMPTY_STATE })
+                    }}
+                    style={[F40014.main, F40014.color]}>
+                    {String.commonString.ForgotPassword}
+                  </Text>
+                </View>
+
+                <View style={style.signIn}>
+                  <ButtonComponent
+                    loading={loading}
+                    onPrees={() => handleLoginFlow()} buttonTitle={String.commonString.SignIn} />
+                </View>
+                <ORtitle />
+
+                {/* Google and ios button */}
+                <View style={style.socialMedia}>
+                  <SocialMediaButton
+                    socialMediaIcon={<Google />}
+                    buttonTitle={String.commonString.Google}
+                    onPress={() => { googleLogin(navigation) }}
+                  />
+                  <SocialMediaButton
+                    socialMediaIcon={<Apple />}
+                    buttonTitle={String.commonString.Apple}
+                    onPress={() => { }}
+                  />
+                </View>
               </View>
             </View>
           </View>
-          </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
     </>
   );
