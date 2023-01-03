@@ -2,15 +2,16 @@ import { SafeAreaView, StatusBar, ScrollView, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Colors, F40012Black, F60016, F60024, F70032 } from '../../../Theme'
 import { ButtonComponent, Header } from '../../../components'
-import { String } from '../../../constants'
+import { ROUTES, String } from '../../../constants'
 import { EarnCoin, ViewCoinIcon } from '../../../assets/icons'
 import { get_coins } from '../../../services/FireStoreServices'
-import { useIsFocused } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { style } from './style'
 
 export const ViewCoin = () => {
     const [getCoin, setGetCoin] = useState<number>(0);
     const focus: boolean = useIsFocused();
+    const navigation:any=useNavigation()
 
     /**
      * return total coins
@@ -55,7 +56,7 @@ export const ViewCoin = () => {
                         <ViewCoinIcon />
                         <Text style={[F60016?.textStyle, style.viewCoinText]}>{String?.viewCoinScreen?.bottomsubLine}</Text>
                     </View>
-                    <ButtonComponent onPrees={() => { }} buttonTitle={String?.viewCoinScreen?.buttonText} />
+                    <ButtonComponent onPrees={() => {navigation?.navigate(ROUTES?.CREATECAMP) }} buttonTitle={String?.viewCoinScreen?.buttonText} />
 
                 </ScrollView>
             </SafeAreaView>

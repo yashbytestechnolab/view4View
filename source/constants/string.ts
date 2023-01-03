@@ -64,6 +64,7 @@ export const String: any = {
         ConfirmPassword: "Confirm Password",
         Enterfullname: "Enter full name",
         Fullname: "Full Name",
+        Createanaccount: "Create an account",
         PleaseProvideValidEmailMsg: "Please enter a valid email address",
         fullnameErrorMsg: "Please enter your full name",
         PasswordErrorMsg: "Your password must be at least 8 characters long",
