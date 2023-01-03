@@ -1,12 +1,19 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { Colors } from "../../../Theme";
 
 export const style = StyleSheet.create({
     containerWrapper: {
-        borderTopEndRadius: 30,
-        borderTopStartRadius: 30,
-        flex: 1, backgroundColor: Colors?.white,
+        borderTopEndRadius: 50,
+        borderTopStartRadius: 50,
+        flex: 1,
+        backgroundColor: Colors?.white,
         paddingBottom: 50
+    },
+    wrapperView: {
+        flex: 1,
+        backgroundColor: Colors?.pink,
+        borderTopEndRadius: 40,
+        borderTopStartRadius: 40,
     },
 
     backToLoginTextWrapper: { flexDirection: 'row', justifyContent: 'center', paddingTop: 24 },
@@ -14,10 +21,10 @@ export const style = StyleSheet.create({
         alignItems: "center", paddingTop: 30
     },
     backGroundColor: { backgroundColor: Colors?.gradient1 },
-    scrollContain: {
-        flexGrow: 1,
-        backgroundColor: Colors?.pink
-    },
+    // scrollContain: {
+    //     flexGrow: 1,
+    //     backgroundColor: Colors?.pink
+    // },
     signIn: { marginTop: 24 },
     bottomLine: {
         flexDirection: "row",
@@ -35,5 +42,16 @@ export const style = StyleSheet.create({
         alignSelf: 'center',
         width: '80%'
     },
-    marginTop:{marginTop: 33}
+    marginTop: { marginTop: 33 },
+    scroll: { backgroundColor: Colors.white },
+    scrollContain: {
+        flexGrow: 1,
+        backgroundColor: Colors.white,
+        //paddingBottom: Platform.OS === "ios" ? 100 : 40
+    },
+    borderRadius: {
+        borderTopEndRadius: 40,
+        borderTopStartRadius: 40,
+        marginTop: 20
+    },
 })

@@ -50,45 +50,51 @@ export const ForgotPassword = () => {
         alwaysBounceVertical={false}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={String.commonString.handled}
-        style={{ backgroundColor: Colors?.gradient1 }}
+        style={style.scroll}
         scrollEnabled={true}
         contentContainerStyle={style.scrollContain}>
-        <GradientHeader />
-        <View style={style.containerWrapper} >
-          <View style={style.welcomeHeader}>
-            <Text style={F60024.textStyle}>
-              {String.commonString?.ForgotPassword}
-            </Text>
-          </View>
-          <InputComponent
-            inputTitle={String.commonString.email}
-            viewStyle={style.marginTop}
-            value={userInput?.email}
-            keyboardType={String?.keyboardType?.email}
-            onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }) }}
-            placeholder={String.commonString.Enteryouremail}
-          />
-          <View style={style.signIn}>
-            <ButtonComponent wrapperStyle={style.wrapperStyle} onPrees={() => { handlePasswordReset() }} buttonTitle={String.commonString?.submit} />
-          </View>
-          <View style={style.backToLoginTextWrapper}>
-            <Text style={F40014.main}>{String.commonString?.backTo}</Text>
-            <Text onPress={() => { navigation.navigate(ROUTES?.LOGIN) }} style={[F40014.main, F40014?.color]}>{String.commonString?.SignIn}</Text>
-          </View>
-          <ORtitle />
-          <View style={style.socialMedia}>
-            <SocialMediaButton
-              socialMediaIcon={<Google />}
-              buttonTitle={String.commonString.Google}
-              onPress={() => { googleLogin(navigation) }}
+
+        <GradientHeader >
+          <View style={style.wrapperView} >
+            <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
+            <View style={style.containerWrapper} >
+            <View style={style.welcomeHeader}>
+              <Text style={F60024.textStyle}>
+                {String.commonString?.ForgotPassword}
+              </Text>
+            </View>
+            <InputComponent
+              inputTitle={String.commonString.email}
+              viewStyle={style.marginTop}
+              value={userInput?.email}
+              keyboardType={String?.keyboardType?.email}
+              onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }) }}
+              placeholder={String.commonString.Enteryouremail}
             />
-            <SocialMediaButton
-              socialMediaIcon={<Apple />}
-              buttonTitle={String.commonString.Apple}
-              onPress={() => { }}
-            />
+            <View style={style.signIn}>
+              <ButtonComponent wrapperStyle={style.wrapperStyle} onPrees={() => { handlePasswordReset() }} buttonTitle={String.commonString?.submit} />
+            </View>
+            <View style={style.backToLoginTextWrapper}>
+              <Text style={F40014.main}>{String.commonString?.backTo}</Text>
+              <Text onPress={() => { navigation.navigate(ROUTES?.LOGIN) }} style={[F40014.main, F40014?.color]}>{String.commonString?.SignIn}</Text>
+            </View>
+            <ORtitle />
+            <View style={style.socialMedia}>
+              <SocialMediaButton
+                socialMediaIcon={<Google />}
+                buttonTitle={String.commonString.Google}
+                onPress={() => { googleLogin(navigation) }}
+              />
+              <SocialMediaButton
+                socialMediaIcon={<Apple />}
+                buttonTitle={String.commonString.Apple}
+                onPress={() => { }}
+              />
+            </View>
+              </View>
+            </View>
           </View>
-        </View>
+        </GradientHeader>
       </KeyboardAwareScrollView>
     </>
   )

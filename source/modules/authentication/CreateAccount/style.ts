@@ -12,8 +12,9 @@ export const style = StyleSheet.create({
         flex: 0.35,
     },
     borderRadius: {
-        borderTopEndRadius: 30,
-        borderTopStartRadius: 30,
+        borderTopEndRadius: 40,
+        borderTopStartRadius: 40,
+        marginTop: 20
     },
     welcomeTop: {
         flex: 0.7,
@@ -33,8 +34,9 @@ export const style = StyleSheet.create({
     headerBack: {
         position: "absolute",
         zIndex: 999,
-        top: 34,
-        left: 16
+        top: 31,
+        paddingLeft: 24,
+        left: 0
     },
     scrollContain: {
         flexGrow: 1,
@@ -52,6 +54,8 @@ export const style = StyleSheet.create({
     wrapperView: {
         backgroundColor: "pink",
         flex: 1,
+        borderTopEndRadius: 40,
+        borderTopStartRadius: 40,
     },
     container: {
         flex: 1,
@@ -59,7 +63,7 @@ export const style = StyleSheet.create({
     },
     innerContainer: {
         marginTop: 30,
-        bottom: 12
+        // bottom: 12
     },
     forgotPassword: {
         marginTop: 16,

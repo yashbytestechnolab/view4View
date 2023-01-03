@@ -54,7 +54,7 @@ export const Authentication = () => {
 };
 
 
-export const OnBording = () => {
+export const Dashboard = () => {
   return (
     <Stack.Navigator
       initialRouteName={ROUTES.TABLIST}
