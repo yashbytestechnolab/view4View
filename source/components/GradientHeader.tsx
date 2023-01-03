@@ -5,7 +5,7 @@ import { Logo } from '../assets/icons';
 import { Colors } from '../Theme';
 
 
-export const GradientHeader = ({ children }: any) => {
+export const GradientHeader = ({ children }) => {
     return (
         <>
             <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={styles.linearGradient}>
@@ -20,7 +20,7 @@ export const GradientHeader = ({ children }: any) => {
 
 const styles = StyleSheet.create({
     linearGradient: {
-        flex:1
+        flex: 1
     },
     Icon: {
         height: 200,

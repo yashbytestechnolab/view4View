@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ROUTES } from '../constants/NavigationRoutes';
-import { EarnCoinLanding, ViewCoin } from '../modules/EarnCoin';
+import { ViewCoin } from '../modules/EarnCoin';
 
 const Stack = createStackNavigator();
 

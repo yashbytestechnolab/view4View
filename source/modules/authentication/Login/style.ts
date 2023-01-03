@@ -31,7 +31,7 @@ export const style = StyleSheet.create({
         paddingBottom: Platform.OS === "ios" ? 100 : 70
     },
     headerBack: { position: "absolute", zIndex: 999, top: 34, left: 16 },
- 
+
     mainLogo: {
         height: "30%",
         justifyContent: "center",
@@ -52,8 +52,7 @@ export const style = StyleSheet.create({
         backgroundColor: "pink"
     },
     innerContainer: {
-        marginTop: 30,
-        // bottom: 12
+        marginTop: 30
     },
     forgotPassword: { marginTop: 16, alignSelf: "flex-end", marginHorizontal: 11, padding: 5 },
     signIn: { marginTop: 24 },

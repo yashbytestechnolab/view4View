@@ -20,7 +20,6 @@ import { loginUser } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
 import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const CreateAccount = () => {
     const navigation = useNavigation()

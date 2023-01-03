@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Alert, StatusBar } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar } from 'react-native';
 import React, { useContext } from 'react';
 import { Colors, F40014, } from '../../../Theme';
 import { useNavigation } from '@react-navigation/native';
