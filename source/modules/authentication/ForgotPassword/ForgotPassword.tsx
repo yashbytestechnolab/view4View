@@ -45,7 +45,7 @@ export const ForgotPassword = () => {
 
       <SafeAreaView style={style.backGroundColor} />
       <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
-      <BackButton />
+     
       <KeyboardAwareScrollView
         alwaysBounceVertical={false}
         showsVerticalScrollIndicator={false}
@@ -55,6 +55,7 @@ export const ForgotPassword = () => {
         contentContainerStyle={style.scrollContain}>
 
         <GradientHeader >
+        <BackButton />
           <View style={style.wrapperView} >
             <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
             <View style={style.containerWrapper} >

@@ -15,6 +15,10 @@ export const BackButton = (props: IBackProps) => {
     )
 }
 const style = StyleSheet.create({
-    headerBack: { position: "absolute", zIndex: 999, top: 8, left: 20, padding: 5 },
+    headerBack: {  position: "absolute",
+    zIndex: 999,
+    top: 31,
+    paddingLeft: 24,
+    left: 0 },
 
 })

@@ -21,9 +21,9 @@ export const styles = StyleSheet.create({
         left: 0, right: 0,
     },
     skipWrapper: {
-        position: 'absolute', top: 30, right: 18
+        position: 'absolute', top: 70, right: 18
     },
-    pagenationStyle: { position: 'absolute', bottom: 180 }
+    pagenationStyle: { position: 'absolute', bottom: 150 }
 
 
 });
