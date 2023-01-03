@@ -13,7 +13,7 @@ import { SocialMediaButton } from '../../../components/SocialMediaButton';
 import { Apple } from '../../../assets/icons/Apple';
 import { ORtitle, AuthHeader } from '../Authcomponents';
 import { emailPattern } from '../../../regex/Regex';
-import { googleLogin } from '../../../services/GoogleLoginServices';
+import { appleLoginIos, googleLogin } from '../../../services/SocialMediaLoginServices';
 import auth from '@react-native-firebase/auth';
 import * as LocalStorage from '../../../services/LocalStorage';
 import { handleFirebaseError } from '../../../services';
@@ -74,6 +74,7 @@ export const Login = () => {
       console.log("FncError", fncError);
     }
   }
+
 
   return (
     <>
@@ -160,8 +161,8 @@ export const Login = () => {
                     <SocialMediaButton
                       socialMediaIcon={<Apple />}
                       buttonTitle={String.commonString.Apple}
-                      onPress={() => { }}
-                    />
+                      onPress={() => appleLoginIos(navigation)}
+                      />
                   </View>
                 </View>
               </View>
