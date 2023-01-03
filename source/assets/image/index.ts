@@ -5,6 +5,5 @@ export const Images = {
     rupee: require('../image/rupee.png'),
     apple: require('../image/apple.png'),
     google: require('../image/google.png'),
-
-
+    hidePass: require('../image/hidePass.png')
 }

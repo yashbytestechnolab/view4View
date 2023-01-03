@@ -55,6 +55,7 @@ export const CreateAccount = () => {
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],
                 });
+                  dispatch({ type: type.EMPTY_STATE })
             }).
             catch((userError) => handleFirebaseError(userError?.code)).
             finally(() => setLoading(false))

@@ -1,7 +1,8 @@
-import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Image, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React from 'react'
 import { Colors, F50012 } from '../Theme'
 import { EyeIcon } from '../assets/icons/EyeIcon'
+import { Images } from '../assets/image'
 interface props {
     placeholder: string,
     value: string | number | undefined,
@@ -35,12 +36,12 @@ export const InputComponent = (props: props) => {
                     activeOpacity={0.7}
                     onPress={onPrees}
                     style={innerStyles.eye}>
-                    <EyeIcon />
+                    {isSecureEntry ? <Image source={Images.hidePass} style={innerStyles.hidePass} /> : <EyeIcon />}
                 </TouchableOpacity>
             }
             {
                 errorMessage?.length > 0 &&
-                <Text numberOfLines={1} style={{ color: "red", marginTop: 5 }}>
+                <Text numberOfLines={1} style={innerStyles.validationError}>
                     {errorMessage}
                 </Text>
             }
@@ -72,6 +73,12 @@ const innerStyles = StyleSheet.create({
     eye: {
         position: "absolute",
         right: 12,
-        top: 37
-    }
+        top: 35.5
+    },
+    hidePass: {
+        height: 20,
+        width: 20,
+        right: 2.5
+    },
+    validationError:{ color: "red", marginTop: 5 }
 })
