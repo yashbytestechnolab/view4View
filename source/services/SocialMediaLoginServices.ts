@@ -31,8 +31,9 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
             .signInWithCredential(credential)
             .then(async (res: any) => {
                 let userDetail = res?.user?._user
+                let userName = userDetail?.displayName
                 if (res?.additionalUserInfo?.isNewUser) {
-                    loginUser(userDetail).then(() => {
+                    loginUser(userDetail, userName).then(() => {
                         console.log("loginUser", res)
                     }).catch((err) => {
                         console.log("loginUser", err);

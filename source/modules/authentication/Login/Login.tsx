@@ -43,7 +43,6 @@ export const Login = () => {
     setLoading(true)
     auth().signInWithEmailAndPassword(userInput?.email, userInput?.password).
       then(async (userResponse: any) => {
-        console.log("userResponse", userResponse)
         let userDetail = userResponse?.user?._user
         await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
         navigation.reset({
