@@ -12,6 +12,7 @@ import { firebase } from '@react-native-firebase/auth'
 import { ORtitle } from '../Authcomponents'
 import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../services'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import LinearGradient from 'react-native-linear-gradient'
 
 export const ForgotPassword = () => {
   /**
@@ -54,8 +55,10 @@ export const ForgotPassword = () => {
         scrollEnabled={true}
         contentContainerStyle={style.scrollContain}>
 
-        <GradientHeader >
-          <BackButton />
+        <BackButton />
+        <GradientHeader />
+        <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}>
+
           <View style={style.wrapperView} >
             <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
               <View style={style.containerWrapper} >
@@ -105,7 +108,7 @@ export const ForgotPassword = () => {
               </View>
             </View>
           </View>
-        </GradientHeader>
+        </LinearGradient>
       </KeyboardAwareScrollView>
     </>
   )

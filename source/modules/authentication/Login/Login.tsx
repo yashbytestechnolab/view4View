@@ -20,6 +20,7 @@ import { handleFirebaseError } from '../../../services';
 import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Platform } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const Login = () => {
   /**
@@ -42,7 +43,7 @@ export const Login = () => {
     setLoading(true)
     auth().signInWithEmailAndPassword(userInput?.email, userInput?.password).
       then(async (userResponse: any) => {
-        console.log("userResponse",userResponse)
+        console.log("userResponse", userResponse)
         let userDetail = userResponse?.user?._user
         await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
         navigation.reset({
@@ -154,17 +155,15 @@ export const Login = () => {
                       onPrees={() => handleLoginFlow()} buttonTitle={String.commonString.SignIn} />
                   </View>
                   <ORtitle />
-                  {/* Google and ios button */}
                   {
                     Platform?.OS == 'android' ?
-
-                      <SocialMediaButton
+                      (<SocialMediaButton
                         wrapperStyle={{ width: '90%', }}
                         socialMediaIcon={<Google />}
                         buttonTitle={String.commonString.signInWithGoogle}
                         onPress={() => { googleLogin(navigation) }}
-                      /> :
-                      <View style={style.socialMedia}>
+                      />) :
+                      (<View style={style.socialMedia}>
                         <SocialMediaButton
                           socialMediaIcon={<Google />}
                           buttonTitle={String.commonString.Google}
@@ -175,10 +174,11 @@ export const Login = () => {
                           buttonTitle={String.commonString.Apple}
                           onPress={() => appleLoginIos(navigation)}
                         />
-                      </View>
+                      </View>)
                   }
                 </View>
               </View>
+            </View>
           </LinearGradient>
         </KeyboardAwareScrollView>
       </View>

@@ -14,6 +14,7 @@ export const style = StyleSheet.create({
         backgroundColor: Colors?.pink,
         borderTopEndRadius: 40,
         borderTopStartRadius: 40,
+        marginTop: -35,
     },
 
     backToLoginTextWrapper: { flexDirection: 'row', justifyContent: 'center', paddingTop: 24 },
