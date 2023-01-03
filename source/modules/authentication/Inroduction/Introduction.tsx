@@ -55,13 +55,14 @@ export const Introduction = () => {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle={String?.StatusBar?.darkContent} backgroundColor={Colors?.white} />
-            <View >
+            <>
                 <SwiperFlatList
                     ref={pageRef}
                     onChangeIndex={() => {
                         setGetCurrentIndex(pageRef.current?.getCurrentIndex())
                     }}
                     showPagination paginationActiveColor={Colors?.primaryRed}
+                    paginationStyle={styles.pagenationStyle}
                     paginationStyleItem={styles.paginationStyle}
                     paginationDefaultColor={Colors.paginationGray}
                     autoplayDelay={2}
@@ -71,14 +72,14 @@ export const Introduction = () => {
                     renderItem={({ item }) => (renderDesign(item))}
                 />
                 {
-                    getCurrentIndex != 3 && <TouchableOpacity onPress={skipHandler} style={{ position: 'absolute', top: 30, right: 16 }}>
+                    getCurrentIndex != 3 && <TouchableOpacity onPress={skipHandler} style={styles.skipWrapper}>
                         <Text style={styles.skipText}>{String?.introduction_swipeList?.skip}</Text>
                     </TouchableOpacity>
                 }
 
-            </View>
-            <ButtonComponent onPrees={() => { buttonHandler() }} wrapperStyle={styles.nextButtoun} buttonTitle={getCurrentIndex == 3 ? String?.introduction_swipeList?.getStartedNow : String?.introduction_swipeList?.next}
-            />
+                <ButtonComponent onPrees={() => { buttonHandler() }} wrapperStyle={styles.nextButtoun} buttonTitle={getCurrentIndex == 3 ? String?.introduction_swipeList?.getStartedNow : String?.introduction_swipeList?.next} />
+            </>
+
         </SafeAreaView>
     )
 }

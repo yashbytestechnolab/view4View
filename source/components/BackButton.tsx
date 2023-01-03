@@ -12,6 +12,6 @@ export const BackButton = () => {
     )
 }
 const style = StyleSheet.create({
-    headerBack: { position: "absolute", zIndex: 999, top: 34, left: 11, padding: 5 },
+    headerBack: { position: "absolute", zIndex: 999, top: 20, left: 20, padding: 5 },
 
 })

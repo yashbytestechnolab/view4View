@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, StatusBar } from 'react-native'
 import React, { useContext } from 'react'
 import { Apple, Google, } from '../../../assets/icons'
 import { Colors, F40014, F60024 } from '../../../Theme'
@@ -41,8 +41,10 @@ export const ForgotPassword = () => {
   }
   return (
     <>
-      <BackButton />
+    
       <SafeAreaView style={style.backGroundColor} />
+      <StatusBar backgroundColor={Colors?.gradient1}/>
+      <BackButton />
       <ScrollView howsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={String.commonString.handled}
         style={{ backgroundColor: Colors?.gradient1 }}
