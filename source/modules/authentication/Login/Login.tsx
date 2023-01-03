@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Alert, StatusBar } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar } from 'react-native';
 import React, { useContext } from 'react';
 import { Colors, F40014, } from '../../../Theme';
 import { useNavigation } from '@react-navigation/native';
@@ -19,7 +19,7 @@ import * as LocalStorage from '../../../services/LocalStorage';
 import { handleFirebaseError } from '../../../services';
 import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import LinearGradient from 'react-native-linear-gradient';
+import { Platform } from 'react-native';
 
 export const Login = () => {
   /**
@@ -42,6 +42,7 @@ export const Login = () => {
     setLoading(true)
     auth().signInWithEmailAndPassword(userInput?.email, userInput?.password).
       then(async (userResponse: any) => {
+        console.log("userResponse",userResponse)
         let userDetail = userResponse?.user?._user
         await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
         navigation.reset({
@@ -80,7 +81,7 @@ export const Login = () => {
   return (
     <>
       <SafeAreaView style={style.safeArea} />
-      <StatusBar barStyle={String.commonString.darkcontent} backgroundColor={Colors.linear_gradient} />
+      <StatusBar barStyle={String.StatusBar.lightContent} backgroundColor={Colors.linear_gradient} />
       <View style={style.main}>
 
         <KeyboardAwareScrollView
@@ -107,6 +108,7 @@ export const Login = () => {
                   <InputComponent
                     inputTitle={String.commonString.email}
                     placeholder={String.commonString.Enteryouremail}
+                    keyboardType={String?.keyboardType?.email}
                     value={userInput?.email}
                     onChangeText={(value) => {
                       dispatch({ type: type.EMAIL, payload: value });
@@ -120,7 +122,7 @@ export const Login = () => {
 
                   <InputComponent
                     inputTitle={String.commonString.Password}
-                    placeholder={String.commonString.ForgotPassword}
+                    placeholder={String.commonString.Enteryourpassword}
                     value={userInput?.password}
                     onChangeText={(value) => {
                       dispatch({ type: type.PASSWORD, payload: value });
@@ -153,22 +155,30 @@ export const Login = () => {
                   </View>
                   <ORtitle />
                   {/* Google and ios button */}
+                  {
+                    Platform?.OS == 'android' ?
 
-                  <View style={style.socialMedia}>
-                    <SocialMediaButton
-                      socialMediaIcon={<Google />}
-                      buttonTitle={String.commonString.Google}
-                      onPress={() => { googleLogin(navigation) }}
-                    />
-                    <SocialMediaButton
-                      socialMediaIcon={<Apple />}
-                      buttonTitle={String.commonString.Apple}
-                      onPress={() => appleLoginIos(navigation)}
-                    />
-                  </View>
+                      <SocialMediaButton
+                        wrapperStyle={{ width: '90%', }}
+                        socialMediaIcon={<Google />}
+                        buttonTitle={String.commonString.signInWithGoogle}
+                        onPress={() => { googleLogin(navigation) }}
+                      /> :
+                      <View style={style.socialMedia}>
+                        <SocialMediaButton
+                          socialMediaIcon={<Google />}
+                          buttonTitle={String.commonString.Google}
+                          onPress={() => { googleLogin(navigation) }}
+                        />
+                        <SocialMediaButton
+                          socialMediaIcon={<Apple />}
+                          buttonTitle={String.commonString.Apple}
+                          onPress={() => appleLoginIos(navigation)}
+                        />
+                      </View>
+                  }
                 </View>
               </View>
-            </View>
           </LinearGradient>
         </KeyboardAwareScrollView>
       </View>

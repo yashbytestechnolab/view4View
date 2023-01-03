@@ -69,7 +69,8 @@ export const String: any = {
         fullnameErrorMsg: "Please enter your full name",
         PasswordErrorMsg: "Your password must be at least 8 characters long",
         ConfirmPasswordErrorMsg: "Confirm password doesn't match",
-        darkcontent:"dark-content"
+        darkcontent:"dark-content",
+        signInWithGoogle:'Sign in with Google'
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
@@ -82,7 +83,8 @@ export const String: any = {
         validEmail: "Please enter valid email",
     },
     StatusBar: {
-        darkContent: 'dark-content'
+        darkContent: 'dark-content',
+        lightContent:'light-content'
     },
     viewCoinScreen: {
         yourCoins: 'Your Coins!',
@@ -94,6 +96,9 @@ export const String: any = {
         subLine5: 'Grow your YouTube channel and reap rewards.',
         bottomsubLine: 'See enjoy & win rewards coins',
         buttonText: 'Earn 50 points now'
+    },
+    keyboardType:{
+       email :'email-address'
     }
 
 }

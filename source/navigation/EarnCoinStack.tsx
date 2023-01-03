@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ROUTES } from '../constants/NavigationRoutes';
-import { EarnCoinLanding, ViewCoin } from '../modules/EarnCoin';
+import { ViewCoin } from '../modules/EarnCoin';
+import { CreateCamp } from '../modules/EarnCoin/CreateCamp';
+import { CreateCampaign } from '../modules/MyCampaign';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +24,12 @@ export const EarnCoinStack = () => {
         name={ROUTES.VIEWCOIN}
         component={ViewCoin}
       />
+      <Stack.Screen
+        name={ROUTES.CREATECAMP}
+        component={CreateCamp}
+      />
+           <Stack.Screen name={ROUTES.CREATE_CAMPAIGN} component={CreateCampaign} />
+
     </Stack.Navigator>
   );
 };

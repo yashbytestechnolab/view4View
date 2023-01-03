@@ -5,7 +5,7 @@ import { String, ROUTES } from '../constants';
 import { ViewStack, EarnCoinStack, SettingStack,MyCampaignLanding } from '.';
 import { Home, MyCampaign, Setting, TabEarnCoin } from '../assets/icons';
 import { SvgProps } from 'react-native-svg';
-import { ActiveTabText, Colors, F50010, F50012 } from '../Theme';
+import { ActiveTabText, Colors, F50010 } from '../Theme';
 
 export const TabNavigation = () => {
   const Tab = createBottomTabNavigator();

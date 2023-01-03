@@ -32,13 +32,15 @@ export const Authentication = () => {
     <>
       {
         loading == null || loading == true ?
-          null:
+          null :
           <Stack.Navigator
+
             initialRouteName={!isFirstTimeLogInUser ? ROUTES.INTRODUCATION : ROUTES?.LOGIN}
             screenOptions={{
               cardOverlayEnabled: false,
               headerShown: false,
               gestureEnabled: true,
+
             }}>
             <Stack.Screen name={ROUTES.INTRODUCATION} component={Introduction} />
             <Stack.Screen name={ROUTES.LOGIN} component={Login} />

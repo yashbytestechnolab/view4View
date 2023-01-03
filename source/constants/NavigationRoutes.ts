@@ -19,6 +19,7 @@ interface IRoutes {
     MYCAMPAIGN_LANDING:string;
     SETTING_LANDING:string;
     VIEWCOIN:string;
+    CREATECAMP:string
 
 }
 export const ROUTES: IRoutes = {
@@ -41,6 +42,7 @@ export const ROUTES: IRoutes = {
     SETTING_LANDING:'SETTING_LANDING',
     MYCAMPAIGN:"CREATECAMPAIGN",
     SETTING:'SETTING',
-    VIEWCOIN:'VIEWCOIN'
+    VIEWCOIN:'VIEWCOIN',
+    CREATECAMP:'CREATECAMP'
 
 }

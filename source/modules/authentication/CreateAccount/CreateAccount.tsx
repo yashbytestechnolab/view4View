@@ -1,4 +1,4 @@
-import { View, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
+import { View, SafeAreaView, TouchableOpacity, StatusBar, Platform } from 'react-native';
 import React, { useContext } from 'react'
 import { style } from '../CreateAccount/style'
 import Back from '../../../assets/icons/Back';
@@ -20,7 +20,6 @@ import { loginUser } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
 import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const CreateAccount = () => {
     const navigation = useNavigation()
@@ -77,7 +76,7 @@ export const CreateAccount = () => {
     return (
         <>
             <SafeAreaView style={style.safeArea} />
-            <StatusBar barStyle={String.commonString.darkcontent} backgroundColor={Colors.gradient1} />
+            <StatusBar barStyle={String.StatusBar.lightContent} backgroundColor={Colors.gradient1} />
             <View style={style.main}>
                 <TouchableOpacity
                     onPress={() => {
@@ -121,6 +120,7 @@ export const CreateAccount = () => {
                                         inputTitle={String.commonString.email}
                                         placeholder={String.commonString.Enteryouremail}
                                         value={userInput?.email}
+                                        keyboardType={String?.keyboardType?.email}
                                         onChangeText={(value) => {
                                             dispatch({ type: type.EMAIL, payload: value });
                                             if (value?.length > 0 && emailPattern.test(value)) {
@@ -131,7 +131,7 @@ export const CreateAccount = () => {
                                     />
                                     <InputComponent
                                         inputTitle={String.commonString.Password}
-                                        placeholder={String.commonString.Enteryouremail}
+                                        placeholder={String.commonString.Enteryourpassword}
                                         value={userInput?.password}
                                         onChangeText={(value) => {
                                             dispatch({ type: type.PASSWORD, payload: value });
@@ -168,18 +168,28 @@ export const CreateAccount = () => {
                                     </View>
                                     <ORtitle />
 
-                                    <View style={style.socialMedia}>
-                                        <SocialMediaButton
-                                            socialMediaIcon={<Google />}
-                                            buttonTitle={String.commonString.Google}
-                                            onPress={() => { googleLogin(navigation) }}
-                                        />
-                                        <SocialMediaButton
-                                            socialMediaIcon={<Apple />}
-                                            buttonTitle={String.commonString.Apple}
-                                            onPress={() => { }}
-                                        />
-                                    </View>
+                                    {
+                                        Platform?.OS == 'android' ?
+
+                                            <SocialMediaButton
+                                                wrapperStyle={{ width: '90%', }}
+                                                socialMediaIcon={<Google />}
+                                                buttonTitle={String.commonString.signInWithGoogle}
+                                                onPress={() => { googleLogin(navigation) }}
+                                            /> :
+                                            <View style={style.socialMedia}>
+                                                <SocialMediaButton
+                                                    socialMediaIcon={<Google />}
+                                                    buttonTitle={String.commonString.Google}
+                                                    onPress={() => { googleLogin(navigation) }}
+                                                />
+                                                <SocialMediaButton
+                                                    socialMediaIcon={<Apple />}
+                                                    buttonTitle={String.commonString.Apple}
+                                                    onPress={() => appleLoginIos(navigation)}
+                                                />
+                                            </View>
+                                    }
                                 </View>
                             </View>
                         </View>

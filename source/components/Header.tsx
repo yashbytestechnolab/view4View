@@ -8,7 +8,7 @@ import { Back, EarnCoin } from '../assets/icons';
 
 interface IheaderProps {
   title?: string;
-  showBacKIcon?: boolean | any;
+  showBacKIcon?: boolean ;
   showCoin?: boolean
 }
 export const Header = (props: IheaderProps) => {

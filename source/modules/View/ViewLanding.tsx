@@ -146,7 +146,7 @@ export const ViewLanding = () => {
 
   return (
     <>
-      <StatusBar backgroundColor={Colors?.gradient1} />
+      <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
       <SafeAreaView style={styles.container}>
         <Header title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>

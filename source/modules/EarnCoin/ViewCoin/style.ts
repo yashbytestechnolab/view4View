@@ -32,6 +32,6 @@ export const style = StyleSheet.create({
     scrollContain: {
         flexGrow: 1,
         backgroundColor: Colors.white,
-        paddingBottom: Platform.OS === "ios" ? 200 : 150
+        paddingBottom: Platform.OS === "ios" ? 200 : 170
     },
 })
