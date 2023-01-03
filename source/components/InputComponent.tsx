@@ -39,7 +39,7 @@ export const InputComponent = (props: props) => {
             }
             {
                 errorMessage?.length > 0 &&
-                <Text numberOfLines={1} style={{ color: "red", marginTop: 5 }}>
+                <Text numberOfLines={1} style={innerStyles.validationError}>
                     {errorMessage}
                 </Text>
             }
@@ -71,11 +71,12 @@ const innerStyles = StyleSheet.create({
     eye: {
         position: "absolute",
         right: 12,
-        top: 37
+        top: 35.5
     },
     hidePass: {
         height: 20,
-        width: 17,
+        width: 20,
         right: 2.5
-    }
+    },
+    validationError:{ color: "red", marginTop: 5 }
 })

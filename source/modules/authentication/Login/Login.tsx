@@ -48,6 +48,7 @@ export const Login = () => {
           routes: [{ name: ROUTES.TABLIST }],
         });
         await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
+        dispatch({ type: type.EMPTY_STATE })
       }).
       catch((userError) => handleFirebaseError(userError.code)).
       finally(() => setLoading(false))
