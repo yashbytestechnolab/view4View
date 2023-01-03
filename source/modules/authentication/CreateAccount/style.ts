@@ -47,7 +47,7 @@ export const style = StyleSheet.create({
         backgroundColor: Colors.linear_gradient
     },
     safeArea: {
-        backgroundColor: Colors.linear_gradient
+        backgroundColor: Colors.gradient1
     },
     wrapperView: {
         backgroundColor: "pink",

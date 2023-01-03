@@ -6,6 +6,7 @@ import * as LocalStorage from '../services/LocalStorage';
 import { useState, useEffect } from 'react';
 import React from 'react';
 import SplashScreen from 'react-native-splash-screen';
+import { Colors } from '../Theme';
 
 export const RootNavigation = () => {
   const Stack = createStackNavigator();

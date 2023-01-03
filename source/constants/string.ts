@@ -81,7 +81,8 @@ export const String: any = {
         validEmail: "Please enter valid email",
     },
     StatusBar: {
-        darkContent: 'dark-content'
+        darkContent: 'dark-content',
+        lightContent:'light-content'
     },
     viewCoinScreen: {
         yourCoins: 'Your Coins!',
@@ -93,6 +94,9 @@ export const String: any = {
         subLine5: 'Grow your YouTube channel and reap rewards.',
         bottomsubLine: 'See enjoy & win rewards coins',
         buttonText: 'Earn 50 points now'
+    },
+    keyboardType:{
+       email :'email-address'
     }
 
 }

@@ -105,6 +105,7 @@ export const Login = () => {
                   inputTitle={String.commonString.email}
                   placeholder={String.commonString.Enteryouremail}
                   value={userInput?.email}
+                  keyboardType={String?.keyboardType?.email}
                   onChangeText={(value) => {
                     dispatch({ type: type.EMAIL, payload: value });
                     if (value?.length > 0 && emailPattern.test(value)) {
@@ -117,7 +118,7 @@ export const Login = () => {
 
                 <InputComponent
                   inputTitle={String.commonString.Password}
-                  placeholder={String.commonString.ForgotPassword}
+                  placeholder={String.commonString.Enteryourpassword}
                   value={userInput?.password}
                   onChangeText={(value) => {
                     dispatch({ type: type.PASSWORD, payload: value });

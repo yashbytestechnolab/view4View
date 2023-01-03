@@ -12,10 +12,11 @@ interface props {
     isSecureEntry?: boolean,
     onPrees?: void,
     errorMessage?: string
+    keyboardType?:string
 }
 
 export const InputComponent = (props: props) => {
-    const { errorMessage, inputTitle, viewStyle, onChangeText, value, placeholder, isSecureIcon, isSecureEntry, onPrees } = props
+    const { errorMessage, inputTitle, viewStyle, onChangeText, value, placeholder, isSecureIcon, isSecureEntry, onPrees ,keyboardType} = props
     return (
         <View style={[innerStyles.main, viewStyle]}>
             <Text style={F50012.main}>{inputTitle}</Text>
@@ -24,6 +25,7 @@ export const InputComponent = (props: props) => {
                 secureTextEntry={isSecureEntry}
                 onChangeText={onChangeText}
                 value={value}
+                keyboardType={keyboardType}
                 placeholder={placeholder}
                 style={[innerStyles.textInput, isSecureIcon && innerStyles.paddingExtra]}
             />

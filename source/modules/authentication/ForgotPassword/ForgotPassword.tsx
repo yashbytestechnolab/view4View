@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, StatusBar } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar } from 'react-native'
 import React, { useContext } from 'react'
 import { Apple, Google, } from '../../../assets/icons'
 import { Colors, F40014, F60024 } from '../../../Theme'
@@ -11,6 +11,7 @@ import { style } from './style'
 import { firebase } from '@react-native-firebase/auth'
 import { ORtitle } from '../Authcomponents'
 import { googleLogin, handleFirebaseError } from '../../../services'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export const ForgotPassword = () => {
   /**
@@ -26,7 +27,7 @@ export const ForgotPassword = () => {
 
   const handlePasswordReset = async () => {
     if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
-    
+
       handleFirebaseError("WrongEmail")
 
     } else {
@@ -41,11 +42,13 @@ export const ForgotPassword = () => {
   }
   return (
     <>
-    
+
       <SafeAreaView style={style.backGroundColor} />
-      <StatusBar backgroundColor={Colors?.gradient1}/>
+      <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
       <BackButton />
-      <ScrollView howsVerticalScrollIndicator={false}
+      <KeyboardAwareScrollView
+        alwaysBounceVertical={false}
+        showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={String.commonString.handled}
         style={{ backgroundColor: Colors?.gradient1 }}
         scrollEnabled={true}
@@ -61,6 +64,7 @@ export const ForgotPassword = () => {
             inputTitle={String.commonString.email}
             viewStyle={style.marginTop}
             value={userInput?.email}
+            keyboardType={String?.keyboardType?.email}
             onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }) }}
             placeholder={String.commonString.Enteryouremail}
           />
@@ -85,7 +89,7 @@ export const ForgotPassword = () => {
             />
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </>
   )
 }

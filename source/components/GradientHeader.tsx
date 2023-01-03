@@ -27,10 +27,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center', flex: 1
     },
     borderWrapper: {
-        backgroundColor: Colors?.pink, width: '100%',
-        borderTopEndRadius: 40,
-        height: 17,
-        borderTopStartRadius: 40,
+        backgroundColor: Colors?.pink,
+         width: '100%',
+        borderTopEndRadius: 20,
+        height: "13%",
+        borderTopStartRadius: 20,
     },
 
 })
