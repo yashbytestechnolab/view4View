@@ -6,6 +6,7 @@ export const style = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors?.white
     },
+    safearea:{  backgroundColor: Colors?.gradient1},
     scrollWrapper: { paddingHorizontal: 15, paddingTop: 30, flex:1},
     coinTextWrapper: {
         flexDirection: 'row', justifyContent: 'center', marginTop: 19, marginBottom: 30

@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors?.white,
     },
-
+    safearea:{backgroundColor:Colors?.gradient1},
     textStyle: {
         color: Colors?.green,
         fontSize: 30,
