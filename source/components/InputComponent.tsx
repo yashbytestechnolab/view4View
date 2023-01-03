@@ -2,13 +2,11 @@ import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewSty
 import React from 'react'
 import { Colors, F50012 } from '../Theme'
 import { EyeIcon } from '../assets/icons/EyeIcon'
-
-
 interface props {
     placeholder: string,
     value: string | number | undefined,
     inputTitle: string,
-    onChangeText: (value: string|number|any) => void,
+    onChangeText: (value: string | number | any) => void,
     viewStyle?: StyleProp<ViewStyle>,
     isSecureIcon?: boolean,
     isSecureEntry?: boolean,
@@ -27,7 +25,7 @@ export const InputComponent = (props: props) => {
                 onChangeText={onChangeText}
                 value={value}
                 placeholder={placeholder}
-                style={innerStyles.textInput}
+                style={[innerStyles.textInput, isSecureIcon && innerStyles.paddingExtra]}
             />
             {
                 isSecureIcon &&
@@ -66,5 +64,12 @@ const innerStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: Colors.GrayLightC2C9D1
     },
-    eye: { position: "absolute", right: 12, top: 37 }
+    paddingExtra: {
+        paddingRight: 40
+    },
+    eye: {
+        position: "absolute",
+        right: 12,
+        top: 37
+    }
 })

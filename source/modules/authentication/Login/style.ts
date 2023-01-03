@@ -10,7 +10,6 @@ export const style = StyleSheet.create({
     borderRadius: {
         borderTopEndRadius: 30,
         borderTopStartRadius: 30,
-        // flex: 1,
     },
     welcomeTop: {
         flex: 0.7,
@@ -29,7 +28,7 @@ export const style = StyleSheet.create({
     scrollContain: {
         flexGrow: 1,
         backgroundColor: Colors.white,
-        paddingBottom: Platform.OS === "ios" ? 200 : 180
+        paddingBottom: Platform.OS === "ios" ? 100 : 70
     },
     mainLogo: {
         height: "30%",
@@ -42,7 +41,7 @@ export const style = StyleSheet.create({
     },
     wrapperView: {
         backgroundColor: "pink",
-        height: "60%"
+        flex: 1
     },
     container: {
         flex: 1,
@@ -55,5 +54,5 @@ export const style = StyleSheet.create({
     forgotPassword: { marginTop: 16, alignSelf: "flex-end", marginHorizontal: 11, padding: 5 },
     signIn: { marginTop: 24 },
     top33: { marginTop: 33 },
-    socialMedia: { flexDirection: "row", justifyContent: "space-between" }
+    socialMedia: { flexDirection: "row", justifyContent: "center" }
 });
