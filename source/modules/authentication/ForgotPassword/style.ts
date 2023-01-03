@@ -21,10 +21,6 @@ export const style = StyleSheet.create({
         alignItems: "center", paddingTop: 30
     },
     backGroundColor: { backgroundColor: Colors?.gradient1 },
-    // scrollContain: {
-    //     flexGrow: 1,
-    //     backgroundColor: Colors?.pink
-    // },
     signIn: { marginTop: 24 },
     bottomLine: {
         flexDirection: "row",
@@ -47,7 +43,6 @@ export const style = StyleSheet.create({
     scrollContain: {
         flexGrow: 1,
         backgroundColor: Colors.white,
-        //paddingBottom: Platform.OS === "ios" ? 100 : 40
     },
     borderRadius: {
         borderTopEndRadius: 40,
