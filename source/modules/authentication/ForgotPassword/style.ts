@@ -5,7 +5,8 @@ export const style = StyleSheet.create({
     containerWrapper: {
         borderTopEndRadius: 30,
         borderTopStartRadius: 30,
-        flex: 1, backgroundColor: Colors?.white,
+        flex: 1,
+        backgroundColor: Colors?.white,
         paddingBottom: 50
     },
 
@@ -35,5 +36,5 @@ export const style = StyleSheet.create({
         alignSelf: 'center',
         width: '80%'
     },
-    marginTop:{marginTop: 33}
+    marginTop: { marginTop: 33 }
 })
