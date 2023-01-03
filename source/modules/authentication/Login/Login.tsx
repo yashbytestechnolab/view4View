@@ -77,7 +77,7 @@ export const Login = () => {
   return (
     <>
       <SafeAreaView style={style.safeArea} />
-      <StatusBar barStyle={"dark-content"} backgroundColor={Colors.linear_gradient} />
+      <StatusBar barStyle={String.commonString.darkcontent} backgroundColor={Colors.linear_gradient} />
       <View style={style.main}>
 
         <KeyboardAwareScrollView

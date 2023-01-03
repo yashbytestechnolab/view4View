@@ -76,7 +76,7 @@ export const CreateAccount = () => {
     return (
         <>
             <SafeAreaView style={style.safeArea} />
-            <StatusBar barStyle={"dark-content"} backgroundColor={Colors.gradient1} />
+            <StatusBar barStyle={String.commonString.darkcontent} backgroundColor={Colors.gradient1} />
             <View style={style.main}>
                 <TouchableOpacity
                     onPress={() => {

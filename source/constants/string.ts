@@ -69,6 +69,7 @@ export const String: any = {
         fullnameErrorMsg: "Please enter your full name",
         PasswordErrorMsg: "Your password must be at least 8 characters long",
         ConfirmPasswordErrorMsg: "Confirm password doesn't match",
+        darkcontent:"dark-content"
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",

@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Authentication, OnBording } from '.';
+import { Authentication, Dashboard, } from '.';
 import { LocalStorageKeys, ROUTES } from '../constants';
 import * as LocalStorage from '../services/LocalStorage';
 import { useState, useEffect } from 'react';
@@ -33,7 +33,7 @@ export const RootNavigation = () => {
                 userId.length > 0 ? (
                   <Stack.Screen
                     name={ROUTES.ONBORDING}
-                    component={OnBording}
+                    component={Dashboard}
                     options={{ gestureEnabled: false }}
                   />
                 ) : (
