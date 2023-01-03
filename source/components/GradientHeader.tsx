@@ -21,8 +21,7 @@ export const GradientHeader = () => {
 
 const styles = StyleSheet.create({
     linearGradient: {
-
-        height: 193
+        height: 200
     },
     Icon: {
         justifyContent: 'center', alignItems: 'center', flex: 1

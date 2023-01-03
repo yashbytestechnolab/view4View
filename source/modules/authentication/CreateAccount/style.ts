@@ -38,7 +38,7 @@ export const style = StyleSheet.create({
     },
     scrollContain: {
         flexGrow: 1,
-        paddingBottom: Platform.OS === "ios" ? 200 : 210
+        paddingBottom: Platform.OS === "ios" ? 100 : 70
     },
     mainLogo: {
         height: "30%",
@@ -51,8 +51,7 @@ export const style = StyleSheet.create({
     },
     wrapperView: {
         backgroundColor: "pink",
-        // flex: 0.6,
-        height: "60%"
+        flex: 1,
     },
     container: {
         flex: 1,
@@ -75,6 +74,6 @@ export const style = StyleSheet.create({
     },
     socialMedia: {
         flexDirection: "row",
-        justifyContent: "space-around"
+        justifyContent: "center"
     }
 })

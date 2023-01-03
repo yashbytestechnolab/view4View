@@ -1,4 +1,4 @@
-import { View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
 import React, { useContext } from 'react'
 import { style } from '../CreateAccount/style'
 import Back from '../../../assets/icons/Back';
@@ -75,8 +75,8 @@ export const CreateAccount = () => {
     return (
         <>
             <SafeAreaView style={style.safeArea} />
+            <StatusBar barStyle={"dark-content"} backgroundColor={Colors.gradient1} />
             <View style={style.main}>
-
                 <TouchableOpacity
                     onPress={() => {
                         navigation.goBack(); dispatch({ type: type.EMPTY_STATE });
@@ -85,7 +85,6 @@ export const CreateAccount = () => {
                     style={style.headerBack}>
                     <Back />
                 </TouchableOpacity>
-
                 <KeyboardAwareScrollView
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps={String.commonString.handled}

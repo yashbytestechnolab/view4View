@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, SafeAreaView, Alert } from 'react-native';
+import { View, ScrollView, Text, SafeAreaView, Alert, StatusBar } from 'react-native';
 import React, { useContext } from 'react';
 import { Colors, F40014, } from '../../../Theme';
 import { useNavigation } from '@react-navigation/native';
@@ -79,6 +79,7 @@ export const Login = () => {
   return (
     <>
       <SafeAreaView style={style.safeArea} />
+      <StatusBar barStyle={"dark-content"} backgroundColor={Colors.gradient1} />
       <View style={style.main}>
         <KeyboardAwareScrollView
           alwaysBounceVertical={false}
