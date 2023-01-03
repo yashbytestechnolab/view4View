@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StatusBar } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar, Platform } from 'react-native'
 import React, { useContext } from 'react'
 import { Apple, Google, } from '../../../assets/icons'
 import { Colors, F40014, F60024 } from '../../../Theme'
@@ -10,7 +10,7 @@ import { BackButton, ButtonComponent, GradientHeader, InputComponent, SocialMedi
 import { style } from './style'
 import { firebase } from '@react-native-firebase/auth'
 import { ORtitle } from '../Authcomponents'
-import { googleLogin, handleFirebaseError } from '../../../services'
+import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../services'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export const ForgotPassword = () => {
@@ -80,18 +80,28 @@ export const ForgotPassword = () => {
               <Text onPress={() => { navigation.navigate(ROUTES?.LOGIN) }} style={[F40014.main, F40014?.color]}>{String.commonString?.SignIn}</Text>
             </View>
             <ORtitle />
-            <View style={style.socialMedia}>
-              <SocialMediaButton
-                socialMediaIcon={<Google />}
-                buttonTitle={String.commonString.Google}
-                onPress={() => { googleLogin(navigation) }}
-              />
-              <SocialMediaButton
-                socialMediaIcon={<Apple />}
-                buttonTitle={String.commonString.Apple}
-                onPress={() => { }}
-              />
-            </View>
+            {
+                    Platform?.OS == 'android' ?
+
+                      <SocialMediaButton
+                        wrapperStyle={{ width: '90%', }}
+                        socialMediaIcon={<Google />}
+                        buttonTitle={String.commonString.signInWithGoogle}
+                        onPress={() => { googleLogin(navigation) }}
+                      /> :
+                      <View style={style.socialMedia}>
+                        <SocialMediaButton
+                          socialMediaIcon={<Google />}
+                          buttonTitle={String.commonString.Google}
+                          onPress={() => { googleLogin(navigation) }}
+                        />
+                        <SocialMediaButton
+                          socialMediaIcon={<Apple />}
+                          buttonTitle={String.commonString.Apple}
+                          onPress={() => appleLoginIos(navigation)}
+                        />
+                      </View>
+                  }
               </View>
             </View>
           </View>

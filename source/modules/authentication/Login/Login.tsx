@@ -19,6 +19,7 @@ import * as LocalStorage from '../../../services/LocalStorage';
 import { handleFirebaseError } from '../../../services';
 import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Platform } from 'react-native';
 
 export const Login = () => {
   /**
@@ -152,19 +153,28 @@ export const Login = () => {
                   </View>
                   <ORtitle />
                   {/* Google and ios button */}
+                  {
+                    Platform?.OS == 'android' ?
 
-                  <View style={style.socialMedia}>
-                    <SocialMediaButton
-                      socialMediaIcon={<Google />}
-                      buttonTitle={String.commonString.Google}
-                      onPress={() => { googleLogin(navigation) }}
-                    />
-                    <SocialMediaButton
-                      socialMediaIcon={<Apple />}
-                      buttonTitle={String.commonString.Apple}
-                      onPress={() => appleLoginIos(navigation)}
-                      />
-                  </View>
+                      <SocialMediaButton
+                        wrapperStyle={{ width: '90%', }}
+                        socialMediaIcon={<Google />}
+                        buttonTitle={String.commonString.signInWithGoogle}
+                        onPress={() => { googleLogin(navigation) }}
+                      /> :
+                      <View style={style.socialMedia}>
+                        <SocialMediaButton
+                          socialMediaIcon={<Google />}
+                          buttonTitle={String.commonString.Google}
+                          onPress={() => { googleLogin(navigation) }}
+                        />
+                        <SocialMediaButton
+                          socialMediaIcon={<Apple />}
+                          buttonTitle={String.commonString.Apple}
+                          onPress={() => appleLoginIos(navigation)}
+                        />
+                      </View>
+                  }
                 </View>
               </View>
             </View>

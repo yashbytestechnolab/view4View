@@ -58,5 +58,5 @@ export const style = StyleSheet.create({
     forgotPassword: { marginTop: 16, alignSelf: "flex-end", marginHorizontal: 11, padding: 5 },
     signIn: { marginTop: 24 },
     top33: { marginTop: 33 },
-    socialMedia: { flexDirection: "row", justifyContent: "center" }
+    socialMedia: { flexDirection: "row", justifyContent: "space-between" }
 });

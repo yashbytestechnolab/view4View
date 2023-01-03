@@ -1,4 +1,4 @@
-import { View, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
+import { View, SafeAreaView, TouchableOpacity, StatusBar, Platform } from 'react-native';
 import React, { useContext } from 'react'
 import { style } from '../CreateAccount/style'
 import Back from '../../../assets/icons/Back';
@@ -55,7 +55,7 @@ export const CreateAccount = () => {
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],
                 });
-                  dispatch({ type: type.EMPTY_STATE })
+                dispatch({ type: type.EMPTY_STATE })
             }).
             catch((userError) => handleFirebaseError(userError?.code)).
             finally(() => setLoading(false))
@@ -168,18 +168,28 @@ export const CreateAccount = () => {
                                     </View>
                                     <ORtitle />
 
-                                    <View style={style.socialMedia}>
-                                        <SocialMediaButton
-                                            socialMediaIcon={<Google />}
-                                            buttonTitle={String.commonString.Google}
-                                            onPress={() => { googleLogin(navigation) }}
-                                        />
-                                        <SocialMediaButton
-                                            socialMediaIcon={<Apple />}
-                                            buttonTitle={String.commonString.Apple}
-                                            onPress={() => { }}
-                                        />
-                                    </View>
+                                    {
+                                        Platform?.OS == 'android' ?
+
+                                            <SocialMediaButton
+                                                wrapperStyle={{ width: '90%', }}
+                                                socialMediaIcon={<Google />}
+                                                buttonTitle={String.commonString.signInWithGoogle}
+                                                onPress={() => { googleLogin(navigation) }}
+                                            /> :
+                                            <View style={style.socialMedia}>
+                                                <SocialMediaButton
+                                                    socialMediaIcon={<Google />}
+                                                    buttonTitle={String.commonString.Google}
+                                                    onPress={() => { googleLogin(navigation) }}
+                                                />
+                                                <SocialMediaButton
+                                                    socialMediaIcon={<Apple />}
+                                                    buttonTitle={String.commonString.Apple}
+                                                    onPress={() => appleLoginIos(navigation)}
+                                                />
+                                            </View>
+                                    }
                                 </View>
                             </View>
                         </View>

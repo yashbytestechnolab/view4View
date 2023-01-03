@@ -6,16 +6,17 @@ interface socialMediaProps {
     buttonTitle: string;
     onPress?: () => void;
     socialMediaIcon?: object| JSX.IntrinsicAttributes|undefined;
+    wrapperStyle?:object
 }
 
 export const SocialMediaButton = (props: socialMediaProps) => {
-    const { buttonTitle, onPress, socialMediaIcon } = props
+    const { buttonTitle, onPress, socialMediaIcon,wrapperStyle } = props
     return (
         <View style={innerStyle.main}>
             <TouchableOpacity
             activeOpacity={0.8}
                 onPress={onPress}
-                style={innerStyle.buttonView}>
+                style={[innerStyle.buttonView,wrapperStyle]}>
                 <View style={innerStyle.logo}>
                     {socialMediaIcon}
                 </View>
