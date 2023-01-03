@@ -1,4 +1,4 @@
-import { Image, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Image, Platform, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React from 'react'
 import { Colors, F50012 } from '../Theme'
 import { EyeIcon } from '../assets/icons/EyeIcon'
@@ -71,12 +71,12 @@ const innerStyles = StyleSheet.create({
     eye: {
         position: "absolute",
         right: 12,
-        top: 35.5
+        top: Platform.OS === "ios" ? 35.5 : 37
     },
     hidePass: {
         height: 20,
         width: 20,
         right: 2.5
     },
-    validationError:{ color: "red", marginTop: 5 }
+    validationError: { color: "red", marginTop: 5 }
 })

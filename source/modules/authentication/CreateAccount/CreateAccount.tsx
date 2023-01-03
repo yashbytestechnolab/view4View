@@ -48,14 +48,14 @@ export const CreateAccount = () => {
             createUserWithEmailAndPassword(userInput?.email, userInput?.password).
             then(async (userResponse: any) => {
                 let userDetail = userResponse?.user?._user
-                await loginUser(userDetail)
+                await loginUser(userDetail, userInput?.fullName)
                 await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);
                 await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
                 navigation.reset({
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],
                 });
-                  dispatch({ type: type.EMPTY_STATE })
+                dispatch({ type: type.EMPTY_STATE })
             }).
             catch((userError) => handleFirebaseError(userError?.code)).
             finally(() => setLoading(false))
@@ -93,7 +93,8 @@ export const CreateAccount = () => {
                     style={style.scroll}
                     scrollEnabled={true}
                     contentContainerStyle={style.scrollContain}>
-                    <GradientHeader>
+                    <GradientHeader />
+                    {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
                         <View style={style.wrapperView} >
                             <View style={[style.borderRadius, { backgroundColor: Colors.white, flex: 1 }]}>
                                 <View style={style.innerContainer} >
@@ -182,7 +183,7 @@ export const CreateAccount = () => {
                                 </View>
                             </View>
                         </View>
-                    </GradientHeader>
+                    {/* </LinearGradient> */}
                 </KeyboardAwareScrollView>
             </View>
         </>

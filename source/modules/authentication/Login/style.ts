@@ -44,6 +44,7 @@ export const style = StyleSheet.create({
         flex: 1,
         backgroundColor: "pink",
         borderTopEndRadius: 40,
+        marginTop: -26,
         borderTopStartRadius: 40,
     },
     container: {

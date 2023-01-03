@@ -19,6 +19,7 @@ import * as LocalStorage from '../../../services/LocalStorage';
 import { handleFirebaseError } from '../../../services';
 import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const Login = () => {
   /**
@@ -90,7 +91,8 @@ export const Login = () => {
           scrollEnabled={true}
           contentContainerStyle={style.scrollContain}>
 
-          <GradientHeader >
+          <GradientHeader />
+          <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}>
             <View style={style.wrapperView} >
               <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
 
@@ -162,12 +164,12 @@ export const Login = () => {
                       socialMediaIcon={<Apple />}
                       buttonTitle={String.commonString.Apple}
                       onPress={() => appleLoginIos(navigation)}
-                      />
+                    />
                   </View>
                 </View>
               </View>
             </View>
-          </GradientHeader>
+          </LinearGradient>
         </KeyboardAwareScrollView>
       </View>
     </>

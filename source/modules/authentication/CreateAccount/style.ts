@@ -54,6 +54,7 @@ export const style = StyleSheet.create({
     wrapperView: {
         backgroundColor: "pink",
         flex: 1,
+        marginTop: -36,
         borderTopEndRadius: 40,
         borderTopStartRadius: 40,
     },

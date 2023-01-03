@@ -4,10 +4,12 @@ import { Header, Loader } from '../../components';
 import { String } from '../../constants';
 import { styles } from './style';
 import EarnCoin from '../../assets/icons/EarnCoin';
-import { F40010, F40012, F40014, F50013 } from '../../Theme';
+import { Colors, F40010, F40012, F40014, F50013 } from '../../Theme';
 import { InputContextProvide } from '../../context/CommonContext';
 import { GetVideoCampaign } from '../../services/FireStoreServices';
 import { type } from '../../constants/types';
+import { CampiagnList } from '../../constants/CampiagnList';
+import { PlusIcon } from '../../assets/icons';
 
 export const MyCampaignLandingScreen = () => {
   const { storeCreator: { campaignData, dispatchcampaign } }: any = useContext(InputContextProvide)
@@ -37,9 +39,9 @@ export const MyCampaignLandingScreen = () => {
     let fillValue = item?.remiderView * 100 / item?.expectedView
     return (
       <View style={styles.container}>
-        <Image
+        {/* <Image
           style={styles.thumbNilImage}
-          source={{ uri: `http://img.youtube.com/vi/${item?.videoId[0]}/0.jpg` }} />
+          source={{ uri: `http://img.youtube.com/vi/${item?.videoId[0]}/0.jpg` }} /> */}
         <View style={styles.discription}>
           <Text
             style={F50013.main}
@@ -77,12 +79,29 @@ export const MyCampaignLandingScreen = () => {
           title={String?.headerTitle?.myCampaign} />
         <View style={styles.height} />
         {loding ? (<Loader />) :
-          (<FlatList
-            scrollEnabled
-            style={styles.flatList}
-            data={getCampaignData}
-            renderItem={renderCampaignList}
-          />)
+          (
+            <>
+              <FlatList
+                scrollEnabled
+                style={styles.flatList}
+                data={CampiagnList}
+                renderItem={renderCampaignList}
+              />
+              <View style={{
+                position: "absolute",
+                height: 60,
+                width: 60,
+                bottom: 110,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 30,
+                right: 24,
+                backgroundColor: Colors.primaryRed
+              }}>
+                <PlusIcon />
+              </View>
+            </>
+          )
         }
       </View>
     </>
