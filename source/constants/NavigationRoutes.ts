@@ -19,7 +19,8 @@ interface IRoutes {
     MYCAMPAIGN_LANDING:string;
     SETTING_LANDING:string;
     VIEWCOIN:string;
-    CREATECAMP:string
+    CREATECAMP:string;
+    INVITEFRIEND:string;
 
 }
 export const ROUTES: IRoutes = {
@@ -43,6 +44,7 @@ export const ROUTES: IRoutes = {
     MYCAMPAIGN:"CREATECAMPAIGN",
     SETTING:'SETTING',
     VIEWCOIN:'VIEWCOIN',
-    CREATECAMP:'CREATECAMP'
+    CREATECAMP:'CREATECAMP',
+    INVITEFRIEND:'INVITEFRIEND'
 
 }

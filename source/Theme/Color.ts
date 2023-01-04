@@ -18,5 +18,9 @@ export const Colors = {
     gradient2: '#FF7976',
     gradient3: '#FF5071',
     borderColor: "#FF8377",
-    lightPink: "#FFB6C1"
+    lightPink: "#FFB6C1",
+    cardshadow:"rgba(226, 226, 226, 0.25)",
+    lightWhite:"#F5F5F5",
+    blackShadow:'rgba(0, 0, 0, 0.6)'
+
 }
