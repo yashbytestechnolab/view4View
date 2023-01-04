@@ -8,7 +8,7 @@ import { Back, EarnCoin } from '../assets/icons';
 
 interface IheaderProps {
   title?: string;
-  showBacKIcon?: boolean ;
+  showBacKIcon?: boolean;
   showCoin?: boolean
 }
 export const Header = (props: IheaderProps) => {
@@ -60,11 +60,9 @@ const style = StyleSheet.create({
     backgroundColor: Colors?.pink,
     height: 60,
     justifyContent: 'center',
-    //alignItems: 'center'
   },
   titleText: {
     textAlign: 'center',
-    //  paddingRight: 40, paddingLeft: 8 
   },
 
   Wrapper: { flexDirection: 'row', alignItems: 'center', paddingRight: 15, marginLeft: 20 },
