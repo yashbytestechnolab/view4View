@@ -10,6 +10,7 @@ export const UserListTable = firestore()?.collection('UserList')?.doc(userId?.to
 
 export const WatchVideoTable = firestore()?.collection('WatchVideo')?.doc(randomIdGenrate?.toString())
 
+
 export const WatchVideoList = firestore()?.collection("WatchVideo")
 
 export const loginUser = async (payload: { email: string; uid: string; }, userName: string) => {
@@ -27,17 +28,32 @@ export const get_coins = async () => {
   return await UserListTable?.get()
 };
 
+// export const createCampaign = async (payload: { videoUrl: string; splitUrl: string; }) => {
+//   return await WatchVideoTable
+//     .set({
+//       videoUrl: payload?.videoUrl,
+//       requireDuration: 25,
+//       coin: 1000,
+//       userId: userId,
+//       expectedView: 3,
+//       remiderView: 3,
+//       uniquWatchVideoID: randomIdGenrate,
+//       videoId: payload?.splitUrl,
+//        created: firestore.FieldValue.serverTimestamp()
+//     })
+// }
 export const createCampaign = async (payload: { videoUrl: string; splitUrl: string; }) => {
   return await WatchVideoTable
     .set({
       videoUrl: payload?.videoUrl,
       requireDuration: 25,
       coin: 1000,
-      userId: userId,
+      uploadBy: userId,
       expectedView: 3,
       remiderView: 3,
       uniquWatchVideoID: randomIdGenrate,
-      videoId: payload?.splitUrl
+      videoId: payload?.splitUrl,
+      created: firestore.FieldValue.serverTimestamp()
     })
 }
 export const payCoin = async (payload: string) => {

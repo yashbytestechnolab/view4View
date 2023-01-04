@@ -28,6 +28,8 @@ export const ViewLanding = () => {
   const GetCoins = async () => {
     let resCoinUpdate = 0;
     await get_coins().then((res) => {
+      console.log(res)
+
       videoList(res?._data?.isWatchVideoId);
       resCoinUpdate = res?._data?.coin;
       setGetWatchUniqId(res?._data?.isWatchVideoId)
@@ -120,7 +122,6 @@ export const ViewLanding = () => {
 
     getPlayVideoList()
       .then((res: any) => {
-        console.log("res",res)
         const add_Video_Url: Array<any> = []
         res._docs?.filter((res: any) => {
           if (res?._data?.userId !== userId && !id?.includes(res?._data?.uniquWatchVideoID)) {
@@ -133,7 +134,7 @@ export const ViewLanding = () => {
         setPlayVideoList(sortListByCoin)
         setTimer(add_Video_Url[0]?.requireDuration);
 
-      }).catch((err)=>{console.log("errerr",err)})
+      });
   };
 
   const NextVideoList = () => {

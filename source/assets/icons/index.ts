@@ -25,6 +25,7 @@ export * from './BuyCoin'
 export * from './AdVideo'
 export * from './Invitefriends'
 export * from './NextIcon'
+export * from './InviteFrdSvg'
 
 
 

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import React from 'react';
 import { Header } from '../../components';
 import { String } from '../../constants';
@@ -12,33 +12,34 @@ export const EarnCoinLanding = () => {
 
 
   return (
-    <View style={style.main}>
-      <Header title={String?.headerTitle?.earnCoin} showBacKIcon={true} />
-      <View style={{ paddingHorizontal: 16, paddingTop: 20, }}>
-        {
-          EarnCoinData && EarnCoinData?.map((item) => {
-            console.log(item)
-            return (
-              <TouchableOpacity style={style.card} activeOpacity={1} onPress={() => { navigation.navigate(item?.onPress) }}>
-                <View style={style.leftRow}>
-                  <item.svg />
-                  <View style={{ marginLeft: 16 }}>
-                    <Text style={[F60016?.textStyle, { color: Colors?.primaryRed }]}>{item?.title}</Text>
-                    <Text style={[F40012?.main, { color: Colors?.black, opacity: 0.6, }]}>{item?.subTitle}</Text>
+    <>
+      <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
+      <View style={style.main}>
+        <Header title={String?.headerTitle?.earnCoin} showBacKIcon={true} />
+        <View style={{ paddingHorizontal: 16, paddingTop: 20, }}>
+          {
+            EarnCoinData && EarnCoinData?.map((item) => {
+              console.log(item)
+              return (
+                <TouchableOpacity style={style.card} activeOpacity={1} onPress={() => { navigation.navigate(item?.onPress) }}>
+                  <View style={style.leftRow}>
+                    <item.svg />
+                    <View style={{ marginLeft: 16 }}>
+                      <Text style={[F60016?.textStyle, { color: Colors?.primaryRed }]}>{item?.title}</Text>
+                      <Text style={[F40012?.main, { color: Colors?.black, opacity: 0.6, }]}>{item?.subTitle}</Text>
+                    </View>
+
                   </View>
-
-                </View>
-                <View>
-                  <NextIcon />
-                </View>
-              </TouchableOpacity>
-            )
-          })
-        }
+                  <View>
+                    <NextIcon />
+                  </View>
+                </TouchableOpacity>
+              )
+            })
+          }
+        </View>
       </View>
-
-
-    </View>
+    </>
   );
 };
 const style = StyleSheet.create({
