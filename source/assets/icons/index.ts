@@ -15,6 +15,12 @@ export * from './Awards'
 export * from './Back'
 export * from './Google'
 export * from './Apple'
+export * from './TabEarnCoin'
+export * from './Setting'
+export * from './EarnCoin'
+export * from './CoinIcon'
+export * from './SecondsIcon'
+export * from './ViewCoinIcon'
 
 
 

@@ -1,21 +1,29 @@
 export const String: any = {
     introduction_swipeList: {
-        youtubeVideos: 'Youtube Videos',
-        yourCampaignsHere: 'Your Campaigns here',
+        youtubeVideos: 'Boost Views on Youtube',
+        yourCampaignsHere: 'Create Video Campaigns',
         EarnCoins: 'Earn Coins',
-        signInnow: 'Sign in now',
-        subTitle: 'Lorem Ipsum is simply dummy text of the\n printing and  simply dum industry.',
+        signInnow: 'Sign In/Sign Up',
+        subTitle1: 'GROW your Youtube Channel & boost your\n views like never before.',
+        subTitle2: 'Create Your Campaigns, set the goals/ \ntargets, and skyrocket views on your added\nvideos like never before.',
+        subTitle3: 'Are you running out? Not a problem. Watch \n other videos in the app to earn coins. Watch\nmore to earn more. It’s that simple!',
+        subTitle4: 'Limitless access to browse and watch \n videos, earn coins, and create campaigns to \nadd your videos to boost views.',
         skip: 'skip',
         getStartedNow: 'Get Started Now',
         next: 'Next'
 
     },
     headerTitle: {
-        home: 'Home',
+
         view: 'View',
-        earnCoin: 'Earn Coins',
+        earnCoin: 'Earn Coin',
         createCampaign: 'Create Campaign',
-        forgotPassword: 'Forgot Password'
+        forgotPassword: 'Forgot Password',
+        myCampaign: 'My Campaign',
+        setting: 'Setting',
+        view4view: 'view4view',
+        YourCoin: 'Your Coin'
+
     },
     homeTab: {
         plus: '+',
@@ -27,7 +35,8 @@ export const String: any = {
     },
     viewTab: {
         coin: 'Coins',
-        second: 'Seconds'
+        second: 'Seconds',
+        nextVideo: 'Next Video'
 
     },
     earnCoinTab: {
@@ -56,10 +65,12 @@ export const String: any = {
         Enterfullname: "Enter full name",
         Fullname: "Full Name",
         Createanaccount: "Create an account",
-        PleaseProvideValidEmailMsg: "Please provide valid email",
-        fullnameErrorMsg: "Please fill your name",
-        PasswordErrorMsg: "Password must be 8 character",
-        ConfirmPasswordErrorMsg: "Password Should not match",
+        PleaseProvideValidEmailMsg: "Please enter a valid email address",
+        fullnameErrorMsg: "Please enter your full name",
+        PasswordErrorMsg: "Your password must be at least 8 characters long",
+        ConfirmPasswordErrorMsg: "Confirm password doesn't match",
+        darkcontent:"dark-content",
+        signInWithGoogle:'Sign in with Google'
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
@@ -68,9 +79,26 @@ export const String: any = {
         tooManyRequest: "Too many request",
         passError: "Wrong password",
         userNotFound: "User not found",
-        emailAlredyInUser: "Email already in use"
-    },
-    validationMsg: {
+        emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
     },
+    StatusBar: {
+        darkContent: 'dark-content',
+        lightContent:'light-content'
+    },
+    viewCoinScreen: {
+        yourCoins: 'Your Coins!',
+        title: 'How can you use them?',
+        subLine1: 'Earn free coins by sending invites and watching videos.',
+        subLine2: 'Users can buy coins from the app itself too.',
+        subLine3: 'Use coins to create future campaigns for your videos.',
+        subLine4: 'Boost views on added videos.',
+        subLine5: 'Grow your YouTube channel and reap rewards.',
+        bottomsubLine: 'See enjoy & win rewards coins',
+        buttonText: 'Earn 50 points now'
+    },
+    keyboardType:{
+       email :'email-address'
+    }
+
 }

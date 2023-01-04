@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Authentication, OnBording } from '.';
+import { Authentication, Dashboard, } from '.';
 import { LocalStorageKeys, ROUTES } from '../constants';
 import * as LocalStorage from '../services/LocalStorage';
 import { useState, useEffect } from 'react';
@@ -9,35 +9,31 @@ import SplashScreen from 'react-native-splash-screen';
 
 export const RootNavigation = () => {
   const Stack = createStackNavigator();
-  const [UserId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   /**
    * This Function Check user id is in localstorage
    */
   const authFlow = async () => {
-    await LocalStorage.getValue(LocalStorageKeys.UserId).then(res => res ? setUserId(res) : setUserId(""))
-    SplashScreen.hide();
+    await LocalStorage.getValue(LocalStorageKeys.UserId).then(res => res ? (SplashScreen.hide(), setUserId(res)) : setUserId(""))
   }
 
   useEffect(() => {
     authFlow()
-  }, [UserId]);
+  }, [userId]);
 
   return (
     <>
       {
-        UserId == null ? null :
+        userId == null ? null :
           <NavigationContainer>
             < Stack.Navigator
-              screenOptions={{
-                headerShown: false, gestureEnabled: false,
-              }
-              }>
+              screenOptions={{ headerShown: false, gestureEnabled: false }}>
               {
-                UserId.length > 0 ? (
+                userId.length > 0 ? (
                   <Stack.Screen
                     name={ROUTES.ONBORDING}
-                    component={OnBording}
+                    component={Dashboard}
                     options={{ gestureEnabled: false }}
                   />
                 ) : (

@@ -1,2 +1,2 @@
-export * from './GoogleLoginServices'
+export * from './SocialMediaLoginServices'
 export * from './AlertMessage'

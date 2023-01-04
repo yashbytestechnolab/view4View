@@ -1,11 +1,11 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-export const YoutubeVideos = () => {
+export const YoutubeVideos = (props:any) => {
     return (
         <Svg
-            width={343}
-            height={315}
+            width={props?.width?props?.width:343}
+            height={props?.height?props?.height:315}
             viewBox="0 0 343 315"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

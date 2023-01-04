@@ -12,13 +12,14 @@ export const WatchVideoTable = firestore()?.collection('WatchVideo')?.doc(random
 
 export const WatchVideoList = firestore()?.collection("WatchVideo")
 
-export const loginUser = async (payload: { email: string; uid: string; }) => {
+export const loginUser = async (payload: { email: string; uid: string; }, userName: string) => {
   return await UserListTable.set({
     email: payload?.email,
     userId: payload?.uid,
     coin: 0,
     videoUrl: '',
-    isWatchVideoId: []
+    isWatchVideoId: [],
+    userName: userName
   })
 
 }
@@ -49,7 +50,7 @@ export const GetVideoCampaign = async () => {
   return await WatchVideoList.where("userId", "==", userId?.toString())?.get()
 }
 
-export const addWatchUrl = async (payload: { totalAmount: string|number; getWatchUniqId: string; getVideoId:string|number; }) => {
+export const addWatchUrl = async (payload: { totalAmount: string | number; getWatchUniqId: string; getVideoId: string | number; }) => {
   return await UserListTable.update({
     coin: payload?.totalAmount,
     isWatchVideoId: [...payload.getWatchUniqId, payload?.getVideoId]

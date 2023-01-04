@@ -1,89 +1,110 @@
 import React from 'react';
-import {Image, StyleSheet, Text} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Images} from '../assets/image';
-import {String, ROUTES} from '../constants';
-import {HomeStack, ViewStack, EarnCoinStack} from '.';
+import { StyleSheet, Text } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { String, ROUTES } from '../constants';
+import { ViewStack, EarnCoinStack, SettingStack,MyCampaignLanding } from '.';
+import { Home, MyCampaign, Setting, TabEarnCoin } from '../assets/icons';
+import { SvgProps } from 'react-native-svg';
+import { ActiveTabText, Colors, F50010 } from '../Theme';
 
 export const TabNavigation = () => {
   const Tab = createBottomTabNavigator();
-  const getRouteIcon = (routeName: string) => {let Image: string = Images?.homeTab;
 
+  const getRouteIcon = (
+    routeName: string,
+  ): (({ color, ...props }: SvgProps) => JSX.Element) => {
+    let Icon = Home;
     switch (routeName) {
-      case ROUTES.HOME:
-        Image = Images?.homeTab;
-        break;
       case ROUTES.VIEW:
-        Image = Images?.viewTab;
+        Icon = Home;
+        break;
+      case ROUTES.MYCAMPAIGN:
+        Icon = MyCampaign;
         break;
       case ROUTES.EARNCOINS:
-        Image = Images?.earnCoin;
+        Icon = TabEarnCoin;
+        break;
+      case ROUTES.SETTING:
+        Icon = Setting;
         break;
     }
-    return Image;
+    return Icon;
   };
 
   return (
-      <Tab.Navigator
-        initialRouteName={ROUTES.HOME}
-        screenOptions={({route}) => ({
-          tabBarHideOnKeyboard: true,
-          headerShown: false,
-          tabBarIcon: () => {
-            const image: HTMLImageElement = getRouteIcon(route?.name);
-            return <Image source={image} style={styles.image} />;
+    <Tab.Navigator
+      initialRouteName={ROUTES.VIEW}
+      screenOptions={({ route }) => ({
+        tabBarHideOnKeyboard: true,
+        headerShown: false,
+
+        tabBarStyle: styles.tab,
+        tabBarIcon: ({ focused }) => {
+          const Icon = getRouteIcon(route.name);
+          return <Icon color={focused ? Colors?.primaryRed : Colors?.GrayLightC2C9D1} />;
+        },
+
+      })}>
+      <Tab.Screen
+        name={ROUTES?.VIEW}
+        component={ViewStack}
+        listeners={({ navigation }) => ({
+          tabPress: () => {
+            navigation.navigate(ROUTES.VIEW);
           },
-          tabBarStyle: styles.tab,
-        })}>
-        <Tab.Screen
-          name={ROUTES?.HOME}
-          component={HomeStack}
-          listeners={({navigation}) => ({
-            tabPress: () => {
-              navigation.navigate(ROUTES.HOME);
-            },
-          })}
-          options={{
-            tabBarLabel: ({focused}) => (
-              <Text style={focused ? styles.tabBarLabelStyle : styles.tabText}>
-                {String?.headerTitle?.home}
-              </Text>
-            ),
-          }}
-        />
-        <Tab.Screen
-          name={ROUTES?.VIEW}
-          component={ViewStack}
-          listeners={({navigation}) => ({
-            tabPress: () => {
-              navigation.navigate(ROUTES.HOME);
-            },
-          })}
-          options={{
-            tabBarLabel: ({focused}) => (
-              <Text style={focused ? styles.tabBarLabelStyle : styles.tabText}>
-                {String?.headerTitle?.view}
-              </Text>
-            ),
-          }}
-        />
-        <Tab.Screen
-          name={ROUTES?.EARNCOINS}
-          component={EarnCoinStack}
-          listeners={({navigation}) => ({
-            tabPress: () => {
-              navigation.navigate(ROUTES.HOME);
-            },
-          })}
-          options={{
-            tabBarLabel: ({focused}) => (
-              <Text style={focused ? styles.tabBarLabelStyle : styles.tabText}>
-                {String?.headerTitle?.earnCoin}
-              </Text>
-            ),
-          }}
-        />
-      </Tab.Navigator>
+        })}
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={[focused ? ActiveTabText.main : F50010.main]}>
+              {String?.headerTitle?.view}
+            </Text>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES?.MYCAMPAIGN}
+        component={MyCampaignLanding}
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={[focused ? ActiveTabText.main : F50010.main]}>
+              {String?.headerTitle?.myCampaign}
+            </Text>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES?.EARNCOINS}
+        component={EarnCoinStack}
+        listeners={({ navigation }) => ({
+          tabPress: () => {
+            navigation.navigate(ROUTES.EARNCOINS);
+          },
+        })}
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={[focused ? ActiveTabText.main : F50010.main]}>
+              {String?.headerTitle?.earnCoin}
+            </Text>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES?.SETTING}
+        component={SettingStack}
+        listeners={({ navigation }) => ({
+          tabPress: () => {
+            navigation.navigate(ROUTES.SETTING);
+          },
+        })}
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={[focused ? ActiveTabText.main : F50010.main]}>
+              {String?.headerTitle?.setting}
+            </Text>
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 const styles = StyleSheet.create({
@@ -91,24 +112,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    elevation: 0,
-    height: 85,
+    elevation: 7,
+    shadowColor: Colors?.black,
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 1
+    },
+    height: 83,
     paddingBottom: '5%',
     alignSelf: 'center',
     alignItems: 'center',
+    
+    
   },
-  tabBarLabelStyle: {
-    fontSize: 10,
-    fontWeight: '600',
-    color: 'red',
-  },
-  tabText: {
-    fontSize: 10,
-    fontWeight: '400',
-    color: 'black',
-  },
-  image: {
-    height: 15,
-    width: 15,
-  },
+ 
 });

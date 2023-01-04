@@ -1,19 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, ScrollView } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
-import { Header, Loader } from '../../components';
+import { ButtonComponent, Header, Loader } from '../../components';
 import { String } from '../../constants';
 import { styles } from './style';
 import auth from '@react-native-firebase/auth';
 import { addWatchUrl, getNewUpdatedViewCount, getPlayVideoList, get_coins } from '../../services/FireStoreServices';
+import { Colors, F40014, F60024 } from '../../Theme';
+import { CoinIcon, SecondsIcon } from '../../assets/icons';
 
-interface myArray{
-  coin:number
+interface myArray {
+  coin: number
 }
 export const ViewLanding = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
-  const [playVideoList, setPlayVideoList]= useState();
+  const [playVideoList, setPlayVideoList] = useState();
   const controlRef = useRef<boolean>();
   const firstStart = useRef<boolean>(true);
   const [getWatchUniqId, setGetWatchUniqId] = useState([]);
@@ -113,7 +115,7 @@ export const ViewLanding = () => {
   };
 
   useEffect(() => {
- GetCoins();
+    GetCoins();
   }, []);
 
   const videoList = async (id: string) => {
@@ -127,19 +129,14 @@ export const ViewLanding = () => {
             return res?._data
           }
         });
-        const sortListByCoin = add_Video_Url?.sort((res1:myArray, res2:myArray) => res2?.coin - res1?.coin);
+        const sortListByCoin = add_Video_Url?.sort((res1: myArray, res2: myArray) => res2?.coin - res1?.coin);
 
         setPlayVideoList(sortListByCoin)
         setTimer(add_Video_Url[0]?.requireDuration);
 
       });
   };
-  const PrevVideoList = () => {
-    if (nextVideo > 0) {
-      setNextVideo(nextVideo - 1);
-      setTimer(playVideoList?.[nextVideo - 1]?.requireDuration);
-    }
-  };
+
   const NextVideoList = () => {
     if (nextVideo < playVideoList?.length - 1) {
       setNextVideo(nextVideo + 1);
@@ -149,48 +146,42 @@ export const ViewLanding = () => {
 
   return (
     <>
+    <SafeAreaView style={styles.safearea}/>
+      <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
       <View style={styles.container}>
-        <Header title={String?.headerTitle?.view} />
-        <YoutubePlayer
-          height={400}
-          videoId={playVideoList?.[nextVideo]?.videoId[0]}
-          ref={controlRef}
-          play={playing}
-          onChangeState={onStateChange}
-        />
-        {/* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */}
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: 20,
-          }}>
-          <Text
-            style={styles.textStyle}
-            onPress={() => {
-              PrevVideoList();
-            }}>
-            Prev
-          </Text>
-          <Text
-            style={styles.textStyle}
-            onPress={() => {
-              NextVideoList();
-            }}>
-            Next
-          </Text>
-        </View>
-        <View style={styles.timeWrapper}>
-          <Text style={styles.textStyle}>
-            {timer + ' ' + String?.viewTab?.second}
-          </Text>
-          <View style={styles.redLine} />
-          <Text style={styles.textStyle}>
-            {SetCoins() + ' ' + String?.viewTab?.coin}
-          </Text>
-        </View>
+        <Header title={String?.headerTitle?.view4view} />
+        <ScrollView style={styles.main}>
+          <View style={styles.videoWrapper}>
+            <YoutubePlayer
+              height={270}
+              videoId={playVideoList?.[nextVideo]?.videoId[0]}
+              ref={controlRef}
+              play={playing}
+              onChangeState={onStateChange}
+            />
+
+          </View>
+          <View style={styles.iconRow}>
+            <View style={styles.iconWrapper}>
+              <SecondsIcon />
+              <View style={styles.marginLeft}>
+                <Text numberOfLines={1} style={[F60024.textStyle, { color: Colors?.primaryRed }]}>{timer}</Text>
+                <Text style={F40014?.main}>{String?.viewTab?.second}</Text>
+              </View>
+            </View>
+            <View style={styles.iconWrapper}>
+              <CoinIcon />
+              <View style={styles.marginLeft}>
+                <Text numberOfLines={1} style={[F60024.textStyle, { color: Colors?.primaryRed }]}>{SetCoins()}</Text>
+                <Text style={F40014?.main}>{String?.viewTab?.coin}</Text>
+              </View>
+            </View>
+          </View>
+          <ButtonComponent onPrees={() => { NextVideoList() }} wrapperStyle={styles.marginTop} buttonTitle={String?.viewTab?.nextVideo} />
+        </ScrollView>
       </View>
       {playVideoList?.[nextVideo]?.videoId[0] == undefined && <Loader />}
     </>
   );
 };
+{/* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */ }

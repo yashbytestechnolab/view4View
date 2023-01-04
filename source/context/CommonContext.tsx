@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { FC, createContext, useReducer, useState } from 'react'
+import React, { createContext, useReducer, useState } from 'react'
 import { type } from '../constants/types'
-import { ValidationFnc } from './ValidationFnc'
+import { ValidationFnc, getUserCampaign } from '.';
 
 export const InputContextProvide: any = createContext({})
 
@@ -38,16 +37,21 @@ const reducer: Function | any = (state: any, action: any) => {
 
 const CommonContext = ({ children }: any) => {
     const [userInput, dispatch] = useReducer(reducer, intialState)
-    const { userInputError, dispatchError } = ValidationFnc()
+    const { userInputError, dispatchError } = ValidationFnc();
+    const { campaignData, dispatchcampaign } = getUserCampaign()
     const [loading, setLoading] = useState(false)
+
     const storeCreator = {
         userInput,
         dispatch,
         userInputError,
         dispatchError,
         loading,
-        setLoading
+        setLoading,
+        campaignData,
+        dispatchcampaign
     }
+
     return (
         <InputContextProvide.Provider value={{
             storeCreator

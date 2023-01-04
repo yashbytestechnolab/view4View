@@ -1,18 +1,24 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Colors } from '../Theme';
-import { Images } from '../assets/image';
-import { useIsFocused } from '@react-navigation/native';
+import { Colors, F50018, F60016 } from '../Theme';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { get_coins } from '../services/FireStoreServices';
+import LinearGradient from 'react-native-linear-gradient';
+import { Back, EarnCoin } from '../assets/icons';
 
 interface IheaderProps {
   title?: string;
-  backIcon?: string;
+  showBacKIcon?: boolean ;
+  showCoin?: boolean
 }
 export const Header = (props: IheaderProps) => {
-  const { title } = props;
+  const { title, showBacKIcon, showCoin = true } = props;
   const [getCoin, setGetCoin] = useState<number>(0);
-  const focus:boolean = useIsFocused();
+  const focus: boolean = useIsFocused();
+  const navigation = useNavigation()
+  /**
+   * return total coins
+   */
   useEffect(() => {
     get_coins().then((res) => {
       setGetCoin(res?._data?.coin)
@@ -22,44 +28,59 @@ export const Header = (props: IheaderProps) => {
 
   return (
     <>
-      <View style={style.header}>
-        <View style={style.headerWrapper}>
-          <Text style={style.text}>{title}</Text>
-          <View style={style.imageWrapper}>
-            <Image source={Images.rupee} style={style.image} />
-            <Text style={style.text}>{getCoin}</Text>
+      <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]}
+        style={style.header} >
+        <View style={style.Wrapper}>
+          {showBacKIcon && <TouchableOpacity activeOpacity={1} onPress={() => {
+            navigation.goBack()
+          }} style={style.backButtonWrapper}>
+            <Back color={Colors?.white} />
+          </TouchableOpacity>}
+          <View style={style.titleWrapper}>
+            <Text numberOfLines={1} style={[F50018.main, style.titleText]}>{title}</Text>
+
           </View>
+          {
+            showCoin && <View style={style.coinWrapper}>
+              <Text style={[F60016.textStyle, style.padding]}>{getCoin}</Text>
+              <EarnCoin />
+            </View>
+          }
+
         </View>
-      </View>
+
+
+      </LinearGradient>
+
     </>
   );
 };
 const style = StyleSheet.create({
   header: {
     backgroundColor: Colors?.pink,
-    height: 50,
-    width: '100%',
-    paddingHorizontal: 16,
+    height: 60,
+    justifyContent: 'center',
+    //alignItems: 'center'
   },
-  text: {
-    fontWeight: '500',
-    color: Colors?.white,
-    fontSize: 20,
-    marginLeft: 10,
+  titleText: {
+    textAlign: 'center',
+    //  paddingRight: 40, paddingLeft: 8 
   },
-  image: {
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-    alignItems: 'center',
+
+  Wrapper: { flexDirection: 'row', alignItems: 'center', paddingRight: 15, marginLeft: 20 },
+  coinWrapper: {
+    flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end', position: 'absolute', right: 15
   },
-  headerWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 15,
+  backButtonWrapper: {
+    position: 'absolute',
   },
-  imageWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  titleWrapper: {
+    flex: 1,
+    textAlign: 'center',
+    justifyContent: 'center',
   },
+  padding: {
+    paddingRight: 8
+  }
+
 });

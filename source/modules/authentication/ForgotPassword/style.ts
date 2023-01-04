@@ -3,19 +3,25 @@ import { Colors } from "../../../Theme";
 
 export const style = StyleSheet.create({
     containerWrapper: {
-        borderTopEndRadius: 30,
-        borderTopStartRadius: 30,
-        flex: 1, backgroundColor: Colors?.white
+        borderTopEndRadius: 50,
+        borderTopStartRadius: 50,
+        flex: 1,
+        backgroundColor: Colors?.white,
+        paddingBottom: 50
+    },
+    wrapperView: {
+        flex: 1,
+        backgroundColor: Colors?.pink,
+        borderTopEndRadius: 40,
+        borderTopStartRadius: 40,
+        marginTop: -35,
     },
 
     backToLoginTextWrapper: { flexDirection: 'row', justifyContent: 'center', paddingTop: 24 },
     welcomeHeader: {
         alignItems: "center", paddingTop: 30
     },
-    scrollContain: {
-        flexGrow: 1,
-        backgroundColor: 'pink',
-    },
+    backGroundColor: { backgroundColor: Colors?.gradient1 },
     signIn: { marginTop: 24 },
     bottomLine: {
         flexDirection: "row",
@@ -32,5 +38,16 @@ export const style = StyleSheet.create({
     wrapperStyle: {
         alignSelf: 'center',
         width: '80%'
-    }
+    },
+    marginTop: { marginTop: 33 },
+    scroll: { backgroundColor: Colors.white },
+    scrollContain: {
+        flexGrow: 1,
+        backgroundColor: Colors.white,
+    },
+    borderRadius: {
+        borderTopEndRadius: 40,
+        borderTopStartRadius: 40,
+        marginTop: 20
+    },
 })
