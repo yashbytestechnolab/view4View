@@ -7,6 +7,7 @@ const newID = Math.random() * Date.now()
 const randomIdGenrate = newID?.toString()?.split(".")?.join("")
 
 export const UserListTable = firestore()?.collection('UserList')?.doc(userId?.toString())
+export const userTable = firestore()?.collection('users')?.doc(userId?.toString())
 
 export const WatchVideoTable = firestore()?.collection('WatchVideo')?.doc(randomIdGenrate?.toString())
 
@@ -15,12 +16,34 @@ export const WatchVideoList = firestore()?.collection("WatchVideo")
 
 export const loginUser = async (payload: { email: string; uid: string; }, userName: string) => {
   return await UserListTable.set({
+    coin: 0,
     email: payload?.email,
     userId: payload?.uid,
-    coin: 0,
+    firstname: userName,
+    lastname: "",
     videoUrl: '',
-    isWatchVideoId: [],
-    userName: userName
+    image: "",
+    watch_videos: [],
+
+  })
+
+}
+export const userLogin = async (...payload: Array<object | string | undefined>) => {
+  let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
+  const space = fullname.indexOf(" ");
+  const firstName = fullname.substring(0, space);
+  const lastname = fullname.substring(space + 1);
+
+  return await userTable.set({
+    coin: 0,
+    email: payload[0]?.email,
+    userId: payload[0]?.uid,
+    firstname: firstName,
+    lastname: lastname,
+    videoUrl: '',
+    image: payload[0]?.photoURL,
+    watch_videos: [],
+
   })
 
 }
@@ -28,20 +51,6 @@ export const get_coins = async () => {
   return await UserListTable?.get()
 };
 
-// export const createCampaign = async (payload: { videoUrl: string; splitUrl: string; }) => {
-//   return await WatchVideoTable
-//     .set({
-//       videoUrl: payload?.videoUrl,
-//       requireDuration: 25,
-//       coin: 1000,
-//       userId: userId,
-//       expectedView: 3,
-//       remiderView: 3,
-//       uniquWatchVideoID: randomIdGenrate,
-//       videoId: payload?.splitUrl,
-//        created: firestore.FieldValue.serverTimestamp()
-//     })
-// }
 export const createCampaign = async (payload: { videoUrl: string; splitUrl: string; }) => {
   return await WatchVideoTable
     .set({

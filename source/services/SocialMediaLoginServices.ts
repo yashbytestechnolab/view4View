@@ -1,6 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from '@react-native-firebase/auth';
-import { loginUser } from "./FireStoreServices";
+import { loginUser, userLogin } from "./FireStoreServices";
 import * as LocalStorage from './LocalStorage';
 import { NavigationProp } from "@react-navigation/native";
 import { LocalStorageKeys, ROUTES } from "../constants";
@@ -30,10 +30,12 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
         await auth()
             .signInWithCredential(credential)
             .then(async (res: any) => {
+                console.    log("res", res)
                 let userDetail = res?.user?._user
                 let userName = userDetail?.displayName
+               console.log("userName",res,)
                 if (res?.additionalUserInfo?.isNewUser) {
-                    loginUser(userDetail, userName).then(() => {
+                    userLogin(userDetail,).then(() => {
                         console.log("loginUser", res)
                     }).catch((err) => {
                         console.log("loginUser", err);

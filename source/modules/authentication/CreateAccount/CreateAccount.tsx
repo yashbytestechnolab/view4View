@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { emailPattern } from '../../../regex/Regex';
 import { googleLogin, handleFirebaseError } from '../../../services';
 import auth from '@react-native-firebase/auth';
-import { loginUser } from '../../../services/FireStoreServices';
+import { loginUser, userLogin } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
 import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -46,8 +46,13 @@ export const CreateAccount = () => {
         auth().
             createUserWithEmailAndPassword(userInput?.email, userInput?.password).
             then(async (userResponse: any) => {
+               
                 let userDetail = userResponse?.user?._user
-                await loginUser(userDetail, userInput?.fullName)
+                await userLogin(userDetail,userInput?.fullName).then((res)=>{
+                    console.log("success",res);
+                    
+                }).catch((err)=>{console.log(">>>err",err);
+                })
                 await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);
                 await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
                 navigation.reset({
