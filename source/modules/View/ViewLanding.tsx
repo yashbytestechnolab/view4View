@@ -146,8 +146,9 @@ export const ViewLanding = () => {
 
   return (
     <>
+    <SafeAreaView style={styles.safearea}/>
       <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <Header title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
           <View style={styles.videoWrapper}>
@@ -178,7 +179,7 @@ export const ViewLanding = () => {
           </View>
           <ButtonComponent onPrees={() => { NextVideoList() }} wrapperStyle={styles.marginTop} buttonTitle={String?.viewTab?.nextVideo} />
         </ScrollView>
-      </SafeAreaView>
+      </View>
       {playVideoList?.[nextVideo]?.videoId[0] == undefined && <Loader />}
     </>
   );

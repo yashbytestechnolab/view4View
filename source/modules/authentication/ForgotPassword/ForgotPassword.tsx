@@ -57,7 +57,7 @@ export const ForgotPassword = () => {
 
         <BackButton />
         <GradientHeader />
-        <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}>
+        {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
 
           <View style={style.wrapperView} >
             <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
@@ -108,7 +108,7 @@ export const ForgotPassword = () => {
               </View>
             </View>
           </View>
-        </LinearGradient>
+        {/* </LinearGradient> */}
       </KeyboardAwareScrollView>
     </>
   )

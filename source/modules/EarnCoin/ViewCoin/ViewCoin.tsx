@@ -11,7 +11,7 @@ import { style } from './style'
 export const ViewCoin = () => {
     const [getCoin, setGetCoin] = useState<number>(0);
     const focus: boolean = useIsFocused();
-    const navigation:any=useNavigation()
+    const navigation: any = useNavigation()
 
     /**
      * return total coins
@@ -32,7 +32,9 @@ export const ViewCoin = () => {
     }
     return (
         <>
-            <StatusBar backgroundColor={Colors?.gradient1} />
+            <SafeAreaView style={style.safearea} />
+
+            <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
             <SafeAreaView style={style.main}>
                 <Header title={String?.headerTitle?.YourCoin} showBacKIcon={true} />
                 <ScrollView style={style.scrollWrapper} showsVerticalScrollIndicator={false}
@@ -56,7 +58,7 @@ export const ViewCoin = () => {
                         <ViewCoinIcon />
                         <Text style={[F60016?.textStyle, style.viewCoinText]}>{String?.viewCoinScreen?.bottomsubLine}</Text>
                     </View>
-                    <ButtonComponent onPrees={() => {navigation?.navigate(ROUTES?.CREATECAMP) }} buttonTitle={String?.viewCoinScreen?.buttonText} />
+                    <ButtonComponent onPrees={() => { navigation?.navigate(ROUTES?.CREATECAMP) }} buttonTitle={String?.viewCoinScreen?.buttonText} />
 
                 </ScrollView>
             </SafeAreaView>

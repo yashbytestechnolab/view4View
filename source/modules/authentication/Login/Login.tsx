@@ -93,7 +93,7 @@ export const Login = () => {
           contentContainerStyle={style.scrollContain}>
 
           <GradientHeader />
-          <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}>
+          {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
             <View style={style.wrapperView} >
               <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
 
@@ -178,7 +178,7 @@ export const Login = () => {
                 </View>
               </View>
             </View>
-          </LinearGradient>
+          {/* </LinearGradient> */}
         </KeyboardAwareScrollView>
       </View>
     </>
