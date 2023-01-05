@@ -9,10 +9,10 @@ import { Back, EarnCoin } from '../assets/icons';
 interface IheaderProps {
   title?: string;
   showBacKIcon?: boolean;
-  coinAmt?: string | number
+  showCoin?: boolean
 }
 export const Header = (props: IheaderProps) => {
-  const { title, showBacKIcon, coinAmt } = props;
+  const { title, showBacKIcon, showCoin = true } = props;
   const [getCoin, setGetCoin] = useState<number>(0);
   const focus: boolean = useIsFocused();
   const navigation = useNavigation()
@@ -41,7 +41,7 @@ export const Header = (props: IheaderProps) => {
 
           </View>
           {
-            coinAmt && <View style={style.coinWrapper}>
+            showCoin && <View style={style.coinWrapper}>
               <Text style={[F60016.textStyle, style.padding]}>{getCoin}</Text>
               <EarnCoin />
             </View>
@@ -60,11 +60,9 @@ const style = StyleSheet.create({
     backgroundColor: Colors?.pink,
     height: 60,
     justifyContent: 'center',
-    //alignItems: 'center'
   },
   titleText: {
     textAlign: 'center',
-    //  paddingRight: 40, paddingLeft: 8 
   },
 
   Wrapper: { flexDirection: 'row', alignItems: 'center', paddingRight: 15, marginLeft: 20 },
