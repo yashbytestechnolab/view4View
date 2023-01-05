@@ -3,6 +3,13 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 const userId = auth()?.currentUser?.uid;
+function getUniqID(){
+  const newID = Math.random() * Date.now()
+  const randomIdGenrate = newID?.toString()?.split(".")?.join("")
+  return randomIdGenrate
+}
+
+
 
 export const UserListTable = firestore()?.collection('UserList')?.doc(userId?.toString())
 export const userTable = firestore()?.collection('users')?.doc(userId?.toString())
@@ -12,7 +19,7 @@ export const WatchVideoList = firestore()?.collection("campaign")
 //   })
 
 // }
-export const userLogin = async (...payload: Array<object | string | undefined>) => {
+export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
   let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
   const space = fullname.indexOf(" ");
   const firstName = fullname.substring(0, space);
@@ -27,7 +34,6 @@ export const userLogin = async (...payload: Array<object | string | undefined>) 
     videoUrl: '',
     image: payload[0]?.photoURL,
     watch_videos: [],
-
   })
 
 }
@@ -60,7 +66,7 @@ export const payCoin = async (payload: string) => {
 };
 
 export const GetVideoCampaign = async () => {
-  console.log("userId",userId);
+  console.log("userId", userId);
   return await WatchVideoList.where("upload_by", "==", userId?.toString())?.get()
 }
 

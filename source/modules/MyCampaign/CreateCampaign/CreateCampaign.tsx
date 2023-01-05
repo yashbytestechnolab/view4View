@@ -51,7 +51,7 @@ export const CreateCampaign = () => {
         createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost)
           .then((res: any) => {
             let m = firebase.firestore.Timestamp.now()
-            const updateCampaign = getCampaignData?.length > 0 ? [...getCampaignData, { ...res, created: m }] : [{ ...res, created: m }]
+            const updateCampaign = getCampaignData?.length > 0 ? [{ ...res, created: m }, ...getCampaignData] : [{ ...res, created: m }]
             dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: updateCampaign })
           }).catch((err: any) => { console.log("err", err) }),
         navigation.replace(ROUTES.HOME_LANDING)

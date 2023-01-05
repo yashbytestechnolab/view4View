@@ -22,7 +22,7 @@ interface IRoutes {
     CREATECAMP: string;
     INVITEFRIEND:string;
     ADDVIDEO: String
-}
+};
 export const ROUTES: IRoutes = {
     HOME: "HOME",
     VIEW: "VIEW",
@@ -45,5 +45,6 @@ export const ROUTES: IRoutes = {
     SETTING: 'SETTING',
     VIEWCOIN: 'VIEWCOIN',
     CREATECAMP: 'CREATECAMP',
+    INVITEFRIEND:"INVITEFRIEND",
     ADDVIDEO: "ADDVIDEO"
 }
