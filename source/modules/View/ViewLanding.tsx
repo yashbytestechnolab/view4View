@@ -21,18 +21,18 @@ export const ViewLanding = () => {
   const [getWatchUniqId, setGetWatchUniqId] = useState([]);
   const [nextVideo, setNextVideo] = useState<number>(0);
   const [timer, setTimer] = useState<number>(
-    playVideoList?.[nextVideo]?.requireDuration,
+    playVideoList?.[nextVideo]?.require_duration,
   );
 
   const userId = auth().currentUser?.uid;
   const GetCoins = async () => {
     let resCoinUpdate = 0;
     await get_coins().then((res) => {
-      console.log(res)
+      console.log("getCoin",res)
 
-      videoList(res?._data?.isWatchVideoId);
+      videoList(res?._data?.watch_videos);
       resCoinUpdate = res?._data?.coin;
-      setGetWatchUniqId(res?._data?.isWatchVideoId)
+      setGetWatchUniqId(res?._data?.video_Id)
     })
 
     return resCoinUpdate;
@@ -49,7 +49,7 @@ export const ViewLanding = () => {
         if (timer > 0) {
           setTimer(timer - 1);
         }
-      }, 1000);
+      }, 10);
     } else {
       clearInterval(controlRef.current);
     }
@@ -63,12 +63,12 @@ export const ViewLanding = () => {
 
   }, [timer]);
   const SetCoins = () => {
-    return parseInt(playVideoList?.[nextVideo]?.requireDuration / 1.1);
+    return parseInt(playVideoList?.[nextVideo]?.require_duration / 1.1);
   };
 
   const GetEarning = async () => {
-    const getVideoId: string | number = playVideoList?.[nextVideo]?.uniquWatchVideoID;
-    const remiderView: string | number = playVideoList?.[nextVideo]?.remiderView
+    const getVideoId: string | number = playVideoList?.[nextVideo]?.id;
+    const remiderView: string | number = playVideoList?.[nextVideo]?.remaining_view
     if (timer === 0) {
       GetCoins().then((res: number) => {
         setTimer(0);
@@ -117,22 +117,23 @@ export const ViewLanding = () => {
   useEffect(() => {
     GetCoins();
   }, []);
-
+console.log("userIduserId",userId)
   const videoList = async (id: string) => {
 
     getPlayVideoList()
       .then((res: any) => {
+    
         const add_Video_Url: Array<any> = []
         res._docs?.filter((res: any) => {
-          if (res?._data?.userId !== userId && !id?.includes(res?._data?.uniquWatchVideoID)) {
+          if (res?._data?.upload_by !== userId && !id?.includes(res?._data?.id)) {
             add_Video_Url.push(res?._data)
             return res?._data
           }
         });
         const sortListByCoin = add_Video_Url?.sort((res1: myArray, res2: myArray) => res2?.coin - res1?.coin);
-
+        console.log("res>>>>",sortListByCoin)
         setPlayVideoList(sortListByCoin)
-        setTimer(add_Video_Url[0]?.requireDuration);
+        setTimer(add_Video_Url[0]?.require_duration);
 
       });
   };
@@ -140,7 +141,7 @@ export const ViewLanding = () => {
   const NextVideoList = () => {
     if (nextVideo < playVideoList?.length - 1) {
       setNextVideo(nextVideo + 1);
-      setTimer(playVideoList?.[nextVideo + 1]?.requireDuration);
+      setTimer(playVideoList?.[nextVideo + 1]?.require_duration);
     }
   };
 
@@ -154,7 +155,7 @@ export const ViewLanding = () => {
           <View style={styles.videoWrapper}>
             <YoutubePlayer
               height={270}
-              videoId={playVideoList?.[nextVideo]?.videoId[0]}
+              videoId={playVideoList?.[nextVideo]?.video_Id[0]}
               ref={controlRef}
               play={playing}
               onChangeState={onStateChange}
@@ -180,7 +181,7 @@ export const ViewLanding = () => {
           <ButtonComponent onPrees={() => { NextVideoList() }} wrapperStyle={styles.marginTop} buttonTitle={String?.viewTab?.nextVideo} />
         </ScrollView>
       </View>
-      {playVideoList?.[nextVideo]?.videoId[0] == undefined && <Loader />}
+      {playVideoList?.[nextVideo]?.video_Id[0] == undefined && <Loader />}
     </>
   );
 };

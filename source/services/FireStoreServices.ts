@@ -9,25 +9,26 @@ const randomIdGenrate = newID?.toString()?.split(".")?.join("")
 export const UserListTable = firestore()?.collection('UserList')?.doc(userId?.toString())
 export const userTable = firestore()?.collection('users')?.doc(userId?.toString())
 
-export const WatchVideoTable = firestore()?.collection('WatchVideo')?.doc(randomIdGenrate?.toString())
+// export const WatchVideoTable = firestore()?.collection('WatchVideo')?.doc(randomIdGenrate?.toString())
+export const WatchVideoTable = firestore()?.collection('campaign')?.doc(randomIdGenrate?.toString())
 
 
-export const WatchVideoList = firestore()?.collection("WatchVideo")
+export const WatchVideoList = firestore()?.collection("campaign")
 
-export const loginUser = async (payload: { email: string; uid: string; }, userName: string) => {
-  return await UserListTable.set({
-    coin: 0,
-    email: payload?.email,
-    userId: payload?.uid,
-    firstname: userName,
-    lastname: "",
-    videoUrl: '',
-    image: "",
-    watch_videos: [],
+// export const loginUser = async (payload: { email: string; uid: string; }, userName: string) => {
+//   return await UserListTable.set({
+//     coin: 0,
+//     email: payload?.email,
+//     userId: payload?.uid,
+//     firstname: userName,
+//     lastname: "",
+//     videoUrl: '',
+//     image: "",
+//     watch_videos: [],
 
-  })
+//   })
 
-}
+// }
 export const userLogin = async (...payload: Array<object | string | undefined>) => {
   let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
   const space = fullname.indexOf(" ");
@@ -48,7 +49,7 @@ export const userLogin = async (...payload: Array<object | string | undefined>) 
 
 }
 export const get_coins = async () => {
-  return await UserListTable?.get()
+  return await userTable?.get()
 };
 
 export const createCampaign = async (payload: { videoUrl: string; splitUrl: string; }) => {
@@ -66,7 +67,7 @@ export const createCampaign = async (payload: { videoUrl: string; splitUrl: stri
     })
 }
 export const payCoin = async (payload: string) => {
-  return await UserListTable?.update({
+  return await userTable?.update({
     coin: parseInt(payload) - 10,
   })
 };
@@ -76,7 +77,7 @@ export const GetVideoCampaign = async () => {
 }
 
 export const addWatchUrl = async (payload: { totalAmount: string | number; getWatchUniqId: string; getVideoId: string | number; }) => {
-  return await UserListTable.update({
+  return await userTable.update({
     coin: payload?.totalAmount,
     isWatchVideoId: [...payload.getWatchUniqId, payload?.getVideoId]
   })
@@ -84,7 +85,7 @@ export const addWatchUrl = async (payload: { totalAmount: string | number; getWa
 }
 export const getPlayVideoList = async () => {
   return await WatchVideoList
-    .where("remiderView", ">", 0)
+    .where("remaining_view", ">", 0)
     .get()
 }
 
