@@ -1,6 +1,6 @@
 
-import { EarnCoins, SignInNow, YourCampaigns, YoutubeVideos } from "../assets/icons";
-import { String } from "../constants";
+import { AdVideo, BuyCoin, EarnCoins, Invitefriends, SignInNow, YourCampaigns, YoutubeVideos } from "../assets/icons";
+import { ROUTES, String } from "../constants";
 
 export const IntroductionData = [{
     id: 1,
@@ -23,3 +23,22 @@ export const IntroductionData = [{
     title: String?.introduction_swipeList?.signInnow,
     subTitle: String?.introduction_swipeList?.subTitle4
 }]
+export const EarnCoinData = [
+    {
+        svg: BuyCoin,
+        title: 'Buy Coins',
+        subTitle: 'Buy world coins of countries',
+        onPress: ROUTES?.INVITEFRIEND
+    }, {
+        svg: Invitefriends,
+        title: 'Invite friends',
+        subTitle: 'Earn 300 coin for a referral',
+        onPress: ROUTES?.INVITEFRIEND
+    }, {
+        svg: AdVideo,
+        title: 'Watch Ads video',
+        subTitle: 'Watch ads video and earn coins',
+        onPress: ROUTES?.INVITEFRIEND
+    }
+
+]

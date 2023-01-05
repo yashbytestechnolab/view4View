@@ -92,6 +92,12 @@ export const String: any = {
         emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
     },
+    inviteFrd:{
+        headerTitle:'Invite friends',
+        title:"Refer, Invite, and Earn",
+        subTitle:"Earn GREAT rewards and coins by bringing \n your friends and family to our app. You don’t\n wanna miss it.",
+        button:"Invite Now"
+    },
     StatusBar: {
         darkContent: 'dark-content',
         lightContent: 'light-content'

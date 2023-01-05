@@ -19,7 +19,8 @@ interface IRoutes {
     MYCAMPAIGN_LANDING: string;
     SETTING_LANDING: string;
     VIEWCOIN: string;
-    CREATECAMP: string
+    CREATECAMP: string;
+    INVITEFRIEND:string;
     ADDVIDEO: String
 }
 export const ROUTES: IRoutes = {

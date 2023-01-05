@@ -1,8 +1,8 @@
 
 import * as React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {ROUTES} from '../constants/NavigationRoutes';
-import {EarnCoinLanding} from '../modules/EarnCoin';
+import { createStackNavigator } from '@react-navigation/stack';
+import { ROUTES } from '../constants/NavigationRoutes';
+import { SettingLanding } from '../modules/Setting/SettingLanding';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +17,7 @@ export const SettingStack = () => {
       }}>
       <Stack.Screen
         name={ROUTES.SETTING_LANDING}
-        component={EarnCoinLanding}
+        component={SettingLanding}
       />
     </Stack.Navigator>
   );
