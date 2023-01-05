@@ -18,5 +18,6 @@ export const Colors = {
     gradient2: '#FF7976',
     gradient3: '#FF5071',
     borderColor: "#FF8377",
-    lightPink: "#FFB6C1"
+    lightPink: "#FFB6C1",
+    dropdownOffWhite:"#E9E9E9"
 }

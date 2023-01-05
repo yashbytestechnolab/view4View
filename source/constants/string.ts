@@ -14,7 +14,6 @@ export const String: any = {
 
     },
     headerTitle: {
-
         view: 'View',
         earnCoin: 'Earn Coin',
         createCampaign: 'Create Campaign',
@@ -22,8 +21,8 @@ export const String: any = {
         myCampaign: 'My Campaign',
         setting: 'Setting',
         view4view: 'view4view',
-        YourCoin: 'Your Coin'
-
+        YourCoin: 'Your Coin',
+        AddYourVideo: "Add Your Video"
     },
     homeTab: {
         plus: '+',
@@ -69,8 +68,19 @@ export const String: any = {
         fullnameErrorMsg: "Please enter your full name",
         PasswordErrorMsg: "Your password must be at least 8 characters long",
         ConfirmPasswordErrorMsg: "Confirm password doesn't match",
-        darkcontent:"dark-content",
-        signInWithGoogle:'Sign in with Google'
+        darkcontent: "dark-content",
+        signInWithGoogle: 'Sign in with Google',
+        Addvideolink: "Add video link",
+        pasteyourvideolinkhere: "paste your video link here",
+        Addnow: "Add Now",
+        createContain: "Steps to CREATE & ADD a campaign.",
+        OrderSettings: "Order Settings",
+        Expectedviews: "Expected views:",
+        requiredTime: "Time required (in second):",
+        Totalcost: "Total cost:",
+        AddCampaign: "Add Campaign",
+        Warning: "Warning:",
+        viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app."
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
@@ -84,7 +94,7 @@ export const String: any = {
     },
     StatusBar: {
         darkContent: 'dark-content',
-        lightContent:'light-content'
+        lightContent: 'light-content'
     },
     viewCoinScreen: {
         yourCoins: 'Your Coins!',
@@ -97,8 +107,8 @@ export const String: any = {
         bottomsubLine: 'See enjoy & win rewards coins',
         buttonText: 'Earn 50 points now'
     },
-    keyboardType:{
-       email :'email-address'
+    keyboardType: {
+        email: 'email-address'
     }
 
 }

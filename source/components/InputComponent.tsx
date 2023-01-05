@@ -6,21 +6,21 @@ import { Images } from '../assets/image'
 interface props {
     placeholder: string,
     value: string | number | undefined,
-    inputTitle: string,
+    inputTitle?: string,
     onChangeText: (value: string | number | any) => void,
     viewStyle?: StyleProp<ViewStyle>,
     isSecureIcon?: boolean,
     isSecureEntry?: boolean,
     onPrees?: void,
     errorMessage?: string
-    keyboardType?:string
+    keyboardType?: string
 }
 
 export const InputComponent = (props: props) => {
-    const { errorMessage, inputTitle, viewStyle, onChangeText, value, placeholder, isSecureIcon, isSecureEntry, onPrees ,keyboardType} = props
+    const { errorMessage, inputTitle, viewStyle, onChangeText, value, placeholder, isSecureIcon, isSecureEntry, onPrees, keyboardType } = props
     return (
         <View style={[innerStyles.main, viewStyle]}>
-            <Text style={F50012.main}>{inputTitle}</Text>
+            {inputTitle && <Text style={F50012.main}>{inputTitle}</Text>}
             <TextInput
                 placeholderTextColor={Colors.GrayLightC2C9D1}
                 secureTextEntry={isSecureEntry}

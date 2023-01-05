@@ -7,7 +7,7 @@ interface buttonProps {
     buttonTitle: string,
     onPrees: () => void,
     isRewardIconShow?: boolean,
-    wrapperStyle?: StyleProp<ViewStyle|TouchableOpacity>,
+    wrapperStyle?: StyleProp<ViewStyle>,
     loading?: boolean
 }
 

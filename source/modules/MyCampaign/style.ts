@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   countOfView: { flexDirection: "row", alignItems: "center", marginTop: 6 },
   views: { left: 6, top: 1 },
-  height: { height: 12 },
+  height: { height: 5 },
   flatList: { marginBottom: 80, },
   safeArea: { backgroundColor: Colors.linear_gradient }
 });

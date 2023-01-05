@@ -3,14 +3,16 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 const userId = auth()?.currentUser?.uid;
-const newID = Math.random() * Date.now()
-const randomIdGenrate = newID?.toString()?.split(".")?.join("")
+
+function getUniqID() {
+  const newID = Math.random() * Date.now()
+  const randomIdGenrate = newID?.toString()?.split(".")?.join("")
+  return randomIdGenrate
+}
 
 export const UserListTable = firestore()?.collection('UserList')?.doc(userId?.toString())
 
-export const WatchVideoTable = firestore()?.collection('WatchVideo')?.doc(randomIdGenrate?.toString())
-
-export const WatchVideoList = firestore()?.collection("WatchVideo")
+export const WatchVideoList = firestore()?.collection("campaign")
 
 export const loginUser = async (payload: { email: string; uid: string; }, userName: string) => {
   return await UserListTable.set({
@@ -27,19 +29,24 @@ export const get_coins = async () => {
   return await UserListTable?.get()
 };
 
-export const createCampaign = async (payload: { videoUrl: string; splitUrl: string; }) => {
-  return await WatchVideoTable
-    .set({
-      videoUrl: payload?.videoUrl,
-      requireDuration: 25,
-      coin: 1000,
-      userId: userId,
-      expectedView: 3,
-      remiderView: 3,
-      uniquWatchVideoID: randomIdGenrate,
-      videoId: payload?.splitUrl
-    })
+export const createCampaign = async (...payload: Array<object | undefined | string | number>) => {
+  let uniqID = getUniqID();
+  let updateObj = {
+    coin: payload[4],
+    consumed_view: 0,
+    created: firestore.FieldValue.serverTimestamp(),
+    expected_view: payload[3],
+    remaining_view: payload[3],
+    require_duration: payload[2],
+    id: uniqID,
+    upload_by: userId,
+    video_Id: payload[1],
+    video_url: payload[0],
+  }
+  await WatchVideoList.doc(uniqID).set(updateObj)
+  return updateObj
 }
+
 export const payCoin = async (payload: string) => {
   return await UserListTable?.update({
     coin: parseInt(payload) - 10,
@@ -47,7 +54,8 @@ export const payCoin = async (payload: string) => {
 };
 
 export const GetVideoCampaign = async () => {
-  return await WatchVideoList.where("userId", "==", userId?.toString())?.get()
+  console.log("userId",userId);
+  return await WatchVideoList.where("upload_by", "==", userId?.toString())?.get()
 }
 
 export const addWatchUrl = async (payload: { totalAmount: string | number; getWatchUniqId: string; getVideoId: string | number; }) => {

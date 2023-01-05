@@ -24,7 +24,8 @@ export const F40014 = StyleSheet.create({
     },
     colorBlack: {
         color: Colors.black16233A
-    }
+    },
+    whiteColor: { color: Colors.white }
 })
 export const F40012 = StyleSheet.create({
     main: {
@@ -35,6 +36,10 @@ export const F40012 = StyleSheet.create({
     color: {
         color: Colors.primaryRed,
         left: 2
+    },
+    contain: {
+        color: "rgba(0, 0, 0, 0.6)",
+        fontFamily: Fonts?.InterRegular
     },
     color06: { color: "rgba(0, 0, 0, 0.6)", marginTop: 4 },
 
@@ -47,10 +52,10 @@ export const F40012Black = StyleSheet.create({
         color: Colors.black,
         fontSize: 12,
         fontWeight: "400",
-        fontFamily:Fonts?.InterRegular,
-        lineHeight:31
+        fontFamily: Fonts?.InterRegular,
+        lineHeight: 31
     },
-  
+
 })
 
 export const F40010 = StyleSheet.create({
@@ -106,6 +111,9 @@ export const F50012 = StyleSheet.create({
         fontWeight: "500",
         fontFamily: Fonts?.InterMedium
     },
+    fontStyleVideo: {
+        fontFamily: Fonts?.InterMedium
+    },
     color: {
         color: Colors.primaryRed,
         left: 2
@@ -130,8 +138,21 @@ export const F60016 = StyleSheet.create({
         fontWeight: "600",
         fontFamily: Fonts?.InterSemiBold
     },
+    campaign: {
+        color: Colors.black,
+        fontFamily: Fonts?.InterRegular
+    }
 })
-export const F70032=StyleSheet.create({
+
+export const F60012 = StyleSheet.create({
+    textStyle: {
+        color: Colors.primaryRed,
+        fontSize: 12,
+        fontWeight: "600",
+        fontFamily: Fonts?.InterRegular
+    },
+})
+export const F70032 = StyleSheet.create({
     textStyle: {
         color: Colors.primaryRed,
         fontSize: 32,
