@@ -71,7 +71,7 @@ export const payCoin = async (payload: string) => {
 };
 
 export const GetVideoCampaign = async () => {
-  return await WatchVideoList?.where("upload_by", "==", getUserID()?.toString())?.orderBy("created", "desc")?.get()
+  return await WatchVideoList?.orderBy("created", "asc")?.where("upload_by", "==", getUserID()?.toString())?.get()
 }
 
 // export const addWatchUrl = async (payload: { totalAmount: string | number; getWatchUniqId: string; getVideoId: string | number; }) => {

@@ -59,9 +59,9 @@ export const CreateCampaign = () => {
        */
       createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title)
         .then(async (res: any) => {
-          let m = firebase.firestore.Timestamp.now()
-          const updateCampaign = getCampaignData?.length > 0 ? [{ ...res, created: m }, ...getCampaignData] : [{ ...res, created: m }]
-          dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: updateCampaign })
+          // let m = firebase.firestore.Timestamp.now()
+          // const updateCampaign = getCampaignData?.length > 0 ? [{ ...res, created: m }, ...getCampaignData] : [{ ...res, created: m }]
+          // dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: updateCampaign })
           updateCoinBalance(updateWallet)
         }).catch((err: any) => { console.log("err", err) })
     }

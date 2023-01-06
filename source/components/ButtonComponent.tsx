@@ -24,10 +24,9 @@ export const ButtonComponent = (props: buttonProps) => {
                     <EarnCoin />
                 </View>
             }
-            {loading ? <ActivityIndicator color={Colors.white} /> :
-                < Text style={F60016.textStyle} >
-                    {buttonTitle}
-                </Text>}
+            < Text style={F60016.textStyle} >
+                {buttonTitle}
+            </Text>
         </TouchableOpacity >
     )
 }

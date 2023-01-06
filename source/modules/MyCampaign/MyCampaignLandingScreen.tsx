@@ -28,6 +28,8 @@ export const MyCampaignLandingScreen = () => {
       const getVideoUrl: any = []
       res._docs?.filter((res: any) => {
         if (res?._data?.remaining_view > 0) {
+          console.log("res?._data", res?._data);
+
           getVideoUrl.push(res?._data)
           return res?._data
         }
@@ -98,7 +100,7 @@ export const MyCampaignLandingScreen = () => {
         {
           !loding && getCampaignData.length <= 0 &&
           <View style={{ height: Dimensions.get("screen").height / 1.3, justifyContent: "center", alignItems: "center" }}>
-            <Text style={{ color: "red" }}>
+            <Text style={F50013.main}>
               Empty List
             </Text>
           </View>
