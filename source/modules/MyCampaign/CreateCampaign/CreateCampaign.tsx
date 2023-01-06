@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Alert } from 'react-native';
+import { View, Text, ScrollView, Alert, SafeAreaView } from 'react-native';
 import React, { useContext, useMemo, useState } from 'react';
 import { ButtonComponent, Header } from '../../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -22,7 +22,7 @@ interface YT {
 
 export const CreateCampaign = () => {
   const navigation: any = useNavigation();
-  const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, campaignData: { getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
+  const { storeCreator: {loading, setLoading, coinBalance: { getBalance }, dispatchCoin, campaignData: { getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
@@ -43,12 +43,14 @@ export const CreateCampaign = () => {
 
   const updateCoinBalance = async (updateWallet: number) => {
     let coinBalance = await updateUserWallet(updateWallet)
+    setLoading(false)
     dispatchCoin({ types: type.GET_CURRENT_COIN, payload: coinBalance })
     navigation.replace(ROUTES.HOME_LANDING)
   }
 
   const handleAddCampaign = async () => {
     if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
+      setLoading(true)
       const updateWallet = getBalance - totalCost
       const userAddUrl: string = route?.params?.url
       let videoTitle: { title: string } = await getYoutubeMeta(splitUrl)
@@ -61,7 +63,7 @@ export const CreateCampaign = () => {
           // const updateCampaign = getCampaignData?.length > 0 ? [{ ...res, created: m }, ...getCampaignData] : [{ ...res, created: m }]
           // dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: updateCampaign })
           updateCoinBalance(updateWallet)
-        }).catch((err: any) => { console.log("err", err) })
+        }).catch((err: any) => { console.log("err", err);setLoading(false) })
     }
     else {
       // Alert.alert("Not Enough Coin")
@@ -70,6 +72,7 @@ export const CreateCampaign = () => {
 
   return (
     <>
+      <SafeAreaView style={{ backgroundColor: Colors.linear_gradient }} />
       <View style={styles.main}>
         <Header
           showBacKIcon={true}

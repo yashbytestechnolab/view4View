@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { Colors, F50018, F60016 } from '../Theme';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -73,7 +73,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   padding: {
-    top: 1.5,
+    top:Platform.OS=="ios"?0: 1.5,
     paddingRight: 8
   }
 });
