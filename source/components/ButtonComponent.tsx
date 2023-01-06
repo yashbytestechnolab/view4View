@@ -8,13 +8,17 @@ interface buttonProps {
     onPrees: () => void,
     isRewardIconShow?: boolean,
     wrapperStyle?: StyleProp<ViewStyle>,
-    loading?: boolean
+    loading?: boolean,
+    disable?: boolean
 }
 
 export const ButtonComponent = (props: buttonProps) => {
-    const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading } = props
+    const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading, disable } = props
+    console.log("disable",disable);
+    
     return (
         <TouchableOpacity
+            disabled={disable}
             activeOpacity={0.8}
             onPress={onPrees}
             style={[innerStyles.main, wrapperStyle]}>
