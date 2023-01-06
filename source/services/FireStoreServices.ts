@@ -3,7 +3,8 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 const userId = auth()?.currentUser?.uid;
-function getUniqID(){
+
+function getUniqID() {
   const newID = Math.random() * Date.now()
   const randomIdGenrate = newID?.toString()?.split(".")?.join("")
   return randomIdGenrate
@@ -16,9 +17,7 @@ export const userTable = firestore()?.collection('users')?.doc(userId?.toString(
 
 export const WatchVideoList = firestore()?.collection("campaign")
 
-//   })
 
-// }
 export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
   let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
   const space = fullname.indexOf(" ");
@@ -29,8 +28,8 @@ export const userLogin = async (...payload: Array<object | string | undefined | 
     coin: 0,
     email: payload[0]?.email,
     userId: payload[0]?.uid,
-    firstname: firstName,
-    lastname: lastname,
+    firstname: firstName?.length == 0 ? lastname : firstName,
+    lastname: firstName?.length == 0 ? "" : lastname,
     videoUrl: '',
     image: payload[0]?.photoURL,
     watch_videos: [],
@@ -66,27 +65,26 @@ export const payCoin = async (payload: string) => {
 };
 
 export const GetVideoCampaign = async () => {
-  console.log("userId", userId);
+
   return await WatchVideoList.where("upload_by", "==", userId?.toString())?.get()
 }
 
-export const addWatchUrl = async (payload: { totalAmount: string | number; getWatchUniqId: string; getVideoId: string | number; }) => {
+export const addWatchUrl = async (payload: string | number | object | Array<undefined>) => {
   return await userTable.update({
     coin: payload?.totalAmount,
-    isWatchVideoId: [...payload.getWatchUniqId, payload?.getVideoId]
+    watch_videos: [...payload.getWatchUniqId, payload?.getVideoId[0]]
   })
 
 }
 export const getPlayVideoList = async () => {
-  return await WatchVideoList
-    .where("remaining_view", ">", 0)
-    .get()
+  return await WatchVideoList?.where("remaining_view", ">", 0)?.get()
 }
 
-export const getNewUpdatedViewCount = async (payload: { getVideoId: string; remiderView: number; }) => {
+export const getNewUpdatedViewCount = async (payload: string | number) => {
   return await WatchVideoList
-    .doc(payload?.getVideoId).update({
-      remiderView: payload?.remiderView - 1
+    .doc(payload?.getCampaignId).update({
+      remaining_view: payload?.remiderView - 1,
+      consumed_view: parseInt(payload?.consumed_view) + 1
     })
 }
 

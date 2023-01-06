@@ -5,12 +5,18 @@ import { ButtonComponent, Header, Loader } from '../../components';
 import { String } from '../../constants';
 import { styles } from './style';
 import auth from '@react-native-firebase/auth';
-import { addWatchUrl, getNewUpdatedViewCount, getPlayVideoList, get_coins } from '../../services/FireStoreServices';
+import {
+  addWatchUrl,
+  getNewUpdatedViewCount,
+  getPlayVideoList,
+  get_coins,
+} from '../../services/FireStoreServices';
 import { Colors, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
+import { handleFirebaseError } from '../../services';
 
 interface myArray {
-  coin: number
+  coin: number;
 }
 export const ViewLanding = () => {
   const [playing, setPlaying] = useState<boolean>(false);
@@ -20,24 +26,29 @@ export const ViewLanding = () => {
   const firstStart = useRef<boolean>(true);
   const [getWatchUniqId, setGetWatchUniqId] = useState([]);
   const [nextVideo, setNextVideo] = useState<number>(0);
-  const [timer, setTimer] = useState<number>(
-    playVideoList?.[nextVideo]?.require_duration,
-  );
-
+  const [timer, setTimer] = useState<number>();
+  const [loader, setLoader] = useState<boolean>(false);
   const userId = auth().currentUser?.uid;
-  const GetCoins = async () => {
-    let resCoinUpdate = 0;
-    await get_coins().then((res) => {
-      console.log("getCoin",res)
 
-      videoList(res?._data?.watch_videos);
+
+  /**
+     * get coin count
+     
+   */
+  const GetCoins = async (params: string) => {
+    let resCoinUpdate = 0;
+    await get_coins().then(res => {
+      videoList(res?._data?.watch_videos, params);
       resCoinUpdate = res?._data?.coin;
-      setGetWatchUniqId(res?._data?.video_Id)
-    })
+      setGetWatchUniqId(res?._data?.watch_videos);
+    });
 
     return resCoinUpdate;
+  };
 
-  }
+  /**
+       * for timer start given duration
+     */
 
   useEffect(() => {
     if (firstStart.current) {
@@ -56,36 +67,55 @@ export const ViewLanding = () => {
     return () => clearInterval(controlRef.current);
   }, [start, controlRef, timer]);
 
+  /**
+     * useEffect for call timer count 0 then call GetEarning function
+   */
+
   useEffect(() => {
     if (timer === 0) {
       GetEarning();
     }
-
   }, [timer]);
+
+  /**
+      * setCoin divide given duration by 1.1 return total coin 
+    */
   const SetCoins = () => {
     return parseInt(playVideoList?.[nextVideo]?.require_duration / 1.1);
   };
 
+  /**
+      * getEarning is first timer is 0 setTime is o and clearInterval
+      * firestore add user watch url in userTable and update coin
+      * getNewUpdatedViewCount is update remider view and consumed view
+    */
+
   const GetEarning = async () => {
-    const getVideoId: string | number = playVideoList?.[nextVideo]?.id;
-    const remiderView: string | number = playVideoList?.[nextVideo]?.remaining_view
+    const getVideoId: string | number = playVideoList?.[nextVideo]?.video_Id;
+    const getCampaignId: string | number = playVideoList?.[nextVideo]?.id;
+    const remiderView: string | number =
+      playVideoList?.[nextVideo]?.remaining_view;
+    const consumed_view: string | number =
+      playVideoList?.[nextVideo]?.consumed_view;
     if (timer === 0) {
       GetCoins().then((res: number) => {
         setTimer(0);
         clearInterval(controlRef?.current);
         setPlaying(false);
         const totalAmount = res + SetCoins();
-
-        addWatchUrl({ totalAmount, getWatchUniqId, getVideoId }).then(() => {
-        }).catch(() => {
-        })
-
+        addWatchUrl({ totalAmount, getWatchUniqId, getVideoId })
+          .then(res => { })
+          .catch(err => { });
       });
-      getNewUpdatedViewCount({ getVideoId, remiderView }).then(() => { }).catch(() => {
-      })
-
+      getNewUpdatedViewCount({ getCampaignId, remiderView, consumed_view })
+        .then(res => { })
+        .catch(() => { });
     }
   };
+
+  /**
+        * onStageChange manage user video mode
+      */
 
   const onStateChange = async (state: string) => {
     if (state === 'playing') {
@@ -113,42 +143,84 @@ export const ViewLanding = () => {
       setStart(false);
     }
   };
+  /**
+      * first get coin in header show
+    */
 
   useEffect(() => {
-    GetCoins();
+    GetCoins('isRender');
   }, []);
-console.log("userIduserId",userId)
-  const videoList = async (id: string) => {
 
+  /**
+     * filter is return own video not show and repeted video not show in list
+      * videoList is our playlist in view tab show videos
+      * getPlayVideoList is firestore compaign table return videolist
+      * sortListByCoin is sort videolist by coin
+      * TimestampWiseSort is sort by created time
+    */
+  const videoList = async (id: string, params: string) => {
+    setLoader(true);
     getPlayVideoList()
       .then((res: any) => {
-    
-        const add_Video_Url: Array<any> = []
+        console.log("res", res._docs)
+        setLoader(false);
+        const add_Video_Url: Array<any> = [];
         res._docs?.filter((res: any) => {
-          if (res?._data?.upload_by !== userId && !id?.includes(res?._data?.id)) {
-            add_Video_Url.push(res?._data)
-            return res?._data
+          if (
+            res?._data?.upload_by !== userId &&
+            !id?.includes(res?._data?.video_Id[0])
+          ) {
+            add_Video_Url.push(res?._data);
+            return res?._data;
           }
         });
-        const sortListByCoin = add_Video_Url?.sort((res1: myArray, res2: myArray) => res2?.coin - res1?.coin);
-        console.log("res>>>>",sortListByCoin)
-        setPlayVideoList(sortListByCoin)
-        setTimer(add_Video_Url[0]?.require_duration);
+        const TimestampWiseSort = add_Video_Url?.sort(
+          (res1: myArray, res2: myArray) => res2?.created - res1?.created,
+        );
+        console.log('TimestampWiseSort', TimestampWiseSort);
 
+        const sortListByCoin = TimestampWiseSort?.sort(
+          (res1: myArray, res2: myArray) => res2?.coin - res1?.coin,
+        );
+
+        console.log('TimestampWiseSort', sortListByCoin);
+        setPlayVideoList(sortListByCoin);
+        if (params.length > 0) {
+          setLoader(false);
+          setTimer(sortListByCoin[0]?.require_duration);
+        }
+      })
+      .catch(error => {
+        console.log('errorerror', error);
+
+        setLoader(false);
+        handleFirebaseError(error?.code);
+      })
+      .finally(() => {
+        setLoader(false);
       });
   };
-
+  /**
+        * Next button handle 
+      */
   const NextVideoList = () => {
     if (nextVideo < playVideoList?.length - 1) {
       setNextVideo(nextVideo + 1);
+      timer;
       setTimer(playVideoList?.[nextVideo + 1]?.require_duration);
+      console.log('play', playVideoList?.length);
     }
   };
-
+  /**
+      *  reander design 
+    */
   return (
     <>
-    <SafeAreaView style={styles.safearea}/>
-      <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
+      <SafeAreaView style={styles.safearea} />
+      <StatusBar
+        backgroundColor={Colors?.gradient1}
+        barStyle={String?.StatusBar?.lightContent}
+      />
       <View style={styles.container}>
         <Header title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
@@ -160,29 +232,44 @@ console.log("userIduserId",userId)
               play={playing}
               onChangeState={onStateChange}
             />
-
           </View>
           <View style={styles.iconRow}>
             <View style={styles.iconWrapper}>
               <SecondsIcon />
               <View style={styles.marginLeft}>
-                <Text numberOfLines={1} style={[F60024.textStyle, { color: Colors?.primaryRed }]}>{timer}</Text>
+                <Text
+                  numberOfLines={1}
+                  style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
+                  {timer}
+                </Text>
                 <Text style={F40014?.main}>{String?.viewTab?.second}</Text>
               </View>
             </View>
             <View style={styles.iconWrapper}>
               <CoinIcon />
               <View style={styles.marginLeft}>
-                <Text numberOfLines={1} style={[F60024.textStyle, { color: Colors?.primaryRed }]}>{SetCoins()}</Text>
+                <Text
+                  numberOfLines={1}
+                  style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
+                  {SetCoins()}
+                </Text>
                 <Text style={F40014?.main}>{String?.viewTab?.coin}</Text>
               </View>
             </View>
           </View>
-          <ButtonComponent onPrees={() => { NextVideoList() }} wrapperStyle={styles.marginTop} buttonTitle={String?.viewTab?.nextVideo} />
+          <ButtonComponent
+            onPrees={() => {
+              NextVideoList();
+            }}
+            wrapperStyle={styles.marginTop}
+            buttonTitle={String?.viewTab?.nextVideo}
+          />
         </ScrollView>
       </View>
       {playVideoList?.[nextVideo]?.video_Id[0] == undefined && <Loader />}
     </>
   );
 };
-{/* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */ }
+{
+  /* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */
+}

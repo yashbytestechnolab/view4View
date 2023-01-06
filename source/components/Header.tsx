@@ -31,9 +31,7 @@ export const Header = (props: IheaderProps) => {
       <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]}
         style={style.header} >
         <View style={style.Wrapper}>
-          {showBacKIcon && <TouchableOpacity activeOpacity={1} onPress={() => {
-            navigation.goBack()
-          }} style={style.backButtonWrapper}>
+          {showBacKIcon && <TouchableOpacity activeOpacity={1} onPress={() => { navigation.goBack() }} style={style.backButtonWrapper}>
             <Back color={Colors?.white} />
           </TouchableOpacity>}
           <View style={style.titleWrapper}>
@@ -71,6 +69,7 @@ const style = StyleSheet.create({
   },
   backButtonWrapper: {
     position: 'absolute',
+    padding: 5
   },
   titleWrapper: {
     flex: 1,
@@ -78,6 +77,8 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   padding: {
+    //backgroundColor:'red',
+    top: 2,
     paddingRight: 8
   }
 
