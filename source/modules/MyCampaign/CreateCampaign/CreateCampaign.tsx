@@ -40,8 +40,6 @@ export const CreateCampaign = () => {
     setTotalCost(parseInt(item / 1.1))
   }
 
-  console.log("expectedValue", expectedValue);
-
 
   const updateCoinBalance = async (updateWallet: number) => {
     let coinBalance = await updateUserWallet(updateWallet)
@@ -66,7 +64,7 @@ export const CreateCampaign = () => {
         }).catch((err: any) => { console.log("err", err) })
     }
     else {
-      Alert.alert("Not Enough Coin")
+      // Alert.alert("Not Enough Coin")
     }
   }
 
@@ -171,6 +169,7 @@ export const CreateCampaign = () => {
             </View>
 
             <ButtonComponent
+              disable={getBalance <= totalCost || timeSecond == 0 || views == 0}
               buttonTitle={commonString.AddCampaign}
               wrapperStyle={{ marginHorizontal: 0, marginTop: 32 }}
               onPrees={() => handleAddCampaign()}
