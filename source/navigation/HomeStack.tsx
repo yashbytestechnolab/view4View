@@ -2,6 +2,7 @@ import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {ROUTES} from '../constants/NavigationRoutes';
 import {CreateCampaign, HomeLanding} from '../modules/MyCampaign';
+import { ViewCoin } from '../modules/EarnCoin';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,10 @@ export const HomeStack = () => {
         gestureEnabled: true,
       }}>
       <Stack.Screen name={ROUTES.HOME_LANDING} component={HomeLanding} />
+      <Stack.Screen
+        name={ROUTES.VIEWCOIN}
+        component={ViewCoin}
+      />
       <Stack.Screen name={ROUTES.CREATE_CAMPAIGN} component={CreateCampaign} />
     </Stack.Navigator>
   );

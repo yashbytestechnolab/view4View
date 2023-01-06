@@ -11,18 +11,18 @@ export const AddVideo = () => {
     const navigation = useNavigation()
     const { headerTitle, commonString } = String
     const [addVideoUrl, setVideoUrl] = useState("")
-    const { storeCreator: { campaignData: { getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
-
+    const { storeCreator: { campaignData: { getCampaignData } } }: any = useContext(InputContextProvide)
     const onAddVideo = () => {
+        let youtubeUrl = 'https://youtu.be/'
         let expetedViewNotRepeat = false
-        addVideoUrl == "" ? null
+        addVideoUrl == "" || !youtubeUrl.includes(addVideoUrl.slice(0, 16)) ? null
             :
             (
                 getCampaignData.length > 0 &&
                 getCampaignData?.map((res: { video_url: string | undefined; }) => {
                     res?.video_url == addVideoUrl ? expetedViewNotRepeat = true : false
                 }),
-                !expetedViewNotRepeat ? navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }) :
+                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), setVideoUrl("")) :
                     (Alert.alert("please enter uniq url"))
             )
     }

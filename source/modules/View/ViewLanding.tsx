@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header, Loader } from '../../components';
@@ -14,16 +14,20 @@ import {
 import { Colors, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
+import { InputContextProvide } from '../../context/CommonContext';
+import { type } from '../../constants/types';
 
 interface myArray {
   coin: number;
 }
 export const ViewLanding = () => {
+  const { storeCreator: { coinBalance: { getBalance }, dispatchCoin } }: any = useContext(InputContextProvide)
+
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
-  const [playVideoList, setPlayVideoList] = useState();
-  const controlRef = useRef<boolean>();
-  const firstStart = useRef<boolean>(true);
+  const [playVideoList, setPlayVideoList]: number | any = useState(0);
+  const controlRef: any = useRef<boolean>();
+  const firstStart: any = useRef<boolean>(true);
   const [getWatchUniqId, setGetWatchUniqId] = useState([]);
   const [nextVideo, setNextVideo] = useState<number>(0);
   const [timer, setTimer] = useState<number>();
@@ -41,6 +45,7 @@ export const ViewLanding = () => {
       videoList(res?._data?.watch_videos, params);
       resCoinUpdate = res?._data?.coin;
       setGetWatchUniqId(res?._data?.watch_videos);
+      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
     });
 
     return resCoinUpdate;
@@ -98,7 +103,7 @@ export const ViewLanding = () => {
     const consumed_view: string | number =
       playVideoList?.[nextVideo]?.consumed_view;
     if (timer === 0) {
-      GetCoins().then((res: number) => {
+      GetCoins("").then((res: number) => {
         setTimer(0);
         clearInterval(controlRef?.current);
         setPlaying(false);
@@ -222,7 +227,7 @@ export const ViewLanding = () => {
         barStyle={String?.StatusBar?.lightContent}
       />
       <View style={styles.container}>
-        <Header title={String?.headerTitle?.view4view} />
+        <Header coin={getBalance} title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
           <View style={styles.videoWrapper}>
             <YoutubePlayer

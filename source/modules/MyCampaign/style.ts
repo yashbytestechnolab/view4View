@@ -27,5 +27,16 @@ export const styles = StyleSheet.create({
   views: { left: 6, top: 1 },
   height: { height: 5 },
   flatList: { marginBottom: 80, },
-  safeArea: { backgroundColor: Colors.linear_gradient }
+  safeArea: { backgroundColor: Colors.linear_gradient },
+  addIcon: {
+    position: "absolute",
+    height: 60,
+    width: 60,
+    bottom: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30,
+    right: 20,
+    backgroundColor: Colors.primaryRed
+  }
 });
