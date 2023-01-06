@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native'
 import React from 'react'
 import * as LocalStorage from '../../../services/LocalStorage';
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
@@ -11,6 +11,7 @@ export const SettingLanding = () => {
   const navigation = useNavigation()
   return (
     <>
+    <SafeAreaView style={style.safeArea}/>
       <Header  title={String?.headerTitle?.setting} showCoin={false}/>
       <TouchableOpacity
         onPress={async () => {
@@ -27,5 +28,8 @@ export const SettingLanding = () => {
 
 const style = StyleSheet.create({
   text: { margin: 10, fontSize: 30, color: Colors?.green, textAlign: 'center' },
+  safeArea: {
+    backgroundColor: Colors.gradient1
+},
 
 })

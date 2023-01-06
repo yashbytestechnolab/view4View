@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header, Loader } from '../../components';
-import {  String } from '../../constants';
+import { String } from '../../constants';
 import { styles } from './style';
 import auth from '@react-native-firebase/auth';
 import {
@@ -182,13 +182,11 @@ export const ViewLanding = () => {
         const TimestampWiseSort = add_Video_Url?.sort(
           (res1: myArray, res2: myArray) => res2?.created - res1?.created,
         );
-        console.log('TimestampWiseSort', TimestampWiseSort);
 
         const sortListByCoin = TimestampWiseSort?.sort(
           (res1: myArray, res2: myArray) => res2?.coin - res1?.coin,
         );
 
-        console.log('TimestampWiseSort', sortListByCoin);
         setPlayVideoList(sortListByCoin);
         if (params.length > 0) {
           setLoader(false);
@@ -211,11 +209,11 @@ export const ViewLanding = () => {
   const NextVideoList = () => {
     if (nextVideo < playVideoList?.length - 1) {
       setNextVideo(nextVideo + 1);
-      timer;
       setTimer(playVideoList?.[nextVideo + 1]?.require_duration);
-      console.log('play', playVideoList?.length);
+
     }
   };
+
   /**
       *  reander design 
     */
