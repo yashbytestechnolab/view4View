@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native'
 import React from 'react'
 import * as LocalStorage from '../../../services/LocalStorage';
 import { LocalStorageKeys, ROUTES } from '../../../constants';
@@ -9,7 +9,8 @@ import { Colors } from '../../../Theme';
 export const SettingLanding = () => {
   const navigation = useNavigation()
   return (
-    <View>
+    <>
+    <SafeAreaView/>
       <TouchableOpacity
         onPress={async () => {
           await LocalStorage.setValue(LocalStorageKeys.UserId, "")
@@ -18,7 +19,7 @@ export const SettingLanding = () => {
         }}>
         <Text style={style.text}> Logout</Text>
       </TouchableOpacity>
-    </View>
+      </>
   )
 }
 
