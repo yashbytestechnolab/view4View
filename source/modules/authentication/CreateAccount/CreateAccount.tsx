@@ -14,7 +14,7 @@ import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { useNavigation } from '@react-navigation/native';
 import { emailPattern } from '../../../regex/Regex';
-import { googleLogin, handleFirebaseError } from '../../../services';
+import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../services';
 import auth from '@react-native-firebase/auth';
 import { userLogin } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
@@ -181,18 +181,18 @@ export const CreateAccount = () => {
                                             wrapperStyle={{ width: '90%', }}
                                             socialMediaIcon={<Google />}
                                             buttonTitle={String.commonString.signInWithGoogle}
-                                            onPress={() => { googleLogin(navigation) }}
+                                            onPress={() => { googleLogin(navigation, setLoading) }}
                                         /> :
                                         <View style={style.socialMedia}>
                                             <SocialMediaButton
                                                 socialMediaIcon={<Google />}
                                                 buttonTitle={String.commonString.Google}
-                                                onPress={() => { googleLogin(navigation) }}
+                                                onPress={() => { googleLogin(navigation, setLoading) }}
                                             />
                                             <SocialMediaButton
                                                 socialMediaIcon={<Apple />}
                                                 buttonTitle={String.commonString.Apple}
-                                                onPress={() => appleLoginIos(navigation)}
+                                                onPress={() => appleLoginIos(navigation, setLoading)}
                                             />
                                         </View>
                                 }

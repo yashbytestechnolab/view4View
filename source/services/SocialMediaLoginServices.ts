@@ -7,6 +7,8 @@ import { LocalStorageKeys, ROUTES } from "../constants";
 import { config } from "../config";
 import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
+import { useContext } from "react";
+import { InputContextProvide } from "../context/CommonContext";
 
 GoogleSignin.configure({
     webClientId: config?.googlewebClientId,
@@ -19,7 +21,9 @@ GoogleSignin.configure({
  * @param navigation 
  */
 
-export const googleLogin = async (navigation: NavigationProp<ReactNavigation.RootParamList>) => {
+
+export const googleLogin = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
+    setLoading(true)
     try {
         await GoogleSignin.hasPlayServices();
         const { accessToken, idToken }: any = await GoogleSignin.signIn();
@@ -30,10 +34,10 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
         await auth()
             .signInWithCredential(credential)
             .then(async (res: any) => {
-                console.    log("res", res)
+                console.log("res", res)
                 let userDetail = res?.user?._user
                 let userName = userDetail?.displayName
-               console.log("userName",res,)
+                console.log("userName", res,)
                 if (res?.additionalUserInfo?.isNewUser) {
                     userLogin(userDetail).then(() => {
                         console.log("loginUser", res)
@@ -47,14 +51,15 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
                     routes: [{ name: ROUTES.TABLIST }],
                 });
                 await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
-            });
+                setLoading(false)
+            }).finally(() => setLoading(false))
     } catch (error) {
+        setLoading(false)
         console.log("error", error);
-
     }
 };
 
-export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>) => {
+export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     // create login request for apple
     const appleAuthRequestResponse: any = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
@@ -84,8 +89,6 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
                     routes: [{ name: ROUTES.TABLIST }],
                 });
                 await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
-            });
-
-
+            }).catch(() => setLoading(false)).finally(() => setLoading(false))
     }
 };
