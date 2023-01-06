@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import React, { useContext } from 'react';
+
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import React, { useContext, } from 'react';
 import { Colors, F50018, F60016 } from '../Theme';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -94,8 +95,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   padding: {
-    top: 1.5,
-    paddingRight: 4,
-    // padding:5
-  },
+    top: Platform.OS == "ios" ? 0 : 1.5,
+    paddingRight: 8
+  }
 });

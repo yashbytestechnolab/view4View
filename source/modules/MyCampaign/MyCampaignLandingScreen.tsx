@@ -16,7 +16,7 @@ export const MyCampaignLandingScreen = () => {
   const navigation = useNavigation()
   let route: object | any = useRoute()
   /**context data coin and campaign data */
-  const { storeCreator: { loading, setLoading, campaignData: { loding, getCampaignData, error }, dispatchcampaign } }: any = useContext(InputContextProvide)
+  const { storeCreator: { loading, setLoading, campaignData: { loding, getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
 
   /**
   * Get data from firebase for campaign list   
@@ -96,10 +96,10 @@ export const MyCampaignLandingScreen = () => {
 
   const handleEmptyData = () => {
     return (
-      <>
+      < >
         {
-          !loding && getCampaignData.length <= 0 &&
-          <View style={{ height: Dimensions.get("screen").height / 1.3, justifyContent: "center", alignItems: "center" }}>
+          !loading && !loding && getCampaignData.length <= 0 &&
+          <View style={{ flexGrow: 1, justifyContent: "center", alignItems: "center" }}>
             <Text style={F50013.main}>
               Empty List
             </Text>
@@ -124,10 +124,10 @@ export const MyCampaignLandingScreen = () => {
               style={styles.flatList}
               data={getCampaignData}
               refreshing={loading}
-              // refreshControl={()=>}
               onRefresh={() => getVideoUrl("loading")}
               renderItem={renderCampaignList}
               ListEmptyComponent={handleEmptyData}
+              contentContainerStyle={{flexGrow: 1}}
             />
             <TouchableOpacity
               onPress={() => navigation.navigate(ROUTES.ADDVIDEO)}
