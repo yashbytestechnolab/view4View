@@ -1,15 +1,17 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import * as LocalStorage from '../../../services/LocalStorage';
-import { LocalStorageKeys, ROUTES } from '../../../constants';
+import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { Colors } from '../../../Theme';
+import { Header } from '../../../components';
 
 export const SettingLanding = () => {
   const navigation = useNavigation()
   return (
-    <View>
+    <>
+      <Header  title={String?.headerTitle?.setting} showCoin={false}/>
       <TouchableOpacity
         onPress={async () => {
           await LocalStorage.setValue(LocalStorageKeys.UserId, "")
@@ -18,7 +20,8 @@ export const SettingLanding = () => {
         }}>
         <Text style={style.text}> Logout</Text>
       </TouchableOpacity>
-    </View>
+    </>
+
   )
 }
 

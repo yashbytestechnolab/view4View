@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { String, ROUTES } from '../constants';
-import { ViewStack, EarnCoinStack, SettingStack,MyCampaignLanding } from '.';
+import { ViewStack, EarnCoinStack, SettingStack, MyCampaignLanding } from '.';
 import { Home, MyCampaign, Setting, TabEarnCoin } from '../assets/icons';
 import { SvgProps } from 'react-native-svg';
 import { ActiveTabText, Colors, F50010 } from '../Theme';
@@ -35,6 +35,7 @@ export const TabNavigation = () => {
     <Tab.Navigator
       initialRouteName={ROUTES.VIEW}
       screenOptions={({ route }) => ({
+        unmountOnBlur: true,
         tabBarHideOnKeyboard: true,
         headerShown: false,
 
@@ -124,8 +125,8 @@ const styles = StyleSheet.create({
     paddingBottom: '5%',
     alignSelf: 'center',
     alignItems: 'center',
-    
-    
+
+
   },
- 
+
 });

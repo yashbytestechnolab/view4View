@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import React from 'react';
 import { Header } from '../../components';
-import { String } from '../../constants';
+import { ROUTES, String } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
 import { Colors, F40012, F60016 } from '../../Theme';
 import { NextIcon } from '../../assets/icons';
 import { EarnCoinData } from '../../services/jsonfile';
+import { style } from './style';
 
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
@@ -15,7 +16,7 @@ export const EarnCoinLanding = () => {
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
       <View style={style.main}>
-        <Header title={String?.headerTitle?.earnCoin} showBacKIcon={true} />
+        <Header title={String?.headerTitle?.earnCoin} showBacKIcon={true}  />
         <View style={{ paddingHorizontal: 16, paddingTop: 20, }}>
           {
             EarnCoinData && EarnCoinData?.map((item) => {
@@ -42,23 +43,3 @@ export const EarnCoinLanding = () => {
     </>
   );
 };
-const style = StyleSheet.create({
-
-  card: {
-    shadowColor: Colors?.cardshadow,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 4,
-    elevation: 5,
-    backgroundColor: Colors?.white,
-    padding: 16,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    marginTop: 24,
-    alignItems: 'center',
-    borderRadius: 8
-
-  },
-  main: { flex: 1, backgroundColor: Colors?.lightWhite },
-  leftRow: { flexDirection: 'row', alignItems: 'center' },
-  text: { margin: 10, fontSize: 30, color: Colors?.green, textAlign: 'center' },
-})

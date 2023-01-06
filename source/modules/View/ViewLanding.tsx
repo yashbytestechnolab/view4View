@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header, Loader } from '../../components';
-import { String } from '../../constants';
+import {  String } from '../../constants';
 import { styles } from './style';
 import auth from '@react-native-firebase/auth';
 import {
@@ -271,7 +271,7 @@ export const ViewLanding = () => {
           />
         </ScrollView>
       </View>
-      {playVideoList?.[nextVideo]?.video_Id[0] == undefined && <Loader />}
+      {playVideoList?.[nextVideo]?.video_Id[0] == undefined && playVideoList?.length != 0 && <Loader />}
     </>
   );
 };

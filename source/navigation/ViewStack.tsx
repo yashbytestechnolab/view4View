@@ -11,6 +11,7 @@ export const ViewStack = () => {
 
   return (
     <Stack.Navigator
+    initialRouteName={ROUTES.VIEW_LANDING}
       screenOptions={{
         cardOverlayEnabled: false,
         headerShown: false,

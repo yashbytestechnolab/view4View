@@ -13,7 +13,7 @@ import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { firebase } from '@react-native-firebase/firestore';
 import { getYoutubeMeta, } from 'react-native-youtube-iframe';
-import { getCurrentCoinBalance } from '../../../context';
+
 interface YT {
   views: string | number;
   timeSecond: string | number
@@ -39,9 +39,6 @@ export const CreateCampaign = () => {
     setExpectedValue({ ...expectedValue, timeSecond: item });
     setTotalCost(parseInt(item / 1.1))
   }
-
-  console.log("expectedValue", expectedValue);
-
 
   const updateCoinBalance = async (updateWallet: number) => {
     let coinBalance = await updateUserWallet(updateWallet)
