@@ -35,7 +35,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
                 let userName = userDetail?.displayName
                console.log("userName",res,)
                 if (res?.additionalUserInfo?.isNewUser) {
-                    userLogin(userDetail,).then(() => {
+                    userLogin(userDetail).then(() => {
                         console.log("loginUser", res)
                     }).catch((err) => {
                         console.log("loginUser", err);

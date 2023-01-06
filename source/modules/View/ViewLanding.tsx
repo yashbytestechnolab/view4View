@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header, Loader } from '../../components';
@@ -8,35 +8,35 @@ import auth from '@react-native-firebase/auth';
 import { addWatchUrl, getNewUpdatedViewCount, getPlayVideoList, get_coins } from '../../services/FireStoreServices';
 import { Colors, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
+import { InputContextProvide } from '../../context/CommonContext';
+import { type } from '../../constants/types';
 
 interface myArray {
   coin: number
 }
 export const ViewLanding = () => {
+  const { storeCreator: { coinBalance: { getBalance }, dispatchCoin } }: any = useContext(InputContextProvide)
+
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
-  const [playVideoList, setPlayVideoList] = useState();
-  const controlRef = useRef<boolean>();
-  const firstStart = useRef<boolean>(true);
+  const [playVideoList, setPlayVideoList]: number | any = useState(0);
+  const controlRef: any = useRef<boolean>();
+  const firstStart: any = useRef<boolean>(true);
   const [getWatchUniqId, setGetWatchUniqId] = useState([]);
   const [nextVideo, setNextVideo] = useState<number>(0);
-  const [timer, setTimer] = useState<number>(
-    playVideoList?.[nextVideo]?.require_duration,
-  );
+  const [timer, setTimer] = useState<number>(0);
 
   const userId = auth().currentUser?.uid;
-  const GetCoins = async () => {
+  const GetCoins = async (params: string) => {
     let resCoinUpdate = 0;
     await get_coins().then((res) => {
-      console.log("getCoin",res)
-
-      videoList(res?._data?.watch_videos);
+      videoList(res?._data?.watch_videos, params);
       resCoinUpdate = res?._data?.coin;
+      // Add coin balance in dispatch
+      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
       setGetWatchUniqId(res?._data?.video_Id)
     })
-
     return resCoinUpdate;
-
   }
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const ViewLanding = () => {
     const getVideoId: string | number = playVideoList?.[nextVideo]?.id;
     const remiderView: string | number = playVideoList?.[nextVideo]?.remaining_view
     if (timer === 0) {
-      GetCoins().then((res: number) => {
+      GetCoins("").then((res: number) => {
         setTimer(0);
         clearInterval(controlRef?.current);
         setPlaying(false);
@@ -115,14 +115,12 @@ export const ViewLanding = () => {
   };
 
   useEffect(() => {
-    GetCoins();
+    GetCoins("mehandi");
   }, []);
-console.log("userIduserId",userId)
-  const videoList = async (id: string) => {
 
+  const videoList = async (id: string, params: string) => {
     getPlayVideoList()
       .then((res: any) => {
-    
         const add_Video_Url: Array<any> = []
         res._docs?.filter((res: any) => {
           if (res?._data?.upload_by !== userId && !id?.includes(res?._data?.id)) {
@@ -131,10 +129,8 @@ console.log("userIduserId",userId)
           }
         });
         const sortListByCoin = add_Video_Url?.sort((res1: myArray, res2: myArray) => res2?.coin - res1?.coin);
-        console.log("res>>>>",sortListByCoin)
         setPlayVideoList(sortListByCoin)
-        setTimer(add_Video_Url[0]?.require_duration);
-
+        params?.length > 0 && setTimer(add_Video_Url[0]?.require_duration);
       });
   };
 
@@ -147,10 +143,10 @@ console.log("userIduserId",userId)
 
   return (
     <>
-    <SafeAreaView style={styles.safearea}/>
+      <SafeAreaView style={styles.safearea} />
       <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
       <View style={styles.container}>
-        <Header title={String?.headerTitle?.view4view} />
+        <Header coin={getBalance} title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
           <View style={styles.videoWrapper}>
             <YoutubePlayer

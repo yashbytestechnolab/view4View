@@ -8,10 +8,12 @@ import { styles } from './style';
 import { Colors, F40014, F60012, F60016 } from '../../../Theme';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Expected } from '../../../services';
-import { createCampaign } from '../../../services/FireStoreServices';
+import { createCampaign, get_coins, updateUserWallet } from '../../../services/FireStoreServices';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { firebase } from '@react-native-firebase/firestore';
+import { getYoutubeMeta, } from 'react-native-youtube-iframe';
+import { getCurrentCoinBalance } from '../../../context';
 interface YT {
   views: string | number;
   timeSecond: string | number
@@ -20,48 +22,60 @@ interface YT {
 
 export const CreateCampaign = () => {
   const navigation: any = useNavigation();
-  const { storeCreator: { campaignData: { getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
-
+  const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, campaignData: { getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
 
-  const [expectedValue, setExpectedValue] = useState<YT>({
-    views: 0,
-    timeSecond: 0
-  })
-  // return parseInt(playVideoList?.[nextVideo]?.requireDuration / 1.1)
+  const [expectedValue, setExpectedValue] = useState<YT>({ views: 0, timeSecond: 0 })
   const [totalCost, setTotalCost] = useState(0)
-
   const expectedView = useMemo(() => Expected(10, 100, 10), [])
   const expectedTime = useMemo(() => Expected(45, 600, 30), [])
   const { views, timeSecond } = expectedValue
-  const splitUrl = route?.params?.url.split('/').slice(3)
   const { commonString, headerTitle } = String
+  const splitUrl = route?.params?.url.split('/').slice(3)
 
   const onUpdateCostValue = (item: string) => {
     setExpectedValue({ ...expectedValue, timeSecond: item });
     setTotalCost(parseInt(item / 1.1))
   }
 
-  const handleAddCampaign = () => {
-    const userAddUrl: string = route?.params?.url
-    timeSecond == 0 || views == 0 ? Alert.alert("Select category") :
-      (
-        createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost)
-          .then((res: any) => {
-            let m = firebase.firestore.Timestamp.now()
-            const updateCampaign = getCampaignData?.length > 0 ? [{ ...res, created: m }, ...getCampaignData] : [{ ...res, created: m }]
-            dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: updateCampaign })
-          }).catch((err: any) => { console.log("err", err) }),
-        navigation.replace(ROUTES.HOME_LANDING)
-      )
+  console.log("expectedValue", expectedValue);
+
+
+  const updateCoinBalance = async (updateWallet: number) => {
+    let coinBalance = await updateUserWallet(updateWallet)
+    dispatchCoin({ types: type.GET_CURRENT_COIN, payload: coinBalance })
+    navigation.replace(ROUTES.HOME_LANDING)
+  }
+
+  const handleAddCampaign = async () => {
+    if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
+      const updateWallet = getBalance - totalCost
+      const userAddUrl: string = route?.params?.url
+      let videoTitle: { title: string } = await getYoutubeMeta(splitUrl)
+      /**
+       * Create Campaign api call & cut wallet amount
+       */
+      createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title)
+        .then(async (res: any) => {
+          let m = firebase.firestore.Timestamp.now()
+          const updateCampaign = getCampaignData?.length > 0 ? [{ ...res, created: m }, ...getCampaignData] : [{ ...res, created: m }]
+          dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: updateCampaign })
+          updateCoinBalance(updateWallet)
+        }).catch((err: any) => { console.log("err", err) })
+    }
+    else {
+      Alert.alert("Not Enough Coin")
+    }
   }
 
   return (
     <>
       <View style={styles.main}>
-        <Header title={headerTitle?.createCampaign} />
+        <Header
+          showBacKIcon={true}
+          title={headerTitle?.createCampaign} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           scrollEnabled={true}
@@ -180,92 +194,3 @@ export const CreateCampaign = () => {
     </>
   );
 }
-
-/*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- // const focus: boolean = useIsFocused();
-  // const imageUrl = "http://img.youtube.com/vi/" + splitUrl?.slice(3) + "/0.jpg";
-  // const videoUrl = route?.params?.url
-
-  // useEffect(() => {
-      //   get_coins().then((res) => {
-      //     setGetCoin(res?._data.coin)
-      //   })
-      // }, [focus, getCoin]);
-
-      // const TotalCost = () => {
-      //   payCoin(getCoin).then(() => {
-      //     navigation?.navigate(ROUTES?.HOME_LANDING, {
-      //       imageId: imageUrl
-      //     });
-      //   });
-      // };
-
-      // const AddVideo = async () => {
-      //   createCampaign({ videoUrl, splitUrl })
-      //     .then(() => {
-      //       TotalCost()
-      //     }).catch(() => { })
-      // }
-
-      /**
-       * 
-       *  {getCoin === null
-              ? Alert.alert(
-                'Alert Title',
-                "'sorry! you currently have no coin please watch the video and Earn coins',",
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => {
-                      navigation.goBack();
-                    },
-                  },
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      navigation.navigate(ROUTES?.HOME_LANDING);
-                    },
-                  },
-                ],
-              )
-              : null}
-       * 
-       */
-
-
-
-{/* <View style={styles.totalCoast}>
-            <Text style={styles.totalCostText}>Expected views</Text>
-            <Text style={styles.costStyle}>10</Text>
-          </View>
-          <View style={styles.totalCoast}>
-            <Text style={styles.totalCostText}>time Required</Text>
-            <Text style={styles.costStyle}>10</Text>
-          </View>
-          <View style={styles.totalCoast}>
-            <Text style={styles.totalCostText}>{String?.homeTab?.totalCost}</Text>
-            <Text style={styles.costStyle}>100</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.addButtonWrapper}
-            onPress={() => {
-              {
-                getCoin !== null && AddVideo();
-              }
-            }}>
-            <Text style={[styles.plusIcon]}>{String?.homeTab?.done}</Text>
-          </TouchableOpacity> */}
