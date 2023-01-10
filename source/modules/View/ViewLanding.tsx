@@ -105,17 +105,9 @@ export const ViewLanding = () => {
         setPlaying(false);
         const totalAmount = res + SetCoins();
         addWatchUrl({ totalAmount, getVideoId, getCurrenData })
-          .then(res => {
-            console.log("resresresresres", res);
-          })
-          .catch(err => { });
       });
       getNewUpdatedViewCount({ getCampaignId, remiderView, consumed_view })
-        .then(res => {
-          console.log("uuuuuuuuuu", res);
 
-        })
-        .catch(() => { });
     }
 
   }

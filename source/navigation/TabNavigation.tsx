@@ -115,15 +115,17 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     elevation: 7,
-    shadowColor: Colors?.black,
+    shadowColor: Colors?.blackShadow,
     shadowOpacity: 0.8,
     shadowRadius: 4,
     shadowOffset: {
       height: 1,
       width: 1
     },
+    borderTopWidth:1,
     height: 63,
-    paddingBottom: '5%',
+    paddingTop:'2%',
+    paddingBottom:'3%',
     alignSelf: 'center',
     alignItems: 'center',
 

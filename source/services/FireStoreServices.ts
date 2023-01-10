@@ -1,8 +1,6 @@
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-// import {}from 'firebase/firestore'
-
 
 function getUserID() {
   const userId = auth()?.currentUser?.uid;
@@ -45,7 +43,19 @@ export const userLogin = async (...payload: Array<object | string | undefined | 
 export const get_coins = async () => {
   return await userTable?.get()
 };
+export const updateProfile = async (...payload: Array<object | string | undefined | any>) => {
+  const space = payload[0].indexOf(" ");
+  const firstName = payload[0].substring(0, space);
+  const lastname = payload[0].substring(space + 1);
 
+  return await userTable?.update({
+
+    firstname: firstName,
+    lastname: lastname,
+    image: payload[1] != undefined && payload[1]
+  })
+
+}
 export const createCampaign = async (...payload: Array<object | undefined | string | number>) => {
   let uniqID = getUniqID();
   let updateObj = {
@@ -76,7 +86,6 @@ export const GetVideoCampaign = async () => {
 }
 
 export const addWatchUrl = async (payload: string | number | object | Array<undefined>) => {
-  console.log("payload",payload)
   return await userTable.update({
     coin: payload?.totalAmount,
     watch_videos: [...payload.getVideoId, payload?.getCurrenData]
@@ -94,7 +103,6 @@ export const getPlayVideoList = async (parmas1: any, docId: any) => {
 
 
 export const getNewUpdatedViewCount = async (payload: string | number) => {
-  console.log("payload",payload)
   return await WatchVideoList
     .doc(payload?.getCampaignId).update({
       remaining_view: payload?.remiderView - 1,
