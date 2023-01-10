@@ -96,6 +96,7 @@ const style = StyleSheet.create({
   },
   padding: {
     top: Platform.OS == "ios" ? 0 : 1.5,
-    paddingRight: 8
+    paddingRight: 8,
+
   }
 });

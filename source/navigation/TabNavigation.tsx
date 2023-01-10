@@ -110,18 +110,19 @@ export const TabNavigation = () => {
 };
 const styles = StyleSheet.create({
   tab: {
+    marginTop:10,
     position: 'absolute',
     bottom: 0,
     left: 0,
     elevation: 7,
     shadowColor: Colors?.black,
     shadowOpacity: 0.8,
-    shadowRadius: 2,
+    shadowRadius: 4,
     shadowOffset: {
       height: 1,
       width: 1
     },
-    height: 83,
+    height: 63,
     paddingBottom: '5%',
     alignSelf: 'center',
     alignItems: 'center',

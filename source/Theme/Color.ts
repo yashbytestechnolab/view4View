@@ -22,5 +22,7 @@ export const Colors = {
     cardshadow: "rgba(226, 226, 226, 0.25)",
     lightWhite: "#F5F5F5",
     blackShadow: 'rgba(0, 0, 0, 0.6)',
-    dropdownOffWhite: "#E9E9E9"
+    dropdownOffWhite: "#E9E9E9",
+    shadowPink:"#FFF5F5",
+    toggleBG:"rgba(120, 120, 128, 0.16)"
 }

@@ -115,6 +115,18 @@ export const String: any = {
     },
     keyboardType: {
         email: 'email-address'
+    },
+    settingScreen:{
+        EditProfile:'Edit profile',
+        AccountInformation:'Account Information',
+        ChangePassword:'Change password',
+        More:'More',
+        RateUs:'Rate Us',
+        InviteFriends:'Invite Friends',
+        PrivacyPolicy :'Privacy Policy',
+        DarkMode:'Dark Mode',
+        logout:'Sign out'
+
     }
 
 }

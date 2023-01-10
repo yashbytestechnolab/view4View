@@ -9,28 +9,36 @@ interface buttonProps {
     isRewardIconShow?: boolean,
     wrapperStyle?: StyleProp<ViewStyle>,
     loading?: boolean,
-    disable?: boolean
+    disable?: boolean,
+    spinnerColor?: boolean
 }
 
 export const ButtonComponent = (props: buttonProps) => {
-    const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading, disable } = props
-    console.log("disable",disable);
-    
+    const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading, disable, spinnerColor } = props
+
     return (
+
+
         <TouchableOpacity
             disabled={disable}
             activeOpacity={0.8}
-            onPress={onPrees}
+            onPress={!loading ? onPrees : null}
             style={[innerStyles.main, wrapperStyle]}>
             {
-                isRewardIconShow &&
-                <View style={innerStyles.reward}>
-                    <EarnCoin />
-                </View>
+                loading ? (
+                    <ActivityIndicator color={spinnerColor || Colors.white} />
+                ) : <>
+                    {
+                        isRewardIconShow &&
+                        <View style={innerStyles.reward}>
+                            <EarnCoin />
+                        </View>
+                    }
+                    < Text style={F60016.textStyle} >
+                        {buttonTitle}
+                    </Text></>
             }
-            < Text style={F60016.textStyle} >
-                {buttonTitle}
-            </Text>
+
         </TouchableOpacity >
     )
 }

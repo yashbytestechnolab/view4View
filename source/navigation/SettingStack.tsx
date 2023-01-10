@@ -3,6 +3,8 @@ import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ROUTES } from '../constants/NavigationRoutes';
 import { SettingLanding } from '../modules/Setting/SettingLanding';
+import { InviteFriend } from '../modules/EarnCoin';
+import { EditProfile } from '../modules/Setting/SettingLanding/EditProfile';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +20,14 @@ export const SettingStack = () => {
       <Stack.Screen
         name={ROUTES.SETTING_LANDING}
         component={SettingLanding}
+      />
+      <Stack.Screen
+        name={ROUTES.EDITPROFILE}
+        component={EditProfile}
+      />
+      <Stack.Screen
+        name={ROUTES.INVITEFRIEND}
+        component={InviteFriend}
       />
     </Stack.Navigator>
   );

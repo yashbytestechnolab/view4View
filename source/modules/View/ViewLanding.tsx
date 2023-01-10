@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
-import { ButtonComponent, Header, Loader } from '../../components';
+import { ButtonComponent, Header } from '../../components';
 import { String } from '../../constants';
 import { styles } from './style';
 import auth from '@react-native-firebase/auth';
@@ -17,34 +17,32 @@ import { handleFirebaseError } from '../../services';
 import { InputContextProvide } from '../../context/CommonContext';
 import { type } from '../../constants/types';
 
-interface myArray {
-  coin: number;
-}
+
 export const ViewLanding = () => {
   const { storeCreator: { coinBalance: { getBalance }, dispatchCoin } }: any = useContext(InputContextProvide)
 
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
-  const [playVideoList, setPlayVideoList]: number | any = useState(0);
   const controlRef: any = useRef<boolean>();
   const firstStart: any = useRef<boolean>(true);
-  const [getWatchUniqId, setGetWatchUniqId] = useState([]);
+  const [getVideoId, setGetVideoId] = useState([]);
   const [nextVideo, setNextVideo] = useState<number>(0);
   const [timer, setTimer] = useState<number>();
   const [loader, setLoader] = useState<boolean>(false);
   const userId = auth().currentUser?.uid;
+  const [liveData, setLiveData] = useState()
+  const [limit, setLimit] = useState<number>(1)
+  const [docId, setDocId] = useState()
 
-
-  /**
+  /**setLiveData
      * get coin count
      
    */
   const GetCoins = async (params: string) => {
     let resCoinUpdate = 0;
     await get_coins().then(res => {
-      videoList(res?._data?.watch_videos, params);
       resCoinUpdate = res?._data?.coin;
-      setGetWatchUniqId(res?._data?.watch_videos);
+      setGetVideoId(res?._data?.watch_videos);
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
     });
 
@@ -86,7 +84,7 @@ export const ViewLanding = () => {
       * setCoin divide given duration by 1.1 return total coin 
     */
   const SetCoins = () => {
-    return parseInt(playVideoList?.[nextVideo]?.require_duration / 1.1);
+    return parseInt(liveData?.[nextVideo]?.require_duration / 1.1);
   };
 
   /**
@@ -96,28 +94,31 @@ export const ViewLanding = () => {
     */
 
   const GetEarning = async () => {
-    const getVideoId: string | number = playVideoList?.[nextVideo]?.video_Id;
-    const getCampaignId: string | number = playVideoList?.[nextVideo]?.id;
-    const remiderView: string | number =
-      playVideoList?.[nextVideo]?.remaining_view;
-    const consumed_view: string | number =
-      playVideoList?.[nextVideo]?.consumed_view;
+    const getCampaignId: string | number = liveData?.[nextVideo]?.id;
+    const remiderView: string | number = liveData?.[nextVideo]?.remaining_view;
+    const consumed_view: string | number = liveData?.[nextVideo]?.consumed_view;
+    let getCurrenData: any = liveData?.[nextVideo]?.video_Id[0];
     if (timer === 0) {
       GetCoins("").then((res: number) => {
         setTimer(0);
         clearInterval(controlRef?.current);
         setPlaying(false);
         const totalAmount = res + SetCoins();
-        addWatchUrl({ totalAmount, getWatchUniqId, getVideoId })
-          .then(res => { })
+        addWatchUrl({ totalAmount, getVideoId, getCurrenData })
+          .then(res => {
+            console.log("resresresresres", res);
+          })
           .catch(err => { });
       });
       getNewUpdatedViewCount({ getCampaignId, remiderView, consumed_view })
-        .then(res => { })
+        .then(res => {
+          console.log("uuuuuuuuuu", res);
+
+        })
         .catch(() => { });
     }
-  };
 
+  }
   /**
         * onStageChange manage user video mode
       */
@@ -155,62 +156,52 @@ export const ViewLanding = () => {
   useEffect(() => {
     GetCoins('isRender');
   }, []);
+  useEffect(() => {
+    GetLiveVideoList("parms", "null", docId)
+  }, [])
 
-  /**
-     * filter is return own video not show and repeted video not show in list
-      * videoList is our playlist in view tab show videos
-      * getPlayVideoList is firestore compaign table return videolist
-      * sortListByCoin is sort videolist by coin
-      * TimestampWiseSort is sort by created time
-    */
-  const videoList = async (id: string, params: string) => {
+
+  const GetLiveVideoList = (params: string, prams1: string, docId: any) => {
+
+    setLimit(limit + 1)
     setLoader(true);
-    getPlayVideoList()
+    getPlayVideoList(prams1, docId)
       .then((res: any) => {
-        console.log("res", res._docs)
-        setLoader(false);
-        const add_Video_Url: Array<any> = [];
+        setNextVideo(0);
+        let add_Video_Url: Array<any> = []
         res._docs?.filter((res: any) => {
-          if (
-            res?._data?.upload_by !== userId &&
-            !id?.includes(res?._data?.video_Id[0])
-          ) {
-            add_Video_Url.push(res?._data);
-            return res?._data;
+          console.log("resss", getVideoId)
+          if (res?._data?.upload_by !== userId && !getVideoId?.includes(res?._data?.video_Id[0])) {
+            add_Video_Url.push(res?._data)
+            return res?._data
           }
         });
-        const TimestampWiseSort = add_Video_Url?.sort(
-          (res1: myArray, res2: myArray) => res2?.created - res1?.created,
-        );
-
-        const sortListByCoin = TimestampWiseSort?.sort(
-          (res1: myArray, res2: myArray) => res2?.coin - res1?.coin,
-        );
-
-        setPlayVideoList(sortListByCoin);
+        setDocId(res?._docs[res?._docs?.length - 1])
+        setLoader(false);
+        setLiveData(add_Video_Url)
         if (params.length > 0) {
           setLoader(false);
-          setTimer(sortListByCoin[0]?.require_duration);
+          setTimer(add_Video_Url[0]?.require_duration)
         }
       })
       .catch(error => {
-        console.log('errorerror', error);
-
         setLoader(false);
         handleFirebaseError(error?.code);
       })
       .finally(() => {
         setLoader(false);
       });
-  };
-  /**
-        * Next button handle 
-      */
-  const NextVideoList = () => {
-    if (nextVideo < playVideoList?.length - 1) {
-      setNextVideo(nextVideo + 1);
-      setTimer(playVideoList?.[nextVideo + 1]?.require_duration);
+  }
 
+  const NextVideoList = () => {
+    if (nextVideo <= liveData?.length - 1) {
+      if (nextVideo === liveData?.length - 1) {
+        GetLiveVideoList("", "", docId)
+      }
+      else {
+        setNextVideo(nextVideo + 1);
+        setTimer(liveData?.[nextVideo + 1]?.require_duration);
+      }
     }
   };
 
@@ -230,7 +221,7 @@ export const ViewLanding = () => {
           <View style={styles.videoWrapper}>
             <YoutubePlayer
               height={270}
-              videoId={playVideoList?.[nextVideo]?.video_Id[0]}
+              videoId={liveData?.[nextVideo]?.video_Id[0]}
               ref={controlRef}
               play={playing}
               onChangeState={onStateChange}
@@ -261,18 +252,15 @@ export const ViewLanding = () => {
             </View>
           </View>
           <ButtonComponent
+            loading={loader}
             onPrees={() => {
-              NextVideoList();
+              NextVideoList()
             }}
             wrapperStyle={styles.marginTop}
             buttonTitle={String?.viewTab?.nextVideo}
           />
         </ScrollView>
       </View>
-      {playVideoList?.[nextVideo]?.video_Id[0] == undefined && playVideoList?.length != 0 && <Loader />}
     </>
   );
 };
-{
-  /* <WebView source={{ uri: 'https://youtu.be/NUyT3uhbS0g' }} /> */
-}

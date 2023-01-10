@@ -1,6 +1,7 @@
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+// import {}from 'firebase/firestore'
 
 
 function getUserID() {
@@ -74,34 +75,26 @@ export const GetVideoCampaign = async () => {
   return await WatchVideoList?.orderBy("created", "asc")?.where("upload_by", "==", getUserID()?.toString())?.get()
 }
 
-// export const addWatchUrl = async (payload: { totalAmount: string | number; getWatchUniqId: string; getVideoId: string | number; }) => {
-//   return await userTable.update({
-//     coin: payload?.totalAmount,
-//     isWatchVideoId: [...payload.getWatchUniqId, payload?.getVideoId]
-//   })
-
-// }
-
 export const addWatchUrl = async (payload: string | number | object | Array<undefined>) => {
+  console.log("payload",payload)
   return await userTable.update({
     coin: payload?.totalAmount,
-    watch_videos: [...payload.getWatchUniqId, payload?.getVideoId[0]]
+    watch_videos: [...payload.getVideoId, payload?.getCurrenData]
   })
 
 }
-export const getPlayVideoList = async () => {
-  return await WatchVideoList?.where("remaining_view", ">", 0)?.get()
+export const getPlayVideoList = async (parmas1: any, docId: any) => {
+  if (parmas1?.length > 0) {
+    return await WatchVideoList?.orderBy("created", "asc")?.limit(5).get()
+  }
+  else {
+    return await WatchVideoList?.orderBy("created", "asc").startAfter(docId).limit(5)?.get()
+  }
 }
 
 
-// export const getNewUpdatedViewCount = async (payload: { getVideoId: string; remiderView: number; }) => {
-//   return await WatchVideoList
-//     .doc(payload?.getVideoId).update({
-//       remiderView: payload?.remiderView - 1
-//     })
-// }
-
 export const getNewUpdatedViewCount = async (payload: string | number) => {
+  console.log("payload",payload)
   return await WatchVideoList
     .doc(payload?.getCampaignId).update({
       remaining_view: payload?.remiderView - 1,
