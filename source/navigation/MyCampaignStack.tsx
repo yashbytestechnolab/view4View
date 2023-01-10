@@ -22,7 +22,6 @@ export const MyCampaignLanding = () => {
       />
       <Stack.Screen name={ROUTES.ADDVIDEO} component={AddVideo} />
       <Stack.Screen name={ROUTES.CREATE_CAMPAIGN} component={CreateCampaign} />
-      {/* <Stack.Screen />   */}
     </Stack.Navigator>
   );
 };

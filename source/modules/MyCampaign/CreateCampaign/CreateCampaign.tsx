@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, Alert, SafeAreaView } from 'react-native';
-import React, { useContext, useMemo, useState } from 'react';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ButtonComponent, Header } from '../../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import YoutubePlayer from 'react-native-youtube-iframe';
@@ -7,39 +7,58 @@ import { ROUTES, String } from '../../../constants';
 import { styles } from './style';
 import { Colors, F40014, F60012, F60016 } from '../../../Theme';
 import { Dropdown } from 'react-native-element-dropdown';
-import { Expected } from '../../../services';
-import { createCampaign, get_coins, updateUserWallet } from '../../../services/FireStoreServices';
+import { Expected, dropdownConfigValue } from '../../../services';
+import { createCampaign, updateUserWallet } from '../../../services/FireStoreServices';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
-import { firebase } from '@react-native-firebase/firestore';
 import { getYoutubeMeta, } from 'react-native-youtube-iframe';
-
-interface YT {
-  views: string | number;
-  timeSecond: string | number
-}
-
+import { YT, campaign } from './interface';
+import GiftModel from '../../../components/GiftModel';
 
 export const CreateCampaign = () => {
+
   const navigation: any = useNavigation();
-  const { storeCreator: {loading, setLoading, coinBalance: { getBalance }, dispatchCoin, campaignData: { getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
+  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, campaignData: { getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
-
+  const [isVisible, setIsVisible] = useState(false)
   const [expectedValue, setExpectedValue] = useState<YT>({ views: 0, timeSecond: 0 })
   const [totalCost, setTotalCost] = useState(0)
-  const expectedView = useMemo(() => Expected(10, 100, 10), [])
-  const expectedTime = useMemo(() => Expected(45, 600, 30), [])
   const { views, timeSecond } = expectedValue
   const { commonString, headerTitle } = String
+  const [configValue, setConfigValue] = useState<campaign>({})
   const splitUrl = route?.params?.url.split('/').slice(3)
 
+  /**
+   * configValue for dropdown
+   */
+  const confingFnc = useCallback(async () => {
+    let value: any = await dropdownConfigValue();
+    setConfigValue(value)
+  }, [])
+
+  useEffect(() => {
+    confingFnc()
+  }, [dropdownConfigValue])
+
+  // config value
+  const expectedView = useMemo(() => Expected(10, configValue?.expectedView, 10), [configValue])
+  const expectedTime = useMemo(() => Expected(45, configValue?.timeRequire, 30), [configValue])
+
+  /**
+ * Costing value of dropdown final cost
+ * @param item 
+ */
   const onUpdateCostValue = (item: string) => {
     setExpectedValue({ ...expectedValue, timeSecond: item });
     setTotalCost(parseInt(item / 1.1))
   }
 
+  /**
+   * After add Campaign decrement wallet amount
+   * @param updateWallet 
+   */
   const updateCoinBalance = async (updateWallet: number) => {
     let coinBalance = await updateUserWallet(updateWallet)
     setLoading(false)
@@ -47,8 +66,13 @@ export const CreateCampaign = () => {
     navigation.replace(ROUTES.HOME_LANDING)
   }
 
+  /**
+   * Add Campaign Data 
+   */
   const handleAddCampaign = async () => {
-    if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
+    if (!(getBalance >= totalCost)) {
+      setIsVisible(true)
+    } else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
       setLoading(true)
       const updateWallet = getBalance - totalCost
       const userAddUrl: string = route?.params?.url
@@ -57,17 +81,10 @@ export const CreateCampaign = () => {
        * Create Campaign api call & cut wallet amount
        */
       createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title)
-        .then(async (res: any) => {
-          // let m = firebase.firestore.Timestamp.now()
-          // const updateCampaign = getCampaignData?.length > 0 ? [{ ...res, created: m }, ...getCampaignData] : [{ ...res, created: m }]
-          // dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: updateCampaign })
-          updateCoinBalance(updateWallet)
-        }).catch((err: any) => { console.log("err", err);setLoading(false) })
-    }
-    else {
-      // Alert.alert("Not Enough Coin")
+        .then(async (res: any) => updateCoinBalance(updateWallet)).catch((err: any) => { console.log("err", err); setLoading(false) })
     }
   }
+
 
   return (
     <>
@@ -171,7 +188,7 @@ export const CreateCampaign = () => {
             </View>
 
             <ButtonComponent
-              disable={getBalance <= totalCost || timeSecond == 0 || views == 0}
+              disable={timeSecond == 0 || views == 0}
               buttonTitle={commonString.AddCampaign}
               wrapperStyle={{ marginHorizontal: 0, marginTop: 32 }}
               onPrees={() => handleAddCampaign()}
@@ -187,11 +204,15 @@ export const CreateCampaign = () => {
                 </Text>
               </View>
             </View>
-
-
           </View>
         </ScrollView>
       </View>
+      {isVisible &&
+        <GiftModel
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+          onPress={() => { setIsVisible(false), navigation.navigate(ROUTES.VIEWCOIN) }}
+        />}
     </>
   );
 }

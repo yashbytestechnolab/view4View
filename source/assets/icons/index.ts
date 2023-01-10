@@ -26,6 +26,8 @@ export * from './AdVideo'
 export * from './Invitefriends'
 export * from './NextIcon'
 export * from './InviteFrdSvg'
+export * from './Profile'
+export * from './YouWon'
 
 
 

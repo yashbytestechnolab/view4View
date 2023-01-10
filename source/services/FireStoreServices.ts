@@ -21,6 +21,7 @@ export const UserListTable = firestore()?.collection('UserList')?.doc(getUserID(
 export const userTable = firestore()?.collection('users')?.doc(getUserID()?.toString())
 export const userTableLogin = firestore()?.collection('users')
 export const WatchVideoList = firestore()?.collection("campaign")
+export const historyCampaign = firestore()?.collection("campaign_history")
 
 export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
   let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
@@ -71,7 +72,15 @@ export const payCoin = async (payload: string) => {
 };
 
 export const GetVideoCampaign = async () => {
-  return await WatchVideoList?.orderBy("created", "asc")?.where("upload_by", "==", getUserID()?.toString())?.get()
+  return await WatchVideoList?.orderBy("created", "desc")?.where("upload_by", "==", getUserID()?.toString())?.get()
+}
+
+export const deleteRemaining = async (payload: string | number | any) => {
+  await WatchVideoList.doc(payload).delete()
+}
+
+export const campaignHistory = async () => {
+  return await historyCampaign?.orderBy("created", "desc")?.where('upload_by', "==", getUserID()?.toString()).get().then((res: any) => res?._docs?.map((item: any) => item?._data))
 }
 
 // export const addWatchUrl = async (payload: { totalAmount: string | number; getWatchUniqId: string; getVideoId: string | number; }) => {
@@ -93,13 +102,6 @@ export const getPlayVideoList = async () => {
   return await WatchVideoList?.where("remaining_view", ">", 0)?.get()
 }
 
-
-// export const getNewUpdatedViewCount = async (payload: { getVideoId: string; remiderView: number; }) => {
-//   return await WatchVideoList
-//     .doc(payload?.getVideoId).update({
-//       remiderView: payload?.remiderView - 1
-//     })
-// }
 
 export const getNewUpdatedViewCount = async (payload: string | number) => {
   return await WatchVideoList

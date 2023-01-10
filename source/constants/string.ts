@@ -80,6 +80,7 @@ export const String: any = {
         Totalcost: "Total cost:",
         AddCampaign: "Add Campaign",
         Warning: "Warning:",
+        EarnPoints: "Earn Points",
         viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app."
     },
     flashMessage: {
@@ -92,11 +93,11 @@ export const String: any = {
         emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
     },
-    inviteFrd:{
-        headerTitle:'Invite friends',
-        title:"Refer, Invite, and Earn",
-        subTitle:"Earn GREAT rewards and coins by bringing \n your friends and family to our app. You don’t\n wanna miss it.",
-        button:"Invite Now"
+    inviteFrd: {
+        headerTitle: 'Invite friends',
+        title: "Refer, Invite, and Earn",
+        subTitle: "Earn GREAT rewards and coins by bringing \n your friends and family to our app. You don’t\n wanna miss it.",
+        button: "Invite Now"
     },
     StatusBar: {
         darkContent: 'dark-content',

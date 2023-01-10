@@ -6,7 +6,7 @@ import { Colors } from "./Color";
 export const ActiveTabText = StyleSheet.create({
     main: {
         color: Colors?.primaryRed,
-        fontSize: 10,
+        fontSize: 11,
         fontWeight: "500",
         fontFamily: Fonts?.InterMedium
     },
@@ -71,7 +71,7 @@ export const F40010 = StyleSheet.create({
 export const F50010 = StyleSheet.create({
     main: {
         color: Colors.GrayLightC2C9D1,
-        fontSize: 10,
+        fontSize: 11,
         fontWeight: "500",
         fontFamily: Fonts?.InterMedium
     },
@@ -111,6 +111,9 @@ export const F50012 = StyleSheet.create({
         fontWeight: "500",
         fontFamily: Fonts?.InterMedium
     },
+    opacity: {
+        opacity: 0.5
+    },
     fontStyleVideo: {
         fontFamily: Fonts?.InterMedium
     },
@@ -138,11 +141,24 @@ export const F60016 = StyleSheet.create({
         fontWeight: "600",
         fontFamily: Fonts?.InterSemiBold
     },
+    semiBolt: {
+        color: Colors.placeHolderTextBlack,
+        fontFamily: Fonts?.InterSemiBold
+    },
     campaign: {
         color: Colors.black,
         fontFamily: Fonts?.InterRegular
     }
 })
+
+export const F60032 = StyleSheet.create({
+    textStyle: {
+        color: Colors.primaryRed,
+        fontSize: 32,
+        fontWeight: "600",
+        fontFamily: Fonts?.InterBold
+    },
+}) 
 
 export const F60012 = StyleSheet.create({
     textStyle: {
@@ -151,7 +167,11 @@ export const F60012 = StyleSheet.create({
         fontWeight: "600",
         fontFamily: Fonts?.InterRegular
     },
+    colorAccount: {
+        color: Colors.placeHolderTextBlack,
+    }
 })
+
 export const F70032 = StyleSheet.create({
     textStyle: {
         color: Colors.primaryRed,
