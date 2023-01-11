@@ -84,44 +84,6 @@ export const ViewLanding = () => {
     }
   }, [timer]);
 
-<<<<<<< HEAD
-=======
-  /**
-      * setCoin divide given duration by 1.1 return total coin 
-    */
-  const SetCoins = () => {
-    return parseInt(liveData?.[nextVideo]?.require_duration / 1.1);
-  };
-
-  /**
-      * getEarning is first timer is 0 setTime is o and clearInterval
-      * firestore add user watch url in userTable and update coin
-      * getNewUpdatedViewCount is update remider view and consumed view
-    */
-
-  const GetEarning = async () => {
-    const getCampaignId: string | number = liveData?.[nextVideo]?.id;
-    const remiderView: string | number = liveData?.[nextVideo]?.remaining_view;
-    const consumed_view: string | number = liveData?.[nextVideo]?.consumed_view;
-    let getCurrenData: any = liveData?.[nextVideo]?.video_Id[0];
-    if (timer === 0) {
-      GetCoins("").then((res: number) => {
-        setTimer(0);
-        clearInterval(controlRef?.current);
-        setPlaying(false);
-        const totalAmount = res + SetCoins();
-        addWatchUrl({ totalAmount, getVideoId, getCurrenData })
-      });
-      getNewUpdatedViewCount({ getCampaignId, remiderView, consumed_view })
-
-    }
-
-  }
-  /**
-        * onStageChange manage user video mode
-      */
-
->>>>>>> 8fdf24c39c468326640430df40231ba1570c9227
   const onStateChange = async (state: string) => {
     if (state === 'playing') {
       setPlaying(true);
