@@ -21,7 +21,8 @@ export const userTable = firestore()?.collection('users')?.doc(getUserID()?.toSt
 export const userTableLogin = firestore()?.collection('users')
 export const WatchVideoList = firestore()?.collection("campaign")
 export const bytesVideoList = firestore()?.collection("bytes_video_list")
-export const campaignHistory = firestore()?.collection("campaign_history")
+// export const campaignHistory = firestore()?.collection("campaign_history")
+export const historyCampaign = firestore()?.collection("campaign_history")
 
 export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
   let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
@@ -84,7 +85,7 @@ export const payCoin = async (payload: string) => {
 };
 
 export const deleteRemainingVideo = async (payload: any) => {
-  return await campaignHistory?.add(payload)
+  return await historyCampaign?.add(payload)
 }
 
 
@@ -98,7 +99,15 @@ export const bytesVideoListData = async (...params: Array<any>) => {
 }
 
 export const GetVideoCampaign = async () => {
-  return await WatchVideoList?.orderBy("created", "asc")?.where("upload_by", "==", getUserID()?.toString())?.get()
+  return await WatchVideoList?.orderBy("created", "desc")?.where("upload_by", "==", getUserID()?.toString())?.get()
+}
+
+export const deleteRemaining = async (payload: string | number | any) => {
+  await WatchVideoList.doc(payload).delete()
+}
+
+export const campaignHistory = async () => {
+  return await historyCampaign?.orderBy("created", "desc")?.where('upload_by', "==", getUserID()?.toString()).get().then((res: any) => res?._docs?.map((item: any) => item?._data))
 }
 
 export const addWatchUrl = async (...payload: Array<any | object>) => {

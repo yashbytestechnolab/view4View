@@ -151,6 +151,15 @@ export const F60016 = StyleSheet.create({
     }
 })
 
+export const F60032 = StyleSheet.create({
+    textStyle: {
+        color: Colors.primaryRed,
+        fontSize: 32,
+        fontWeight: "600",
+        fontFamily: Fonts?.InterBold
+    },
+}) 
+
 export const F60012 = StyleSheet.create({
     textStyle: {
         color: Colors.primaryRed,
@@ -162,6 +171,7 @@ export const F60012 = StyleSheet.create({
         color: Colors.placeHolderTextBlack,
     }
 })
+
 export const F70032 = StyleSheet.create({
     textStyle: {
         color: Colors.primaryRed,

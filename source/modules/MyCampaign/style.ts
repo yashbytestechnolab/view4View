@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
   countOfView: { flexDirection: "row", alignItems: "center", marginTop: 6 },
   views: { left: 6, top: 1 },
   height: { height: 5, backgroundColor: Colors?.lightWhite },
-  flatList: { marginBottom: 80, marginTop: "2%", backgroundColor: '#FCFBFF' },
+  flatList: { marginBottom: 80, backgroundColor: '#FCFBFF' },
   safeArea: { backgroundColor: Colors.linear_gradient },
   addIcon: {
     position: "absolute",
