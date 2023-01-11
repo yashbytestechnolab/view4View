@@ -21,7 +21,6 @@ export const userTable = firestore()?.collection('users')?.doc(getUserID()?.toSt
 export const userTableLogin = firestore()?.collection('users')
 export const WatchVideoList = firestore()?.collection("campaign")
 export const bytesVideoList = firestore()?.collection("bytes_video_list")
-// export const campaignHistory = firestore()?.collection("campaign_history")
 export const historyCampaign = firestore()?.collection("campaign_history")
 
 export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
