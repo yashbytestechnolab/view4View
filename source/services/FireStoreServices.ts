@@ -4,7 +4,7 @@ import auth from '@react-native-firebase/auth';
 // import {}from 'firebase/firestore'
 
 
-function getUserID() {
+export function getUserID() {
   const userId = auth()?.currentUser?.uid;
   return userId
 }
@@ -22,6 +22,8 @@ export const UserListTable = firestore()?.collection('UserList')?.doc(getUserID(
 export const userTable = firestore()?.collection('users')?.doc(getUserID()?.toString())
 export const userTableLogin = firestore()?.collection('users')
 export const WatchVideoList = firestore()?.collection("campaign")
+export const bytesVideoList = firestore()?.collection("bytes_video_list")
+export const campaignHistory = firestore()?.collection("campaign_history")
 
 export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
   let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
@@ -61,7 +63,7 @@ export const createCampaign = async (...payload: Array<object | undefined | stri
     video_url: payload[0],
     video_title: payload[5]
   }
-  await WatchVideoList.doc(uniqID).set(updateObj)
+  await bytesVideoList.doc(uniqID).set(updateObj)
   return updateObj
 }
 
@@ -71,35 +73,62 @@ export const payCoin = async (payload: string) => {
   })
 };
 
+export const deleteRemainingVideo = async (payload: any) => {
+  return await campaignHistory?.add(payload)
+}
+
+
+export const bytesVideoListData = async (...params: Array<any>) => {
+  if (Object.keys(params[0]).length > 0) {
+    return await bytesVideoList.orderBy("created", "desc").startAfter(params[0]).limit(2).get().then((res: any) => res?._docs).catch((err: any) => err)
+  }
+  else {
+    return await bytesVideoList.orderBy("created", "desc").limit(2).get().then((res: any) => res?._docs).catch((err: any) => err)
+  }
+}
+
 export const GetVideoCampaign = async () => {
   return await WatchVideoList?.orderBy("created", "asc")?.where("upload_by", "==", getUserID()?.toString())?.get()
 }
 
-export const addWatchUrl = async (payload: string | number | object | Array<undefined>) => {
-  console.log("payload",payload)
-  return await userTable.update({
-    coin: payload?.totalAmount,
-    watch_videos: [...payload.getVideoId, payload?.getCurrenData]
-  })
-
-}
-export const getPlayVideoList = async (parmas1: any, docId: any) => {
-  if (parmas1?.length > 0) {
-    return await WatchVideoList?.orderBy("created", "asc")?.limit(5).get()
+export const addWatchUrl = async (...payload: Array<any | object>) => {
+  if (payload[3]) {
+    return await userTable.update({
+      coin: payload[2],
+    })
   }
   else {
+    return await userTable.update({
+      coin: payload[2],
+      watch_videos: payload[0]?.length > 0 ? [...payload[0], payload[1]] : [payload[1]]
+    })
+  }
+}
+export const getPlayVideoList = async (docId: any) => {
+
+  if (Object.keys(docId)?.length > 0) {
     return await WatchVideoList?.orderBy("created", "asc").startAfter(docId).limit(5)?.get()
+  }
+  else {
+    return await WatchVideoList?.orderBy("created", "asc")?.limit(5).get()
   }
 }
 
 
-export const getNewUpdatedViewCount = async (payload: string | number) => {
-  console.log("payload",payload)
-  return await WatchVideoList
-    .doc(payload?.getCampaignId).update({
-      remaining_view: payload?.remiderView - 1,
-      consumed_view: parseInt(payload?.consumed_view) + 1
-    })
+export const getNewUpdatedViewCount = async (...params: Array<string | [] | undefined | object | number | any>) => {
+  let updateTable = params[4] ? bytesVideoList : WatchVideoList;
+  if (params[1] != 1) {
+    return await updateTable
+      .doc(params[0]).update({
+        remaining_view: params[1] - 1,
+        consumed_view: parseInt(params[2]) + 1
+      })
+  }
+  else {
+    await WatchVideoList.doc(params[0]).delete()
+    deleteRemainingVideo(params[3])
+  }
+
 }
 
 export const updateUserWallet = async (payload: number) => {

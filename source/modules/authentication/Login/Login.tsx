@@ -149,7 +149,6 @@ export const Login = () => {
 
                 <View style={style.signIn}>
                   <ButtonComponent
-                    loading={loading}
                     onPrees={() => handleLoginFlow()} buttonTitle={String.commonString.SignIn} />
                 </View>
                 <ORtitle />
@@ -158,7 +157,7 @@ export const Login = () => {
                     (<SocialMediaButton
                       wrapperStyle={{ width: '90%', }}
                       socialMediaIcon={<Google />}
-                      buttonTitle={String.commonString.signInWithGoogle}
+                    buttonTitle={String.commonString.signInWithGoogle}
                       onPress={() => { googleLogin(navigation,setLoading) }}
                     />) :
                     (<View style={style.socialMedia}>
