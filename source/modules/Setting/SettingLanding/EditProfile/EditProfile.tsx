@@ -2,7 +2,6 @@ import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, }
 import React, { useContext, useEffect, useState } from 'react'
 import { Header, InputComponent } from '../../../../components'
 import { Colors, F50018 } from '../../../../Theme'
-import { emailPattern, String } from '../../../../constants'
 import { get_coins, updateProfile } from '../../../../services/FireStoreServices'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { InputContextProvide } from '../../../../context/CommonContext'

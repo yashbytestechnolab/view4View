@@ -34,10 +34,6 @@ export const ViewLanding = () => {
   const [limit, setLimit] = useState<number>(1)
   const [docId, setDocId] = useState()
 
-  /**setLiveData
-     * get coin count
-     
-   */
   const GetCoins = async (params: string) => {
     let resCoinUpdate = 0;
     await get_coins().then(res => {
@@ -48,10 +44,6 @@ export const ViewLanding = () => {
 
     return resCoinUpdate;
   };
-
-  /**
-       * for timer start given duration
-     */
 
   useEffect(() => {
     if (firstStart.current) {
@@ -70,9 +62,7 @@ export const ViewLanding = () => {
     return () => clearInterval(controlRef.current);
   }, [start, controlRef, timer]);
 
-  /**
-     * useEffect for call timer count 0 then call GetEarning function
-   */
+
 
   useEffect(() => {
     if (timer === 0) {
@@ -80,18 +70,9 @@ export const ViewLanding = () => {
     }
   }, [timer]);
 
-  /**
-      * setCoin divide given duration by 1.1 return total coin 
-    */
   const SetCoins = () => {
     return parseInt(liveData?.[nextVideo]?.require_duration / 1.1);
   };
-
-  /**
-      * getEarning is first timer is 0 setTime is o and clearInterval
-      * firestore add user watch url in userTable and update coin
-      * getNewUpdatedViewCount is update remider view and consumed view
-    */
 
   const GetEarning = async () => {
     const getCampaignId: string | number = liveData?.[nextVideo]?.id;
@@ -111,9 +92,7 @@ export const ViewLanding = () => {
     }
 
   }
-  /**
-        * onStageChange manage user video mode
-      */
+
 
   const onStateChange = async (state: string) => {
     if (state === 'playing') {
@@ -141,9 +120,6 @@ export const ViewLanding = () => {
       setStart(false);
     }
   };
-  /**
-      * first get coin in header show
-    */
 
   useEffect(() => {
     GetCoins('isRender');
@@ -162,7 +138,6 @@ export const ViewLanding = () => {
         setNextVideo(0);
         let add_Video_Url: Array<any> = []
         res._docs?.filter((res: any) => {
-          console.log("resss", getVideoId)
           if (res?._data?.upload_by !== userId && !getVideoId?.includes(res?._data?.video_Id[0])) {
             add_Video_Url.push(res?._data)
             return res?._data
@@ -196,10 +171,6 @@ export const ViewLanding = () => {
       }
     }
   };
-
-  /**
-      *  reander design 
-    */
   return (
     <>
       <SafeAreaView style={styles.safearea} />

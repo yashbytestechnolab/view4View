@@ -26,7 +26,7 @@ export const RootNavigation = () => {
     <>
       {
         userId == null ? null :
-          <NavigationContainer>
+          // <NavigationContainer>
             < Stack.Navigator
               screenOptions={{ headerShown: false, gestureEnabled: false }}>
               {
@@ -45,7 +45,7 @@ export const RootNavigation = () => {
                 )
               }
             </Stack.Navigator >
-          </NavigationContainer >
+          // </NavigationContainer >
       }
     </>
   );

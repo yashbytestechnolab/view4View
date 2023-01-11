@@ -33,7 +33,7 @@ export const Header = (props: IheaderProps) => {
           {showBacKIcon && (
             <TouchableOpacity
               activeOpacity={1}
-              style={style.backWrapper}
+              //style={style.backWrapper}
               onPress={() => {
                 onPrees ? onPrees : navigation.goBack();
               }}>
@@ -55,7 +55,10 @@ export const Header = (props: IheaderProps) => {
               <Text style={[F60016.textStyle, style.padding]}>
                 {getBalance}
               </Text>
+              <View style={{paddingBottom:1.5}}>
               <EarnCoin />
+              </View>
+             
             </TouchableOpacity>
           )}
         </View>
@@ -72,12 +75,13 @@ const style = StyleSheet.create({
   titleText: {
     textAlign: 'center',
   },
-  backWrapper: { padding: 5 },
+  //backWrapper: { padding: 5 },
   Wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 15,
     marginLeft: 20,
+    // backgroundColor:'red'
   },
   coinWrapper: {
     flexDirection: 'row',
@@ -85,6 +89,7 @@ const style = StyleSheet.create({
     alignSelf: 'flex-end',
     position: 'absolute',
     right: 15,
+    
   },
 
   titleWrapper: {
@@ -95,7 +100,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   padding: {
-    top: Platform.OS == "ios" ? 0 : 1.5,
+    //top: Platform.OS == "ios" ? 0 : 1.5,
     paddingRight: 8,
 
   }

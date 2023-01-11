@@ -28,7 +28,7 @@ export const EarnCoinData = [
         svg: BuyCoin,
         title: 'Buy Coins',
         subTitle: 'Buy world coins of countries',
-        onPress: ROUTES?.INVITEFRIEND
+        onPress: ROUTES?.BUYCOIN
     }, {
         svg: Invitefriends,
         title: 'Invite friends',
