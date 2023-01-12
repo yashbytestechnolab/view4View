@@ -10,8 +10,9 @@ import { style } from './style'
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
     const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
+    //const data = JSON?.parse(getConfigValue)
     const data = JSON?.parse(getConfigValue)
-
+    console.log("data", data)
     const handleButton = () => {
         Platform?.OS == 'android' ?
             Linking.openURL(data?.Upadte?.android) : Linking.openURL(data?.Upadte?.ios)

@@ -80,7 +80,7 @@ export const EditProfile = () => {
 
     return (
         <><SafeAreaView style={style.safeArea} /><View style={style.mainWrapper}>
-            <Header title={String?.headerTitle?.setting} showCoin={false} showBacKIcon={true} />
+            <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
             {loader ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>
             }
 

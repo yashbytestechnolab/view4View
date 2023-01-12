@@ -23,7 +23,8 @@ export const String: any = {
         view4view: 'view4view',
         YourCoin: 'Your Coin',
         AddYourVideo: "Add Your Video",
-        buyCoin:'Buy coin'
+        buyCoin:'Buy coin',
+        editProfile:'Edit Profile'
     },
     homeTab: {
         plus: '+',
