@@ -30,11 +30,6 @@ export const ViewLanding = () => {
   const firstStart: any = useRef<boolean>(true);
   const [timer, setTimer] = useState<number>();
 
-
-  const getUserCoinWallet = async () => {
-    return await get_coins().then((res: any) => dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin }))
-  }
-
   const GetCoins = async (params: string) => {
     await get_coins().then(async (res: any) => {
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
@@ -65,16 +60,15 @@ export const ViewLanding = () => {
   }, [start, controlRef, timer]);
 
   const GetEarning = async () => {
-    const { id, remaining_view, consumed_view, video_Id } = videoData?.[nextVideo]
+    const { id, remaining_view, consumed_view, video_Id, expected_view } = videoData?.[nextVideo]
     if (timer === 0) {
       setTimer(0);
       clearInterval(controlRef?.current);
       setPlaying(false);
       const totalAmount = getBalance + videoData?.[nextVideo]?.coin;
-      await addWatchUrl(videoId, video_Id[0], totalAmount,isBytesVideoLoading)
-      await getNewUpdatedViewCount(id, remaining_view, consumed_view, videoData?.[nextVideo],isBytesVideoLoading)
-      dispatchCoin({ types: type.GET_CURRENT_COIN, payload:totalAmount })
-
+      await addWatchUrl(videoId, video_Id[0], totalAmount, isBytesVideoLoading)
+      await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading)
+      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
     }
   }
 
@@ -130,7 +124,6 @@ export const ViewLanding = () => {
 
     getPlayVideoList(docOS)
       .then(async (res: any) => {
-
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
         res._docs?.filter((res: any) => {
           if (res?._data?.upload_by !== getUserID() && !watchVideoList?.includes(res?._data?.video_Id[0])) {
@@ -179,6 +172,19 @@ export const ViewLanding = () => {
       }
     }
   };
+
+  const onPreesNext = (time: number) => {
+    let intialSetTime: number | any;
+    clearTimeout(intialSetTime)
+    return () => {
+      if (intialSetTime) clearTimeout(intialSetTime)
+      intialSetTime = setTimeout(() => {
+        NextVideoList()
+      }, time)
+    }
+  }
+
+  let debounce = onPreesNext(400)
 
   return (
     <>
@@ -233,9 +239,7 @@ export const ViewLanding = () => {
                 </View>
                 <ButtonComponent
                   loading={videoLoading}
-                  onPrees={() => {
-                    NextVideoList()
-                  }}
+                  onPrees={() => { debounce() }}
                   wrapperStyle={styles.marginTop}
                   buttonTitle={String?.viewTab?.nextVideo}
                 />

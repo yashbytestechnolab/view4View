@@ -7,14 +7,11 @@ export function getUserID() {
   return userId
 }
 
-
 function getUniqID() {
   const newID = Math.random() * Date.now()
   const randomIdGenrate = newID?.toString()?.split(".")?.join("")
   return randomIdGenrate
 }
-
-
 
 export const UserListTable = firestore()?.collection('UserList')?.doc(getUserID()?.toString())
 export const userTable = firestore()?.collection('users')?.doc(getUserID()?.toString())
@@ -39,7 +36,6 @@ export const userLogin = async (...payload: Array<object | string | undefined | 
     image: payload[0]?.photoURL,
     watch_videos: [],
   })
-
 }
 
 export const get_coins = async () => {
@@ -49,9 +45,7 @@ export const updateProfile = async (...payload: Array<object | string | undefine
   const space = payload[0].indexOf(" ");
   const firstName = payload[0].substring(0, space);
   const lastname = payload[0].substring(space + 1);
-
   return await userTable?.update({
-
     firstname: firstName,
     lastname: lastname,
     image: payload[1] != undefined && payload[1]
@@ -73,7 +67,7 @@ export const createCampaign = async (...payload: Array<object | undefined | stri
     video_url: payload[0],
     video_title: payload[5]
   }
-  await bytesVideoList.doc(uniqID).set(updateObj)
+  await WatchVideoList.doc(uniqID).set(updateObj)
   return updateObj
 }
 
@@ -134,7 +128,7 @@ export const getPlayVideoList = async (docId: any) => {
 
 
 export const getNewUpdatedViewCount = async (...params: Array<string | [] | undefined | object | number | any>) => {
-  let updateTable = params[4] ? bytesVideoList : WatchVideoList;
+  let updateTable = params[5] ? bytesVideoList : WatchVideoList;
   if (params[1] != 1) {
     return await updateTable
       .doc(params[0]).update({
@@ -143,8 +137,9 @@ export const getNewUpdatedViewCount = async (...params: Array<string | [] | unde
       })
   }
   else {
+    await WatchVideoList.doc(params[0]).update({ expected_view: params[4] })
     await WatchVideoList.doc(params[0]).delete()
-    deleteRemainingVideo(params[3])
+    await deleteRemainingVideo(params[3])
   }
 
 }
