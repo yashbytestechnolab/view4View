@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, } from 'react-native'
+import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Header, InputComponent } from '../../../../components'
 import { Colors, F50018 } from '../../../../Theme'
@@ -8,8 +8,12 @@ import { InputContextProvide } from '../../../../context/CommonContext'
 import { type } from '../../../../constants/types'
 import { launchImageLibrary } from 'react-native-image-picker';
 import { EditProfileIcon } from '../../../../assets/icons'
+import { ROUTES, String } from '../../../../constants'
+import { useNavigation } from '@react-navigation/native'
 export const EditProfile = () => {
+    const navigation = useNavigation()
     const [data, setData] = useState<string>()
+    const [loader, setLoader] = useState<boolean>(false)
     const { storeCreator: { userInput, dispatch, userInputError, dispatchError } }: any = useContext(InputContextProvide)
     const [profilePic, setProfilePic]: any = useState(null);
 
@@ -63,13 +67,23 @@ export const EditProfile = () => {
         });
     };
     const updateProfileData = () => {
-        updateProfile(userInput?.fullName, profilePic?.uri).catch(()=>{})
+        setLoader(true)
+        updateProfile(userInput?.fullName, profilePic?.uri).then((resp: any) => {
+            console.log("res", resp)
+            setLoader(false)
+            navigation.navigate(ROUTES?.SETTING_LANDING)
+        }).catch((err) => {
+            setLoader(false)
+            console.log("err", err);
+        })
     }
 
     return (
         <><SafeAreaView style={style.safeArea} /><View style={style.mainWrapper}>
             <Header title={String?.headerTitle?.setting} showCoin={false} showBacKIcon={true} />
-            <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>
+            {loader ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>
+            }
+
             <View style={{ paddingTop: 24 }}>
                 <View style={style.nameWrapper} >
                     {
@@ -80,7 +94,6 @@ export const EditProfile = () => {
                     <EditProfileIcon />
                 </TouchableOpacity>
                 <KeyboardAwareScrollView
-                    showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps={String.commonString.handled}
                     style={style.scrollWrapper}
                     scrollEnabled={true}
