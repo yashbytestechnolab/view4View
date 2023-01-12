@@ -3,20 +3,39 @@ import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, Dimensions
 import { Header, Loader } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { styles } from './style';
-import { Colors, F40010, F40012, F40014, F50013 } from '../../Theme';
+import { Colors, F40010, F40012, F40014, F50013, F60024 } from '../../Theme';
 import { InputContextProvide } from '../../context/CommonContext';
-import { GetVideoCampaign } from '../../services/FireStoreServices';
+import { GetVideoCampaign, campaignHistory, deleteRemaining } from '../../services/FireStoreServices';
 import { type } from '../../constants/types';
 import { PlusIcon } from '../../assets/icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { lastSeen } from '../../services';
+import { Fonts } from '../../../android/app/build/intermediates/assets/debug/mergeDebugAssets/custom';
 
 export const MyCampaignLandingScreen = () => {
 
   const navigation = useNavigation()
   let route: object | any = useRoute()
   /**context data coin and campaign data */
-  const { storeCreator: { loading, setLoading, campaignData: { loding, getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
+  const { storeCreator: { loading, setLoading, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign } }: any = useContext(InputContextProvide)
+
+  /**
+ * 
+ * @param params list of campaign data
+ * To Render History Video And Get data from api and create stickey header  
+ */
+  const getHistoryData = async (params: Array<object> | any) => {
+    let historyList = await campaignHistory()
+    if (historyList?.length > 0) {
+      dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [...params, { stickeyHeader: "Past Campaign" }, ...historyList], index: [0, params.length,] } })
+    }
+    else if (params?.length <= 0) {
+      dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [{ stickeyHeader: "Past Campaign" }, ...historyList], index: [0] } })
+    }
+    else {
+      dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: params, index: [0] } })
+    }
+  }
 
   /**
   * Get data from firebase for campaign list   
@@ -28,17 +47,15 @@ export const MyCampaignLandingScreen = () => {
       const getVideoUrl: any = []
       res._docs?.filter((res: any) => {
         if (res?._data?.remaining_view > 0) {
-          console.log("res?._data", res?._data);
-
           getVideoUrl.push(res?._data)
           return res?._data
         }
       });
-      dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: getVideoUrl })
+      getVideoUrl?.length > 0 && getVideoUrl.unshift({ stickeyHeader: "Current Campaign" })
+      getHistoryData(getVideoUrl)
     }).
       catch((error) => {
         console.log("error", error);
-
         dispatchcampaign({ types: type.CAMPAIGN_ERROR, payload: error.message })
       })
       .finally(() => params && setLoading(false))
@@ -62,43 +79,54 @@ export const MyCampaignLandingScreen = () => {
   const renderCampaignList = ({ item }: any) => {
     let fillValue = item?.consumed_view * 100 / item?.expected_view
     return (
-      <View style={styles.container}>
-        <Image
-          style={styles.thumbNilImage}
-          source={{ uri: `http://img.youtube.com/vi/${item?.video_Id[0]}/0.jpg` }} />
-        <View style={styles.discription}>
-          <Text
-            style={F50013.main}
-            numberOfLines={1}>
-            {item?.video_title}
-          </Text>
-          <Text
-            style={[F40012.main, F40012.color06]}
-            numberOfLines={1}>
-            {getUploadedTime(item)}
-          </Text>
-          <View style={styles.fillContainer}>
-            <View style={[styles.fillView, { width: `${fillValue + "%"}` }]} />
-          </View>
-          <View style={styles.countOfView}>
-            <Text style={[F40014.main, F40014.color]}>
-              {item?.consumed_view + "/" + item?.expected_view}
-            </Text>
-            <Text style={[F40010.main, styles.views]}>
-              views of this video
-            </Text>
-          </View>
-        </View>
-      </View>
+      <>
+        {
+          item?.stickeyHeader?.length > 0 ?
+            (<View style={{ height: 34, justifyContent: "center", backgroundColor: Colors.paginationGray, paddingLeft: 12 }}>
+              <Text style={{ color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium }}>
+                {item?.stickeyHeader}
+              </Text>
+            </View>)
+            :
+            <View style={styles.container}>
+              <Image
+                style={styles.thumbNilImage}
+                source={{ uri: `http://img.youtube.com/vi/${item?.video_Id[0]}/0.jpg` }} />
+              <View style={styles.discription}>
+                <Text
+                  style={F50013.main}
+                  numberOfLines={1}>
+                  {item?.video_title}
+                </Text>
+                <Text
+                  style={[F40012.main, F40012.color06]}
+                  numberOfLines={1}>
+                  {getUploadedTime(item)}
+                </Text>
+                <View style={styles.fillContainer}>
+                  <View style={[styles.fillView, { width: `${fillValue + "%"}` }]} />
+                </View>
+                <View style={styles.countOfView}>
+                  <Text style={[F40014.main, F40014.color]}>
+                    {item?.consumed_view + "/" + item?.expected_view}
+                  </Text>
+                  <Text style={[F40010.main, styles.views]}>
+                    views of this video
+                  </Text>
+                </View>
+              </View>
+            </View>
 
+        }
+      </>
     )
   }
 
   const handleEmptyData = () => {
     return (
-      < >
+      <>
         {
-          !loading && !loding && getCampaignData.length <= 0 &&
+          !loading && !loding && getCampaignData?.length <= 0 &&
           <View style={{ flexGrow: 1, justifyContent: "center", alignItems: "center" }}>
             <Text style={F50013.main}>
               Empty List
@@ -115,19 +143,20 @@ export const MyCampaignLandingScreen = () => {
       <View style={styles.mainContainer}>
         <Header
           title={String?.headerTitle?.myCampaign} />
-        <View style={styles.height} />
+        {/* <View style={styles.height} /> */}
         {loding ? (<Loader />) :
           (<>
             <FlatList
               showsVerticalScrollIndicator={false}
               scrollEnabled
-              style={styles.flatList}
+              style={[styles.flatList]}
               data={getCampaignData}
+              stickyHeaderIndices={stickeyIndex}
               refreshing={loading}
               onRefresh={() => getVideoUrl("loading")}
               renderItem={renderCampaignList}
               ListEmptyComponent={handleEmptyData}
-              contentContainerStyle={{flexGrow: 1}}
+              contentContainerStyle={{ flexGrow: 1 }}
             />
             <TouchableOpacity
               onPress={() => navigation.navigate(ROUTES.ADDVIDEO)}

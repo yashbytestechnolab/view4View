@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useState } from 'react'
 import { type } from '../constants/types'
-import { ValidationFnc, getCurrentCoinBalance, getUserCampaign } from '.';
+import { ValidationFnc, getCurrentCoinBalance, getUserCampaign, videoLanding } from '.';
 
 export const InputContextProvide: any = createContext({})
 
@@ -40,6 +40,7 @@ const CommonContext = ({ children }: any) => {
     const { userInputError, dispatchError } = ValidationFnc();
     const { campaignData, dispatchcampaign } = getUserCampaign()
     const { coinBalance, dispatchCoin } = getCurrentCoinBalance()
+    const { videoLandingData, dispatchVideoLandingData } = videoLanding()
     const [loading, setLoading] = useState(false)
 
     const storeCreator = {
@@ -51,6 +52,8 @@ const CommonContext = ({ children }: any) => {
         setLoading,
         campaignData,
         dispatchcampaign,
+        videoLandingData,
+        dispatchVideoLandingData,
         coinBalance,
         dispatchCoin
     }

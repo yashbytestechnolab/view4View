@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { String, ROUTES } from '../constants';
 import { ViewStack, EarnCoinStack, SettingStack, MyCampaignLanding } from '.';
@@ -35,7 +35,7 @@ export const TabNavigation = () => {
     <Tab.Navigator
       initialRouteName={ROUTES.VIEW}
       screenOptions={({ route }) => ({
-        unmountOnBlur: true,
+        // unmountOnBlur: true,
         tabBarHideOnKeyboard: true,
         headerShown: false,
 
@@ -110,7 +110,7 @@ export const TabNavigation = () => {
 };
 const styles = StyleSheet.create({
   tab: {
-    marginTop:10,
+    marginTop: 10,
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -128,8 +128,5 @@ const styles = StyleSheet.create({
     paddingBottom:'3%',
     alignSelf: 'center',
     alignItems: 'center',
-
-
   },
-
 });

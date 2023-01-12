@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { View, Text, SafeAreaView, StatusBar, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { String } from '../../constants';
@@ -7,8 +7,10 @@ import { styles } from './style';
 import auth from '@react-native-firebase/auth';
 import {
   addWatchUrl,
+  bytesVideoListData,
   getNewUpdatedViewCount,
   getPlayVideoList,
+  getUserID,
   get_coins,
 } from '../../services/FireStoreServices';
 import { Colors, F40014, F60024 } from '../../Theme';
@@ -16,34 +18,29 @@ import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
 import { InputContextProvide } from '../../context/CommonContext';
 import { type } from '../../constants/types';
+import { person } from './increment';
 
 
 export const ViewLanding = () => {
-  const { storeCreator: { coinBalance: { getBalance }, dispatchCoin } }: any = useContext(InputContextProvide)
+  const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, videoId, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
 
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
   const firstStart: any = useRef<boolean>(true);
-  const [getVideoId, setGetVideoId] = useState([]);
-  const [nextVideo, setNextVideo] = useState<number>(0);
   const [timer, setTimer] = useState<number>();
-  const [loader, setLoader] = useState<boolean>(false);
-  const userId = auth().currentUser?.uid;
-  const [liveData, setLiveData] = useState()
-  const [limit, setLimit] = useState<number>(1)
-  const [docId, setDocId] = useState()
 
   const GetCoins = async (params: string) => {
-    let resCoinUpdate = 0;
-    await get_coins().then(res => {
-      resCoinUpdate = res?._data?.coin;
-      setGetVideoId(res?._data?.watch_videos);
+    await get_coins().then(async (res: any) => {
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
+      dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: res?._data?.watch_videos })
+      GetLiveVideoList(params, res?._data?.watch_videos)
     });
-
-    return resCoinUpdate;
   };
+
+  useEffect(() => {
+    GetCoins("isInitialRenderUpdate");
+  }, []);
 
   useEffect(() => {
     if (firstStart.current) {
@@ -62,37 +59,24 @@ export const ViewLanding = () => {
     return () => clearInterval(controlRef.current);
   }, [start, controlRef, timer]);
 
-
+  const GetEarning = async () => {
+    const { id, remaining_view, consumed_view, video_Id, expected_view } = videoData?.[nextVideo]
+    if (timer === 0) {
+      setTimer(0);
+      clearInterval(controlRef?.current);
+      setPlaying(false);
+      const totalAmount = getBalance + videoData?.[nextVideo]?.coin;
+      await addWatchUrl(videoId, video_Id[0], totalAmount, isBytesVideoLoading)
+      await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading)
+      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
+    }
+  }
 
   useEffect(() => {
     if (timer === 0) {
       GetEarning();
     }
   }, [timer]);
-
-  const SetCoins = () => {
-    return parseInt(liveData?.[nextVideo]?.require_duration / 1.1);
-  };
-
-  const GetEarning = async () => {
-    const getCampaignId: string | number = liveData?.[nextVideo]?.id;
-    const remiderView: string | number = liveData?.[nextVideo]?.remaining_view;
-    const consumed_view: string | number = liveData?.[nextVideo]?.consumed_view;
-    let getCurrenData: any = liveData?.[nextVideo]?.video_Id[0];
-    if (timer === 0) {
-      GetCoins("").then((res: number) => {
-        setTimer(0);
-        clearInterval(controlRef?.current);
-        setPlaying(false);
-        const totalAmount = res + SetCoins();
-        addWatchUrl({ totalAmount, getVideoId, getCurrenData })
-      });
-      getNewUpdatedViewCount({ getCampaignId, remiderView, consumed_view })
-
-    }
-
-  }
-
 
   const onStateChange = async (state: string) => {
     if (state === 'playing') {
@@ -121,56 +105,87 @@ export const ViewLanding = () => {
     }
   };
 
-  useEffect(() => {
-    GetCoins('isRender');
-  }, []);
-  useEffect(() => {
-    GetLiveVideoList("parms", "null", docId)
-  }, [])
+  const getBytesVideoList = async () => {
+    dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
+    let data = await bytesVideoListData(bytesDocData)
+    let bytesVideo = data?.map((item: any) => item?._data)
+    !isBytesVideoLoading && (setTimer(bytesVideo[0]?.require_duration))
+    if (bytesVideo?.length > 0) {
+      dispatchVideoLandingData({ types: type.BYTES_VIDEO_DATA, payload: { _vid: bytesVideo, bytes_doc: data[data?.length - 1] } })
+    }
+    else { dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: false }) }
+  }
 
+  let add_Video_Url: Array<any> | any = []
+  async function GetLiveVideoList(params: string, watchVideoList: any) {
 
-  const GetLiveVideoList = (params: string, prams1: string, docId: any) => {
+    dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
+    let docOS: any = Object.keys(docData).length > 0 ? docData : person?.retryDocument
 
-    setLimit(limit + 1)
-    setLoader(true);
-    getPlayVideoList(prams1, docId)
-      .then((res: any) => {
-        setNextVideo(0);
-        let add_Video_Url: Array<any> = []
+    getPlayVideoList(docOS)
+      .then(async (res: any) => {
+        res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
         res._docs?.filter((res: any) => {
-          if (res?._data?.upload_by !== userId && !getVideoId?.includes(res?._data?.video_Id[0])) {
+          if (res?._data?.upload_by !== getUserID() && !watchVideoList?.includes(res?._data?.video_Id[0])) {
             add_Video_Url.push(res?._data)
             return res?._data
           }
         });
-        setDocId(res?._docs[res?._docs?.length - 1])
-        setLoader(false);
-        setLiveData(add_Video_Url)
-        if (params.length > 0) {
-          setLoader(false);
-          setTimer(add_Video_Url[0]?.require_duration)
+
+        if (add_Video_Url?.length > 0) {
+          person?.emptyCount();
+          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
+          params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
+        } else {
+          if (person.retryCount >= 3) {
+            dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })
+            !isBytesVideoLoading && getBytesVideoList()
+          }
+          else {
+            person?.retryDoc(res?._docs[res?._docs?.length - 1])
+            GetLiveVideoList("isRender", watchVideoList);
+          }
         }
+
       })
       .catch(error => {
-        setLoader(false);
+        dispatchVideoLandingData({ types: type.VIDEO_ERROR, payload: error.message })
         handleFirebaseError(error?.code);
       })
       .finally(() => {
-        setLoader(false);
+        dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: false })
       });
   }
 
   const NextVideoList = () => {
-    if (nextVideo <= liveData?.length - 1) {
-      if (nextVideo === liveData?.length - 1) {
-        GetLiveVideoList("", "", docId)
+    if (nextVideo <= videoData?.length - 1) {
+      if (nextVideo === videoData?.length - 1) {
+        if (!isBytesVideoLoading) {
+          GetLiveVideoList("", watchVideoList)
+        } else {
+          getBytesVideoList()
+        }
       }
       else {
-        setNextVideo(nextVideo + 1);
-        setTimer(liveData?.[nextVideo + 1]?.require_duration);
+        dispatchVideoLandingData({ types: type.NEXT_VIDEO, payload: nextVideo + 1 })
+        setTimer(videoData?.[nextVideo + 1]?.require_duration);
       }
     }
   };
+
+  const onPreesNext = (time: number) => {
+    let intialSetTime: number | any;
+    clearTimeout(intialSetTime)
+    return () => {
+      if (intialSetTime) clearTimeout(intialSetTime)
+      intialSetTime = setTimeout(() => {
+        NextVideoList()
+      }, time)
+    }
+  }
+
+  let debounce = onPreesNext(400)
+
   return (
     <>
       <SafeAreaView style={styles.safearea} />
@@ -184,46 +199,55 @@ export const ViewLanding = () => {
           <View style={styles.videoWrapper}>
             <YoutubePlayer
               height={270}
-              videoId={liveData?.[nextVideo]?.video_Id[0]}
+              videoId={videoData?.[nextVideo]?.video_Id[0]}
               ref={controlRef}
               play={playing}
               onChangeState={onStateChange}
             />
           </View>
-          <View style={styles.iconRow}>
-            <View style={styles.iconWrapper}>
-              <SecondsIcon />
-              <View style={styles.marginLeft}>
-                <Text
-                  numberOfLines={1}
-                  style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
-                  {timer}
-                </Text>
-                <Text style={F40014?.main}>{String?.viewTab?.second}</Text>
-              </View>
-            </View>
-            <View style={styles.iconWrapper}>
-              <CoinIcon />
-              <View style={styles.marginLeft}>
-                <Text
-                  numberOfLines={1}
-                  style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
-                  {SetCoins()}
-                </Text>
-                <Text style={F40014?.main}>{String?.viewTab?.coin}</Text>
-              </View>
-            </View>
-          </View>
-          <ButtonComponent
-            loading={loader}
-            onPrees={() => {
-              NextVideoList()
-            }}
-            wrapperStyle={styles.marginTop}
-            buttonTitle={String?.viewTab?.nextVideo}
-          />
+          {
+            videoLoading ?
+              <View style={{ flex: 1, marginTop: "20%", justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
+              </View> :
+              <>
+                <View style={styles.iconRow}>
+                  <View style={styles.iconWrapper}>
+                    <SecondsIcon />
+                    <View style={styles.marginLeft}>
+                      <Text
+                        numberOfLines={1}
+                        style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
+                        {timer}
+                      </Text>
+
+                      <Text style={F40014?.main}>{String?.viewTab?.second}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.iconWrapper}>
+                    <CoinIcon />
+                    <View style={styles.marginLeft}>
+                      <Text
+                        numberOfLines={1}
+                        style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
+                        {videoData?.[nextVideo]?.coin}
+                      </Text>
+
+                      <Text style={F40014?.main}>{String?.viewTab?.coin}</Text>
+                    </View>
+                  </View>
+                </View>
+                <ButtonComponent
+                  loading={videoLoading}
+                  onPrees={() => { debounce() }}
+                  wrapperStyle={styles.marginTop}
+                  buttonTitle={String?.viewTab?.nextVideo}
+                />
+              </>}
         </ScrollView>
       </View>
     </>
   );
 };
+
+

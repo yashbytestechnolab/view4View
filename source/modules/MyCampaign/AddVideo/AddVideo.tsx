@@ -1,6 +1,6 @@
 import { Alert, SafeAreaView, Text, View } from 'react-native'
 import React, { useContext, useState } from 'react'
-import { F40012, F50012, F60016 } from '../../../Theme'
+import { F40012, F50012, F60016, } from '../../../Theme'
 import { ButtonComponent, Header, InputComponent } from '../../../components'
 import { ROUTES, String, addVideoText } from '../../../constants'
 import { styles } from './styles'
@@ -11,7 +11,7 @@ export const AddVideo = () => {
     const navigation = useNavigation()
     const { headerTitle, commonString } = String
     const [addVideoUrl, setVideoUrl] = useState("")
-    const { storeCreator: { campaignData: { getCampaignData } } }: any = useContext(InputContextProvide)
+     const { storeCreator: { campaignData: { getCampaignData } } }: any = useContext(InputContextProvide)
     const onAddVideo = () => {
         let youtubeUrl = 'https://youtu.be/'
         let expetedViewNotRepeat = false
