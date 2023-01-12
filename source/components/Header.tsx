@@ -52,10 +52,10 @@ export const Header = (props: IheaderProps) => {
               onPress={() => {
                 navigation?.navigate(ROUTES?.VIEWCOIN);
               }}>
-              <Text style={[F60016.textStyle, style.padding]}>
+              <Text style={[F60016.textStyle, style.padding]} numberOfLines={1}>
                 {getBalance}
               </Text>
-              <View style={{paddingBottom:1.5}}>
+              <View style={{paddingBottom:1.7}} >
               <EarnCoin />
               </View>
              
@@ -71,6 +71,7 @@ const style = StyleSheet.create({
     backgroundColor: Colors?.pink,
     height: 60,
     justifyContent: 'center',
+    alignItems:'center'
   },
   titleText: {
     textAlign: 'center',
@@ -79,9 +80,9 @@ const style = StyleSheet.create({
   Wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 15,
+    marginRight: 15,
     marginLeft: 20,
-    // backgroundColor:'red'
+    //  backgroundColor:'red'
   },
   coinWrapper: {
     flexDirection: 'row',
@@ -94,12 +95,14 @@ const style = StyleSheet.create({
 
   titleWrapper: {
     flex: 1,
+    paddingRight:10,
     alignContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
     justifyContent: 'center',
   },
   padding: {
+    
     //top: Platform.OS == "ios" ? 0 : 1.5,
     paddingRight: 8,
 

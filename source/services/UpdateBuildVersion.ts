@@ -1,4 +1,3 @@
-import remoteConfig from '@react-native-firebase/remote-config';
 import VersionInfo from 'react-native-version-info';
 import makeRemoteConfig from "@react-native-firebase/remote-config";
 

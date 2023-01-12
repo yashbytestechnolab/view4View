@@ -12,20 +12,22 @@ import { get_coins } from '../../../services/FireStoreServices';
 import { style } from './style';
 
 export const SettingLanding = () => {
-  const navigation = useNavigation()
-  const [data, setData] = useState<string>()
+  const navigation: any = useNavigation()
+  const [data, setData] = useState<any>()
   const [isToggle, setIsToggle] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const focus = useIsFocused()
   const getUserData = () => {
-
-    setIsLoading(true)
-    get_coins()?.then((res: any) => { setIsLoading(false), console.log("logoutHandlelogoutHandle", res), setData(res?._data) }).catch((err) => { setIsLoading(false), console.log(err) })
+     setIsLoading(true)
+    get_coins()?.then((res: any) => { 
+      setIsLoading(false),
+        setData(res?._data)
+       })
+        .catch((err) => { setIsLoading(false), console.log(err) })
   }
   useEffect(() => {
     getUserData()
   }, [focus])
-
   const logoutHandle = async () => {
     await LocalStorage.setValue(LocalStorageKeys.UserId, "")
     auth().signOut().then(() => { })
@@ -39,8 +41,7 @@ export const SettingLanding = () => {
       </TouchableOpacity>
     )
   }
-  console.log("data", data)
-  console.log("data", data?.length)
+  const image=(data?.image)?.toString()
   return (
     <>
       <SafeAreaView style={style.safeArea} />
@@ -51,10 +52,10 @@ export const SettingLanding = () => {
             scrollEnabled={true} contentContainerStyle={style.containWrapper}>
             <View style={style.nameWrapper}>
 
-              <Image source={{ uri: data?.image }} style={style.imageWrapper}
+              <Image source={{ uri: image}} style={style.imageWrapper}
               />
               <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt]}>
-                {data?.firstname + " " + data?.lastname}
+                {data?.firstname+ " " + data?.lastname}
               </Text>
               <Text numberOfLines={1} style={[F50012.main, F50012.opacity]}>
                 {data?.email}

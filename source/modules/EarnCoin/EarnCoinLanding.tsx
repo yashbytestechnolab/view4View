@@ -14,7 +14,7 @@ export const EarnCoinLanding = () => {
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
       <View style={style.main}>
-        <Header title={String?.headerTitle?.earnCoin} showBacKIcon={true} />
+        <Header title={String?.headerTitle?.earnCoin} />
         <View style={{ paddingHorizontal: 16, paddingTop: 20 }}>
           {
             EarnCoinData.length > 0 && EarnCoinData?.map((item, index) => {

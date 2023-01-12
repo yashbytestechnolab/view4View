@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { Platform, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { String, ROUTES } from '../constants';
 import { ViewStack, EarnCoinStack, SettingStack, MyCampaignLanding } from '.';
@@ -123,9 +123,9 @@ const styles = StyleSheet.create({
       width: 1
     },
     borderTopWidth:1,
-    height: 63,
+    height: Platform?.OS=='ios'? 63:63,
     paddingTop:'2%',
-    paddingBottom:'3%',
+    paddingBottom:Platform?.OS=='ios'? "3%":"3%",
     alignSelf: 'center',
     alignItems: 'center',
   },

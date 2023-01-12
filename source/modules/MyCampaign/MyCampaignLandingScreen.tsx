@@ -10,7 +10,7 @@ import { type } from '../../constants/types';
 import { PlusIcon } from '../../assets/icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { lastSeen } from '../../services';
-import { Fonts } from '../../../android/app/build/intermediates/assets/debug/mergeDebugAssets/custom';
+import { Fonts } from '../../assets/fonts';
 
 export const MyCampaignLandingScreen = () => {
 
