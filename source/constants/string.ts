@@ -82,6 +82,8 @@ export const String: any = {
         AddCampaign: "Add Campaign",
         Warning: "Warning:",
         EarnPoints: "Earn Points",
+        emptyList:"Empty list",
+        viewsofthisvideo:"views of this video",
         viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app."
     },
     flashMessage: {

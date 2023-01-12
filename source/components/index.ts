@@ -6,3 +6,5 @@ export * from './InputComponent';
 export * from './SocialMediaButton';
 export * from './BackButton';
 export * from './GradientHeader'
+export * from './DropDown'
+

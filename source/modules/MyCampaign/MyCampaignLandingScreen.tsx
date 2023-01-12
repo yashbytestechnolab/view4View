@@ -13,23 +13,25 @@ import { lastSeen } from '../../services';
 import { Fonts } from '../../assets/fonts';
 
 export const MyCampaignLandingScreen = () => {
-
+  const { headerTitle, commonString } = String
   const navigation = useNavigation()
   let route: object | any = useRoute()
+  
   /**context data coin and campaign data */
   const { storeCreator: { loading, setLoading, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign } }: any = useContext(InputContextProvide)
 
   /**
  * 
- * @param params list of campaign data
- * To Render History Video And Get data from api and create stickey header  
+ * @param params list of current campaign data list
+ * To Render History  firebase table campaign_history.. Video And Get data from api and create stickey header index
+ * index will show which index header stickey
  */
   const getHistoryData = async (params: Array<object> | any) => {
     let historyList = await campaignHistory()
-    if (historyList?.length > 0) {
-      dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [...params, { stickeyHeader: "Past Campaign" }, ...historyList], index: [0, params.length,] } })
+    if (params?.length > 0 && historyList?.length > 0) {
+      dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [...params, { stickeyHeader: "Past Campaign" }, ...historyList], index: [0, params.length] } })
     }
-    else if (params?.length <= 0) {
+    else if (params?.length <= 0 && historyList?.length > 0) {
       dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [{ stickeyHeader: "Past Campaign" }, ...historyList], index: [0] } })
     }
     else {
@@ -38,7 +40,7 @@ export const MyCampaignLandingScreen = () => {
   }
 
   /**
-  * Get data from firebase for campaign list   
+  * Get current campaign list data from campaign table    
   *
   **/
   const getVideoUrl = async (params: string) => {
@@ -50,15 +52,12 @@ export const MyCampaignLandingScreen = () => {
           getVideoUrl.push(res?._data)
           return res?._data
         }
-      });
+      });                          // get current videoList and video liste there add stickey header index0
       getVideoUrl?.length > 0 && getVideoUrl.unshift({ stickeyHeader: "Current Campaign" })
       getHistoryData(getVideoUrl)
     }).
-      catch((error) => {
-        console.log("error", error);
-        dispatchcampaign({ types: type.CAMPAIGN_ERROR, payload: error.message })
-      })
-      .finally(() => params && setLoading(false))
+      catch((error) => dispatchcampaign({ types: type.CAMPAIGN_ERROR, payload: error.message })).
+      finally(() => params && setLoading(false))
   }
 
   /** Call firebase api */
@@ -111,7 +110,7 @@ export const MyCampaignLandingScreen = () => {
                     {item?.consumed_view + "/" + item?.expected_view}
                   </Text>
                   <Text style={[F40010.main, styles.views]}>
-                    views of this video
+                    {commonString.viewsofthisvideo}
                   </Text>
                 </View>
               </View>
@@ -129,7 +128,7 @@ export const MyCampaignLandingScreen = () => {
           !loading && !loding && getCampaignData?.length <= 0 &&
           <View style={{ flexGrow: 1, justifyContent: "center", alignItems: "center" }}>
             <Text style={F50013.main}>
-              Empty List
+              {commonString?.emptyList}
             </Text>
           </View>
         }
@@ -142,8 +141,7 @@ export const MyCampaignLandingScreen = () => {
       <SafeAreaView style={styles.safeArea} />
       <View style={styles.mainContainer}>
         <Header
-          title={String?.headerTitle?.myCampaign} />
-        {/* <View style={styles.height} /> */}
+          title={headerTitle?.myCampaign} />
         {loding ? (<Loader />) :
           (<>
             <FlatList

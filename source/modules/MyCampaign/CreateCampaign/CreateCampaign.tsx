@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { ButtonComponent, Header } from '../../../components';
+import { ButtonComponent, CommonDropDown, Header } from '../../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ROUTES, String } from '../../../constants';
@@ -31,7 +31,7 @@ export const CreateCampaign = () => {
   const splitUrl = route?.params?.url.split('/').slice(3)
 
   /**
-   * configValue for dropdown
+   * configValue for dropdown set
    */
   const confingFnc = useCallback(async () => {
     let value: any = await dropdownConfigValue();
@@ -50,9 +50,10 @@ export const CreateCampaign = () => {
  * Costing value of dropdown final cost
  * @param item 
  */
-  const onUpdateCostValue = (item: string) => {
-    setExpectedValue({ ...expectedValue, timeSecond: item });
-    setTotalCost(parseInt(item / 1.1))
+  const onUpdateCostValue = (key1: any, item: string) => {
+    setExpectedValue({ ...expectedValue, [key1]: item });
+    const costing: number | any = key1 === "timeSecond" ? views : timeSecond
+    costing && setTotalCost(parseInt(item * (costing || 1) / 1.1))
   }
 
   /**
@@ -67,7 +68,7 @@ export const CreateCampaign = () => {
   }
 
   /**
-   * Add Campaign Data 
+   * Add Campaign list in campaign table  
    */
   const handleAddCampaign = async () => {
     if (!(getBalance >= totalCost)) {
@@ -78,13 +79,12 @@ export const CreateCampaign = () => {
       const userAddUrl: string = route?.params?.url
       let videoTitle: { title: string } = await getYoutubeMeta(splitUrl)
       /**
-       * Create Campaign api call & cut wallet amount
+       * Create Campaign api call & decrement wallet amount
        */
       createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title)
         .then(async (res: any) => updateCoinBalance(updateWallet)).catch((err: any) => { console.log("err", err); setLoading(false) })
     }
   }
-
 
   return (
     <>
@@ -112,30 +112,10 @@ export const CreateCampaign = () => {
               </Text>
               <View style={styles.expectedView}>
                 <View style={styles.dropDown}>
-                  <Dropdown
-                    selectedTextStyle={[F40014.main, styles.paddingLeft]}
-                    containerStyle={styles.dropContain}
-                    confirmSelectItem={false}
-                    iconStyle={styles.icon}
-                    style={styles.dropDownContainer}
-                    labelField="label"
-                    valueField="value"
-                    placeholder='0'
-                    placeholderStyle={{ paddingLeft: 22 }}
+                  <CommonDropDown
                     data={expectedView}
-                    showsVerticalScrollIndicator={false}
                     value={views}
-                    renderItem={(item) => {
-                      return (
-                        <View style={{ flex: 1, marginVertical: 3 }}>
-                          <Text style={{ color: "black", textAlign: "center" }}>
-                            {item?.value}
-                          </Text>
-                        </View>
-                      )
-                    }}
-                    onChange={(item) => setExpectedValue({ ...expectedValue, views: item?.value })}
-                    maxHeight={100}
+                    onChange={(item) => onUpdateCostValue("views", item?.value)}
                   />
                 </View>
               </View>
@@ -147,30 +127,10 @@ export const CreateCampaign = () => {
               </Text>
               <View style={styles.expectedView}>
                 <View style={styles.dropDown}>
-                  <Dropdown
-                    selectedTextStyle={[F40014.main, styles.paddingLeft]}
-                    containerStyle={styles.dropContain}
-                    confirmSelectItem={false}
-                    iconStyle={styles.icon}
-                    style={styles.dropDownContainer}
-                    labelField="label"
-                    valueField="value"
-                    placeholder='0'
-                    placeholderStyle={{ paddingLeft: 22 }}
+                  <CommonDropDown
                     data={expectedTime}
-                    showsVerticalScrollIndicator={false}
                     value={timeSecond}
-                    renderItem={(item) => {
-                      return (
-                        <View style={{ flex: 1, marginVertical: 3 }}>
-                          <Text style={{ color: "black", textAlign: "center" }}>
-                            {item?.value}
-                          </Text>
-                        </View>
-                      )
-                    }}
-                    onChange={(item) => { onUpdateCostValue(item?.value) }}
-                    maxHeight={100}
+                    onChange={(item) => { onUpdateCostValue("timeSecond", item?.value) }}
                   />
                 </View>
               </View>
