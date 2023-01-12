@@ -22,15 +22,16 @@ export const MyCampaignLandingScreen = () => {
 
   /**
  * 
- * @param params list of campaign data
- * To Render History Video And Get data from api and create stickey header  
+ * @param params list of current campaign data list
+ * To Render History  firebase table campaign_history.. Video And Get data from api and create stickey header index
+ * index will show which index header stickey
  */
   const getHistoryData = async (params: Array<object> | any) => {
     let historyList = await campaignHistory()
-    if (historyList?.length > 0) {
-      dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [...params, { stickeyHeader: "Past Campaign" }, ...historyList], index: [0, params.length,] } })
+    if (params?.length > 0 && historyList?.length > 0) {
+      dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [...params, { stickeyHeader: "Past Campaign" }, ...historyList], index: [0, params.length] } })
     }
-    else if (params?.length <= 0) {
+    else if (params?.length <= 0 && historyList?.length > 0) {
       dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [{ stickeyHeader: "Past Campaign" }, ...historyList], index: [0] } })
     }
     else {
@@ -39,7 +40,7 @@ export const MyCampaignLandingScreen = () => {
   }
 
   /**
-  * Get data from firebase for campaign list   
+  * Get current campaign list data from campaign table    
   *
   **/
   const getVideoUrl = async (params: string) => {
@@ -51,7 +52,7 @@ export const MyCampaignLandingScreen = () => {
           getVideoUrl.push(res?._data)
           return res?._data
         }
-      });
+      });                          // get current videoList and video liste there add stickey header index0
       getVideoUrl?.length > 0 && getVideoUrl.unshift({ stickeyHeader: "Current Campaign" })
       getHistoryData(getVideoUrl)
     }).

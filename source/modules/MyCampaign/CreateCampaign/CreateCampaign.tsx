@@ -31,7 +31,7 @@ export const CreateCampaign = () => {
   const splitUrl = route?.params?.url.split('/').slice(3)
 
   /**
-   * configValue for dropdown
+   * configValue for dropdown set
    */
   const confingFnc = useCallback(async () => {
     let value: any = await dropdownConfigValue();
@@ -68,7 +68,7 @@ export const CreateCampaign = () => {
   }
 
   /**
-   * Add Campaign Data 
+   * Add Campaign list in campaign table  
    */
   const handleAddCampaign = async () => {
     if (!(getBalance >= totalCost)) {
@@ -79,7 +79,7 @@ export const CreateCampaign = () => {
       const userAddUrl: string = route?.params?.url
       let videoTitle: { title: string } = await getYoutubeMeta(splitUrl)
       /**
-       * Create Campaign api call & cut wallet amount
+       * Create Campaign api call & decrement wallet amount
        */
       createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title)
         .then(async (res: any) => updateCoinBalance(updateWallet)).catch((err: any) => { console.log("err", err); setLoading(false) })

@@ -1,6 +1,7 @@
 export interface YT {
     views: string | number;
-    timeSecond: string | number
+    timeSecond: string | number,
+    key?: string
 }
 
 export interface campaign {
