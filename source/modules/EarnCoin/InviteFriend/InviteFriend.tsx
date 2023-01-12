@@ -9,10 +9,9 @@ import { ButtonComponent, Header } from '../../../components'
 import { style } from './style'
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
-    const getConfigValue: any = remoteConfig().getValue("UpdateDescription");
-    const description = JSON.parse(JSON.stringify(getConfigValue?._value))
-    const data = JSON?.parse(description)
-    console.log("data",data)
+    const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
+    const data = JSON?.parse(getConfigValue)
+
     const handleButton = () => {
         Platform?.OS == 'android' ?
             Linking.openURL(data?.Upadte?.android) : Linking.openURL(data?.Upadte?.ios)
