@@ -9,23 +9,29 @@ import { type } from '../../../../constants/types'
 import { launchImageLibrary } from 'react-native-image-picker';
 import { EditProfileIcon } from '../../../../assets/icons'
 import { ROUTES, String } from '../../../../constants'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 export const EditProfile = () => {
     const navigation = useNavigation()
-    const [data, setData] = useState<string>()
+    const route: any = useRoute();
+    const { params } = route
+
+    console.log("params", params);
+
+    // const [userProfile, setData] = useState<string>()
     const [loader, setLoader] = useState<boolean>(false)
     const { storeCreator: { userInput, dispatch, userInputError, dispatchError } }: any = useContext(InputContextProvide)
     const [profilePic, setProfilePic]: any = useState(null);
 
     const getUserData = () => {
-        get_coins()?.then((res: any) => {
-            dispatch({ type: type.FULL_NAME, payload: res?._data?.firstname + res?._data?.lastname });
-            setData(res?._data)
-        }).catch((err) => { console.log(err) })
+        // get_coins()?.then((res: any) => {
+        dispatch({ type: type.FULL_NAME, payload: params?.userProfile?.firstname + " " + params?.userProfile?.lastname });
+        dispatch({ type: type.EMAIL, payload: params?.userProfile?.email });
+        // setData(res?._data)
+        // }).catch((err) => { console.log(err) })
     }
     useEffect(() => {
         getUserData()
-    }, [])
+    }, [params])
 
     /**
      *  This Function dispatch error message
@@ -87,7 +93,7 @@ export const EditProfile = () => {
             <View style={{ paddingTop: 24 }}>
                 <View style={style.nameWrapper} >
                     {
-                        <Image source={{ uri: data?.image ? data?.image : profilePic?.uri }} style={style.imageWrapper} />
+                        <Image source={{ uri: params?.userProfile?.image ? params?.userProfile?.image : profilePic?.uri }} style={style.imageWrapper} />
                     }
                 </View>
                 <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }} style={{ height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13, position: 'absolute', justifyContent: 'center', alignItems: 'center', right: 150, top: 50 }}>
@@ -113,7 +119,7 @@ export const EditProfile = () => {
                         editable={false}
                         inputTitle={String.commonString.email}
                         placeholder={String.commonString.Enteryouremail}
-                        value={data?.email}
+                        value={userInput?.email}
                         onChangeText={(value) => {
 
                         }}

@@ -5,7 +5,7 @@ import { Colors, F40014 } from '../Theme'
 
 interface dropDownItem {
     value: string | number | any,
-    onChange?: (item: any) => {} | any,
+    onChange?: (item: any) => {}|any,
     data: number | string | any
 }
 export const CommonDropDown = (props: dropDownItem) => {
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     dropContain: { width: 81, flex: 1, },
     icon: { right: 15, },
     dropDownContainer: { width: 81, left: 20, justifyContent: "center", alignItems: "center" },
-    paddingLeft22: { paddingLeft: 22 },
+    paddingLeft22: { paddingLeft: 22,color:"black" },
     renderItem: { flex: 1, marginVertical: 3 },
     renderValue: { color: "black", textAlign: "center" }
 })

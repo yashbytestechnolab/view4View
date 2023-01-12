@@ -16,7 +16,7 @@ export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
   const navigation = useNavigation()
   let route: object | any = useRoute()
-  
+
   /**context data coin and campaign data */
   const { storeCreator: { loading, setLoading, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign } }: any = useContext(InputContextProvide)
 
@@ -81,7 +81,7 @@ export const MyCampaignLandingScreen = () => {
       <>
         {
           item?.stickeyHeader?.length > 0 ?
-            (<View style={{ height: 34, justifyContent: "center", backgroundColor: Colors.paginationGray, paddingLeft: 12 }}>
+            (<View style={{ height: 34, justifyContent: "center", backgroundColor: Colors?.shadowPink, paddingLeft: 12 }}>
               <Text style={{ color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium }}>
                 {item?.stickeyHeader}
               </Text>
@@ -126,8 +126,8 @@ export const MyCampaignLandingScreen = () => {
       <>
         {
           !loading && !loding && getCampaignData?.length <= 0 &&
-          <View style={{ flexGrow: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text style={F50013.main}>
+          <View style={styles.emptyList}>
+            <Text style={[F50013.main, { textAlign: "center" }]}>
               {commonString?.emptyList}
             </Text>
           </View>

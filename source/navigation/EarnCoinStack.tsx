@@ -21,6 +21,7 @@ export const EarnCoinStack = () => {
         component={EarnCoinLanding}
       />
       <Stack.Screen
+        options={{ gestureEnabled: false }}
         name={ROUTES.VIEWCOIN}
         component={ViewCoin}
       />
@@ -28,7 +29,7 @@ export const EarnCoinStack = () => {
         name={ROUTES.INVITEFRIEND}
         component={InviteFriend}
       />
-       <Stack.Screen
+      <Stack.Screen
         name={ROUTES.BUYCOIN}
         component={BuyCoin}
       />

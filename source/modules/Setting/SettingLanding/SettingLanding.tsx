@@ -18,12 +18,12 @@ export const SettingLanding = () => {
   const [isLoading, setIsLoading] = useState(false)
   const focus = useIsFocused()
   const getUserData = () => {
-     setIsLoading(true)
-    get_coins()?.then((res: any) => { 
+    setIsLoading(true)
+    get_coins()?.then((res: any) => {
       setIsLoading(false),
         setData(res?._data)
-       })
-        .catch((err) => { setIsLoading(false), console.log(err) })
+    })
+      .catch((err) => { setIsLoading(false), console.log(err) })
   }
   useEffect(() => {
     getUserData()
@@ -35,13 +35,18 @@ export const SettingLanding = () => {
   }
   const manageTab = (name: string, route: string) => {
     return (
-      <TouchableOpacity onPress={() => { navigation.navigate(route) }} activeOpacity={1} style={style.tabWrapper}>
+      <TouchableOpacity onPress={() => {
+        ROUTES.EDITPROFILE == "EDITPROFILE" ?
+          navigation.navigate(route, {
+            userProfile: data
+          }) : navigation.navigate(route)
+      }} activeOpacity={1} style={style.tabWrapper}>
         <Text style={F40014?.main}>{name}</Text>
         <NextIcon color={Colors?.black} />
       </TouchableOpacity>
     )
   }
-  const image=(data?.image)?.toString()
+  const image = (data?.image)?.toString()
   return (
     <>
       <SafeAreaView style={style.safeArea} />
@@ -52,10 +57,10 @@ export const SettingLanding = () => {
             scrollEnabled={true} contentContainerStyle={style.containWrapper}>
             <View style={style.nameWrapper}>
 
-              <Image source={{ uri: image}} style={style.imageWrapper}
+              <Image source={{ uri: image }} style={style.imageWrapper}
               />
               <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt]}>
-                {data?.firstname+ " " + data?.lastname}
+                {data?.firstname + " " + data?.lastname}
               </Text>
               <Text numberOfLines={1} style={[F50012.main, F50012.opacity]}>
                 {data?.email}

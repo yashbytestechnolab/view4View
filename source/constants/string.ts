@@ -80,9 +80,9 @@ export const String: any = {
         requiredTime: "Time required (in second):",
         Totalcost: "Total cost:",
         AddCampaign: "Add Campaign",
-        Warning: "Warning:",
+        Warning: "Note:",
         EarnPoints: "Earn Points",
-        emptyList:"Empty list",
+        emptyList:"No campaigns available. Please create campaigns by clicking on the + button",
         viewsofthisvideo:"views of this video",
         viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app."
     },
@@ -95,6 +95,7 @@ export const String: any = {
         userNotFound: "User not found",
         emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
+        Something:"Something went wrong"
     },
     inviteFrd: {
         headerTitle: 'Invite friends',

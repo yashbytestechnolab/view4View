@@ -67,7 +67,7 @@ export const ViewLanding = () => {
       setPlaying(false);
       const totalAmount = getBalance + videoData?.[nextVideo]?.coin;
       await addWatchUrl(videoId, video_Id[0], totalAmount, isBytesVideoLoading)
-      await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading)
+      await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
     }
   }

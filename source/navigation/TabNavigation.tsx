@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { Platform, StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { String, ROUTES } from '../constants';
 import { ViewStack, EarnCoinStack, SettingStack, MyCampaignLanding } from '.';
@@ -35,10 +35,8 @@ export const TabNavigation = () => {
     <Tab.Navigator
       initialRouteName={ROUTES.VIEW}
       screenOptions={({ route }) => ({
-        // unmountOnBlur: true,
         tabBarHideOnKeyboard: true,
         headerShown: false,
-
         tabBarStyle: styles.tab,
         tabBarIcon: ({ focused }) => {
           const Icon = getRouteIcon(route.name);
@@ -49,11 +47,6 @@ export const TabNavigation = () => {
       <Tab.Screen
         name={ROUTES?.VIEW}
         component={ViewStack}
-        listeners={({ navigation }) => ({
-          tabPress: () => {
-            navigation.navigate(ROUTES.VIEW);
-          },
-        })}
         options={{
           tabBarLabel: ({ focused }) => (
             <Text style={[focused ? ActiveTabText.main : F50010.main]}>
@@ -76,11 +69,6 @@ export const TabNavigation = () => {
       <Tab.Screen
         name={ROUTES?.EARNCOINS}
         component={EarnCoinStack}
-        listeners={({ navigation }) => ({
-          tabPress: () => {
-            navigation.navigate(ROUTES.EARNCOINS);
-          },
-        })}
         options={{
           tabBarLabel: ({ focused }) => (
             <Text style={[focused ? ActiveTabText.main : F50010.main]}>
@@ -92,11 +80,6 @@ export const TabNavigation = () => {
       <Tab.Screen
         name={ROUTES?.SETTING}
         component={SettingStack}
-        listeners={({ navigation }) => ({
-          tabPress: () => {
-            navigation.navigate(ROUTES.SETTING);
-          },
-        })}
         options={{
           tabBarLabel: ({ focused }) => (
             <Text style={[focused ? ActiveTabText.main : F50010.main]}>
