@@ -21,7 +21,9 @@ export const SettingLanding = () => {
   const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
   const details = JSON?.parse(getConfigValue)
   const getUserData = () => {
+
     get_coins()?.then((res: any) => {
+
       setData(res?._data)
     })
       .catch((err) => { console.log(err) })
@@ -42,6 +44,10 @@ export const SettingLanding = () => {
           Linking.openURL(details?.Upadte?.android) : Linking.openURL(details?.Upadte?.ios)
           :
           navigation.navigate(route)
+        ROUTES.EDITPROFILE == "EDITPROFILE" ?
+          navigation.navigate(route, {
+            userProfile: data
+          }) : navigation.navigate(route)
       }} activeOpacity={1} style={style.tabWrapper}>
         <Text style={F40014?.main}>{name}</Text>
         <NextIcon color={Colors?.black} />

@@ -45,5 +45,6 @@ export const styles = StyleSheet.create({
     borderRadius: 30,
     right: 20,
     backgroundColor: Colors.primaryRed
-  }
+  },
+  emptyList: { flexGrow: 1, backgroundColor: "#FCFBFF", justifyContent: "center", alignItems: "center", paddingHorizontal: 16 }
 });

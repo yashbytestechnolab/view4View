@@ -53,7 +53,7 @@ export const CreateCampaign = () => {
   const onUpdateCostValue = (key1: any, item: string) => {
     setExpectedValue({ ...expectedValue, [key1]: item });
     const costing: number | any = key1 === "timeSecond" ? views : timeSecond
-    costing && setTotalCost(parseInt(item * (costing || 1) / 1.1))
+    costing && setTotalCost(parseInt(item * (costing || 1) / 1))
   }
 
   /**
@@ -98,7 +98,7 @@ export const CreateCampaign = () => {
           scrollEnabled={true}
           style={{ backgroundColor: Colors.white, marginTop: 12 }}
           contentContainerStyle={{ paddingHorizontal: 16, flexGrow: 1, paddingBottom: 90 }}>
-          <YoutubePlayer height={203} videoId={splitUrl} />
+          <YoutubePlayer height={203} videoId={splitUrl?.toString()} />
           <View style={{ marginTop: 16, flex: 1 }}>
             <Text style={[F60016.textStyle, F60016.campaign]}>
               {commonString.OrderSettings}

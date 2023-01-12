@@ -54,6 +54,9 @@ export const updateProfile = async (...payload: Array<object | string | undefine
 }
 export const createCampaign = async (...payload: Array<object | undefined | string | number>) => {
   let uniqID = getUniqID();
+  let userID = getUserID()
+  console.log("userID", userID, payload);
+
   let updateObj = {
     coin: payload[4],
     consumed_view: 0,
@@ -62,7 +65,7 @@ export const createCampaign = async (...payload: Array<object | undefined | stri
     id: uniqID,
     remaining_view: payload[3],
     require_duration: payload[2],
-    upload_by: getUserID(),
+    upload_by: userID,
     video_Id: payload[1],
     video_url: payload[0],
     video_title: payload[5]
@@ -145,7 +148,8 @@ export const getNewUpdatedViewCount = async (...params: Array<string | [] | unde
 }
 
 export const updateUserWallet = async (payload: number) => {
-  userTableLogin.doc(getUserID()?.toString()).update({
+  let userID = getUserID()?.toString()
+  userTableLogin.doc(userID).update({
     coin: payload
   })
   return payload

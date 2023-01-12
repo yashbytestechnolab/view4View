@@ -17,6 +17,7 @@ export const HomeStack = () => {
       }}>
       <Stack.Screen name={ROUTES.HOME_LANDING} component={HomeLanding} />
       <Stack.Screen
+        options={{ gestureEnabled: false }}
         name={ROUTES.VIEWCOIN}
         component={ViewCoin}
       />
