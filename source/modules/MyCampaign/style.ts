@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     height: 60,
     width: 60,
-    bottom: 100,
+    bottom: 90,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 30,

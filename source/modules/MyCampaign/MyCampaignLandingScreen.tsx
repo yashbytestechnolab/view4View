@@ -13,9 +13,10 @@ import { lastSeen } from '../../services';
 import { Fonts } from '../../../android/app/build/intermediates/assets/debug/mergeDebugAssets/custom';
 
 export const MyCampaignLandingScreen = () => {
-
+  const { headerTitle, commonString } = String
   const navigation = useNavigation()
   let route: object | any = useRoute()
+  
   /**context data coin and campaign data */
   const { storeCreator: { loading, setLoading, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign } }: any = useContext(InputContextProvide)
 
@@ -54,11 +55,8 @@ export const MyCampaignLandingScreen = () => {
       getVideoUrl?.length > 0 && getVideoUrl.unshift({ stickeyHeader: "Current Campaign" })
       getHistoryData(getVideoUrl)
     }).
-      catch((error) => {
-        console.log("error", error);
-        dispatchcampaign({ types: type.CAMPAIGN_ERROR, payload: error.message })
-      })
-      .finally(() => params && setLoading(false))
+      catch((error) => dispatchcampaign({ types: type.CAMPAIGN_ERROR, payload: error.message })).
+      finally(() => params && setLoading(false))
   }
 
   /** Call firebase api */
@@ -111,7 +109,7 @@ export const MyCampaignLandingScreen = () => {
                     {item?.consumed_view + "/" + item?.expected_view}
                   </Text>
                   <Text style={[F40010.main, styles.views]}>
-                    views of this video
+                    {commonString.viewsofthisvideo}
                   </Text>
                 </View>
               </View>
@@ -129,7 +127,7 @@ export const MyCampaignLandingScreen = () => {
           !loading && !loding && getCampaignData?.length <= 0 &&
           <View style={{ flexGrow: 1, justifyContent: "center", alignItems: "center" }}>
             <Text style={F50013.main}>
-              Empty List
+              {commonString?.emptyList}
             </Text>
           </View>
         }
@@ -142,8 +140,7 @@ export const MyCampaignLandingScreen = () => {
       <SafeAreaView style={styles.safeArea} />
       <View style={styles.mainContainer}>
         <Header
-          title={String?.headerTitle?.myCampaign} />
-        {/* <View style={styles.height} /> */}
+          title={headerTitle?.myCampaign} />
         {loding ? (<Loader />) :
           (<>
             <FlatList
