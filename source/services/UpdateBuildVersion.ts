@@ -8,13 +8,13 @@ export const UpdateBuildVersion = async (updateAlert: any) => {
     const remoteConfig: any = makeRemoteConfig();
     remoteConfig
         .setDefaults({
-            someValue: {}
+            someValue: { build_version: "1.0" }
         })
         .then(() => remoteConfig.fetchAndActivate())
         .then(() => {
             const getConfigValue: any = remoteConfig.getValue("UpdateDescription").asString()
             const data = JSON?.parse(getConfigValue)
-            console.log("data",data,)
+            console.log("data", data,)
             try {
                 if (data?.build_version != getVersionNo) {
                     updateAlert(true);
@@ -25,6 +25,6 @@ export const UpdateBuildVersion = async (updateAlert: any) => {
                 console.log('err', error);
             }
         })
-        .catch((error: any) => console.error(error));
+        .catch((error: any) => { console.error(error) });
 }
 
