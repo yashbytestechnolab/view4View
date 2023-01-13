@@ -39,15 +39,15 @@ export const SettingLanding = () => {
   const manageTab = (name: string, route?: string) => {
     return (
       <TouchableOpacity onPress={() => {
-        route == "privacy" && Linking.openURL('https://photolia-371a0.web.app');
-        route == "rateUs" ? Platform?.OS == 'android' ?
-          Linking.openURL(details?.Upadte?.android) : Linking.openURL(details?.Upadte?.ios)
-          :
+        // route == "privacy" && Linking.openURL('https://view4view-dcb01.web.app/');
+        // route == "rateUs" ? Platform?.OS == 'android' ?
+        //   Linking.openURL(details?.Upadte?.android) : Linking.openURL(details?.Upadte?.ios)
+        //   :
           navigation.navigate(route)
-        ROUTES.EDITPROFILE == "EDITPROFILE" ?
-          navigation.navigate(route, {
-            userProfile: data
-          }) : navigation.navigate(route)
+        // ROUTES.EDITPROFILE == "EDITPROFILE" ?
+        //   navigation.navigate(route, {
+        //     userProfile: data
+        //   }) : navigation.navigate(route)
       }} activeOpacity={1} style={style.tabWrapper}>
         <Text style={F40014?.main}>{name}</Text>
         <NextIcon color={Colors?.black} />
@@ -79,7 +79,7 @@ export const SettingLanding = () => {
             </Text>
           </View>
           {manageTab(String?.settingScreen?.EditProfile, ROUTES?.EDITPROFILE)}
-          {manageTab(String?.settingScreen?.ChangePassword, ROUTES?.INVITEFRIEND)}
+          {manageTab(String?.settingScreen?.ChangePassword, ROUTES?.CHANGEPASSWORD)}
           <View style={style.pinkTabWrapper}>
             <More />
             <Text style={[F60012.textStyle, F60012.colorAccount, style.paddingLeft]}>

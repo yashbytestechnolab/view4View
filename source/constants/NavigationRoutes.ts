@@ -20,10 +20,11 @@ interface IRoutes {
     SETTING_LANDING: string;
     VIEWCOIN: string;
     CREATECAMP: string;
-    INVITEFRIEND:string;
+    INVITEFRIEND: string;
     ADDVIDEO: string;
-    EDITPROFILE:string;
-    BUYCOIN:string;
+    EDITPROFILE: string;
+    BUYCOIN: string;
+    CHANGEPASSWORD: string;
 };
 export const ROUTES: IRoutes = {
     HOME: "HOME",
@@ -47,8 +48,9 @@ export const ROUTES: IRoutes = {
     SETTING: 'SETTING',
     VIEWCOIN: 'VIEWCOIN',
     CREATECAMP: 'CREATECAMP',
-    INVITEFRIEND:"INVITEFRIEND",
+    INVITEFRIEND: "INVITEFRIEND",
     ADDVIDEO: "ADDVIDEO",
-    EDITPROFILE:"EDITPROFILE",
-    BUYCOIN:"BUYCOIN"
+    EDITPROFILE: "EDITPROFILE",
+    BUYCOIN: "BUYCOIN",
+    CHANGEPASSWORD: "CHANGEPASSWORD"
 }

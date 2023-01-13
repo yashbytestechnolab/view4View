@@ -24,7 +24,8 @@ export const String: any = {
         YourCoin: 'Your Coin',
         AddYourVideo: "Add Your Video",
         buyCoin:'Buy coin',
-        editProfile:'Edit Profile'
+        editProfile:'Edit Profile',
+        changePassword:'Change Password'
     },
     homeTab: {
         plus: '+',
@@ -69,6 +70,8 @@ export const String: any = {
         PleaseProvideValidEmailMsg: "Please enter a valid email address",
         fullnameErrorMsg: "Please enter your full name",
         PasswordErrorMsg: "Your password must be at least 8 characters long",
+        OldPasswordError:"Your password must be at least 8 characters long",
+        NewPAsswordError:"Your password must be at least 8 characters long",
         ConfirmPasswordErrorMsg: "Confirm password doesn't match",
         darkcontent: "dark-content",
         signInWithGoogle: 'Sign in with Google',
@@ -85,7 +88,11 @@ export const String: any = {
         EarnPoints: "Earn Points",
         emptyList:"No campaigns available. Please create campaigns by clicking on the + button",
         viewsofthisvideo:"views of this video",
-        viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app."
+        viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app.",
+        oldPassword:'Old password',
+        newPassword:'New password',
+        conformPassword:'Confirm password'
+    
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
