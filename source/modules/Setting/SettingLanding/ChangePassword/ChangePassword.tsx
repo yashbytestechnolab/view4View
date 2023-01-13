@@ -107,11 +107,7 @@ export const ChangePassword = () => {
                 />
 
                 <View style={{ paddingTop: 24 }}>
-                    <KeyboardAwareScrollView
-                        keyboardShouldPersistTaps={String.commonString.handled}
-                        style={style.scrollWrapper}
-                        scrollEnabled={true}
-                        contentContainerStyle={style.containWrapper}>
+                   
                         <InputComponent
                             placeholder={String.commonString.oldPassword}
                             inputTitle={String.commonString.oldPassword}
@@ -184,7 +180,7 @@ export const ChangePassword = () => {
                             }}
                             buttonTitle={String.commonString.submit}
                         />
-                    </KeyboardAwareScrollView>
+                   
                 </View>
             </View>
         </>

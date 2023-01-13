@@ -11,7 +11,7 @@ export const style = StyleSheet.create({
     containWrapper: {
         backgroundColor: Colors?.white,
         flexGrow: 1,
-        paddingBottom: 130,
+        //paddingBottom: 130,
     },
     marginTop33: { marginTop: 25 },
 });

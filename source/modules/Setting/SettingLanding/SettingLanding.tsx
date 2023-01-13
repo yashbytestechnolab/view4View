@@ -21,9 +21,7 @@ export const SettingLanding = () => {
   const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
   const details = JSON?.parse(getConfigValue)
   const getUserData = () => {
-
     get_coins()?.then((res: any) => {
-
       setData(res?._data)
     })
       .catch((err) => { console.log(err) })
