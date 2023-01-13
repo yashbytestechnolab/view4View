@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, StyleSheet } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { String } from '../../constants';
 import { styles } from './style';
-import auth from '@react-native-firebase/auth';
 import {
   addWatchUrl,
   bytesVideoListData,
@@ -13,7 +12,7 @@ import {
   getUserID,
   get_coins,
 } from '../../services/FireStoreServices';
-import { Colors, F40014, F60024 } from '../../Theme';
+import { changeColorMode, chnageModing, colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
 import { InputContextProvide } from '../../context/CommonContext';
@@ -22,8 +21,8 @@ import { person } from './increment';
 
 
 export const ViewLanding = () => {
-  const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, videoId, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
-
+  const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, videoId, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { darkModeColor, white } = Colors
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -184,7 +183,6 @@ export const ViewLanding = () => {
   }
 
   let debounce = onPreesNext(400)
-
   return (
     <>
       <SafeAreaView style={styles.safearea} />
@@ -192,7 +190,7 @@ export const ViewLanding = () => {
         backgroundColor={Colors?.gradient1}
         barStyle={String?.StatusBar?.lightContent}
       />
-      <View style={styles.container}>
+      <View style={[styles.container, darkBackGround(darkModeTheme)]}>
         <Header coin={getBalance} title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
           <View style={styles.videoWrapper}>
@@ -216,11 +214,11 @@ export const ViewLanding = () => {
                     <View style={styles.marginLeft}>
                       <Text
                         numberOfLines={1}
-                        style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
+                        style={[F60024.textStyle, { color: Colors?.primaryRed },]}>
                         {timer}
                       </Text>
 
-                      <Text style={F40014?.main}>{String?.viewTab?.second}</Text>
+                      <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.second}</Text>
                     </View>
                   </View>
                   <View style={styles.iconWrapper}>
@@ -231,8 +229,7 @@ export const ViewLanding = () => {
                         style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
                         {videoData?.[nextVideo]?.coin}
                       </Text>
-
-                      <Text style={F40014?.main}>{String?.viewTab?.coin}</Text>
+                      <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.coin}</Text>
                     </View>
                   </View>
                 </View>

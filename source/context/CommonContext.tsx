@@ -41,6 +41,7 @@ const CommonContext = ({ children }: any) => {
     const { campaignData, dispatchcampaign } = getUserCampaign()
     const { coinBalance, dispatchCoin } = getCurrentCoinBalance()
     const { videoLandingData, dispatchVideoLandingData } = videoLanding()
+    const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
 
     const storeCreator = {
@@ -55,7 +56,8 @@ const CommonContext = ({ children }: any) => {
         videoLandingData,
         dispatchVideoLandingData,
         coinBalance,
-        dispatchCoin
+        dispatchCoin,
+        darkModeTheme, setDarkModeTheme
     }
 
     return (

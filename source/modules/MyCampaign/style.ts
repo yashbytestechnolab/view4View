@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#FCFBFF',
+    paddingBottom: 55,
   },
   container: {
     flex: 1,
@@ -20,7 +21,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 8,
     borderRadius: 16,
-    backgroundColor: Colors.white
+    backgroundColor: '#1A1A1A'
   },
   thumbNilImage: { height: 71, width: 93, borderRadius: 4, alignSelf: "center" },
   discription: { flex: 1, marginLeft: 13, marginTop: 12 },
@@ -33,7 +34,7 @@ export const styles = StyleSheet.create({
   countOfView: { flexDirection: "row", alignItems: "center", marginTop: 6 },
   views: { left: 6, top: 1 },
   height: { height: 5, backgroundColor: Colors?.lightWhite },
-  flatList: { marginBottom: 80, backgroundColor: '#FCFBFF' },
+  flatList: { backgroundColor: '#FCFBFF' },
   safeArea: { backgroundColor: Colors.linear_gradient },
   addIcon: {
     position: "absolute",
