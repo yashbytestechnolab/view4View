@@ -99,11 +99,7 @@ export const EditProfile = () => {
                 <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }} style={{ height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13, position: 'absolute', justifyContent: 'center', alignItems: 'center', right: 150, top: 50 }}>
                     <EditProfileIcon />
                 </TouchableOpacity>
-                <KeyboardAwareScrollView
-                    keyboardShouldPersistTaps={String.commonString.handled}
-                    style={style.scrollWrapper}
-                    scrollEnabled={true}
-                    contentContainerStyle={style.containWrapper}>
+                <View style={style.scrollWrapper}>
                     <InputComponent
                         inputTitle={String.commonString.Fullname}
                         value={userInput?.fullName}
@@ -124,7 +120,8 @@ export const EditProfile = () => {
 
                         }}
                     />
-                </KeyboardAwareScrollView>
+                </View>
+
             </View>
         </View>
         </>
