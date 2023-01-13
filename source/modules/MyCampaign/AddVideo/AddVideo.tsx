@@ -1,6 +1,6 @@
 import { Alert, SafeAreaView, Text, View } from 'react-native'
 import React, { useContext, useState } from 'react'
-import { F40012, F50012, F60016, } from '../../../Theme'
+import { colorBackGround, darkBackGround, F40012, F50012, F60016, } from '../../../Theme'
 import { ButtonComponent, Header, InputComponent } from '../../../components'
 import { ROUTES, String, addVideoText } from '../../../constants'
 import { styles } from './styles'
@@ -11,7 +11,7 @@ export const AddVideo = () => {
     const navigation = useNavigation()
     const { headerTitle, commonString } = String
     const [addVideoUrl, setVideoUrl] = useState("")
-     const { storeCreator: { campaignData: { getCampaignData } } }: any = useContext(InputContextProvide)
+    const { storeCreator: { campaignData: { getCampaignData },darkModeTheme } }: any = useContext(InputContextProvide)
     const onAddVideo = () => {
         let youtubeUrl = 'https://youtu.be/'
         let expetedViewNotRepeat = false
@@ -22,7 +22,7 @@ export const AddVideo = () => {
                 getCampaignData?.map((res: { video_url: string | undefined; }) => {
                     res?.video_url == addVideoUrl ? expetedViewNotRepeat = true : false
                 }),
-                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), setVideoUrl("")) :
+                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, })) :
                     (Alert.alert("please enter uniq url"))
             )
     }
@@ -30,12 +30,12 @@ export const AddVideo = () => {
     return (
         <>
             <SafeAreaView style={styles.safeArea} />
-            <View style={styles.mainWrapper}>
+            <View style={[styles.mainWrapper,darkBackGround(darkModeTheme)]}>
                 <Header
                     showBacKIcon={true}
                     title={headerTitle?.AddYourVideo} />
                 <View style={styles.childWrapper}>
-                    <Text style={[F50012.main, F50012.fontStyleVideo]}>{commonString?.Addvideolink}</Text>
+                    <Text style={[F50012.main, F50012.fontStyleVideo,colorBackGround(darkModeTheme)]}>{commonString?.Addvideolink}</Text>
                     <View style={styles.link}>
                         <InputComponent
                             value={addVideoUrl}
@@ -52,7 +52,7 @@ export const AddVideo = () => {
                         />
                     </View>
                     <View style={styles.discretion}>
-                        <Text style={[F60016.textStyle, F60016.campaign]}>
+                        <Text style={[F60016.textStyle, F60016.campaign,colorBackGround(darkModeTheme)]}>
                             {commonString.createContain}
                         </Text>
                         <View style={styles.disWrap}>
@@ -60,7 +60,7 @@ export const AddVideo = () => {
                                 return (
                                     <View key={index.toString()}
                                         style={styles.vertical}>
-                                        <Text style={[F40012.main, F40012.contain, { textAlign: "auto" }]}>
+                                        <Text style={[F40012.main, F40012.contain, { textAlign: "auto" },colorBackGround(darkModeTheme)]}>
                                             {item?.text}
                                         </Text>
                                     </View>

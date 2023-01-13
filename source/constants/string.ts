@@ -76,7 +76,7 @@ export const String: any = {
         darkcontent: "dark-content",
         signInWithGoogle: 'Sign in with Google',
         Addvideolink: "Add video link",
-        pasteyourvideolinkhere: "paste your video link here",
+        pasteyourvideolinkhere: "Paste your video link here",
         Addnow: "Add Now",
         createContain: "Steps to CREATE & ADD a campaign.",
         OrderSettings: "Order Settings",
@@ -124,7 +124,7 @@ export const String: any = {
         subLine4: 'Boost views on added videos.',
         subLine5: 'Grow your YouTube channel and reap rewards.',
         bottomsubLine: 'See enjoy & win rewards coins',
-        buttonText: 'Earn 50 points now'
+        buttonText: 'Earn points now'
     },
     keyboardType: {
         email: 'email-address'
