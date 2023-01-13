@@ -3,6 +3,21 @@ import { Fonts } from "../assets/fonts";
 import { Colors } from "./Color";
 
 
+
+export function darkBackGround(params: any) {
+    return { backgroundColor: params ? Colors.darkModeColor : Colors.white }
+}
+
+export function lightBackGround(params: any) {
+    return { backgroundColor: params ? Colors.darkModeColor1 : Colors.white }
+}
+
+export function colorBackGround(params: any) {
+    return { color: params ? Colors.gray : Colors.darkModeColor }
+}
+
+
+
 export const ActiveTabText = StyleSheet.create({
     main: {
         color: Colors?.primaryRed,
@@ -158,7 +173,7 @@ export const F60032 = StyleSheet.create({
         fontWeight: "600",
         fontFamily: Fonts?.InterBold
     },
-}) 
+})
 
 export const F60012 = StyleSheet.create({
     textStyle: {

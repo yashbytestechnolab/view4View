@@ -1,8 +1,9 @@
 import { Image, Platform, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
-import React from 'react'
-import { Colors, F50012 } from '../Theme'
+import React, { useContext } from 'react'
+import { colorBackGround, Colors, F50012 } from '../Theme'
 import { EyeIcon } from '../assets/icons/EyeIcon'
 import { Images } from '../assets/image'
+import { InputContextProvide } from '../context/CommonContext'
 interface props {
     placeholder: string,
     value: string | number | undefined,
@@ -14,23 +15,26 @@ interface props {
     onPrees?: void,
     errorMessage?: string
     keyboardType?: string
-    editable?:boolean
+    editable?: boolean
 }
 
 export const InputComponent = (props: props) => {
-    const { errorMessage, inputTitle, viewStyle, onChangeText, value, placeholder, isSecureIcon, isSecureEntry, onPrees, keyboardType,editable } = props
+    const { errorMessage, inputTitle, viewStyle, onChangeText, value, placeholder, isSecureIcon, isSecureEntry, onPrees, keyboardType, editable } = props
+    const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
+
     return (
         <View style={[innerStyles.main, viewStyle]}>
-            {inputTitle && <Text style={F50012.main}>{inputTitle}</Text>}
+            {inputTitle && <Text style={[F50012.main, colorBackGround(darkModeTheme)]}>{inputTitle}</Text>}
             <TextInput
                 placeholderTextColor={Colors.GrayLightC2C9D1}
                 secureTextEntry={isSecureEntry}
                 onChangeText={onChangeText}
                 value={value}
+                
                 editable={editable}
                 keyboardType={keyboardType}
                 placeholder={placeholder}
-                style={[innerStyles.textInput, isSecureIcon && innerStyles.paddingExtra]}
+                style={[innerStyles.textInput, colorBackGround(darkModeTheme), isSecureIcon && innerStyles.paddingExtra]}
             />
             {
                 isSecureIcon &&
@@ -43,7 +47,7 @@ export const InputComponent = (props: props) => {
             }
             {
                 errorMessage?.length > 0 &&
-                <Text numberOfLines={1} style={innerStyles.validationError}>
+                <Text numberOfLines={1} style={[innerStyles.validationError,{color:darkModeTheme?Colors.gray:Colors.red}]}>
                     {errorMessage}
                 </Text>
             }

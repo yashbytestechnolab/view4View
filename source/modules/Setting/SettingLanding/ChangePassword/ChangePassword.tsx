@@ -9,9 +9,11 @@ import { useNavigation } from '@react-navigation/native';
 import { firebase } from '@react-native-firebase/firestore';
 import { handleFirebaseError } from '../../../../services';
 import { style } from './style';
+import { darkBackGround } from '../../../../Theme';
 
 export const ChangePassword = () => {
     const navigation = useNavigation();
+    const { storeCreator: { darkModeTheme, setDarkModeTheme } }: any = useContext(InputContextProvide)
 
     /**
      * Context to give userinput data and error message
@@ -99,17 +101,14 @@ export const ChangePassword = () => {
     return (
         <>
             <SafeAreaView style={style.safeArea} />
-            <View style={style.mainWrapper}>
+            <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header
                     title={String?.headerTitle?.changePassword}
                     showCoin={false}
                     showBacKIcon={true}
-                    onPrees={() => {
-
-                    }}
                 />
 
-                <View style={{ paddingTop: 24 }}>
+                <View style={[{ paddingTop: 24, }, darkBackGround(darkModeTheme)]}>
 
                     <InputComponent
                         placeholder={String.commonString.oldPassword}
@@ -117,10 +116,12 @@ export const ChangePassword = () => {
                         value={userInput?.oldPassword}
                         onChangeText={value => {
                             dispatch({ type: type.OLDPASSWORD, payload: value });
-                            dispatchError({ type: type.OLD_PASSWORD_ERROR, payload: '' });
+
                             if (value?.length > 7 && value == userInput?.oldPassword) {
                                 dispatchError({ type: type.OLD_PASSWORD_ERROR, payload: '' });
                             }
+                            dispatchError({ type: type.OLD_PASSWORD_ERROR, payload: '' });
+
                         }}
                         onPrees={() =>
                             dispatch({
@@ -141,7 +142,7 @@ export const ChangePassword = () => {
                             if (value?.length > 7 && value == userInput?.newPassword) {
                                 dispatchError({ type: type.NEW_PASSWORD_ERROR, payload: '' });
                             }
-                            dispatch({ type: type.NEWPASSWORD, payload: value });
+                            dispatchError({ type: type.NEW_PASSWORD_ERROR, payload: '' });
 
                         }}
                         onPrees={() =>
@@ -158,23 +159,18 @@ export const ChangePassword = () => {
                         placeholder={String.commonString.Enterconfirmpassword}
                         inputTitle={String.commonString.ConfirmPassword}
                         value={userInput?.confirmPassword}
-                        // onChangeText={value => {
-                        //     dispatch({ type: type.CONFIRM_PASSWORD, payload: value });
-                        //     if (value?.length > 7 && value == userInput?.password) {
-                        //         dispatchError({
-                        //             type: type.CONFIRM_PASSWORD_ERROR,
-                        //             payload: '',
-                        //         });
-
-                        //     }
-                        // }}
-                        onChangeText={(value) => {
+                        onChangeText={value => {
                             dispatch({ type: type.CONFIRM_PASSWORD, payload: value });
                             if (value?.length > 7 && value == userInput?.oldPassword) {
-                                dispatchError({ type: type.CONFIRM_PASSWORD_ERROR, payload: "" })
+                                dispatchError({
+                                    type: type.CONFIRM_PASSWORD_ERROR,
+                                    payload: '',
+                                });
                             }
-                            dispatchError({ type: type.CONFIRM_PASSWORD_ERROR, payload: "" })
-
+                            dispatchError({
+                                type: type.CONFIRM_PASSWORD_ERROR,
+                                payload: '',
+                            });
                         }}
                         onPrees={() =>
                             dispatch({
