@@ -9,9 +9,11 @@ import { useNavigation } from '@react-navigation/native';
 import { firebase } from '@react-native-firebase/firestore';
 import { handleFirebaseError } from '../../../../services';
 import { style } from './style';
+import { darkBackGround } from '../../../../Theme';
 
 export const ChangePassword = () => {
     const navigation = useNavigation();
+    const { storeCreator: { darkModeTheme, setDarkModeTheme } }: any = useContext(InputContextProvide)
 
     /**
      * Context to give userinput data and error message
@@ -99,88 +101,88 @@ export const ChangePassword = () => {
     return (
         <>
             <SafeAreaView style={style.safeArea} />
-            <View style={style.mainWrapper}>
+            <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header
                     title={String?.headerTitle?.changePassword}
                     showCoin={false}
                     showBacKIcon={true}
                 />
 
-                <View style={{ paddingTop: 24 }}>
-                   
-                        <InputComponent
-                            placeholder={String.commonString.oldPassword}
-                            inputTitle={String.commonString.oldPassword}
-                            value={userInput?.oldPassword}
-                            onChangeText={value => {
-                                dispatch({ type: type.OLDPASSWORD, payload: value });
+                <View style={[{ paddingTop: 24, }, darkBackGround(darkModeTheme)]}>
 
-                                if (value?.length > 7 && value == userInput?.oldPassword) {
-                                    dispatchError({ type: type.OLD_PASSWORD_ERROR, payload: '' });
-                                }
-                            }}
-                            onPrees={() =>
-                                dispatch({
-                                    type: type.OLD_PASSWORD_SHOW,
-                                    payload: !userInput?.oldPassword_show,
-                                })
-                            }
-                            isSecureEntry={userInput?.oldPassword_show}
-                            isSecureIcon={true}
-                            errorMessage={userInputError?.oldPasswoedError}
-                        />
-                        <InputComponent
-                            placeholder={String.commonString.newPassword}
-                            inputTitle={String.commonString.newPassword}
-                            value={userInput?.newPassword}
-                            onChangeText={value => {
-                                dispatch({ type: type.NEWPASSWORD, payload: value });
-                                if (value?.length > 7 && value == userInput?.newPassword) {
-                                    dispatchError({ type: type.NEW_PASSWORD_ERROR, payload: '' });
-                                }
-                            }}
-                            onPrees={() =>
-                                dispatch({
-                                    type: type.NEWPASSWORD_SHOW,
-                                    payload: !userInput?.newPassword_show,
-                                })
-                            }
-                            isSecureEntry={userInput?.newPassword_show}
-                            isSecureIcon={true}
-                            errorMessage={userInputError?.newPasswordError}
-                        />
-                        <InputComponent
-                            placeholder={String.commonString.Enterconfirmpassword}
-                            inputTitle={String.commonString.ConfirmPassword}
-                            value={userInput?.confirmPassword}
-                            onChangeText={value => {
-                                dispatch({ type: type.CONFIRM_PASSWORD, payload: value });
-                                if (value?.length > 7 && value == userInput?.password) {
-                                    dispatchError({
-                                        type: type.CONFIRM_PASSWORD_ERROR,
-                                        payload: '',
-                                    });
-                                }
-                            }}
-                            onPrees={() =>
-                                dispatch({
-                                    type: type.CONFIRM_PASSWORD_SHOW,
-                                    payload: !userInput?.confirmPasswordShow,
-                                })
-                            }
-                            isSecureEntry={userInput?.confirmPasswordShow}
-                            isSecureIcon={true}
-                            errorMessage={userInputError?.confirmPasswordError}
-                        />
-                        <ButtonComponent
+                    <InputComponent
+                        placeholder={String.commonString.oldPassword}
+                        inputTitle={String.commonString.oldPassword}
+                        value={userInput?.oldPassword}
+                        onChangeText={value => {
+                            dispatch({ type: type.OLDPASSWORD, payload: value });
 
-                            wrapperStyle={{ marginTop: 30 }}
-                            onPrees={() => {
-                                HandleChangePassword();
-                            }}
-                            buttonTitle={String.commonString.submit}
-                        />
-                   
+                            if (value?.length > 7 && value == userInput?.oldPassword) {
+                                dispatchError({ type: type.OLD_PASSWORD_ERROR, payload: '' });
+                            }
+                        }}
+                        onPrees={() =>
+                            dispatch({
+                                type: type.OLD_PASSWORD_SHOW,
+                                payload: !userInput?.oldPassword_show,
+                            })
+                        }
+                        isSecureEntry={userInput?.oldPassword_show}
+                        isSecureIcon={true}
+                        errorMessage={userInputError?.oldPasswoedError}
+                    />
+                    <InputComponent
+                        placeholder={String.commonString.newPassword}
+                        inputTitle={String.commonString.newPassword}
+                        value={userInput?.newPassword}
+                        onChangeText={value => {
+                            dispatch({ type: type.NEWPASSWORD, payload: value });
+                            if (value?.length > 7 && value == userInput?.newPassword) {
+                                dispatchError({ type: type.NEW_PASSWORD_ERROR, payload: '' });
+                            }
+                        }}
+                        onPrees={() =>
+                            dispatch({
+                                type: type.NEWPASSWORD_SHOW,
+                                payload: !userInput?.newPassword_show,
+                            })
+                        }
+                        isSecureEntry={userInput?.newPassword_show}
+                        isSecureIcon={true}
+                        errorMessage={userInputError?.newPasswordError}
+                    />
+                    <InputComponent
+                        placeholder={String.commonString.Enterconfirmpassword}
+                        inputTitle={String.commonString.ConfirmPassword}
+                        value={userInput?.confirmPassword}
+                        onChangeText={value => {
+                            dispatch({ type: type.CONFIRM_PASSWORD, payload: value });
+                            if (value?.length > 7 && value == userInput?.password) {
+                                dispatchError({
+                                    type: type.CONFIRM_PASSWORD_ERROR,
+                                    payload: '',
+                                });
+                            }
+                        }}
+                        onPrees={() =>
+                            dispatch({
+                                type: type.CONFIRM_PASSWORD_SHOW,
+                                payload: !userInput?.confirmPasswordShow,
+                            })
+                        }
+                        isSecureEntry={userInput?.confirmPasswordShow}
+                        isSecureIcon={true}
+                        errorMessage={userInputError?.confirmPasswordError}
+                    />
+                    <ButtonComponent
+
+                        wrapperStyle={{ marginTop: 30 }}
+                        onPrees={() => {
+                            HandleChangePassword();
+                        }}
+                        buttonTitle={String.commonString.submit}
+                    />
+
                 </View>
             </View>
         </>

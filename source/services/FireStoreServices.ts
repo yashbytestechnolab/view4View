@@ -15,6 +15,7 @@ function getUniqID() {
 
 export const UserListTable = firestore()?.collection('UserList')?.doc(getUserID()?.toString())
 export const userTable = firestore()?.collection('users')?.doc(getUserID()?.toString())
+export const userLogout = firestore()?.collection('users')
 export const userTableLogin = firestore()?.collection('users')
 export const WatchVideoList = firestore()?.collection("campaign")
 export const bytesVideoList = firestore()?.collection("bytes_video_list")
@@ -39,8 +40,10 @@ export const userLogin = async (...payload: Array<object | string | undefined | 
 }
 
 export const get_coins = async () => {
-  return await userTable?.get()
+  const userId = getUserID()?.toString()
+  return await userLogout?.doc(userId)?.get()
 };
+
 export const updateProfile = async (...payload: Array<object | string | undefined | any>) => {
   const space = payload[0].indexOf(" ");
   const firstName = payload[0].substring(0, space);

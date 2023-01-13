@@ -17,7 +17,6 @@ export const MyCampaignLanding = () => {
       }}>
       <Stack.Screen name={ROUTES.HOME_LANDING} component={MyCampaignLandingScreen} />
       <Stack.Screen
-        options={{ gestureEnabled: false }}
         name={ROUTES.VIEWCOIN}
         component={ViewCoin}
       />
