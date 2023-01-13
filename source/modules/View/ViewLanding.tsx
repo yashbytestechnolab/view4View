@@ -64,7 +64,6 @@ export const ViewLanding = () => {
     if (timer === 0) {
       setTimer(0);
       clearInterval(controlRef?.current);
-      setPlaying(false);
       const totalAmount = getBalance + videoData?.[nextVideo]?.coin;
       await addWatchUrl(videoId, video_Id[0], totalAmount, isBytesVideoLoading)
       await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
