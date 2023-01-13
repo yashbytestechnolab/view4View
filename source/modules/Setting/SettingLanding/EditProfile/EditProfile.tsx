@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, } from 'react-native'
+import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, Platform, } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Header, InputComponent } from '../../../../components'
 import { Colors, darkBackGround, F50018 } from '../../../../Theme'
@@ -97,11 +97,15 @@ export const EditProfile = () => {
                             <Image source={{ uri: params?.userProfile?.image ? params?.userProfile?.image : profilePic?.uri }} style={style.imageWrapper} />
                         }
                     </View>
-                    <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }} style={{ height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13, position: 'absolute', justifyContent: 'center', alignItems: 'center', right: 165, top: 55 }}>
+                    <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }}
+                        style={{
+                            height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13,
+                            position: 'absolute', justifyContent: 'center', alignItems: 'center', right: Platform.OS == 'ios' ? 165 : 150, top: 55
+                        }}>
                         <EditProfileIcon />
                     </TouchableOpacity>
-                    <View style={[style.scrollWrapper,darkBackGround(darkModeTheme)]}>
-                    <InputComponent
+                    <View style={[style.scrollWrapper, darkBackGround(darkModeTheme)]}>
+                        <InputComponent
                             inputTitle={String.commonString.Fullname}
                             value={userInput?.fullName}
                             onChangeText={(value) => {
@@ -127,7 +131,7 @@ export const EditProfile = () => {
                         style={style.scrollWrapper}
                         scrollEnabled={true}
                         contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}> */}
-                        
+
                     {/* </KeyboardAwareScrollView> */}
                 </View>
             </View>
