@@ -1,0 +1,21 @@
+{
+  "react-native": {
+    "admob_android_app_id": "ca-app-pub-4027493771242043~1951435401",
+    "admob_ios_app_id": "ca-app-pub-4027493771242043~8680495280",
+    "crashlytics_debug_enabled": true
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

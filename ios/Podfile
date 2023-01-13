@@ -25,6 +25,8 @@ target 'view4view' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+  
+  pod 'Google-Mobile-Ads-SDK'
   pod 'Firebase/Analytics'
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
@@ -34,8 +36,8 @@ target 'view4view' do
   pod 'FirebaseCore', :modular_headers => true
 
   $RNFirebaseAsStaticFramework = true
-
-
+  $RNGoogleMobileAdsAsStaticFramework = true
+  
   post_install do |installer|
     react_native_post_install(
       installer,
