@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, StyleSheet,Animated } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, StyleSheet, Animated } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { String } from '../../constants';
@@ -19,7 +19,6 @@ import { InputContextProvide } from '../../context/CommonContext';
 import { type } from '../../constants/types';
 import { person } from './increment';
 import Lottie from 'lottie-react-native';
-import AnimatedLottieView from 'lottie-react-native';
 
 
 
@@ -224,25 +223,25 @@ export const ViewLanding = () => {
         backgroundColor={Colors?.gradient1}
         barStyle={String?.StatusBar?.lightContent}
       />
-      <View style={[styles.container, darkBackGround(darkModeTheme)]}>
-        <Header coin={getBalance} title={String?.headerTitle?.view4view} />
-        <ScrollView style={styles.main}>
-          <View style={styles.videoWrapper}>
-            <YoutubePlayer
-              height={270}
-              videoId={videoData?.[nextVideo]?.video_Id[0]}
-              ref={controlRef}
-              play={playing}
-              onChangeState={onStateChange}
-            />
-          </View>
-          {
-            videoLoading ?
-              <View style={{ flex: 1, marginTop: "20%", justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
-              </View> :
-              <>
-                <View style={styles.iconRow}>
+        <View style={[styles.container, darkBackGround(darkModeTheme)]}>
+          <Header coin={getBalance} title={String?.headerTitle?.view4view} />
+          <ScrollView style={styles.main}>
+            <View style={styles.videoWrapper}>
+              <YoutubePlayer
+                height={270}
+                videoId={videoData?.[nextVideo]?.video_Id[0]}
+                ref={controlRef}
+                play={playing}
+                onChangeState={onStateChange}
+              />
+            </View>
+            {
+              videoLoading ?
+                <View style={{ flex: 1, marginTop: "20%", justifyContent: "center", alignItems: "center" }}>
+                  <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
+                </View> :
+
+                <><View style={styles.iconRow}>
                   <View style={styles.iconWrapper}>
                     <SecondsIcon />
                     <View style={styles.marginLeft}>
@@ -268,28 +267,33 @@ export const ViewLanding = () => {
                   </View>
                 </View>
 
+                  <ButtonComponent
+                    loading={videoLoading}
+                    onPrees={() => { debounce(); }}
+                    wrapperStyle={styles.marginTop}
+                    buttonTitle={String?.viewTab?.nextVideo} />
 
-                <ButtonComponent
-                  loading={videoLoading}
-                  onPrees={() => { debounce(); }}
-                  wrapperStyle={styles.marginTop}
-                  buttonTitle={String?.viewTab?.nextVideo} />
 
-              </>}
+                </>}
+
           </ScrollView>
-        </View></>
-      {isAnimation &&
-        <Lottie style={{
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          left: 0,
-          right: 0,
 
-        }} source={require('../../assets/animation.json')}
-          progress={animationProgress.current}
-        />}
+
+
+        </View>
+        {!isAnimation &&
+          <Lottie style={{
+            position: 'absolute',
+            top: 0,
+            bottom: -230,
+            left: 0, right: 0,
+
+          }}
+            source={require('../../assets/animation.json')}
+            autoPlay loop
+          //progress={animationProgress.current}
+          />}</>
+
     </>
   );
 };

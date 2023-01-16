@@ -11,82 +11,82 @@ import { EditProfileIcon } from '../../../../assets/icons'
 import { ROUTES, String } from '../../../../constants'
 import { useNavigation, useRoute } from '@react-navigation/native'
 export const EditProfile = () => {
-    const navigation = useNavigation()
-    const route: any = useRoute();
-    const { params } = route
-    const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
+    // const navigation = useNavigation()
+    // const route: any = useRoute();
+    // const { params } = route
+    // const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
-    // const [userProfile, setData] = useState<string>()
-    const [loader, setLoader] = useState<boolean>(false)
-    const { storeCreator: { userInput, dispatch, userInputError, dispatchError } }: any = useContext(InputContextProvide)
-    const [profilePic, setProfilePic]: any = useState(null);
+    // // const [userProfile, setData] = useState<string>()
+    // const [loader, setLoader] = useState<boolean>(false)
+    // const { storeCreator: { userInput, dispatch, userInputError, dispatchError } }: any = useContext(InputContextProvide)
+    // const [profilePic, setProfilePic]: any = useState(null);
 
-    const getUserData = () => {
-        // get_coins()?.then((res: any) => {
-        dispatch({ type: type.FULL_NAME, payload: params?.userProfile?.firstname + " " + params?.userProfile?.lastname });
-        dispatch({ type: type.EMAIL, payload: params?.userProfile?.email });
-        // setData(res?._data)
-        // }).catch((err) => { console.log(err) })
-    }
-    useEffect(() => {
-        getUserData()
-    }, [params])
+    // const getUserData = () => {
+    //     // get_coins()?.then((res: any) => {
+    //     dispatch({ type: type.FULL_NAME, payload: params?.userProfile?.firstname + " " + params?.userProfile?.lastname });
+    //     dispatch({ type: type.EMAIL, payload: params?.userProfile?.email });
+    //     // setData(res?._data)
+    //     // }).catch((err) => { console.log(err) })
+    // }
+    // useEffect(() => {
+    //     getUserData()
+    // }, [params])
 
-    /**
-     *  This Function dispatch error message
-     * @param type  
-     * @param payload 
-     */
-    function dispatchHandler(type: string, payload: string | number | any) {
-        dispatchError({ type: type, payload: payload })
-    }
+    // /**
+    //  *  This Function dispatch error message
+    //  * @param type  
+    //  * @param payload 
+    //  */
+    // function dispatchHandler(type: string, payload: string | number | any) {
+    //     dispatchError({ type: type, payload: payload })
+    // }
 
-    const handleCreateAccountFlow = () => {
-        let isNotValidForm: boolean = false
-        const { fullName } = userInput
-        fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, String.commonString.fullnameErrorMsg));
-        !isNotValidForm && updateProfileData()
-    }
+    // const handleCreateAccountFlow = () => {
+    //     let isNotValidForm: boolean = false
+    //     const { fullName } = userInput
+    //     fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, String.commonString.fullnameErrorMsg));
+    //     !isNotValidForm && updateProfileData()
+    // }
 
 
-    const openGallery = async () => {
-        let options: any = {
-            mediaType: 'photo',
-            quality: 1,
-            selectionLimit: 1,
-        };
-        await launchImageLibrary(options, (response: any) => {
-            if (response?.didCancel) {
-                return;
-            }
-            if (
-                response?.assets?.[0]?.uri?.length > 1 &&
-                response?.assets[0]?.fileSize <= 5242880
-            ) {
-                setProfilePic((response?.assets[0]));
-            } else {
-                Alert.alert('Image size must be less than 5MB');
-            }
-        }).catch(err => {
-            console.log('err', err);
-        });
-    };
-    const updateProfileData = () => {
-        setLoader(true)
-        updateProfile(userInput?.fullName, profilePic?.uri).then((resp: any) => {
-            console.log("res", resp)
-            setLoader(false)
-            navigation.navigate(ROUTES?.SETTING_LANDING)
-        }).catch((err) => {
-            setLoader(false)
-            console.log("err", err);
-        })
-    }
+    // const openGallery = async () => {
+    //     let options: any = {
+    //         mediaType: 'photo',
+    //         quality: 1,
+    //         selectionLimit: 1,
+    //     };
+    //     await launchImageLibrary(options, (response: any) => {
+    //         if (response?.didCancel) {
+    //             return;
+    //         }
+    //         if (
+    //             response?.assets?.[0]?.uri?.length > 1 &&
+    //             response?.assets[0]?.fileSize <= 5242880
+    //         ) {
+    //             setProfilePic((response?.assets[0]));
+    //         } else {
+    //             Alert.alert('Image size must be less than 5MB');
+    //         }
+    //     }).catch(err => {
+    //         console.log('err', err);
+    //     });
+    // };
+    // const updateProfileData = () => {
+    //     setLoader(true)
+    //     updateProfile(userInput?.fullName, profilePic?.uri).then((resp: any) => {
+    //         console.log("res", resp)
+    //         setLoader(false)
+    //         navigation.navigate(ROUTES?.SETTING_LANDING)
+    //     }).catch((err) => {
+    //         setLoader(false)
+    //         console.log("err", err);
+    //     })
+    // }
 
     return (
         <>
             <SafeAreaView style={style.safeArea} />
-            <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
+            {/* <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
                 {loader ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>
                 }
@@ -133,8 +133,8 @@ export const EditProfile = () => {
                         contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}> */}
 
                     {/* </KeyboardAwareScrollView> */}
-                </View>
-            </View>
+                {/* </View>
+            </View> */} 
         </>
     )
 }

@@ -8,30 +8,35 @@ import auth from '@react-native-firebase/auth';
 import { colorBackGround, Colors, darkBackGround, F40014, F50012, F60012, F60016, lightBackGround } from '../../../Theme';
 import { ButtonComponent, Header } from '../../../components';
 import { More, NextIcon, Profile } from '../../../assets/icons';
-import { get_coins } from '../../../services/FireStoreServices';
-import remoteConfig from '@react-native-firebase/remote-config';
 import { style } from './style';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 
 export const SettingLanding = () => {
-  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch} }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch } }: any = useContext(InputContextProvide)
 
   const navigation: any = useNavigation()
   const [data, setData] = useState<any>({})
   const [isToggle, setIsToggle] = useState(false)
+  const [isSocialAcc, setIsSocialAcc] = useState<boolean>(false)
   const focus = useIsFocused()
-  const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
-  const details = JSON?.parse(getConfigValue)
 
-  const getUserData = () => {
-    get_coins()?.then((res: any) => {
-      setData(res?._data)
-    })
-      .catch((err) => { console.log(err) })
-  }
+  //const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
+  //const details = JSON?.parse(getConfigValue)
+
+  // const getUserData = () => {
+  //   get_coins()?.then((res: any) => {
+  //     setData(res?._data)
+  //   })
+  //     .catch((err) => { console.log(err) })
+  // }
   useEffect(() => {
-    getUserData()
+    LocalStorage.getValue(LocalStorageKeys?.isSocialLogin).then((res: boolean | string) => {
+      console.log("res", res)
+      res ? setIsSocialAcc(res) : setIsSocialAcc("")
+    })
+
+    //getUserData()
   }, [focus])
 
   const logoutHandle = async () => {
@@ -45,14 +50,14 @@ export const SettingLanding = () => {
     return (
       <TouchableOpacity onPress={() => {
         route == "privacy" && Linking.openURL('https://view4view-dcb01.web.app/');
-        route == "rateUs" ? Platform?.OS == 'android' ?
-          Linking.openURL(details?.Upadte?.android) : Linking.openURL(details?.Upadte?.ios)
-          :
-          navigation.navigate(route)
-        ROUTES.EDITPROFILE == "EDITPROFILE" ?
-          navigation.navigate(route, {
-            userProfile: data
-          }) : navigation.navigate(route)
+        // route == "rateUs" ? Platform?.OS == 'android' ? "" :""
+        //  // Linking.openURL(details?.Upadte?.android) : Linking.openURL(details?.Upadte?.ios)
+        //   :
+        navigation.navigate(route)
+        // ROUTES.EDITPROFILE == "EDITPROFILE" ?
+        //   navigation.navigate(route, {
+        //     userProfile: data
+        //   }) : navigation.navigate(route)
       }} activeOpacity={1} style={style.tabWrapper}>
         <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{name}</Text>
         <NextIcon color={darkModeTheme ? Colors?.white : Colors?.black} />
@@ -76,8 +81,8 @@ export const SettingLanding = () => {
           <View style={[{ flex: 1 }, darkBackGround(darkModeTheme)]}>
             <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => { navigation?.navigate(ROUTES?.EDITPROFILE) }}>
 
-              <Image source={{ uri: data?.image }} style={style.imageWrapper}
-              />
+              {/* <Image source={{ uri: data?.image }} style={style.imageWrapper}
+              /> */}
               <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
                 {data?.firstname + " " + data?.lastname}
               </Text>
@@ -92,7 +97,7 @@ export const SettingLanding = () => {
               </Text>
             </View>
             {manageTab(String?.settingScreen?.EditProfile, ROUTES?.EDITPROFILE)}
-            {manageTab(String?.settingScreen?.ChangePassword, ROUTES?.CHANGEPASSWORD)}
+            {isSocialAcc == false && manageTab(String?.settingScreen?.ChangePassword, ROUTES?.CHANGEPASSWORD)}
             <View style={[style.pinkTabWrapper, darkModeTheme && lightBackGround(darkModeTheme)]}>
               <More />
               <Text style={[F60012.textStyle, F60012.colorAccount, style.paddingLeft, colorBackGround(darkModeTheme)]}>

@@ -36,7 +36,6 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
             .then(async (res: any) => {
                 console.log("res", res)
                 let userDetail = res?.user?._user
-                let userName = userDetail?.displayName
                 console.log("userName", res,)
                 if (res?.additionalUserInfo?.isNewUser) {
                     userLogin(userDetail).then(() => {
@@ -51,6 +50,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
                     routes: [{ name: ROUTES.TABLIST }],
                 });
                 await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
+                await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
                 setLoading(false)
             }).finally(() => setLoading(false))
     } catch (error) {
@@ -77,12 +77,16 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
             .then(async (res: any) => {
                 let userDetail = res?.user?._user
                 if (res?.additionalUserInfo?.isNewUser) {
+
                     loginUser(userDetail).then(() => {
                         console.log("loginUser", res)
+
                     }).catch((err) => {
                         console.log("loginUser", err);
                     })
                 }
+                await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
+
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
                 navigation.reset({
                     index: 0,

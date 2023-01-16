@@ -44,6 +44,7 @@ export const Login = () => {
       then(async (userResponse: any) => {
         let userDetail = userResponse?.user?._user
         await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
+        await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
         navigation.reset({
           index: 0,
           routes: [{ name: ROUTES.TABLIST }],
