@@ -38,7 +38,7 @@ export const Header = (props: IheaderProps) => {
           {showBacKIcon && (
             <TouchableOpacity
               activeOpacity={1}
-              //style={style.backWrapper}
+              style={{padding:10}}
               onPress={() => {
                 onPrees ? onPrees : navigation.goBack();
               }}>

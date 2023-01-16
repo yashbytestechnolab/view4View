@@ -1,6 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from '@react-native-firebase/auth';
-import { loginUser, userLogin } from "./FireStoreServices";
+import {  userLogin } from "./FireStoreServices";
 import * as LocalStorage from './LocalStorage';
 import { NavigationProp } from "@react-navigation/native";
 import { LocalStorageKeys, ROUTES } from "../constants";
@@ -78,7 +78,7 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
                 let userDetail = res?.user?._user
                 if (res?.additionalUserInfo?.isNewUser) {
 
-                    loginUser(userDetail).then(() => {
+                    userLogin(userDetail).then(() => {
                         console.log("loginUser", res)
 
                     }).catch((err) => {

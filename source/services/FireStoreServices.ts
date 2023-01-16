@@ -45,6 +45,11 @@ export const get_coins = async () => {
   return await userLogout?.doc(userId)?.get()
 };
 
+export const userDeatil = async () => {
+  const userId = await getUserID()?.toString()
+ return await (await userTableLogin.doc(userId).get()).data()
+}
+
 export const updateProfile = async (...payload: Array<object | string | undefined | any>) => {
   const space = payload[0].indexOf(" ");
   const firstName = payload[0].substring(0, space);
@@ -59,8 +64,6 @@ export const updateProfile = async (...payload: Array<object | string | undefine
 export const createCampaign = async (...payload: Array<object | undefined | string | number>) => {
   let uniqID = getUniqID();
   let userID = getUserID()
-  console.log("userID", userID, payload);
-
   let updateObj = {
     coin: payload[4],
     consumed_view: 0,

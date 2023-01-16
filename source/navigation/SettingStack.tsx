@@ -14,9 +14,9 @@ export const SettingStack = () => {
     <Stack.Navigator
       initialRouteName={ROUTES?.SETTING_LANDING}
       screenOptions={{
-        cardOverlayEnabled: false,
+        // cardOverlayEnabled: false,
         headerShown: false,
-        gestureEnabled: true,
+        // gestureEnabled: true,
       }}>
       <Stack.Screen
         name={ROUTES.SETTING_LANDING}
