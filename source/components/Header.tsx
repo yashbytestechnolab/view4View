@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import React, { useContext, } from 'react';
 import { Colors, F50018, F60016 } from '../Theme';
 import { useNavigation } from '@react-navigation/native';
@@ -64,14 +64,9 @@ export const Header = (props: IheaderProps) => {
               <Lottie style={{
                 height: 40,
                 marginTop: 8,
-                marginLeft: 20
-
-                //position: 'absolute',
-                //left: 10,
-                //top: -5,
-
-                //bottom: 0,
-
+                marginLeft: 10,
+                marginBottom: Platform?.OS== 'ios'? 5:0
+                
               }}
                 source={require('../assets/flipCoin.json')}
                 autoPlay loop
@@ -94,13 +89,13 @@ const style = StyleSheet.create({
   titleText: {
     textAlign: 'center',
   },
-  //backWrapper: { padding: 5 },
+  
   Wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 15,
     marginLeft: 20,
-    //  backgroundColor:'red'
+   
   },
   coinWrapper: {
     flexDirection: 'row',
@@ -108,7 +103,10 @@ const style = StyleSheet.create({
     alignSelf: 'flex-end',
     position: 'absolute',
     right: 1,
-    //flex: 1
+    bottom:0,
+    top:0,
+    
+   
 
   },
 
@@ -121,6 +119,6 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   padding: {
-    marginRight: -55
+    marginRight: Platform?.OS== 'ios'? -40 :-55
   }
 });

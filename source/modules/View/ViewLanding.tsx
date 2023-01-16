@@ -130,6 +130,7 @@ export const ViewLanding = () => {
       setStart(false);
     }
   };
+  
 
   const getBytesVideoList = async () => {
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })

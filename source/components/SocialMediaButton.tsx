@@ -32,12 +32,12 @@ export const SocialMediaButton = (props: socialMediaProps) => {
 const innerStyle = StyleSheet.create({
     main: { marginTop: 35 },
     buttonView: {
-        marginHorizontal: 16,
+        //marginHorizontal: 16,
         height: 55,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        width: 160,
+        width:'87%',
         borderWidth: 1,
         borderRadius: 8,
         borderColor: Colors.borderColor
