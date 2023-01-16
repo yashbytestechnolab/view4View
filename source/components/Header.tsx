@@ -104,11 +104,7 @@ const style = StyleSheet.create({
     position: 'absolute',
     right: 1,
     bottom:0,
-    top:0,
-    
-   
-
-  },
+    top:0  },
 
   titleWrapper: {
     flex: 1,
@@ -119,6 +115,6 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   padding: {
-    marginRight: Platform?.OS== 'ios'? -40 :-55
+    marginRight: Platform?.OS== 'ios'? -40 :-35
   }
 });

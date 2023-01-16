@@ -156,7 +156,7 @@ export const Login = () => {
                 {
                   Platform?.OS == 'android' ?
                     (<SocialMediaButton
-                      wrapperStyle={{ width: '90%', }}
+                      wrapperStyle={style.socialLogin}
                       socialMediaIcon={<Google />}
                     buttonTitle={String.commonString.signInWithGoogle}
                       onPress={() => { googleLogin(navigation,setLoading) }}
@@ -177,7 +177,7 @@ export const Login = () => {
               </View>
             </View>
           </View>
-          {/* </LinearGradient> */}
+         
         </KeyboardAwareScrollView>
       </View>
     </>
