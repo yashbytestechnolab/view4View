@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, Dimensions
 import { Header, Loader } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { styles } from './style';
-import { Colors, F40010, F40012, F40014, F50013, F60024 } from '../../Theme';
+import { colorBackGround, Colors, darkBackGround, F40010, F40012, F40014, F50013, F60024, lightBackGround } from '../../Theme';
 import { InputContextProvide } from '../../context/CommonContext';
 import { GetVideoCampaign, campaignHistory, deleteRemaining } from '../../services/FireStoreServices';
 import { type } from '../../constants/types';
@@ -11,6 +11,7 @@ import { PlusIcon } from '../../assets/icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { lastSeen } from '../../services';
 import { Fonts } from '../../assets/fonts';
+import { useState } from 'react';
 
 export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
@@ -18,8 +19,8 @@ export const MyCampaignLandingScreen = () => {
   let route: object | any = useRoute()
 
   /**context data coin and campaign data */
-  const { storeCreator: { loading, setLoading, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign } }: any = useContext(InputContextProvide)
-
+  const { storeCreator: { campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme } }: any = useContext(InputContextProvide)
+  const [loading, setLoading] = useState(false)
   /**
  * 
  * @param params list of current campaign data list
@@ -77,28 +78,30 @@ export const MyCampaignLandingScreen = () => {
    */
   const renderCampaignList = ({ item }: any) => {
     let fillValue = item?.consumed_view * 100 / item?.expected_view
+
     return (
       <>
         {
           item?.stickeyHeader?.length > 0 ?
-            (<View style={{ height: 34, justifyContent: "center", backgroundColor: Colors?.shadowPink, paddingLeft: 12 }}>
-              <Text style={{ color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium }}>
+            (<View style={
+              { height: 34, justifyContent: "center", backgroundColor: darkModeTheme ? "#fFFFFF20" : Colors.shadowPink, paddingLeft: 12 }}>
+              <Text style={[{ color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium },colorBackGround(darkModeTheme)]}>
                 {item?.stickeyHeader}
               </Text>
             </View>)
             :
-            <View style={styles.container}>
+            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : '#E2E2E2' }]}>
               <Image
                 style={styles.thumbNilImage}
                 source={{ uri: `http://img.youtube.com/vi/${item?.video_Id[0]}/0.jpg` }} />
               <View style={styles.discription}>
                 <Text
-                  style={F50013.main}
+                  style={[F50013.main, colorBackGround(darkModeTheme)]}
                   numberOfLines={1}>
                   {item?.video_title}
                 </Text>
                 <Text
-                  style={[F40012.main, F40012.color06]}
+                  style={[F40012.main, F40012.color06, colorBackGround(darkModeTheme)]}
                   numberOfLines={1}>
                   {getUploadedTime(item)}
                 </Text>
@@ -106,7 +109,7 @@ export const MyCampaignLandingScreen = () => {
                   <View style={[styles.fillView, { width: `${fillValue + "%"}` }]} />
                 </View>
                 <View style={styles.countOfView}>
-                  <Text style={[F40014.main, F40014.color]}>
+                  <Text style={[F40014.main, F40014.color,]}>
                     {item?.consumed_view + "/" + item?.expected_view}
                   </Text>
                   <Text style={[F40010.main, styles.views]}>
@@ -115,7 +118,6 @@ export const MyCampaignLandingScreen = () => {
                 </View>
               </View>
             </View>
-
         }
       </>
     )
@@ -126,7 +128,7 @@ export const MyCampaignLandingScreen = () => {
       <>
         {
           !loading && !loding && getCampaignData?.length <= 0 &&
-          <View style={styles.emptyList}>
+          <View style={[styles.emptyList, darkBackGround(darkModeTheme)]}>
             <Text style={[F50013.main, { textAlign: "center" }]}>
               {commonString?.emptyList}
             </Text>
@@ -139,7 +141,7 @@ export const MyCampaignLandingScreen = () => {
   return (
     <>
       <SafeAreaView style={styles.safeArea} />
-      <View style={styles.mainContainer}>
+      <View style={[styles.mainContainer, darkBackGround(darkModeTheme)]}>
         <Header
           title={headerTitle?.myCampaign} />
         {loding ? (<Loader />) :
@@ -147,14 +149,14 @@ export const MyCampaignLandingScreen = () => {
             <FlatList
               showsVerticalScrollIndicator={false}
               scrollEnabled
-              style={[styles.flatList]}
+              style={[styles.flatList, darkBackGround(darkModeTheme)]}
               data={getCampaignData}
               stickyHeaderIndices={stickeyIndex}
               refreshing={loading}
               onRefresh={() => getVideoUrl("loading")}
               renderItem={renderCampaignList}
               ListEmptyComponent={handleEmptyData}
-              contentContainerStyle={{ flexGrow: 1 }}
+              contentContainerStyle={{ flexGrow: 1, paddingBottom: 10, }}
             />
             <TouchableOpacity
               onPress={() => navigation.navigate(ROUTES.ADDVIDEO)}

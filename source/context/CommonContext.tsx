@@ -11,15 +11,23 @@ interface input {
     confirmPassword?: number | string | any,
     showPassword: boolean;
     confirmPasswordShow: boolean
+    oldPassword?: number | string | any,
+    newPassword?: number | string | any,
+    oldPassword_show?:boolean,
+    newPassword_show?:boolean,
 }
 
 const intialState: input = {
     fullName: "",
     email: "",
     password: "",
+    oldPassword: "",
+    newPassword: "",
     confirmPassword: "",
     showPassword: true,
-    confirmPasswordShow: true
+    confirmPasswordShow: true,
+    oldPassword_show:true,
+    newPassword_show:true,
 }
 
 const reducer: Function | any = (state: any, action: any) => {
@@ -29,6 +37,10 @@ const reducer: Function | any = (state: any, action: any) => {
         case type.PASSWORD: return { ...state, password: action.payload }
         case type.CONFIRM_PASSWORD: return { ...state, confirmPassword: action?.payload }
         case type.SHOW_PASSWORD: return { ...state, showPassword: action?.payload }
+        case type.OLDPASSWORD: return { ...state, oldPassword: action.payload }
+        case type.NEWPASSWORD: return { ...state, newPassword: action.payload }
+        case type.OLD_PASSWORD_SHOW: return { ...state, oldPassword_show: action?.payload }
+        case type.NEWPASSWORD_SHOW: return { ...state, newPassword_show: action?.payload }
         case type.CONFIRM_PASSWORD_SHOW: return { ...state, confirmPasswordShow: action?.payload }
         case type.EMPTY_STATE: return intialState
         default: return state
@@ -41,6 +53,7 @@ const CommonContext = ({ children }: any) => {
     const { campaignData, dispatchcampaign } = getUserCampaign()
     const { coinBalance, dispatchCoin } = getCurrentCoinBalance()
     const { videoLandingData, dispatchVideoLandingData } = videoLanding()
+    const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
 
     const storeCreator = {
@@ -55,7 +68,8 @@ const CommonContext = ({ children }: any) => {
         videoLandingData,
         dispatchVideoLandingData,
         coinBalance,
-        dispatchCoin
+        dispatchCoin,
+        darkModeTheme, setDarkModeTheme
     }
 
     return (

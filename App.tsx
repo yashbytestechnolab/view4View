@@ -51,7 +51,6 @@ export default function App() {
   
   return (
     <>
-    <SafeAreaView style={{flex:1}}>
       <CommonContext>
         <AppLoader />
         <>
@@ -67,7 +66,7 @@ export default function App() {
           </NavigationContainer>
         </>
       </CommonContext>
-      </SafeAreaView>
+  
     </>
   );
 }

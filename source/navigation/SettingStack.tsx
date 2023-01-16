@@ -5,6 +5,7 @@ import { ROUTES } from '../constants/NavigationRoutes';
 import { SettingLanding } from '../modules/Setting/SettingLanding';
 import { InviteFriend } from '../modules/EarnCoin';
 import { EditProfile } from '../modules/Setting/SettingLanding/EditProfile';
+import { ChangePassword } from '../modules/Setting/SettingLanding/ChangePassword';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,10 @@ export const SettingStack = () => {
       <Stack.Screen
         name={ROUTES.INVITEFRIEND}
         component={InviteFriend}
+      />
+       <Stack.Screen
+        name={ROUTES?.CHANGEPASSWORD}
+        component={ChangePassword}
       />
     </Stack.Navigator>
   );

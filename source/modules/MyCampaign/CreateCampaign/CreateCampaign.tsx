@@ -5,8 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ROUTES, String } from '../../../constants';
 import { styles } from './style';
-import { Colors, F40014, F60012, F60016 } from '../../../Theme';
-import { Dropdown } from 'react-native-element-dropdown';
+import { colorBackGround, Colors, darkBackGround, F40014, F60012, F60016 } from '../../../Theme';
 import { Expected, dropdownConfigValue } from '../../../services';
 import { createCampaign, updateUserWallet } from '../../../services/FireStoreServices';
 import { InputContextProvide } from '../../../context/CommonContext';
@@ -18,7 +17,7 @@ import GiftModel from '../../../components/GiftModel';
 export const CreateCampaign = () => {
 
   const navigation: any = useNavigation();
-  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, campaignData: { getCampaignData }, dispatchcampaign } }: any = useContext(InputContextProvide)
+  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, campaignData: { getCampaignData }, dispatchcampaign, darkModeTheme } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
@@ -89,25 +88,25 @@ export const CreateCampaign = () => {
   return (
     <>
       <SafeAreaView style={{ backgroundColor: Colors.linear_gradient }} />
-      <View style={styles.main}>
+      <View style={[styles.main, darkBackGround(darkModeTheme)]}>
         <Header
           showBacKIcon={true}
           title={headerTitle?.createCampaign} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           scrollEnabled={true}
-          style={{ backgroundColor: Colors.white, marginTop: 12 }}
-          contentContainerStyle={{ paddingHorizontal: 16, flexGrow: 1, paddingBottom: 90 }}>
+          style={[{ backgroundColor: Colors.white, marginTop: 12, }, darkBackGround(darkModeTheme)]}
+          contentContainerStyle={[{ paddingHorizontal: 16, flexGrow: 1, paddingBottom: 90 }, darkBackGround(darkModeTheme)]}>
           <YoutubePlayer height={203} videoId={splitUrl?.toString()} />
           <View style={{ marginTop: 16, flex: 1 }}>
-            <Text style={[F60016.textStyle, F60016.campaign]}>
+            <Text style={[F60016.textStyle, F60016.campaign,colorBackGround(darkModeTheme)]}>
               {commonString.OrderSettings}
             </Text>
           </View>
           <View style={{ marginTop: 10, height: 1, backgroundColor: Colors.greyD8D8D8 }} />
           <View style={{ flex: 1, marginTop: 22 }}>
             <View style={styles.settingWrapper}>
-              <Text style={[F40014.main, styles.alignSelef]}>
+              <Text style={[F40014.main, styles.alignSelef,colorBackGround(darkModeTheme)]}>
                 {commonString.Expectedviews}
               </Text>
               <View style={styles.expectedView}>
@@ -122,7 +121,7 @@ export const CreateCampaign = () => {
             </View>
 
             <View style={[styles.settingWrapper, styles.marginTop16]}>
-              <Text style={[F40014.main, styles.alignSelef]}>
+              <Text style={[F40014.main, styles.alignSelef,colorBackGround(darkModeTheme)]}>
                 {commonString.requiredTime}
               </Text>
               <View style={styles.expectedView}>
@@ -137,7 +136,7 @@ export const CreateCampaign = () => {
             </View>
 
             <View style={[styles.settingWrapper, styles.marginTop16,]}>
-              <Text style={[F40014.main, styles.alignSelef]}>
+              <Text style={[F40014.main, styles.alignSelef,colorBackGround(darkModeTheme)]}>
                 {commonString.Totalcost}
               </Text>
               <View style={[styles.expectedView, { backgroundColor: Colors.primaryRed }]}>
@@ -155,11 +154,11 @@ export const CreateCampaign = () => {
             />
 
             <View style={{ marginTop: 32, flex: 1 }}>
-              <Text style={F60012.textStyle}>
+              <Text style={[F60012.textStyle,colorBackGround(darkModeTheme)]}>
                 {commonString?.Warning}
               </Text>
               <View style={{ marginTop: 12 }}>
-                <Text style={[{ textAlign: "left" }, F40014.main]}>
+                <Text style={[{ textAlign: "left" }, F40014.main,colorBackGround(darkModeTheme)]}>
                   {commonString?.viewUpdateWarning}
                 </Text>
               </View>

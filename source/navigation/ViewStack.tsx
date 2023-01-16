@@ -21,7 +21,6 @@ export const ViewStack = () => {
 
         name={ROUTES.VIEW_LANDING} component={ViewLanding} />
       <Stack.Screen
-        options={{ gestureEnabled: false }}
         name={ROUTES.VIEWCOIN}
         component={ViewCoin}
       />

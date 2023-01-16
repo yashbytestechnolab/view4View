@@ -1,7 +1,7 @@
-import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, } from 'react-native'
+import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, Platform, } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Header, InputComponent } from '../../../../components'
-import { Colors, F50018 } from '../../../../Theme'
+import { Colors, darkBackGround, F50018 } from '../../../../Theme'
 import { get_coins, updateProfile } from '../../../../services/FireStoreServices'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { InputContextProvide } from '../../../../context/CommonContext'
@@ -14,8 +14,7 @@ export const EditProfile = () => {
     const navigation = useNavigation()
     const route: any = useRoute();
     const { params } = route
-
-    console.log("params", params);
+    const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
     // const [userProfile, setData] = useState<string>()
     const [loader, setLoader] = useState<boolean>(false)
@@ -85,48 +84,57 @@ export const EditProfile = () => {
     }
 
     return (
-        <><SafeAreaView style={style.safeArea} /><View style={style.mainWrapper}>
-            <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
-            {loader ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>
-            }
+        <>
+            <SafeAreaView style={style.safeArea} />
+            <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
+                <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
+                {loader ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>
+                }
 
-            <View style={{ paddingTop: 24 }}>
-                <View style={style.nameWrapper} >
-                    {
-                        <Image source={{ uri: params?.userProfile?.image ? params?.userProfile?.image : profilePic?.uri }} style={style.imageWrapper} />
-                    }
+                <View style={{ paddingTop: 24 }}>
+                    <View style={style.nameWrapper} >
+                        {
+                            <Image source={{ uri: params?.userProfile?.image ? params?.userProfile?.image : profilePic?.uri }} style={style.imageWrapper} />
+                        }
+                    </View>
+                    <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }}
+                        style={{
+                            height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13,
+                            position: 'absolute', justifyContent: 'center', alignItems: 'center', right: Platform.OS == 'ios' ? 165 : 150, top: 55
+                        }}>
+                        <EditProfileIcon />
+                    </TouchableOpacity>
+                    <View style={[style.scrollWrapper, darkBackGround(darkModeTheme)]}>
+                        <InputComponent
+                            inputTitle={String.commonString.Fullname}
+                            value={userInput?.fullName}
+                            onChangeText={(value) => {
+                                dispatch({ type: type.FULL_NAME, payload: value });
+                                dispatchError({ type: type.FULLNAME_ERROR, payload: "" })
+                            }}
+                            placeholder={String.commonString.Enterfullname}
+                            errorMessage={userInputError?.fullNameError}
+                            viewStyle={style.marginTop33}
+                        />
+                        <InputComponent
+                            editable={false}
+                            inputTitle={String.commonString.email}
+                            placeholder={String.commonString.Enteryouremail}
+                            value={userInput?.email}
+                            onChangeText={(value) => {
+
+                            }}
+                        />
+                    </View>
+                    {/* <KeyboardAwareScrollView
+                        keyboardShouldPersistTaps={String.commonString.handled}
+                        style={style.scrollWrapper}
+                        scrollEnabled={true}
+                        contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}> */}
+
+                    {/* </KeyboardAwareScrollView> */}
                 </View>
-                <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }} style={{ height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13, position: 'absolute', justifyContent: 'center', alignItems: 'center', right: 150, top: 50 }}>
-                    <EditProfileIcon />
-                </TouchableOpacity>
-                <KeyboardAwareScrollView
-                    keyboardShouldPersistTaps={String.commonString.handled}
-                    style={style.scrollWrapper}
-                    scrollEnabled={true}
-                    contentContainerStyle={style.containWrapper}>
-                    <InputComponent
-                        inputTitle={String.commonString.Fullname}
-                        value={userInput?.fullName}
-                        onChangeText={(value) => {
-                            dispatch({ type: type.FULL_NAME, payload: value });
-                            dispatchError({ type: type.FULLNAME_ERROR, payload: "" })
-                        }}
-                        placeholder={String.commonString.Enterfullname}
-                        errorMessage={userInputError?.fullNameError}
-                        viewStyle={style.marginTop33}
-                    />
-                    <InputComponent
-                        editable={false}
-                        inputTitle={String.commonString.email}
-                        placeholder={String.commonString.Enteryouremail}
-                        value={userInput?.email}
-                        onChangeText={(value) => {
-
-                        }}
-                    />
-                </KeyboardAwareScrollView>
             </View>
-        </View>
         </>
     )
 }
@@ -140,6 +148,6 @@ const style = StyleSheet.create({
     nameWrapper: { justifyContent: "center", alignItems: "center", marginHorizontal: 16, },
     mainWrapper: { backgroundColor: Colors.white, flex: 1 },
     scrollWrapper: { backgroundColor: Colors?.white },
-    containWrapper: { backgroundColor: Colors?.white, flexGrow: 1, paddingBottom: 130 },
+    containWrapper: { backgroundColor: Colors?.white, flexGrow: 1, },
     marginTop33: { marginTop: 25 }
 })

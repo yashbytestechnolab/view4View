@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, StyleSheet,Animated } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { String } from '../../constants';
 import { styles } from './style';
-import auth from '@react-native-firebase/auth';
 import {
   addWatchUrl,
   bytesVideoListData,
@@ -13,22 +12,27 @@ import {
   getUserID,
   get_coins,
 } from '../../services/FireStoreServices';
-import { Colors, F40014, F60024 } from '../../Theme';
+import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
 import { InputContextProvide } from '../../context/CommonContext';
 import { type } from '../../constants/types';
 import { person } from './increment';
+import Lottie from 'lottie-react-native';
+import AnimatedLottieView from 'lottie-react-native';
+
 
 
 export const ViewLanding = () => {
-  const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, videoId, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
-
+  const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, videoId, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { darkModeColor, white } = Colors
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
   const firstStart: any = useRef<boolean>(true);
   const [timer, setTimer] = useState<number>();
+  const [isAnimation, setIsAnimantion] = useState(false)
+  const animationProgress = useRef(new Animated.Value(0))
 
   const GetCoins = async (params: string) => {
     await get_coins().then(async (res: any) => {
@@ -59,14 +63,40 @@ export const ViewLanding = () => {
     return () => clearInterval(controlRef.current);
   }, [start, controlRef, timer]);
 
+  const showAnimation = () => {
+    setIsAnimantion(true)
+    Animated.timing(animationProgress?.current, {
+      toValue: 1,
+      duration: 3000,
+      useNativeDriver: true,
+    }).start(({ finished }) => {
+      console.log("finished", finished)
+      if (finished) {
+        setIsAnimantion(false)
+      }
+    })
+  };
+  useEffect(() => {
+    console.log(
+      "animationProgress", animationProgress
+    )
+    // if (animationProgress.current) {
+    //   return;
+    // }
+  }, [])
+
   const GetEarning = async () => {
     const { id, remaining_view, consumed_view, video_Id, expected_view } = videoData?.[nextVideo]
     if (timer === 0) {
       setTimer(0);
       clearInterval(controlRef?.current);
-      setPlaying(false);
+
       const totalAmount = getBalance + videoData?.[nextVideo]?.coin;
-      await addWatchUrl(videoId, video_Id[0], totalAmount, isBytesVideoLoading)
+
+      dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[0]] : [video_Id[0]] })
+
+      await addWatchUrl(watchVideoList, video_Id[0], totalAmount, isBytesVideoLoading)
+
       await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
     }
@@ -75,6 +105,8 @@ export const ViewLanding = () => {
   useEffect(() => {
     if (timer === 0) {
       GetEarning();
+      animationProgress?.current.setValue(0)
+      showAnimation()
     }
   }, [timer]);
 
@@ -185,15 +217,14 @@ export const ViewLanding = () => {
   }
 
   let debounce = onPreesNext(400)
-
   return (
     <>
-      <SafeAreaView style={styles.safearea} />
-      <StatusBar
+
+      <><SafeAreaView style={styles.safearea} /><StatusBar
         backgroundColor={Colors?.gradient1}
         barStyle={String?.StatusBar?.lightContent}
       />
-      <View style={styles.container}>
+      <View style={[styles.container, darkBackGround(darkModeTheme)]}>
         <Header coin={getBalance} title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
           <View style={styles.videoWrapper}>
@@ -217,11 +248,11 @@ export const ViewLanding = () => {
                     <View style={styles.marginLeft}>
                       <Text
                         numberOfLines={1}
-                        style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
+                        style={[F60024.textStyle, { color: Colors?.primaryRed },]}>
                         {timer}
                       </Text>
 
-                      <Text style={F40014?.main}>{String?.viewTab?.second}</Text>
+                      <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.second}</Text>
                     </View>
                   </View>
                   <View style={styles.iconWrapper}>
@@ -232,20 +263,33 @@ export const ViewLanding = () => {
                         style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
                         {videoData?.[nextVideo]?.coin}
                       </Text>
-
-                      <Text style={F40014?.main}>{String?.viewTab?.coin}</Text>
+                      <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.coin}</Text>
                     </View>
                   </View>
                 </View>
+
+
                 <ButtonComponent
                   loading={videoLoading}
-                  onPrees={() => { debounce() }}
+                  onPrees={() => { debounce(); }}
                   wrapperStyle={styles.marginTop}
-                  buttonTitle={String?.viewTab?.nextVideo}
-                />
+                  buttonTitle={String?.viewTab?.nextVideo} />
+
               </>}
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </View></>
+      {isAnimation &&
+        <Lottie style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          left: 0,
+          right: 0,
+
+        }} source={require('../../assets/animation.json')}
+          progress={animationProgress.current}
+        />}
     </>
   );
 };
