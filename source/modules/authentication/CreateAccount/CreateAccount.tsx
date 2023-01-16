@@ -48,8 +48,8 @@ export const CreateAccount = () => {
             then(async (userResponse: any) => {
 
                 let userDetail = userResponse?.user?._user
-                await userLogin(userDetail, userInput?.fullName).then((res) => {
-                    console.log("success", res);
+                await userLogin(userDetail, userInput?.fullName).then(async (res) => {
+                    await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
 
                 }).catch((err) => {
                     console.log(">>>err", err);

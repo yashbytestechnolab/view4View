@@ -4,9 +4,11 @@ import React, { useContext, } from 'react';
 import { Colors, F50018, F60016 } from '../Theme';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Back, EarnCoin } from '../assets/icons';
+import { Back } from '../assets/icons';
 import { InputContextProvide } from '../context/CommonContext';
 import { ROUTES } from '../constants';
+import Lottie from 'lottie-react-native';
+import { kFormatter } from '../services/CoinValueFormat';
 
 interface IheaderProps {
   title?: string;
@@ -21,9 +23,12 @@ export const Header = (props: IheaderProps) => {
     storeCreator: {
       coinBalance: { getBalance },
     },
+
   }: any = useContext(InputContextProvide);
+
   const { title, showBacKIcon, showCoin = true, onPrees, } = props;
   const navigation = useNavigation();
+
   return (
     <>
       <LinearGradient
@@ -53,12 +58,20 @@ export const Header = (props: IheaderProps) => {
                 navigation?.navigate(ROUTES?.VIEWCOIN);
               }}>
               <Text style={[F60016.textStyle, style.padding]} numberOfLines={1}>
-                {getBalance}
+                {kFormatter(getBalance)}
               </Text>
-              <View style={{paddingBottom:1.7}} >
-              <EarnCoin />
-              </View>
-             
+
+              <Lottie style={{
+                height: 40,
+                marginTop: 8,
+                marginLeft: 10,
+                marginBottom: Platform?.OS== 'ios'? 5:0
+                
+              }}
+                source={require('../assets/flipCoin.json')}
+                autoPlay loop
+              />
+
             </TouchableOpacity>
           )}
         </View>
@@ -71,40 +84,37 @@ const style = StyleSheet.create({
     backgroundColor: Colors?.pink,
     height: 60,
     justifyContent: 'center',
-    alignItems:'center'
+    alignItems: 'center'
   },
   titleText: {
     textAlign: 'center',
   },
-  //backWrapper: { padding: 5 },
+  
   Wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 15,
     marginLeft: 20,
-    //  backgroundColor:'red'
+   
   },
   coinWrapper: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     alignSelf: 'flex-end',
     position: 'absolute',
-    right: 15,
-    
-  },
+    right: 1,
+    bottom:0,
+    top:0  },
 
   titleWrapper: {
     flex: 1,
-    paddingRight:10,
+    paddingRight: 10,
     alignContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
     justifyContent: 'center',
   },
   padding: {
-    
-    //top: Platform.OS == "ios" ? 0 : 1.5,
-    paddingRight: 8,
-
+    marginRight: Platform?.OS== 'ios'? -40 :-35
   }
 });

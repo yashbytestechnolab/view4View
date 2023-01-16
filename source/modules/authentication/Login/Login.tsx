@@ -44,6 +44,7 @@ export const Login = () => {
       then(async (userResponse: any) => {
         let userDetail = userResponse?.user?._user
         await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
+        await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
         navigation.reset({
           index: 0,
           routes: [{ name: ROUTES.TABLIST }],
@@ -151,8 +152,7 @@ export const Login = () => {
                 {
                   Platform?.OS == 'android' ?
                     (<SocialMediaButton
-                      colorBackGround={colorBackGround(darkModeTheme)}
-                      wrapperStyle={{ width: '90%', }}
+                      wrapperStyle={style.socialLogin}
                       socialMediaIcon={<Google />}
                       buttonTitle={String.commonString.signInWithGoogle}
                       onPress={() => { googleLogin(navigation, setLoading) }}
@@ -175,7 +175,7 @@ export const Login = () => {
               </View>
             </View>
           </View>
-          {/* </LinearGradient> */}
+         
         </KeyboardAwareScrollView>
       </View>
     </>

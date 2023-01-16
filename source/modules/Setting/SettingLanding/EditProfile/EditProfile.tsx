@@ -78,7 +78,7 @@ export const EditProfile = () => {
             image: profilePic?.base64
         }
         setLoader(true)
-        updateProfile(userInput?.fullName, profilePic?.base64).then(() => {
+        updateProfile(userInput?.fullName, profilePic?.base64||params?.userProfile?.image).then((resp: any) => {
             setLoader(false)
             navigation.navigate(ROUTES?.SETTING_LANDING, {
                 data:obj
@@ -132,13 +132,7 @@ export const EditProfile = () => {
                             }}
                         />
                     </View>
-                    {/* <KeyboardAwareScrollView
-                        keyboardShouldPersistTaps={String.commonString.handled}
-                        style={style.scrollWrapper}
-                        scrollEnabled={true}
-                        contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}> */}
 
-                    {/* </KeyboardAwareScrollView> */}
                 </View>
             </View>
         </>

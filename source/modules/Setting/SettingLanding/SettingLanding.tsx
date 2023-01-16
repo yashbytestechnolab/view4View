@@ -13,14 +13,13 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import { style } from './style';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
-import { settingProfileArr } from '../../../constants/settingProfileArr';
+import { getSocialLoginValue, settingProfileArr } from '../../../constants/settingProfileArr';
 import { person } from '../../View/increment';
 
 export const SettingLanding = () => {
   const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch } }: any = useContext(InputContextProvide)
   const route = useRoute()
   const { params }: any = route
-  console.log("route", route);
 
   const [loading, setLoading] = useState(false)
   const navigation: any = useNavigation()
@@ -39,6 +38,7 @@ export const SettingLanding = () => {
     setLoading(false)
   }
   useEffect(() => {
+    getSocialLoginValue()
     getUserData()
     configUrl()
   }, [])
@@ -70,25 +70,30 @@ export const SettingLanding = () => {
                     {item?.name}
                   </Text>
                 </View> :
-                <TouchableOpacity
-                  key={index.toString()}
-                  onPress={() => {
-                    (index == 6 || index == 4) ? actionLinking(index)
-                      : navigation.navigate(item?.action, {
-                        userProfile: data
-                      })
-                  }}
-                  activeOpacity={1} style={style.tabWrapper}>
-                  <Text key={index?.toString()} style={[F40014?.main, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
-                  {!item?.isUiRender ? (<NextIcon key={index?.toString()} color={darkModeTheme ? Colors?.white : Colors?.black} />) : <ToggleSwitch
-                    key={index?.toString()}
-                    isOn={darkModeTheme}
-                    onColor={Colors?.green}
-                    offColor={Colors?.toggleBG}
-                    size="small"
-                    onToggle={() => { handleDarkMode() }}
-                  />}
-                </TouchableOpacity>
+                <>
+                  {
+                    !item?.isShowChangePass() &&
+                    <TouchableOpacity
+                      key={index.toString()}
+                      onPress={() => {
+                        (index == 6 || index == 4) ? actionLinking(index)
+                          : navigation.navigate(item?.action, {
+                            userProfile: data
+                          })
+                      }}
+                      activeOpacity={1} style={style.tabWrapper}>
+                      <Text key={index?.toString()} style={[F40014?.main, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
+                      {!item?.isUiRender ? (<NextIcon key={index?.toString()} color={darkModeTheme ? Colors?.white : Colors?.black} />) : <ToggleSwitch
+                        key={index?.toString()}
+                        isOn={darkModeTheme}
+                        onColor={Colors?.green}
+                        offColor={Colors?.toggleBG}
+                        size="small"
+                        onToggle={() => { handleDarkMode() }}
+                      />}
+                    </TouchableOpacity>
+                  }
+                </>
             }
           </>
         )

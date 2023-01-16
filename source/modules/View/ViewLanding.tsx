@@ -20,11 +20,13 @@ import { type } from '../../constants/types';
 import { person } from './increment';
 import Lottie from 'lottie-react-native';
 
+
+
 export const ViewLanding = () => {
   const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, videoId, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
   const { darkModeColor, white } = Colors
 
-console.log("darkModeTheme",darkModeTheme);
+  console.log("darkModeTheme", darkModeTheme);
 
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
@@ -128,6 +130,7 @@ console.log("darkModeTheme",darkModeTheme);
       setStart(false);
     }
   };
+  
 
   const getBytesVideoList = async () => {
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
@@ -260,7 +263,7 @@ console.log("darkModeTheme",darkModeTheme);
                     </View>
                   </View>
 
-
+              
                   <ButtonComponent
                     loading={videoLoading}
                     onPrees={() => { debounce(); }}
@@ -269,19 +272,23 @@ console.log("darkModeTheme",darkModeTheme);
 
                 </>}
           </ScrollView>
-        </View></>
-      {isAnimation &&
-        <Lottie style={{
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          left: 0,
-          right: 0,
 
-        }} source={require('../../assets/animation.json')}
+
+
+        </View>
+        {isAnimation &&
+          <Lottie style={{
+            position: 'absolute',
+            top: 0,
+            bottom: -230,
+            left: 0, right: 0,
+
+          }}
+            source={require('../../assets/animation.json')}
+            
           progress={animationProgress.current}
-        />}
+          />}</>
+
     </>
   );
 };
