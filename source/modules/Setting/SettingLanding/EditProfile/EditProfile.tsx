@@ -2,35 +2,34 @@ import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, A
 import React, { useContext, useEffect, useState } from 'react'
 import { Header, InputComponent } from '../../../../components'
 import { Colors, darkBackGround, F50018 } from '../../../../Theme'
-import { get_coins, updateProfile } from '../../../../services/FireStoreServices'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { updateProfile } from '../../../../services/FireStoreServices'
 import { InputContextProvide } from '../../../../context/CommonContext'
 import { type } from '../../../../constants/types'
 import { launchImageLibrary } from 'react-native-image-picker';
 import { EditProfileIcon } from '../../../../assets/icons'
 import { ROUTES, String } from '../../../../constants'
 import { useNavigation, useRoute } from '@react-navigation/native'
+
 export const EditProfile = () => {
     const navigation = useNavigation()
     const route: any = useRoute();
     const { params } = route
-    const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
+    console.log("params", params);
 
-    // const [userProfile, setData] = useState<string>()
+    var base64Icon = `data:image/png;base64,${params?.userProfile?.image}`;
+
     const [loader, setLoader] = useState<boolean>(false)
-    const { storeCreator: { userInput, dispatch, userInputError, dispatchError } }: any = useContext(InputContextProvide)
+    const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError } }: any = useContext(InputContextProvide)
     const [profilePic, setProfilePic]: any = useState(null);
 
     const getUserData = () => {
-        // get_coins()?.then((res: any) => {
         dispatch({ type: type.FULL_NAME, payload: params?.userProfile?.firstname + " " + params?.userProfile?.lastname });
         dispatch({ type: type.EMAIL, payload: params?.userProfile?.email });
-        // setData(res?._data)
-        // }).catch((err) => { console.log(err) })
     }
+
     useEffect(() => {
         getUserData()
-    }, [params])
+    }, [])
 
     /**
      *  This Function dispatch error message
@@ -54,6 +53,7 @@ export const EditProfile = () => {
             mediaType: 'photo',
             quality: 1,
             selectionLimit: 1,
+            includeBase64: true
         };
         await launchImageLibrary(options, (response: any) => {
             if (response?.didCancel) {
@@ -73,7 +73,7 @@ export const EditProfile = () => {
     };
     const updateProfileData = () => {
         setLoader(true)
-        updateProfile(userInput?.fullName, profilePic?.uri).then((resp: any) => {
+        updateProfile(userInput?.fullName, profilePic?.base64).then((resp: any) => {
             console.log("res", resp)
             setLoader(false)
             navigation.navigate(ROUTES?.SETTING_LANDING)
@@ -82,19 +82,19 @@ export const EditProfile = () => {
             console.log("err", err);
         })
     }
+    console.log("profilePic", profilePic);
 
     return (
         <>
             <SafeAreaView style={style.safeArea} />
             <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
-                {loader ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>
-                }
+                {loader ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>}
 
                 <View style={{ paddingTop: 24 }}>
                     <View style={style.nameWrapper} >
                         {
-                            <Image source={{ uri: params?.userProfile?.image ? params?.userProfile?.image : profilePic?.uri }} style={style.imageWrapper} />
+                            <Image source={{ uri: profilePic != null ? profilePic?.uri : base64Icon }} style={style.imageWrapper} />
                         }
                     </View>
                     <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }}

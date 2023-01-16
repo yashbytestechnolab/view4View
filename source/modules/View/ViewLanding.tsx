@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, StyleSheet,Animated } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, StyleSheet, Animated } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { String } from '../../constants';
@@ -19,13 +19,13 @@ import { InputContextProvide } from '../../context/CommonContext';
 import { type } from '../../constants/types';
 import { person } from './increment';
 import Lottie from 'lottie-react-native';
-import AnimatedLottieView from 'lottie-react-native';
-
-
 
 export const ViewLanding = () => {
   const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, videoId, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
   const { darkModeColor, white } = Colors
+
+console.log("darkModeTheme",darkModeTheme);
+
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -76,22 +76,14 @@ export const ViewLanding = () => {
       }
     })
   };
-  useEffect(() => {
-    console.log(
-      "animationProgress", animationProgress
-    )
-    // if (animationProgress.current) {
-    //   return;
-    // }
-  }, [])
 
   const GetEarning = async () => {
-    const { id, remaining_view, consumed_view, video_Id, expected_view } = videoData?.[nextVideo]
+    const { id, remaining_view, consumed_view, video_Id, expected_view, coin } = videoData?.[nextVideo]
     if (timer === 0) {
       setTimer(0);
       clearInterval(controlRef?.current);
 
-      const totalAmount = getBalance + videoData?.[nextVideo]?.coin;
+      const totalAmount = getBalance + (coin / expected_view);
 
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[0]] : [video_Id[0]] })
 
@@ -224,58 +216,58 @@ export const ViewLanding = () => {
         backgroundColor={Colors?.gradient1}
         barStyle={String?.StatusBar?.lightContent}
       />
-      <View style={[styles.container, darkBackGround(darkModeTheme)]}>
-        <Header coin={getBalance} title={String?.headerTitle?.view4view} />
-        <ScrollView style={styles.main}>
-          <View style={styles.videoWrapper}>
-            <YoutubePlayer
-              height={270}
-              videoId={videoData?.[nextVideo]?.video_Id[0]}
-              ref={controlRef}
-              play={playing}
-              onChangeState={onStateChange}
-            />
-          </View>
-          {
-            videoLoading ?
-              <View style={{ flex: 1, marginTop: "20%", justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
-              </View> :
-              <>
-                <View style={styles.iconRow}>
-                  <View style={styles.iconWrapper}>
-                    <SecondsIcon />
-                    <View style={styles.marginLeft}>
-                      <Text
-                        numberOfLines={1}
-                        style={[F60024.textStyle, { color: Colors?.primaryRed },]}>
-                        {timer}
-                      </Text>
+        <View style={[styles.container, darkBackGround(darkModeTheme)]}>
+          <Header coin={getBalance} title={String?.headerTitle?.view4view} />
+          <ScrollView style={styles.main}>
+            <View style={styles.videoWrapper}>
+              <YoutubePlayer
+                height={270}
+                videoId={videoData?.[nextVideo]?.video_Id[0]}
+                ref={controlRef}
+                play={playing}
+                onChangeState={onStateChange}
+              />
+            </View>
+            {
+              videoLoading ?
+                <View style={{ flex: 1, marginTop: "20%", justifyContent: "center", alignItems: "center" }}>
+                  <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
+                </View> :
+                <>
+                  <View style={styles.iconRow}>
+                    <View style={styles.iconWrapper}>
+                      <SecondsIcon />
+                      <View style={styles.marginLeft}>
+                        <Text
+                          numberOfLines={1}
+                          style={[F60024.textStyle, { color: Colors?.primaryRed },]}>
+                          {timer}
+                        </Text>
 
-                      <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.second}</Text>
+                        <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.second}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.iconWrapper}>
+                      <CoinIcon />
+                      <View style={styles.marginLeft}>
+                        <Text
+                          numberOfLines={1}
+                          style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
+                          {videoData?.[nextVideo]?.coin}
+                        </Text>
+                        <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.coin}</Text>
+                      </View>
                     </View>
                   </View>
-                  <View style={styles.iconWrapper}>
-                    <CoinIcon />
-                    <View style={styles.marginLeft}>
-                      <Text
-                        numberOfLines={1}
-                        style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
-                        {videoData?.[nextVideo]?.coin}
-                      </Text>
-                      <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.coin}</Text>
-                    </View>
-                  </View>
-                </View>
 
 
-                <ButtonComponent
-                  loading={videoLoading}
-                  onPrees={() => { debounce(); }}
-                  wrapperStyle={styles.marginTop}
-                  buttonTitle={String?.viewTab?.nextVideo} />
+                  <ButtonComponent
+                    loading={videoLoading}
+                    onPrees={() => { debounce(); }}
+                    wrapperStyle={styles.marginTop}
+                    buttonTitle={String?.viewTab?.nextVideo} />
 
-              </>}
+                </>}
           </ScrollView>
         </View></>
       {isAnimation &&

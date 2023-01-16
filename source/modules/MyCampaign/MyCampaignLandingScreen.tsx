@@ -85,7 +85,7 @@ export const MyCampaignLandingScreen = () => {
           item?.stickeyHeader?.length > 0 ?
             (<View style={
               { height: 34, justifyContent: "center", backgroundColor: darkModeTheme ? "#fFFFFF20" : Colors.shadowPink, paddingLeft: 12 }}>
-              <Text style={[{ color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium },colorBackGround(darkModeTheme)]}>
+              <Text style={[{ color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium }, colorBackGround(darkModeTheme)]}>
                 {item?.stickeyHeader}
               </Text>
             </View>)
@@ -129,7 +129,7 @@ export const MyCampaignLandingScreen = () => {
         {
           !loading && !loding && getCampaignData?.length <= 0 &&
           <View style={[styles.emptyList, darkBackGround(darkModeTheme)]}>
-            <Text style={[F50013.main, { textAlign: "center" }]}>
+            <Text style={[F50013.main, { textAlign: "center" }, colorBackGround(darkModeTheme)]}>
               {commonString?.emptyList}
             </Text>
           </View>

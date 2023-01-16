@@ -77,7 +77,7 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
             .then(async (res: any) => {
                 let userDetail = res?.user?._user
                 if (res?.additionalUserInfo?.isNewUser) {
-                    loginUser(userDetail).then(() => {
+                    userLogin(userDetail).then(() => {
                         console.log("loginUser", res)
                     }).catch((err) => {
                         console.log("loginUser", err);

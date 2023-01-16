@@ -8,6 +8,9 @@ import React from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import { useContext } from 'react';
 import { InputContextProvide } from '../context/CommonContext';
+import { Appearance } from 'react-native';
+
+
 
 export const RootNavigation = () => {
   const Stack = createStackNavigator();
@@ -17,8 +20,21 @@ export const RootNavigation = () => {
   /**
    * This Function Check user id is in localstorage
    */
+  //then((darkMode: boolean | any) => darkMode ? setDarkModeTheme(darkMode?.isDarkMode) : setDarkModeTheme(false))
+  const colorScheme = Appearance.getColorScheme();
+  
   const authFlow = async () => {
-    await LocalStorage.getValue(LocalStorageKeys.DarkMode).then((darkMode: boolean | any) => darkMode ? setDarkModeTheme(darkMode?.isDarkMode) : setDarkModeTheme(false))
+    let appearance: any = await LocalStorage.getValue(LocalStorageKeys.DarkMode)
+    if (appearance != null) {
+      if (appearance?.isDarkMode === true) {
+        setDarkModeTheme(true)
+      }
+      else if (!appearance?.isDarkMode) {
+        setDarkModeTheme(false)
+      }
+    } else {
+      colorScheme == "light" ? setDarkModeTheme(false) : setDarkModeTheme(true)
+    }
     await LocalStorage.getValue(LocalStorageKeys.UserId).then(res => res ? (SplashScreen.hide(), setUserId(res)) : setUserId(""))
   }
 
