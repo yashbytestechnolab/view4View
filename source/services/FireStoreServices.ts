@@ -50,6 +50,7 @@ export const userDeatil = async () => {
 }
 
 export const updateProfile = async (...payload: Array<object | string | undefined | any>) => {
+ console.log("payload",payload);
   const space = payload[0].indexOf(" ");
   const firstName = payload[0].substring(0, space);
   const lastname = payload[0].substring(space + 1);

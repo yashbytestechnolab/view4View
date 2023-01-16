@@ -1,46 +1,62 @@
-import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, Platform, Linking, } from 'react-native'
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, ActivityIndicator, Platform, Linking, } from 'react-native'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import * as LocalStorage from '../../../services/LocalStorage';
 import ToggleSwitch from 'toggle-switch-react-native'
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { colorBackGround, Colors, darkBackGround, F40014, F50012, F60012, F60016, lightBackGround } from '../../../Theme';
 import { ButtonComponent, Header } from '../../../components';
-import { More, NextIcon, Profile } from '../../../assets/icons';
-import { get_coins, userDeatil } from '../../../services/FireStoreServices';
+import { NextIcon } from '../../../assets/icons';
+import { userDeatil } from '../../../services/FireStoreServices';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { style } from './style';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { settingProfileArr } from '../../../constants/settingProfileArr';
+import { person } from '../../View/increment';
 
 export const SettingLanding = () => {
   const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch } }: any = useContext(InputContextProvide)
+  const route = useRoute()
+  const { params }: any = route
+  console.log("route", route);
 
+  const [loading, setLoading] = useState(false)
   const navigation: any = useNavigation()
-  const [data, setData] = useState<any>({})
-  // const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
-  // const details = JSON?.parse(getConfigValue)
+  const [data, setData] = useState<any>(params?.length > 0 ? params?.data : {})
+
+  const configUrl = () => {
+    const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
+    const details = JSON?.parse(getConfigValue)
+    person.getConfigValueFnc(details)
+  }
 
   const getUserData = async () => {
+    setLoading(true)
     let userInfo = await userDeatil()
     setData(userInfo)
+    setLoading(false)
   }
   useEffect(() => {
     getUserData()
+    configUrl()
   }, [])
 
   const logoutHandle = async () => {
     await LocalStorage.setValue(LocalStorageKeys.UserId, "")
     auth().signOut().then(() => { })
-    navigation.navigate(ROUTES?.LOGIN)
+    navigation.reset({
+      index: 0,
+      routes: [{ name: ROUTES?.LOGIN }]
+    })
   }
 
   const handleDarkMode = () => {
     setDarkModeTheme(!darkModeTheme)
-    LocalStorage.setValue(LocalStorageKeys.DarkMode, { isDarkMode: true })
+    LocalStorage.setValue(LocalStorageKeys.DarkMode, { isDarkMode: !darkModeTheme })
   }
+
   const settingProfile = useMemo(() => {
     return (
       settingProfileArr?.map((item: any, index: number) => {
@@ -81,13 +97,9 @@ export const SettingLanding = () => {
   }, [darkModeTheme, data])
 
   const actionLinking = (index: number) => {
-    // index == 4 ? (Platform?.OS == 'android' ? Linking.openURL(details?.Upadte?.android) : Linking.openURL(details?.Upadte?.ios))
-    //   : (Linking.openURL('https://view4view-dcb01.web.app/'))
+    const { Upadte: { android, ios } }: any = person.configvalue;
+    index == 4 ? (Platform?.OS == 'android' ? Linking.openURL(android) : Linking.openURL(ios)) : (Linking.openURL('https://view4view-dcb01.web.app/'))
   };
-
-  var base64Icon = `data:image/png;base64,${data?.image}`;
-  console.log("params", data);
-
 
 
   return (
@@ -98,19 +110,22 @@ export const SettingLanding = () => {
         <ScrollView style={[style.scrollWrapper, darkBackGround(darkModeTheme)]} showsVerticalScrollIndicator={false}
           scrollEnabled={true} contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}>
           <View style={[{ flex: 1 }, darkBackGround(darkModeTheme)]}>
-            <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => {
-              navigation?.navigate(ROUTES?.EDITPROFILE, {
-                userProfile: data
-              })
-            }}>
-              <Image source={{ uri: base64Icon }} style={style.imageWrapper} />
-              <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
-                {data?.firstname + " " + data?.lastname}
-              </Text>
-              <Text numberOfLines={1} style={[F50012.main, F50012.opacity, colorBackGround(darkModeTheme)]}>
-                {data?.email}
-              </Text>
-            </TouchableOpacity>
+            {
+              loading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
+                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => {
+                  navigation?.navigate(ROUTES?.EDITPROFILE, {
+                    userProfile: data
+                  })
+                }}>
+                  <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
+                  <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
+                    {data?.firstname + " " + data?.lastname}
+                  </Text>
+                  <Text numberOfLines={1} style={[F50012.main, F50012.opacity, colorBackGround(darkModeTheme)]}>
+                    {data?.email}
+                  </Text>
+                </TouchableOpacity>
+            }
             {settingProfile}
             <ButtonComponent
               disable={Object.keys(data).length < 0}

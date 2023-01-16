@@ -26,7 +26,7 @@ export const RootNavigation = () => {
   const authFlow = async () => {
     let appearance: any = await LocalStorage.getValue(LocalStorageKeys.DarkMode)
     if (appearance != null) {
-      if (appearance?.isDarkMode === true) {
+      if (appearance?.isDarkMode) {
         setDarkModeTheme(true)
       }
       else if (!appearance?.isDarkMode) {

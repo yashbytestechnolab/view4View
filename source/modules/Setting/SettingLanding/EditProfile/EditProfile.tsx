@@ -14,8 +14,6 @@ export const EditProfile = () => {
     const navigation = useNavigation()
     const route: any = useRoute();
     const { params } = route
-    console.log("params", params);
-
     var base64Icon = `data:image/png;base64,${params?.userProfile?.image}`;
 
     const [loader, setLoader] = useState<boolean>(false)
@@ -51,7 +49,7 @@ export const EditProfile = () => {
     const openGallery = async () => {
         let options: any = {
             mediaType: 'photo',
-            quality: 1,
+            quality: 0.2,
             selectionLimit: 1,
             includeBase64: true
         };
@@ -71,12 +69,20 @@ export const EditProfile = () => {
             console.log('err', err);
         });
     };
+    console.log("profilePic",profilePic);
+    
     const updateProfileData = () => {
+        let obj = {
+            firstname: userInput?.fullName,
+            email: userInput?.email,
+            image: profilePic?.base64
+        }
         setLoader(true)
-        updateProfile(userInput?.fullName, profilePic?.base64).then((resp: any) => {
-            console.log("res", resp)
+        updateProfile(userInput?.fullName, profilePic?.base64).then(() => {
             setLoader(false)
-            navigation.navigate(ROUTES?.SETTING_LANDING)
+            navigation.navigate(ROUTES?.SETTING_LANDING, {
+                data:obj
+            })
         }).catch((err) => {
             setLoader(false)
             console.log("err", err);

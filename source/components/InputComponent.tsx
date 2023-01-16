@@ -47,7 +47,7 @@ export const InputComponent = (props: props) => {
             }
             {
                 errorMessage?.length > 0 &&
-                <Text numberOfLines={1} style={[innerStyles.validationError,{color:darkModeTheme?Colors.gray:Colors.red}]}>
+                <Text numberOfLines={1} style={[innerStyles.validationError]}>
                     {errorMessage}
                 </Text>
             }

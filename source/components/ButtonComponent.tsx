@@ -1,7 +1,8 @@
 import { ActivityIndicator, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import EarnCoin from '../assets/icons/EarnCoin'
 import { Colors, F60016 } from '../Theme'
+import { InputContextProvide } from '../context/CommonContext'
 
 interface buttonProps {
     buttonTitle: string,
@@ -15,10 +16,7 @@ interface buttonProps {
 
 export const ButtonComponent = (props: buttonProps) => {
     const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading, disable, spinnerColor } = props
-
     return (
-
-
         <TouchableOpacity
             disabled={disable}
             activeOpacity={0.8}
@@ -34,7 +32,7 @@ export const ButtonComponent = (props: buttonProps) => {
                             <EarnCoin />
                         </View>
                     }
-                    < Text style={F60016.textStyle} >
+                    < Text style={[F60016.textStyle,]} >
                         {buttonTitle}
                     </Text></>
             }

@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, StatusBar } from 'react-native';
 import React, { useContext } from 'react';
-import { Colors, F40014, } from '../../../Theme';
+import { colorBackGround, Colors, darkBackGround, F40014, } from '../../../Theme';
 import { useNavigation } from '@react-navigation/native';
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { style } from './style';
@@ -25,7 +25,7 @@ export const Login = () => {
   /**
    * Context to give userinput data and error message
    */
-  const { storeCreator: { userInput, dispatch, userInputError, dispatchError, loading, setLoading } }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError, setLoading } }: any = useContext(InputContextProvide)
 
   const navigation = useNavigation();
 
@@ -81,22 +81,18 @@ export const Login = () => {
     <>
       <SafeAreaView style={style.safeArea} />
       <StatusBar barStyle={String.StatusBar.lightContent} backgroundColor={Colors.linear_gradient} />
-      <View style={style.main}>
-
+      <View style={[style.main, darkBackGround(darkModeTheme)]}>
         <KeyboardAwareScrollView
           alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps={String.commonString.handled}
-          style={style.scroll}
+          style={[style.scroll, darkBackGround(darkModeTheme)]}
           scrollEnabled={true}
-          contentContainerStyle={style.scrollContain}>
-
+          contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
           <GradientHeader />
-          {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
-          <View style={style.wrapperView} >
-            <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
-
-              <View style={style.innerContainer} >
+          <View style={[style.wrapperView,]} >
+            <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }, darkBackGround(darkModeTheme)]}>
+              <View style={[style.innerContainer, darkBackGround(darkModeTheme)]} >
                 <AuthHeader
                   mainTitle={String.commonString.WelcomeBack}
                   miniTitle={String.commonString.Donthaveanaccount}
@@ -155,21 +151,24 @@ export const Login = () => {
                 {
                   Platform?.OS == 'android' ?
                     (<SocialMediaButton
+                      colorBackGround={colorBackGround(darkModeTheme)}
                       wrapperStyle={{ width: '90%', }}
                       socialMediaIcon={<Google />}
-                    buttonTitle={String.commonString.signInWithGoogle}
-                      onPress={() => { googleLogin(navigation,setLoading) }}
+                      buttonTitle={String.commonString.signInWithGoogle}
+                      onPress={() => { googleLogin(navigation, setLoading) }}
                     />) :
                     (<View style={style.socialMedia}>
                       <SocialMediaButton
+                        colorBackGround={colorBackGround(darkModeTheme)}
                         socialMediaIcon={<Google />}
                         buttonTitle={String.commonString.Google}
-                        onPress={() => { googleLogin(navigation,setLoading) }}
+                        onPress={() => { googleLogin(navigation, setLoading) }}
                       />
                       <SocialMediaButton
-                        socialMediaIcon={<Apple />}
+                        colorBackGround={colorBackGround(darkModeTheme)}
+                        socialMediaIcon={<Apple gery={darkModeTheme}/>}
                         buttonTitle={String.commonString.Apple}
-                        onPress={() => appleLoginIos(navigation,setLoading)}
+                        onPress={() => appleLoginIos(navigation, setLoading)}
                       />
                     </View>)
                 }

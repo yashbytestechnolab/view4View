@@ -5,7 +5,7 @@ import Back from '../../../assets/icons/Back';
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { AuthHeader, ORtitle } from '../Authcomponents';
 import { InputComponent } from '../../../components/InputComponent';
-import { Colors } from '../../../Theme';
+import { colorBackGround, Colors, darkBackGround } from '../../../Theme';
 import { SocialMediaButton } from '../../../components/SocialMediaButton';
 import { Google } from '../../../assets/icons/Google';
 import { ButtonComponent } from '../../../components/ButtonComponent';
@@ -26,7 +26,7 @@ export const CreateAccount = () => {
     /**
    * Context to give userinput data and error message
    */
-    const { storeCreator: { userInput, dispatch, userInputError, dispatchError, loading, setLoading } }: any = useContext(InputContextProvide)
+    const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError, loading, setLoading } }: any = useContext(InputContextProvide)
 
     /**
      *  This Function dispatch error message
@@ -83,7 +83,7 @@ export const CreateAccount = () => {
         <>
             <SafeAreaView style={style.safeArea} />
             <StatusBar barStyle={String.StatusBar.lightContent} backgroundColor={Colors.gradient1} />
-            <View style={style.main}>
+            <View style={[style.main,darkBackGround(darkModeTheme)]}>
                 <TouchableOpacity
                     onPress={() => {
                         navigation.goBack(); dispatch({ type: type.EMPTY_STATE });
@@ -95,14 +95,14 @@ export const CreateAccount = () => {
                 <KeyboardAwareScrollView
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps={String.commonString.handled}
-                    style={style.scroll}
+                    style={[style.scroll,darkBackGround(darkModeTheme)]}
                     scrollEnabled={true}
-                    contentContainerStyle={style.scrollContain}>
+                    contentContainerStyle={[style.scrollContain,darkBackGround(darkModeTheme)]}>
                     <GradientHeader />
                     {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
                     <View style={style.wrapperView} >
-                        <View style={[style.borderRadius, { backgroundColor: Colors.white, flex: 1 }]}>
-                            <View style={style.innerContainer} >
+                        <View style={[style.borderRadius, { backgroundColor: Colors.white, flex: 1 },darkBackGround(darkModeTheme)]}>
+                            <View style={[style.innerContainer,darkBackGround(darkModeTheme)]} >
                                 <AuthHeader
                                     mainTitle={String.commonString.Createanaccount}
                                     miniTitle={String.commonString.Donthaveanaccount}
@@ -113,7 +113,6 @@ export const CreateAccount = () => {
                                         dispatchError({ type: type.EMPTY_STATE })
                                     }}
                                 />
-
                                 <InputComponent
                                     inputTitle={String.commonString.Fullname}
                                     value={userInput?.fullName}
@@ -178,6 +177,7 @@ export const CreateAccount = () => {
                                     Platform?.OS == 'android' ?
 
                                         <SocialMediaButton
+                                            colorBackGround={colorBackGround(darkModeTheme)}
                                             wrapperStyle={{ width: '90%', }}
                                             socialMediaIcon={<Google />}
                                             buttonTitle={String.commonString.signInWithGoogle}
@@ -185,12 +185,14 @@ export const CreateAccount = () => {
                                         /> :
                                         <View style={style.socialMedia}>
                                             <SocialMediaButton
+                                                colorBackGround={colorBackGround(darkModeTheme)}
                                                 socialMediaIcon={<Google />}
                                                 buttonTitle={String.commonString.Google}
                                                 onPress={() => { googleLogin(navigation, setLoading) }}
                                             />
                                             <SocialMediaButton
-                                                socialMediaIcon={<Apple />}
+                                                colorBackGround={colorBackGround(darkModeTheme)}
+                                                socialMediaIcon={<Apple  gery={darkModeTheme}/>}
                                                 buttonTitle={String.commonString.Apple}
                                                 onPress={() => appleLoginIos(navigation, setLoading)}
                                             />

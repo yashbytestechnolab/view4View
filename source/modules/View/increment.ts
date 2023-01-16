@@ -3,6 +3,7 @@ class increment {
     retryCount: number = 0
     retryDocument: any = {}
     toggleNextPrees: boolean = false
+    configvalue = ""
     getInc() {
         this.retryCount += 1
     }
@@ -17,6 +18,9 @@ class increment {
     }
     nextPress(params: boolean) {
         this.toggleNextPrees = params
+    }
+    getConfigValueFnc(params:any) {
+        this.configvalue=params
     }
 }
 
