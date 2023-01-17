@@ -1,4 +1,4 @@
-package com.view4view.newarchitecture;
+package com.bytes.view4view.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.view4view.BuildConfig;
-import com.view4view.newarchitecture.components.MainComponentsRegistry;
-import com.view4view.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.bytes.view4view.BuildConfig;
+import com.bytes.view4view.newarchitecture.components.MainComponentsRegistry;
+import com.bytes.view4view.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
