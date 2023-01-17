@@ -26,10 +26,13 @@ export const SettingLanding = () => {
   const [data, setData] = useState<any>(params?.length > 0 ? params?.data : {})
 
   const configUrl = () => {
-    const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
+    const getConfigValue: any = remoteConfig().getValue("share_link").asString()
+
     const details = JSON?.parse(getConfigValue)
+
     person.getConfigValueFnc(details)
   }
+
 
   const getUserData = async () => {
     setLoading(true)

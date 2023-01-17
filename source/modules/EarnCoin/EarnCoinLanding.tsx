@@ -16,7 +16,7 @@ export const EarnCoinLanding = () => {
   return (
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
-      <View style={[style.main, darkBackGround(darkModeTheme)]}>
+      <View style={[style.main,darkModeTheme&& darkBackGround(darkModeTheme)]}>
         <Header title={String?.headerTitle?.earnCoin} showCoin={false}/>
         <View style={[{ paddingHorizontal: 16, paddingTop: 20 },]}>
           {

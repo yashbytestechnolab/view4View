@@ -6,8 +6,7 @@ import AppLoader from './source/components/AppLoader';
 import { UpdateBuildVersion } from './source/services/UpdateBuildVersion';
 import { InviteFriend } from './source/modules/EarnCoin';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native';
-import { Colors } from './source/Theme';
+
 
 
 export default function App() {

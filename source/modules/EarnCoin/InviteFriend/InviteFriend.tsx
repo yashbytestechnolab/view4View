@@ -1,6 +1,7 @@
 import { View, Text, SafeAreaView, ScrollView, Platform, Linking, StatusBar } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import remoteConfig from '@react-native-firebase/remote-config';
+import Share from 'react-native-share';
 
 import { Colors, F40014, F60024 } from '../../../Theme'
 import { String } from '../../../constants'
@@ -10,14 +11,24 @@ import { style } from './style'
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
     const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
-    //const data = JSON?.parse(getConfigValue)
     const data = JSON?.parse(getConfigValue)
-    console.log("data", data)
-    const handleButton = () => {
-        Platform?.OS == 'android' ?
-            Linking.openURL(data?.Upadte?.android) : Linking.openURL(data?.Upadte?.ios)
-
+    const ReferEarn = `View4view is very usefull app and you increase your view and earn coins.\n\nDownload now:  \n\niOS App: ${data?.Upadte?.ios} \n\nAndroid App: ${data?.Upadte?.android}`;
+    const option = {
+        title: 'Title',
+        message: ReferEarn,
+        subject: 'Subject',
+    };
+    const handleButton = (notifyUpdate: boolean) => {
+        notifyUpdate ?
+            Platform?.OS == 'android' ?
+                Linking.openURL(data?.Upadte?.android) : Linking.openURL(data?.Upadte?.ios) :
+            Share.open(option)
+                .then((res: any) => {
+                })
+                .catch((err: any) => {
+                });
     }
+
     return (
         <>
             <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
@@ -35,7 +46,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                     <InviteFrdSvg />
                 </View>
                 <ButtonComponent wrapperStyle={style.button} buttonTitle={notifyUpdate ? "Update" : String?.inviteFrd?.button} onPrees={() => {
-                    notifyUpdate && handleButton()
+                    handleButton(notifyUpdate)
 
                 }} />
             </ScrollView>
