@@ -61,6 +61,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
 
 export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     // create login request for apple
+    setLoading(true)
     const appleAuthRequestResponse: any = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
@@ -93,6 +94,7 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
                     routes: [{ name: ROUTES.TABLIST }],
                 });
                 await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
+                setLoading(false)
             }).catch(() => setLoading(false)).finally(() => setLoading(false))
     }
 };
