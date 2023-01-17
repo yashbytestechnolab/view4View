@@ -42,6 +42,7 @@ export const SettingLanding = () => {
   const logoutHandle = async () => {
     await LocalStorage.setValue(LocalStorageKeys.UserId, "")
     auth().signOut().then(() => { })
+    dispatchuserDetail({ type: type.USER_INFO_DELETE })
     navigation.reset({
       index: 0,
       routes: [{ name: ROUTES?.LOGIN }]

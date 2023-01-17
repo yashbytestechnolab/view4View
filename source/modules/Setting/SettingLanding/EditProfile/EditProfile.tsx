@@ -15,6 +15,7 @@ export const EditProfile = () => {
     const navigation = useNavigation()
     const { storeCreator: { darkModeTheme, userDetail: { data, infoLoading }, userInput, dispatch, userInputError, dispatchError, dispatchuserDetail } }: any = useContext(InputContextProvide)
     const [profilePic, setProfilePic]: any = useState(null);
+    const [onPhotoLoad, setPhotoLoad] = useState(false)
 
     const iosBase64Compress = async (response: any) => {
         const result = await CreateCustomer.Image.compress(response?.assets[0]?.uri, {
@@ -52,6 +53,7 @@ export const EditProfile = () => {
     }
 
     const openGallery = async () => {
+        setPhotoLoad(true)
         let options: any = {
             mediaType: 'photo',
             quality: 0.2,
@@ -66,13 +68,12 @@ export const EditProfile = () => {
                 response?.assets?.[0]?.uri?.length > 1 &&
                 response?.assets[0]?.fileSize <= 5242880
             ) {
-                Platform.OS == "ios" ? iosBase64Compress(response) : setProfilePic(response?.assets[0])
+                Platform.OS == "ios" ? await iosBase64Compress(response) : setProfilePic(response?.assets[0])
             } else {
                 Alert.alert('Image size must be less than 5MB');
             }
-        }).catch(err => {
-            console.log('err', err);
-        });
+            setPhotoLoad(false)
+        }).catch(err => setPhotoLoad(false)).finally(() => setPhotoLoad(false))
     };
 
     const updateProfileData = () => {
@@ -94,13 +95,13 @@ export const EditProfile = () => {
             <SafeAreaView style={style.safeArea} />
             <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
-                {infoLoading ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>}
+                {infoLoading ? <ActivityIndicator color={Colors.white} size={'large'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>}
 
                 <View style={{ paddingTop: 24 }}>
                     <View style={style.nameWrapper} >
-                        {<Image source={{ uri: profilePic != null ? profilePic?.uri : `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />}
+                        {onPhotoLoad ? <ActivityIndicator size={"small"} color={Colors.lightPink} /> : <Image source={{ uri: profilePic != null ? profilePic?.uri : `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />}
                     </View>
-                    <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }}
+                    <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { openGallery() }}
                         style={{
                             height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13,
                             position: 'absolute', justifyContent: 'center', alignItems: 'center', right: Platform.OS == 'ios' ? 165 : 150, top: 55
@@ -125,7 +126,6 @@ export const EditProfile = () => {
                             placeholder={String.commonString.Enteryouremail}
                             value={userInput?.email}
                             onChangeText={(value) => {
-
                             }}
                         />
                     </View>
