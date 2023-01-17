@@ -23,10 +23,7 @@ import Lottie from 'lottie-react-native';
 
 
 export const ViewLanding = () => {
-  const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, videoId, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
-  const { darkModeColor, white } = Colors
-
-  console.log("darkModeTheme", darkModeTheme);
+  const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
 
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
@@ -72,7 +69,6 @@ export const ViewLanding = () => {
       duration: 3000,
       useNativeDriver: true,
     }).start(({ finished }) => {
-      console.log("finished", finished)
       if (finished) {
         setIsAnimantion(false)
       }

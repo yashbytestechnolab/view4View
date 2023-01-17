@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useState } from 'react'
 import { type } from '../constants/types'
-import { ValidationFnc, getCurrentCoinBalance, getUserCampaign, videoLanding } from '.';
+import { ValidationFnc, getCurrentCoinBalance, getUserCampaign, userInfoFnc, videoLanding } from '.';
 
 export const InputContextProvide: any = createContext({})
 
@@ -13,8 +13,8 @@ interface input {
     confirmPasswordShow: boolean
     oldPassword?: number | string | any,
     newPassword?: number | string | any,
-    oldPassword_show?:boolean,
-    newPassword_show?:boolean,
+    oldPassword_show?: boolean,
+    newPassword_show?: boolean,
 }
 
 const intialState: input = {
@@ -26,8 +26,8 @@ const intialState: input = {
     confirmPassword: "",
     showPassword: true,
     confirmPasswordShow: true,
-    oldPassword_show:true,
-    newPassword_show:true,
+    oldPassword_show: true,
+    newPassword_show: true,
 }
 
 const reducer: Function | any = (state: any, action: any) => {
@@ -53,6 +53,7 @@ const CommonContext = ({ children }: any) => {
     const { campaignData, dispatchcampaign } = getUserCampaign()
     const { coinBalance, dispatchCoin } = getCurrentCoinBalance()
     const { videoLandingData, dispatchVideoLandingData } = videoLanding()
+    const { userDetail, dispatchuserDetail } = userInfoFnc()
     const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -69,7 +70,10 @@ const CommonContext = ({ children }: any) => {
         dispatchVideoLandingData,
         coinBalance,
         dispatchCoin,
-        darkModeTheme, setDarkModeTheme
+        darkModeTheme,
+        setDarkModeTheme,
+        userDetail,
+        dispatchuserDetail
     }
 
     return (

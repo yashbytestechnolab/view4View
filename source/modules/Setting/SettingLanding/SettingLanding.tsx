@@ -17,13 +17,8 @@ import { getSocialLoginValue, settingProfileArr } from '../../../constants/setti
 import { person } from '../../View/increment';
 
 export const SettingLanding = () => {
-  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch } }: any = useContext(InputContextProvide)
-  const route = useRoute()
-  const { params }: any = route
-
-  const [loading, setLoading] = useState(false)
+  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data, error }, dispatchuserDetail } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
-  const [data, setData] = useState<any>(params?.length > 0 ? params?.data : {})
 
   const configUrl = () => {
     const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
@@ -32,11 +27,12 @@ export const SettingLanding = () => {
   }
 
   const getUserData = async () => {
-    setLoading(true)
-    let userInfo = await userDeatil()
-    setData(userInfo)
-    setLoading(false)
+    dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
+    userDeatil().then((userInfo: any) => dispatchuserDetail({ type: type.USER_INFO_DATA, payload: userInfo })).
+      catch((error: any) => dispatchuserDetail({ type: type.USER_INFO_DATA, payload: error.message })).
+      finally(() => dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: false }))
   }
+
   useEffect(() => {
     getSocialLoginValue()
     getUserData()
@@ -77,9 +73,7 @@ export const SettingLanding = () => {
                       key={index.toString()}
                       onPress={() => {
                         (index == 6 || index == 4) ? actionLinking(index)
-                          : navigation.navigate(item?.action, {
-                            userProfile: data
-                          })
+                          : navigation.navigate(item?.action)
                       }}
                       activeOpacity={1} style={style.tabWrapper}>
                       <Text key={index?.toString()} style={[F40014?.main, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
@@ -99,7 +93,7 @@ export const SettingLanding = () => {
         )
       })
     )
-  }, [darkModeTheme, data])
+  }, [darkModeTheme])
 
   const actionLinking = (index: number) => {
     const { Upadte: { android, ios } }: any = person.configvalue;
@@ -116,12 +110,8 @@ export const SettingLanding = () => {
           scrollEnabled={true} contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}>
           <View style={[{ flex: 1 }, darkBackGround(darkModeTheme)]}>
             {
-              loading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
-                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => {
-                  navigation?.navigate(ROUTES?.EDITPROFILE, {
-                    userProfile: data
-                  })
-                }}>
+              infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
+                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => navigation?.navigate(ROUTES?.EDITPROFILE)}>
                   <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
                   <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
                     {data?.firstname + " " + data?.lastname}
@@ -142,7 +132,6 @@ export const SettingLanding = () => {
               buttonTitle={String?.settingScreen?.logout}
             />
           </View>
-
         </ScrollView>
       </View >
     </>

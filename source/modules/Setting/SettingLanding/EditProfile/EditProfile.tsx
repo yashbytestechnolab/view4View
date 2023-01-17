@@ -8,21 +8,27 @@ import { type } from '../../../../constants/types'
 import { launchImageLibrary } from 'react-native-image-picker';
 import { EditProfileIcon } from '../../../../assets/icons'
 import { ROUTES, String } from '../../../../constants'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { default as CreateCustomer } from 'react-native-compressor';
 
 export const EditProfile = () => {
     const navigation = useNavigation()
-    const route: any = useRoute();
-    const { params } = route
-
-    const [loader, setLoader] = useState<boolean>(false)
-    const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError } }: any = useContext(InputContextProvide)
+    const { storeCreator: { darkModeTheme, userDetail: { data, infoLoading }, userInput, dispatch, userInputError, dispatchError, dispatchuserDetail } }: any = useContext(InputContextProvide)
     const [profilePic, setProfilePic]: any = useState(null);
 
+    const iosBase64Compress = async (response: any) => {
+        const result = await CreateCustomer.Image.compress(response?.assets[0]?.uri, {
+            maxWidth: 1000,
+            quality: 0.5,
+            compressionMethod: "auto",
+            returnableOutputType: "base64"
+        });
+        setProfilePic({ ...response?.assets[0], base64: result });
+    }
+
     const getUserData = () => {
-        dispatch({ type: type.FULL_NAME, payload: params?.userProfile?.firstname + " " + params?.userProfile?.lastname });
-        dispatch({ type: type.EMAIL, payload: params?.userProfile?.email });
+        dispatch({ type: type.FULL_NAME, payload: data?.firstname + " " + data?.lastname });
+        dispatch({ type: type.EMAIL, payload: data?.email });
     }
 
     useEffect(() => {
@@ -45,7 +51,6 @@ export const EditProfile = () => {
         !isNotValidForm && updateProfileData()
     }
 
-
     const openGallery = async () => {
         let options: any = {
             mediaType: 'photo',
@@ -61,13 +66,7 @@ export const EditProfile = () => {
                 response?.assets?.[0]?.uri?.length > 1 &&
                 response?.assets[0]?.fileSize <= 5242880
             ) {
-                const result = await CreateCustomer.Image.compress(response?.assets[0].uri, {
-                    maxWidth: 1000,
-                    quality: 0.5,
-                    compressionMethod: "auto",
-                    returnableOutputType: "base64"
-                });
-                setProfilePic({...response?.assets[0],bas3:result});
+                Platform.OS == "ios" ? iosBase64Compress(response) : setProfilePic(response?.assets[0])
             } else {
                 Alert.alert('Image size must be less than 5MB');
             }
@@ -77,36 +76,29 @@ export const EditProfile = () => {
     };
 
     const updateProfileData = () => {
-        let obj = {
-            firstname: userInput?.fullName,
-            email: userInput?.email,
-            image: profilePic?.base64
-        }
-        setLoader(true)
-        updateProfile(userInput?.fullName, profilePic?.bas3 || params?.userProfile?.image).then((resp: any) => {
-            setLoader(false)
-            navigation.navigate(ROUTES?.SETTING_LANDING, {
-                data: obj
-            })
+        dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
+        updateProfile(userInput?.fullName, (profilePic?.base64 || data?.image)).then((resp: any) => {
+            let obj = {
+                firstname: resp?.firstName, email: userInput?.email, image: (profilePic?.base64 || data?.image), lastname: resp?.lastname
+            }
+            dispatchuserDetail({ type: type.USER_INFO_DATA, payload: obj })
+            navigation.navigate(ROUTES?.SETTING_LANDING)
         }).catch((err) => {
-            setLoader(false)
+            dispatchuserDetail({ type: type.USER_INFO_DATA, payload: err.message })
             console.log("err", err);
-        })
+        }).finally(() => dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: false }))
     }
-    console.log("profilePic", profilePic);
 
     return (
         <>
             <SafeAreaView style={style.safeArea} />
             <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
-                {loader ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>}
+                {infoLoading ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>}
 
                 <View style={{ paddingTop: 24 }}>
                     <View style={style.nameWrapper} >
-                        {
-                            <Image source={{ uri: profilePic != null ? profilePic?.uri : `data:image/png;base64,${params?.userProfile?.image}` }} style={style.imageWrapper} />
-                        }
+                        {<Image source={{ uri: profilePic != null ? profilePic?.uri : `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />}
                     </View>
                     <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }}
                         style={{

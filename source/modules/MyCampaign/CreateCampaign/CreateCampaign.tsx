@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, Alert } from 'react-native';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ButtonComponent, CommonDropDown, Header } from '../../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -17,7 +17,7 @@ import GiftModel from '../../../components/GiftModel';
 export const CreateCampaign = () => {
 
   const navigation: any = useNavigation();
-  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, campaignData: { getCampaignData }, dispatchcampaign, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
@@ -28,7 +28,7 @@ export const CreateCampaign = () => {
   const { commonString, headerTitle } = String
   const [configValue, setConfigValue] = useState<campaign>({})
   const splitUrl = route?.params?.url.split('/').slice(3)
-
+  
   /**
    * configValue for dropdown set
    */
@@ -70,19 +70,20 @@ export const CreateCampaign = () => {
    * Add Campaign list in campaign table  
    */
   const handleAddCampaign = async () => {
-    if (!(getBalance >= totalCost)) {
-      setIsVisible(true)
-    } else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
-      setLoading(true)
-      const updateWallet = getBalance - totalCost
-      const userAddUrl: string = route?.params?.url
-      let videoTitle: { title: string } = await getYoutubeMeta(splitUrl)
-      /**
-       * Create Campaign api call & decrement wallet amount
-       */
-      createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title)
-        .then(async (res: any) => updateCoinBalance(updateWallet)).catch((err: any) => { console.log("err", err); setLoading(false) })
-    }
+    getYoutubeMeta(splitUrl).then((videoTitle: any) => {
+      if (!(getBalance >= totalCost)) {
+        setIsVisible(true)
+      } else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
+        setLoading(true)
+        const updateWallet = getBalance - totalCost
+        const userAddUrl: string = route?.params?.url
+        /**
+         * Create Campaign api call & decrement wallet amount
+         */
+        createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title)
+          .then(async (res: any) => updateCoinBalance(updateWallet)).catch((err: any) => { console.log("err", err); setLoading(false) })
+      }
+    }).catch((err: any) => Alert.alert("Please enter valid url"))
   }
 
   return (
@@ -99,14 +100,14 @@ export const CreateCampaign = () => {
           contentContainerStyle={[{ paddingHorizontal: 16, flexGrow: 1, paddingBottom: 90 }, darkBackGround(darkModeTheme)]}>
           <YoutubePlayer height={203} videoId={splitUrl?.toString()} />
           <View style={{ marginTop: 16, flex: 1 }}>
-            <Text style={[F60016.textStyle, F60016.campaign,colorBackGround(darkModeTheme)]}>
+            <Text style={[F60016.textStyle, F60016.campaign, colorBackGround(darkModeTheme)]}>
               {commonString.OrderSettings}
             </Text>
           </View>
           <View style={{ marginTop: 10, height: 1, backgroundColor: Colors.greyD8D8D8 }} />
           <View style={{ flex: 1, marginTop: 22 }}>
             <View style={styles.settingWrapper}>
-              <Text style={[F40014.main, styles.alignSelef,colorBackGround(darkModeTheme)]}>
+              <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
                 {commonString.Expectedviews}
               </Text>
               <View style={styles.expectedView}>
@@ -121,7 +122,7 @@ export const CreateCampaign = () => {
             </View>
 
             <View style={[styles.settingWrapper, styles.marginTop16]}>
-              <Text style={[F40014.main, styles.alignSelef,colorBackGround(darkModeTheme)]}>
+              <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
                 {commonString.requiredTime}
               </Text>
               <View style={styles.expectedView}>
@@ -136,7 +137,7 @@ export const CreateCampaign = () => {
             </View>
 
             <View style={[styles.settingWrapper, styles.marginTop16,]}>
-              <Text style={[F40014.main, styles.alignSelef,colorBackGround(darkModeTheme)]}>
+              <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
                 {commonString.Totalcost}
               </Text>
               <View style={[styles.expectedView, { backgroundColor: Colors.primaryRed }]}>
@@ -154,11 +155,11 @@ export const CreateCampaign = () => {
             />
 
             <View style={{ marginTop: 32, flex: 1 }}>
-              <Text style={[F60012.textStyle,colorBackGround(darkModeTheme)]}>
+              <Text style={[F60012.textStyle, colorBackGround(darkModeTheme)]}>
                 {commonString?.Warning}
               </Text>
               <View style={{ marginTop: 12 }}>
-                <Text style={[{ textAlign: "left" }, F40014.main,colorBackGround(darkModeTheme)]}>
+                <Text style={[{ textAlign: "left" }, F40014.main, colorBackGround(darkModeTheme)]}>
                   {commonString?.viewUpdateWarning}
                 </Text>
               </View>

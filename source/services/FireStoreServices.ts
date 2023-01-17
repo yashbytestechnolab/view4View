@@ -22,7 +22,7 @@ export const bytesVideoList = firestore()?.collection("bytes_video_list")
 export const historyCampaign = firestore()?.collection("campaign_history")
 
 export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
-  console?.log("payload",payload)
+  console?.log("payload", payload)
   let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
   const space = fullname.indexOf(" ");
   const firstName = fullname.substring(0, space);
@@ -47,20 +47,19 @@ export const get_coins = async () => {
 
 export const userDeatil = async () => {
   const userId = await getUserID()?.toString()
- return await (await userTableLogin.doc(userId).get()).data()
+  return await (await userTableLogin.doc(userId).get()).data()
 }
 
 export const updateProfile = async (...payload: Array<object | string | undefined | any>) => {
- console.log("payload",payload);
   const space = payload[0].indexOf(" ");
   const firstName = payload[0].substring(0, space);
   const lastname = payload[0].substring(space + 1);
-  return await userTable?.update({
+  await userTable?.update({
     firstname: firstName,
     lastname: lastname,
     image: payload[1] != undefined && payload[1]
   })
-
+  return { firstName,lastname }
 }
 export const createCampaign = async (...payload: Array<object | undefined | string | number>) => {
   let uniqID = getUniqID();
