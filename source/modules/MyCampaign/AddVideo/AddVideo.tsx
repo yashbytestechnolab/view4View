@@ -10,8 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 export const AddVideo = () => {
     const navigation = useNavigation()
     const { headerTitle, commonString } = String
-    const [addVideoUrl, setVideoUrl] = useState("")
-    const { storeCreator: { campaignData: { getCampaignData }, darkModeTheme } }: any = useContext(InputContextProvide)
+    const { storeCreator: { campaignData: { getCampaignData }, darkModeTheme, addVideoUrl, setVideoUrl } }: any = useContext(InputContextProvide)
     const onAddVideo = () => {
         let youtubeUrl = 'https://youtu.be/'
         let expetedViewNotRepeat = false
@@ -22,7 +21,7 @@ export const AddVideo = () => {
                 getCampaignData?.map((res: { video_url: string | undefined; remaining_view: number | any }) => {
                     (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
                 }),
-                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), setVideoUrl("")) :
+                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, })) :
                     (Alert.alert("current campaign are running"))
             )
     }

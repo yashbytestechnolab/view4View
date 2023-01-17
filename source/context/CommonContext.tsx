@@ -54,6 +54,7 @@ const CommonContext = ({ children }: any) => {
     const { coinBalance, dispatchCoin } = getCurrentCoinBalance()
     const { videoLandingData, dispatchVideoLandingData } = videoLanding()
     const { userDetail, dispatchuserDetail } = userInfoFnc()
+    const [addVideoUrl, setVideoUrl] = useState()
     const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -73,7 +74,9 @@ const CommonContext = ({ children }: any) => {
         darkModeTheme,
         setDarkModeTheme,
         userDetail,
-        dispatchuserDetail
+        dispatchuserDetail,
+        addVideoUrl,
+        setVideoUrl
     }
 
     return (

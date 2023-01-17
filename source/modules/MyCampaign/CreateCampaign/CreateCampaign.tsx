@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, SafeAreaView, Alert } from 'react-native';
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { ButtonComponent, CommonDropDown, Header } from '../../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import YoutubePlayer from 'react-native-youtube-iframe';
@@ -17,18 +17,18 @@ import GiftModel from '../../../components/GiftModel';
 export const CreateCampaign = () => {
 
   const navigation: any = useNavigation();
-  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme,setVideoUrl } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
   const [isVisible, setIsVisible] = useState(false)
-  const [expectedValue, setExpectedValue] = useState<YT>({ views: 0, timeSecond: 0 })
+  const [expectedValue, setExpectedValue] = useState<YT>({ views: 10, timeSecond: 30 })
   const [totalCost, setTotalCost] = useState(0)
   const { views, timeSecond } = expectedValue
   const { commonString, headerTitle } = String
   const [configValue, setConfigValue] = useState<campaign>({})
   const splitUrl = route?.params?.url.split('/').slice(3)
-  
+  const youTubeRef = useRef()
   /**
    * configValue for dropdown set
    */
@@ -64,16 +64,22 @@ export const CreateCampaign = () => {
     setLoading(false)
     dispatchCoin({ types: type.GET_CURRENT_COIN, payload: coinBalance })
     navigation.replace(ROUTES.HOME_LANDING)
+    setVideoUrl("")
   }
 
   /**
    * Add Campaign list in campaign table  
    */
   const handleAddCampaign = async () => {
+    let duration = await youTubeRef?.current?.getDuration()
     getYoutubeMeta(splitUrl).then((videoTitle: any) => {
       if (!(getBalance >= totalCost)) {
         setIsVisible(true)
-      } else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
+      } 
+      else if(duration>=timeSecond){
+       Alert.alert("Please")   
+      }
+      else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
         setLoading(true)
         const updateWallet = getBalance - totalCost
         const userAddUrl: string = route?.params?.url
@@ -81,9 +87,9 @@ export const CreateCampaign = () => {
          * Create Campaign api call & decrement wallet amount
          */
         createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title)
-          .then(async (res: any) => updateCoinBalance(updateWallet)).catch((err: any) => { console.log("err", err); setLoading(false) })
+          .then((res: any) => updateCoinBalance(updateWallet)).catch((err: any) => setLoading(false))
       }
-    }).catch((err: any) => Alert.alert("Please enter valid url"))
+    }).catch((err: any) => Alert.alert("Entered video url looks invalid. Please make sure you've entered correct video url"))
   }
 
   return (
@@ -98,7 +104,7 @@ export const CreateCampaign = () => {
           scrollEnabled={true}
           style={[{ backgroundColor: Colors.white, marginTop: 12, }, darkBackGround(darkModeTheme)]}
           contentContainerStyle={[{ paddingHorizontal: 16, flexGrow: 1, paddingBottom: 90 }, darkBackGround(darkModeTheme)]}>
-          <YoutubePlayer height={203} videoId={splitUrl?.toString()} />
+          <YoutubePlayer ref={youTubeRef} height={203} videoId={splitUrl?.toString()} />
           <View style={{ marginTop: 16, flex: 1 }}>
             <Text style={[F60016.textStyle, F60016.campaign, colorBackGround(darkModeTheme)]}>
               {commonString.OrderSettings}
@@ -148,7 +154,6 @@ export const CreateCampaign = () => {
             </View>
 
             <ButtonComponent
-              disable={timeSecond == 0 || views == 0}
               buttonTitle={commonString.AddCampaign}
               wrapperStyle={{ marginHorizontal: 0, marginTop: 32 }}
               onPrees={() => handleAddCampaign()}
