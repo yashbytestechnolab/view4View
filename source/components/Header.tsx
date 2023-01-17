@@ -38,7 +38,7 @@ export const Header = (props: IheaderProps) => {
           {showBacKIcon && (
             <TouchableOpacity
               activeOpacity={1}
-              style={{padding:10}}
+              style={{ padding: 10 }}
               onPress={() => {
                 onPrees ? onPrees : navigation.goBack();
               }}>
@@ -52,7 +52,7 @@ export const Header = (props: IheaderProps) => {
           </View>
           {showCoin && (
             <TouchableOpacity
-              style={style.coinWrapper}
+              style={[style.coinWrapper, showBacKIcon && { marginBottom: 8 }]}
               activeOpacity={1}
               onPress={() => {
                 navigation?.navigate(ROUTES?.VIEWCOIN);
@@ -65,8 +65,8 @@ export const Header = (props: IheaderProps) => {
                 height: 40,
                 marginTop: 8,
                 marginLeft: 10,
-                marginBottom: Platform?.OS== 'ios'? 5:0
-                
+                marginBottom: Platform?.OS == 'ios' ? 5 : 0
+
               }}
                 source={require('../assets/flipCoin.json')}
                 autoPlay loop
@@ -89,13 +89,13 @@ const style = StyleSheet.create({
   titleText: {
     textAlign: 'center',
   },
-  
+
   Wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 15,
     marginLeft: 20,
-   
+
   },
   coinWrapper: {
     flexDirection: 'row',
@@ -103,8 +103,9 @@ const style = StyleSheet.create({
     alignSelf: 'flex-end',
     position: 'absolute',
     right: 1,
-    bottom:0,
-    top:0  },
+    bottom: 0,
+    top: 0,
+  },
 
   titleWrapper: {
     flex: 1,
@@ -115,6 +116,6 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
   padding: {
-    marginRight: Platform?.OS== 'ios'? -40 :-35
+    marginRight: Platform?.OS == 'ios' ? -40 : -35
   }
 });

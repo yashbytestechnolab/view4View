@@ -178,7 +178,7 @@ export const CreateAccount = () => {
 
                                         <SocialMediaButton
                                             colorBackGround={colorBackGround(darkModeTheme)}
-                                            wrapperStyle={{ width: '90%', }}
+                                            wrapperStyle={{  width: '92%', marginLeft:16 }}
                                             socialMediaIcon={<Google />}
                                             buttonTitle={String.commonString.signInWithGoogle}
                                             onPress={() => { googleLogin(navigation, setLoading) }}

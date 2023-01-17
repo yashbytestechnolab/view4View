@@ -155,6 +155,8 @@ export const Login = () => {
                       wrapperStyle={style.socialLogin}
                       socialMediaIcon={<Google />}
                       buttonTitle={String.commonString.signInWithGoogle}
+                      colorBackGround={colorBackGround(darkModeTheme)}
+
                       onPress={() => { googleLogin(navigation, setLoading) }}
                     />) :
                     (<View style={style.socialMedia}>

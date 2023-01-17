@@ -21,10 +21,13 @@ export const SettingLanding = () => {
   const navigation: any = useNavigation()
 
   const configUrl = () => {
-    const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
+    const getConfigValue: any = remoteConfig().getValue("share_link").asString()
+
     const details = JSON?.parse(getConfigValue)
+
     person.getConfigValueFnc(details)
   }
+
 
   const getUserData = async () => {
     dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
@@ -97,7 +100,7 @@ export const SettingLanding = () => {
   }, [darkModeTheme])
 
   const actionLinking = (index: number) => {
-    const { Upadte: { android, ios } }: any = person.configvalue;
+    const { android, ios }: any = person?.configvalue;
     index == 4 ? (Platform?.OS == 'android' ? Linking.openURL(android) : Linking.openURL(ios)) : (Linking.openURL('https://view4view-dcb01.web.app/'))
   };
 
@@ -124,7 +127,7 @@ export const SettingLanding = () => {
             }
             {settingProfile}
             <ButtonComponent
-              disable={Object.keys(data).length < 0}
+              disable={data && Object.keys(data)?.length < 0}
               onPrees={() => {
                 logoutHandle();
                 dispatch({ type: type.EMPTY_STATE })
