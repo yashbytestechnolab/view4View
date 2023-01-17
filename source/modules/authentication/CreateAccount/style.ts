@@ -77,8 +77,5 @@ export const style = StyleSheet.create({
     marginTop33: {
         marginTop: 33
     },
-    socialMedia: {
-        flexDirection: "row",
-        justifyContent: "center"
-    }
+    socialMedia: { flexDirection: "row", justifyContent: "space-between" ,paddingLeft:16,paddingRight:10},
 })
