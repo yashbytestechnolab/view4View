@@ -43,7 +43,7 @@ export const CreateCampaign = () => {
 
   // config value
   const expectedView = useMemo(() => Expected(10, configValue?.expectedView, 10), [configValue])
-  const expectedTime = useMemo(() => Expected(45, configValue?.timeRequire, 30), [configValue])
+  const expectedTime = useMemo(() => Expected(30, configValue?.timeRequire, 30), [configValue])
 
   /**
  * Costing value of dropdown final cost

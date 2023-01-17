@@ -1,16 +1,17 @@
 import { View, Text, SafeAreaView, ScrollView, Platform, Linking, StatusBar } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import remoteConfig from '@react-native-firebase/remote-config';
-
-import { Colors, F40014, F60024 } from '../../../Theme'
+import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../../Theme'
 import { String } from '../../../constants'
 import { InviteFrdSvg } from '../../../assets/icons'
 import { ButtonComponent, Header } from '../../../components'
 import { style } from './style'
+import { InputContextProvide } from '../../../context/CommonContext';
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
+  const { storeCreator: { darkModeTheme} }: any = useContext(InputContextProvide)
+
     const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
-    //const data = JSON?.parse(getConfigValue)
     const data = JSON?.parse(getConfigValue)
     console.log("data", data)
     const handleButton = () => {
@@ -24,13 +25,13 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
             <StatusBar backgroundColor={Colors?.gradient1} barStyle={'light-content'} />
             {!notifyUpdate && <Header title={String?.inviteFrd?.headerTitle} showCoin={false} showBacKIcon={true} />}
             <ScrollView
-                style={style.main}
+                style={[style.main,darkBackGround(darkModeTheme)]}
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps={String.commonString.handled}
                 scrollEnabled={true}
-                contentContainerStyle={style.scrollContain}>
-                <Text style={[F60024?.textStyle, style.title]}>{notifyUpdate ? data?.title : String?.inviteFrd?.title}</Text>
-                <Text style={[F40014?.main, style.subText]}>{notifyUpdate ? data?.subTtile : String?.inviteFrd?.subTitle}</Text>
+                contentContainerStyle={[style.scrollContain,darkBackGround(darkModeTheme)]}>
+                <Text style={[F60024?.textStyle, style.title,]}>{notifyUpdate ? data?.title : String?.inviteFrd?.title}</Text>
+                <Text style={[F40014?.main, style.subText,colorBackGround(darkModeTheme)]}>{notifyUpdate ? data?.subTtile : String?.inviteFrd?.subTitle}</Text>
                 <View>
                     <InviteFrdSvg />
                 </View>

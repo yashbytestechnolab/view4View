@@ -9,12 +9,12 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { EditProfileIcon } from '../../../../assets/icons'
 import { ROUTES, String } from '../../../../constants'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { default as CreateCustomer } from 'react-native-compressor';
 
 export const EditProfile = () => {
     const navigation = useNavigation()
     const route: any = useRoute();
     const { params } = route
-    var base64Icon = `data:image/png;base64,${params?.userProfile?.image}`;
 
     const [loader, setLoader] = useState<boolean>(false)
     const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError } }: any = useContext(InputContextProvide)
@@ -53,7 +53,7 @@ export const EditProfile = () => {
             selectionLimit: 1,
             includeBase64: true
         };
-        await launchImageLibrary(options, (response: any) => {
+        await launchImageLibrary(options, async (response: any) => {
             if (response?.didCancel) {
                 return;
             }
@@ -61,7 +61,13 @@ export const EditProfile = () => {
                 response?.assets?.[0]?.uri?.length > 1 &&
                 response?.assets[0]?.fileSize <= 5242880
             ) {
-                setProfilePic((response?.assets[0]));
+                const result = await CreateCustomer.Image.compress(response?.assets[0].uri, {
+                    maxWidth: 1000,
+                    quality: 0.5,
+                    compressionMethod: "auto",
+                    returnableOutputType: "base64"
+                });
+                setProfilePic({...response?.assets[0],bas3:result});
             } else {
                 Alert.alert('Image size must be less than 5MB');
             }
@@ -69,8 +75,7 @@ export const EditProfile = () => {
             console.log('err', err);
         });
     };
-    console.log("profilePic",profilePic);
-    
+
     const updateProfileData = () => {
         let obj = {
             firstname: userInput?.fullName,
@@ -78,10 +83,10 @@ export const EditProfile = () => {
             image: profilePic?.base64
         }
         setLoader(true)
-        updateProfile(userInput?.fullName, profilePic?.base64||params?.userProfile?.image).then((resp: any) => {
+        updateProfile(userInput?.fullName, profilePic?.bas3 || params?.userProfile?.image).then((resp: any) => {
             setLoader(false)
             navigation.navigate(ROUTES?.SETTING_LANDING, {
-                data:obj
+                data: obj
             })
         }).catch((err) => {
             setLoader(false)
@@ -100,7 +105,7 @@ export const EditProfile = () => {
                 <View style={{ paddingTop: 24 }}>
                     <View style={style.nameWrapper} >
                         {
-                            <Image source={{ uri: profilePic != null ? profilePic?.uri : base64Icon }} style={style.imageWrapper} />
+                            <Image source={{ uri: profilePic != null ? profilePic?.uri : `data:image/png;base64,${params?.userProfile?.image}` }} style={style.imageWrapper} />
                         }
                     </View>
                     <TouchableOpacity activeOpacity={1} onPress={() => { openGallery() }}

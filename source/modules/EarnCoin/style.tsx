@@ -1,12 +1,13 @@
-import {StyleSheet} from 'react-native';
-import {Colors} from '../../Theme';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../Theme';
 
 export const style = StyleSheet.create({
 
   card: {
-    shadowColor: Colors?.cardshadow,
+    shadowColor: "#E2E2E2",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 4,
+    shadowOpacity: 10,
+    shadowRadius: 4,
     elevation: 5,
     backgroundColor: Colors?.white,
     padding: 16,
