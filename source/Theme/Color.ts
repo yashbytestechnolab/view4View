@@ -27,5 +27,6 @@ export const Colors = {
     toggleBG: "rgba(120, 120, 128, 0.16)",
     darkModeColor: "#1A1A1A",
     darkModeColor1: "#fFFFFF20",
-    whiteShadow: '#E2E2E2'
+    whiteShadow: '#E2E2E2',
+    yellow:'#FFC75B'
 }

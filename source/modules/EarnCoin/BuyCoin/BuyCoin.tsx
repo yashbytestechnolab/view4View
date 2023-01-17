@@ -1,7 +1,6 @@
+import React from 'react';
 import { View, Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native';
 import VersionInfo from 'react-native-version-info';
-
-import React from 'react';
 import { Header } from '../../../components';
 import { String } from '../../../constants';
 import { Colors, F40014 } from '../../../Theme';
@@ -10,9 +9,9 @@ import { Star } from '../../../assets/icons';
 export const BuyCoin = () => {
     const getVersionNo = VersionInfo.appVersion;
 
-    const reanderCard = () => {
+    const reanderCard = (color) => {
         return (
-            <View style={{ backgroundColor: Colors?.gradient1, height: 434, width: 315, borderRadius: 16, paddingTop: 52, paddingHorizontal: 24, alignItems: 'center', marginRight: 16 }}>
+            <View style={{ backgroundColor:color, height: 434, width: 315, borderRadius: 16, paddingTop: 52, paddingHorizontal: 24, alignItems: 'center', marginRight: 16 }}>
                 <Star />
                 <Text style={{ color: Colors?.white, paddingTop: 28, paddingBottom: 19 }}>5000 Coins</Text>
                 <Text style={{ color: Colors?.white, lineHeight: 35 }}>
@@ -33,23 +32,31 @@ export const BuyCoin = () => {
             <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
             <View style={style.main}>
                 <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} />
+                <View style={{ flex: 0.8 }}>
+                    <ScrollView style={{
+                        marginHorizontal: 16,
+                        marginTop: 32,
+                    }} horizontal={true}
+                        scrollEnabled={true}
+                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
 
-                <ScrollView style={{ marginHorizontal: 16, marginTop: 32, paddingHorizontal: 16 }} horizontal={true}
+                        contentContainerStyle={{ flexGrow: 1 }}>
 
-                    scrollEnabled={true}
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ flexGrow: 1 }}>
+                        {reanderCard(Colors?.gradient1)}
+                        {reanderCard(Colors?.yellow)}
+                        {reanderCard(Colors?.yellow)}
+
+                    </ScrollView>
+                    <View style={{ marginHorizontal: 16, marginTop: 10 }}>
+                        <Text style={[F40014?.main,]}>Version{" " + getVersionNo}</Text>
+                        <Text style={[F40014?.main,{marginTop:12}]}>Lorem Ipsum is simply dummy text of the printing and  simply dum industry dummy text</Text>
+                    </View>
+
+                </View>
 
 
 
-
-                    {reanderCard()}
-                    {reanderCard()}
-
-                </ScrollView>
-
-                <Text style={F40014?.main}>Version{" " + getVersionNo}</Text>
-                <Text style={F40014?.main}>Version</Text>
             </View>
         </>
     );
