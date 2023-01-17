@@ -105,7 +105,7 @@ export const SettingLanding = () => {
   }, [darkModeTheme, data])
 
   const actionLinking = (index: number) => {
-    const { Upadte: { android, ios } }: any = person.configvalue;
+    const { android, ios }: any = person?.configvalue;
     index == 4 ? (Platform?.OS == 'android' ? Linking.openURL(android) : Linking.openURL(ios)) : (Linking.openURL('https://view4view-dcb01.web.app/'))
   };
 

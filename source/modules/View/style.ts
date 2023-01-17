@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors?.white,
     },
-    safearea:{backgroundColor:Colors?.gradient1},
+    safearea: { backgroundColor: Colors?.gradient1 },
     textStyle: {
         color: Colors?.green,
         fontSize: 30,
@@ -39,5 +39,12 @@ export const styles = StyleSheet.create({
     },
     marginTop: {
         marginTop: 32
+    },
+    animation: {
+        position: 'absolute',
+        top: 0,
+        bottom: -230,
+        left: 0, right: 0,
+
     }
 });

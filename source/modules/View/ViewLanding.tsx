@@ -86,6 +86,7 @@ export const ViewLanding = () => {
       clearInterval(controlRef?.current);
 
       const totalAmount = getBalance + (coin / expected_view);
+      console.log("total",totalAmount)
 
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[0]] : [video_Id[0]] })
 
@@ -130,7 +131,7 @@ export const ViewLanding = () => {
       setStart(false);
     }
   };
-  
+
 
   const getBytesVideoList = async () => {
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
@@ -214,8 +215,7 @@ export const ViewLanding = () => {
   let debounce = onPreesNext(400)
   return (
     <>
-
-      <><SafeAreaView style={styles.safearea} /><StatusBar
+ <><SafeAreaView style={styles.safearea} /><StatusBar
         backgroundColor={Colors?.gradient1}
         barStyle={String?.StatusBar?.lightContent}
       />
@@ -263,7 +263,7 @@ export const ViewLanding = () => {
                     </View>
                   </View>
 
-              
+
                   <ButtonComponent
                     loading={videoLoading}
                     onPrees={() => { debounce(); }}
@@ -272,22 +272,12 @@ export const ViewLanding = () => {
 
                 </>}
           </ScrollView>
-
-
-
         </View>
         {isAnimation &&
-          <Lottie style={{
-            position: 'absolute',
-            top: 0,
-            bottom: -230,
-            left: 0, right: 0,
-
-          }}
-            source={require('../../assets/animation.json')}
-            
-          progress={animationProgress.current}
-          />}</>
+          <Lottie style={styles.animation}
+            source={require('../../assets/animation.json')} progress={animationProgress.current} />
+        }
+      </>
 
     </>
   );
