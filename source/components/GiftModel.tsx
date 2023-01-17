@@ -9,12 +9,13 @@ import { InputContextProvide } from '../context/CommonContext';
 interface model {
     isVisible: boolean;
     setIsVisible: any;
-    onPress?: any
+    onPress?: any;
+    fromAdds?: any;
 }
 
 const GiftModel = (props: model) => {
     const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
-    const { onPress, isVisible, setIsVisible } = props
+    const { onPress, isVisible, setIsVisible, fromAdds } = props
     return (
         <Modal
             onBackdropPress={() => setIsVisible(false)}
@@ -25,17 +26,17 @@ const GiftModel = (props: model) => {
             <View style={[styles.modelView, darkBackGround(darkModeTheme)]}>
                 <YouWon />
                 <Text style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
-                    You Won
+                    {fromAdds ? "You Won" : ""}
                 </Text>
                 <Text style={[styles.points, F60032.textStyle]}>
-                    130 points!
+                    {fromAdds ? " 100 points!" : "Not Enough Coins"}
                 </Text>
                 <Text style={[styles.description, F40014.main, colorBackGround(darkModeTheme)]}>
-                    Lorem Ipsum is simply dummy text of the printing and  simply dum industry.
+                    {fromAdds ? "Hurry, you are rewarded" : "Oops, you can't create campaign at this moment"}
                 </Text>
                 <ButtonComponent
                     wrapperStyle={styles.button}
-                    buttonTitle={String.commonString.EarnPoints}
+                    buttonTitle={fromAdds ? "Close" : "Earn Coins"}
                     onPrees={() => { onPress() }}
                 />
             </View>

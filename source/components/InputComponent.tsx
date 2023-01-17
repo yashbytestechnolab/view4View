@@ -1,9 +1,8 @@
-import { Image, Platform, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {  Platform, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React, { useContext } from 'react'
 import { colorBackGround, Colors, F50012 } from '../Theme'
-import { EyeIcon } from '../assets/icons/EyeIcon'
-import { Images } from '../assets/image'
 import { InputContextProvide } from '../context/CommonContext'
+import { HidePassword, ShowPassword } from '../assets/icons'
 interface props {
     placeholder: string,
     value: string | number | undefined,
@@ -42,7 +41,7 @@ export const InputComponent = (props: props) => {
                     activeOpacity={0.7}
                     onPress={onPrees}
                     style={innerStyles.eye}>
-                    {isSecureEntry ? <Image source={Images.hidePass} style={innerStyles.hidePass} /> : <EyeIcon />}
+                    {isSecureEntry ? <HidePassword color={darkModeTheme&&Colors.GrayLightC2C9D1 }/> : <ShowPassword color={darkModeTheme&&Colors?.GrayLightC2C9D1}/>}
                 </TouchableOpacity>
             }
             {

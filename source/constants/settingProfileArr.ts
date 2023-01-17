@@ -5,10 +5,10 @@ import { Profile, More } from "../assets/icons"
 import * as LocalStorage from '../services/LocalStorage';
 import { LocalStorageKeys } from "./LocalStorageKeys";
 let socilaLoginFlag: boolean | undefined | null = false
+
 export const getSocialLoginValue = async () => {
     socilaLoginFlag = await LocalStorage.getValue(LocalStorageKeys.isSocialLogin)
     console.log("socilaLoginFlag", socilaLoginFlag);
-
     return socilaLoginFlag
 }
 

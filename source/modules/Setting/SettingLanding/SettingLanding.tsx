@@ -37,6 +37,8 @@ export const SettingLanding = () => {
   }
 
   useEffect(() => {
+    console.log("hyyu");
+    
     getSocialLoginValue()
     getUserData()
     configUrl()
@@ -60,6 +62,8 @@ export const SettingLanding = () => {
   const settingProfile = useMemo(() => {
     return (
       settingProfileArr?.map((item: any, index: number) => {
+        console.log("item",item?.isShowChangePass());
+        
         return (
           <>
             {
@@ -97,7 +101,7 @@ export const SettingLanding = () => {
         )
       })
     )
-  }, [darkModeTheme])
+  }, [darkModeTheme,data])
 
   const actionLinking = (index: number) => {
     const { android, ios }: any = person?.configvalue;
