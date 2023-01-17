@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ROUTES } from '../constants/NavigationRoutes';
-import { EarnCoinLanding, ViewCoin, InviteFriend } from '../modules/EarnCoin';
+import { EarnCoinLanding, ViewCoin, InviteFriend, ShowAdds } from '../modules/EarnCoin';
 import { BuyCoin } from '../modules/EarnCoin/BuyCoin';
 
 
@@ -32,6 +32,10 @@ export const EarnCoinStack = () => {
       <Stack.Screen
         name={ROUTES.BUYCOIN}
         component={BuyCoin}
+      />
+       <Stack.Screen
+        name={ROUTES.SHOWADDS}
+        component={ShowAdds}
       />
     </Stack.Navigator>
   );

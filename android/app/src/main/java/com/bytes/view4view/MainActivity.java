@@ -1,4 +1,4 @@
-package com.view4view;
+package com.bytes.view4view;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

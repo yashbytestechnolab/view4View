@@ -38,7 +38,7 @@ export const EarnCoinData = [
         svg: AdVideo,
         title: 'Watch Ads video',
         subTitle: 'Watch ads video and earn coins',
-        onPress: "showAdd"
+        onPress: ROUTES?.SHOWADDS
     }
 
 ]

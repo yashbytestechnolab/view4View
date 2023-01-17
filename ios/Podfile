@@ -25,8 +25,8 @@ target 'view4view' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-  
   pod 'Google-Mobile-Ads-SDK'
+  pod 'Firebase/AdMob'
   pod 'Firebase/Analytics'
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true

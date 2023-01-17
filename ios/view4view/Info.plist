@@ -55,6 +55,9 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) Would Like to Access your Photo library to set profile image.</string>
 
+<key>GADApplicationIdentifier</key>
+<string>ca-app-pub-4027493771242043~8680495280</string>
+
 
 	<key>UIAppFonts</key>
 	<array>

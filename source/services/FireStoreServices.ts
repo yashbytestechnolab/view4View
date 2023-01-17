@@ -82,6 +82,12 @@ export const payCoin = async (payload: string) => {
     coin: parseInt(payload) - 10,
   })
 };
+export const EarnCoin = async (payload: string) => {
+  console?.log(payload)
+  return await userTable?.update({
+    coin: parseInt(payload) +100,
+  })
+};
 
 export const deleteRemainingVideo = async (payload: any) => {
   return await historyCampaign?.add(payload)

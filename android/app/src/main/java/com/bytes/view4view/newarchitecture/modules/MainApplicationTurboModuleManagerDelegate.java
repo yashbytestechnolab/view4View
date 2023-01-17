@@ -1,4 +1,4 @@
-package com.view4view.newarchitecture.modules;
+package com.bytes.view4view.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;
