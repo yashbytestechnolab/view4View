@@ -24,12 +24,13 @@ export const IntroductionData = [{
     subTitle: String?.introduction_swipeList?.subTitle4
 }]
 export const EarnCoinData = [
-    {
-        svg: BuyCoin,
-        title: 'Buy Coins',
-        subTitle: 'Buy world coins of countries',
-        onPress: ROUTES?.BUYCOIN
-    }, {
+    // {
+    //     svg: BuyCoin,
+    //     title: 'Buy Coins',
+    //     subTitle: 'Buy world coins of countries',
+    //     onPress: ROUTES?.BUYCOIN
+    // },
+     {
         svg: Invitefriends,
         title: 'Invite friends',
         subTitle: 'Earn 300 coin for a referral',
