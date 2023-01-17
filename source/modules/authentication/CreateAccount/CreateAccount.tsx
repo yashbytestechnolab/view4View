@@ -83,7 +83,7 @@ export const CreateAccount = () => {
         <>
             <SafeAreaView style={style.safeArea} />
             <StatusBar barStyle={String.StatusBar.lightContent} backgroundColor={Colors.gradient1} />
-            <View style={[style.main,darkBackGround(darkModeTheme)]}>
+            <View style={[style.main, darkBackGround(darkModeTheme)]}>
                 <TouchableOpacity
                     onPress={() => {
                         navigation.goBack(); dispatch({ type: type.EMPTY_STATE });
@@ -95,14 +95,14 @@ export const CreateAccount = () => {
                 <KeyboardAwareScrollView
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps={String.commonString.handled}
-                    style={[style.scroll,darkBackGround(darkModeTheme)]}
+                    style={[style.scroll, darkBackGround(darkModeTheme)]}
                     scrollEnabled={true}
-                    contentContainerStyle={[style.scrollContain,darkBackGround(darkModeTheme)]}>
+                    contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
                     <GradientHeader />
                     {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
                     <View style={style.wrapperView} >
-                        <View style={[style.borderRadius, { backgroundColor: Colors.white, flex: 1 },darkBackGround(darkModeTheme)]}>
-                            <View style={[style.innerContainer,darkBackGround(darkModeTheme)]} >
+                        <View style={[style.borderRadius, { backgroundColor: Colors.white, flex: 1 }, darkBackGround(darkModeTheme)]}>
+                            <View style={[style.innerContainer, darkBackGround(darkModeTheme)]} >
                                 <AuthHeader
                                     mainTitle={String.commonString.Createanaccount}
                                     miniTitle={String.commonString.Donthaveanaccount}
@@ -167,7 +167,8 @@ export const CreateAccount = () => {
                                 />
 
                                 <View style={style.signIn}>
-                                    <ButtonComponent loading={loading}
+                                    <ButtonComponent
+                                        // loading={loading}
                                         onPrees={() => handleCreateAccountFlow()}
                                         buttonTitle={String.commonString.SignUp} />
                                 </View>
@@ -178,7 +179,7 @@ export const CreateAccount = () => {
 
                                         <SocialMediaButton
                                             colorBackGround={colorBackGround(darkModeTheme)}
-                                            wrapperStyle={{  width: '92%', marginLeft:16 }}
+                                            wrapperStyle={{ width: '92%', marginLeft: 16 }}
                                             socialMediaIcon={<Google />}
                                             buttonTitle={String.commonString.signInWithGoogle}
                                             onPress={() => { googleLogin(navigation, setLoading) }}
@@ -192,7 +193,7 @@ export const CreateAccount = () => {
                                             />
                                             <SocialMediaButton
                                                 colorBackGround={colorBackGround(darkModeTheme)}
-                                                socialMediaIcon={<Apple  gery={darkModeTheme}/>}
+                                                socialMediaIcon={<Apple gery={darkModeTheme} />}
                                                 buttonTitle={String.commonString.Apple}
                                                 onPress={() => appleLoginIos(navigation, setLoading)}
                                             />
