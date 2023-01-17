@@ -171,7 +171,7 @@ export const CreateCampaign = () => {
         <GiftModel
           isVisible={isVisible}
           setIsVisible={setIsVisible}
-          onPress={() => { setIsVisible(false), navigation.navigate(ROUTES.VIEWCOIN) }}
+          onPress={() => { setIsVisible(false), navigation.navigate(ROUTES.EARNCOINS_LANDING) }}
         />}
     </>
   );
