@@ -17,7 +17,7 @@ import { getSocialLoginValue, settingProfileArr } from '../../../constants/setti
 import { person } from '../../View/increment';
 
 export const SettingLanding = () => {
-  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data, error }, dispatchuserDetail } }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data, error }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
 
   const configUrl = () => {
@@ -38,7 +38,7 @@ export const SettingLanding = () => {
 
   useEffect(() => {
     console.log("hyyu");
-    
+
     getSocialLoginValue()
     getUserData()
     configUrl()
@@ -47,6 +47,7 @@ export const SettingLanding = () => {
   const logoutHandle = async () => {
     await LocalStorage.setValue(LocalStorageKeys.UserId, "")
     auth().signOut().then(() => { })
+    dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: false })
     dispatchuserDetail({ type: type.USER_INFO_DELETE })
     navigation.reset({
       index: 0,
@@ -61,7 +62,7 @@ export const SettingLanding = () => {
 
   const settingProfile = useMemo(() => {
     return (
-      settingProfileArr?.map((item: any, index: number) => {        
+      settingProfileArr?.map((item: any, index: number) => {
         return (
           <>
             {
@@ -99,7 +100,7 @@ export const SettingLanding = () => {
         )
       })
     )
-  }, [darkModeTheme,data])
+  }, [darkModeTheme, data])
 
   const actionLinking = (index: number) => {
     const { android, ios }: any = person?.configvalue;

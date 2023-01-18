@@ -7,6 +7,7 @@ import { LocalStorageKeys, ROUTES } from "../constants";
 import { config } from "../config";
 import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
+import { Platform } from "react-native";
 
 GoogleSignin.configure({
     webClientId: config?.googlewebClientId,
@@ -19,6 +20,40 @@ GoogleSignin.configure({
  * @param navigation 
  */
 
+
+
+const onUserInfo = (userInfo: any) => {
+    let fullname = "";
+    let space: number | string;
+    let firstname: any = "";
+    let lastname = "";
+    let email = "";
+    let uid = "";
+    let videoUrl: any = '';
+    let image: string = ''
+    let watch_videos: any = []
+
+
+
+    if (Platform.OS === 'android') {
+        fullname = userInfo?.displayName == null ? userInfo[1] : userInfo?.displayName;
+        space = fullname.indexOf(" ");
+        firstname = fullname.substring(0, space);
+        lastname = fullname.substring(space + 1);
+        email = userInfo?.email
+        uid = userInfo?.uid
+        image = userInfo?.photoURL
+        console?.log("userLoginuserLogin", videoUrl, firstname, lastname, email, uid, image, watch_videos)
+        return { videoUrl, firstname, lastname, email, uid, image, watch_videos }
+    } else {
+        let splitEmail = userInfo?.email.split("@");
+        firstname = splitEmail[0]
+        email = userInfo?.email
+        uid = userInfo?.uid
+        image = userInfo?.photoURL
+        return { videoUrl, firstname, lastname, email, uid, image, watch_videos }
+    }
+}
 
 export const googleLogin = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     setLoading(true)
@@ -33,8 +68,8 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
             .signInWithCredential(credential)
             .then(async (res: any) => {
                 console.log("res", res)
-                let userDetail = res?.user?._user
-                console.log("userName", res,)
+                let userDetail = onUserInfo(res?.user?._user)
+
                 if (res?.additionalUserInfo?.isNewUser) {
                     userLogin(userDetail).then(() => {
                         console.log("loginUser", res)
@@ -74,15 +109,18 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
         await auth()
             .signInWithCredential(appleCredential)
             .then(async (res: any) => {
-                let userDetail = res?.user?._user
-                if (res?.additionalUserInfo?.isNewUser) {
 
+                let userDetail = onUserInfo(res?.user?._user)
+                if (res?.additionalUserInfo?.isNewUser) {
                     userLogin(userDetail).then(() => {
+                        console.log("loginUser", res)
+
                     }).catch((err) => {
                         console.log("loginUser", err);
                     })
                 }
                 await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
+
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
                 navigation.reset({
                     index: 0,
