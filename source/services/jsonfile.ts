@@ -30,7 +30,7 @@ export const EarnCoinData = [
     //     subTitle: 'Buy world coins of countries',
     //     onPress: ROUTES?.BUYCOIN
     // },
-     {
+    {
         svg: Invitefriends,
         title: 'Invite friends',
         subTitle: 'Earn 300 coin for a referral',
@@ -39,7 +39,7 @@ export const EarnCoinData = [
         svg: AdVideo,
         title: 'Watch Ads video',
         subTitle: 'Watch ads video and earn coins',
-        onPress: ROUTES?.SHOWADDS
+        onPress: "SHOWADDS"
     }
 
 ]
