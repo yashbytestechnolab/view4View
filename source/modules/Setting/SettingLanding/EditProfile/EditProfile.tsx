@@ -100,15 +100,18 @@ export const EditProfile = () => {
                 <View style={{ paddingTop: 24 }}>
                     <View style={style.nameWrapper} >
                         {onPhotoLoad ? <ActivityIndicator size={"small"} color={Colors.lightPink} /> :
-                            <Image source={{ uri: profilePic != null ? profilePic?.uri : `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />}
-                        <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { openGallery() }}
-                            style={{
-                                position: "relative", left: 20, bottom: 25,
-                                justifyContent: "center", alignItems: "center",
-                                height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13
-                            }}>
-                            <EditProfileIcon />
-                        </TouchableOpacity>
+                            <>
+                                <Image source={{ uri: profilePic != null ? profilePic?.uri : `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
+                                <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { openGallery() }}
+                                    style={{
+                                        position: "relative", left: 20, bottom: 25,
+                                        justifyContent: "center", alignItems: "center",
+                                        height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13
+                                    }}>
+                                    <EditProfileIcon />
+                                </TouchableOpacity>
+                            </>
+                        }
                     </View>
 
                     <View style={[style.scrollWrapper, darkBackGround(darkModeTheme)]}>
