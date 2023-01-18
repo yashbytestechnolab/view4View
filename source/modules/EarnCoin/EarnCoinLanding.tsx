@@ -1,11 +1,11 @@
-import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
-import React, { useContext } from 'react';
+import { View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
+import React, { useContext, useState } from 'react';
 import { Header } from '../../components';
 import { String } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
 import { colorBackGround, Colors, darkBackGround, F40012, F60016, lightBackGround } from '../../Theme';
 import { NextIcon } from '../../assets/icons';
-import { EarnCoinData } from '../../services/jsonfile';
+import { CellType, EarnCoinData } from '../../services/jsonfile';
 import { style } from './style';
 import { InputContextProvide } from '../../context/CommonContext';
 import { TestIds, RewardedAd, RewardedAdEventType } from '@react-native-firebase/admob';
@@ -14,16 +14,17 @@ import { type as keys } from '../../constants/types';
 
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
-  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
-
+  const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
+  const [loading, setLoading] = useState(false)
 
   const showRewardAd = () => {
     setLoading(true)
     const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
     rewardAd.onAdEvent((type, error) => {
+      console.log("type", type, error);
       if (type === RewardedAdEventType.LOADED) {
-        setLoading(false)
         rewardAd.show();
+        setLoading(false)
       }
 
       if (type === RewardedAdEventType.EARNED_REWARD) {
@@ -55,11 +56,11 @@ export const EarnCoinLanding = () => {
                     <item.svg />
                     <View style={{ marginLeft: 16 }}>
                       <Text style={[F60016?.textStyle, { color: Colors?.primaryRed },]}>{item?.title}</Text>
-                      <Text style={[F40012?.main, { color: Colors?.black, opacity: 0.6, }, colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
+                      <Text style={[F40012?.main, { color: Colors?.black, opacity: 0.6 }, colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
                     </View>
                   </View>
                   <View>
-                    <NextIcon />
+                    {(loading && item?.type == CellType.ads) ? <ActivityIndicator /> : <NextIcon />}
                   </View>
                 </TouchableOpacity>
               )
