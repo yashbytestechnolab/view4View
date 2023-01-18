@@ -9,7 +9,7 @@ import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { useNavigation } from '@react-navigation/native';
 import { emailPattern } from '../../../regex/Regex';
-import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../services';
+import { appleLoginIos, googleLogin, handleFirebaseError, } from '../../../services';
 import auth from '@react-native-firebase/auth';
 import { referralEarning, userLogin } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
@@ -36,13 +36,34 @@ export const CreateAccount = () => {
      * This Function trigger create user account in firebase request
     */
 
+    const onUserInfo = (userInfo: any) => {
+        console.log(userInfo)
+        let fullname = userInput?.fullName;
+        let space: number | string;
+        let firstname: any = "";
+        let lastname = "";
+        let email = "";
+        let uid = "";
+        let videoUrl: any = '';
+        let image: string = ''
+        let watch_videos: any = []
+        space = fullname.indexOf(" ");
+        firstname = fullname.substring(0, space);
+        lastname = fullname.substring(space + 1);
+        email = userInfo?.email
+        uid = userInfo?.uid
+        image = userInfo?.photoURL
+        return { videoUrl, firstname, lastname, email, uid, image, watch_videos }
+
+    }
     const handleCreateUserRequest = async () => {
         setLoading(true)
         auth().
             createUserWithEmailAndPassword(userInput?.email, userInput?.password).
             then(async (userResponse: any) => {
-                let userDetail = userResponse?.user?._user
-                await userLogin(userDetail, userInput?.fullName,).then(async (res) => {
+                let userDetail = onUserInfo(userResponse?.user?._user)
+
+                await userLogin(userDetail).then(async (res) => {
                     userInput?.referralCode?.length > 0 && (await referralEarning(userInput?.referralCode))
                     await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
                 }).catch((err) => console.log(">>>err", err))

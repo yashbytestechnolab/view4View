@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Header } from '../../components';
 import { String } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
@@ -36,7 +36,6 @@ export const EarnCoinLanding = () => {
       }
 
       if (type === "closed") {
-        // navigation.goBack()
       }
     });
     rewardAd.load();

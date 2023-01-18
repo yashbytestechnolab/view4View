@@ -22,7 +22,7 @@ GoogleSignin.configure({
 
 
 
-const onUserInfo = (userInfo: any) => {
+ const onUserInfo = (userInfo: any) => {
     let fullname = "";
     let space: number | string;
     let firstname: any = "";

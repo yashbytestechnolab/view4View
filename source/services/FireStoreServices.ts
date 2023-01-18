@@ -14,8 +14,7 @@ function getUniqID() {
   return randomIdGenrate
 }
 
-export const UserListTable = firestore()?.collection('UserList')?.doc(getUserID()?.toString())
-export const userTable = firestore()?.collection('users')?.doc(getUserID()?.toString())
+export const userTable = firestore()?.collection('users')
 export const userLogout = firestore()?.collection('users')
 export const userTableLogin = firestore()?.collection('users')
 export const WatchVideoList = firestore()?.collection("campaign")
@@ -51,12 +50,13 @@ export const userDeatil = async () => {
 }
 
 export const updateProfile = async (...payload: Array<object | string | undefined | any>) => {
-  console?.log("payload******", payload)
 
   const space = payload[0].indexOf(" ");
   const firstName = payload[0].substring(0, space);
   const lastname = payload[0].substring(space + 1);
-  await userTable?.update({
+  const userId = await getUserID()?.toString()
+
+  await userTable?.doc(userId).update({
     firstname: firstName,
     lastname: lastname,
     image: payload[1] != undefined && payload[1]
@@ -84,13 +84,17 @@ export const createCampaign = async (...payload: Array<object | undefined | stri
 }
 
 export const payCoin = async (payload: string) => {
-  return await userTable?.update({
+  const userId = await getUserID()?.toString()
+
+  return await userTable?.doc(userId)?. update({
     coin: parseInt(payload) - 10,
   })
 };
 export const EarnCoin = async (payload: string) => {
-  console?.log(payload)
-  return await userTable?.update({
+  const userId = await getUserID()?.toString()
+
+  console?.log("payloadpayload",payload,userId)
+  return await userTable?.doc(userId)?. update({
     coin: parseInt(payload) + 100,
   })
 };
@@ -122,13 +126,15 @@ export const campaignHistory = async () => {
 }
 
 export const addWatchUrl = async (...payload: Array<any | object>) => {
+  const userId = await getUserID()?.toString()
+
   if (payload[3]) {
-    return await userTable.update({
+    return await userTable?.doc(userId)?. update({
       coin: payload[2],
     })
   }
   else {
-    return await userTable.update({
+    return await userTable?.doc(userId)?. update({
       coin: payload[2],
       watch_videos: payload[0]?.length > 0 ? [...payload[0], payload[1]] : [payload[1]]
     })
