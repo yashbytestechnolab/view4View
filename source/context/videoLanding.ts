@@ -20,7 +20,7 @@ export const videoLanding = () => {
     }
 
     const intialState: input = {
-        videoLoading: false,
+        videoLoading: true,
         videoData: [],
         docData: {},
         videoId: [],
