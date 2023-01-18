@@ -43,7 +43,7 @@ export const CreateAccount = () => {
             then(async (userResponse: any) => {
                 let userDetail = userResponse?.user?._user
                 await userLogin(userDetail, userInput?.fullName,).then(async (res) => {
-                    await referralEarning("5GXA7GZZGI47XCX")
+                    await referralEarning(userInput?.referralCode)
                     await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
                 }).catch((err) => console.log(">>>err", err))
                 await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);
