@@ -4,7 +4,7 @@ import { style } from '../CreateAccount/style'
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { AuthHeader, ORtitle } from '../Authcomponents';
 import { colorBackGround, Colors, darkBackGround } from '../../../Theme';
-import { Google,Apple,Back } from '../../../assets/icons';
+import { Google, Apple, Back } from '../../../assets/icons';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../servic
 import auth from '@react-native-firebase/auth';
 import { referralEarning, userLogin } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
-import { GradientHeader,ButtonComponent,InputComponent,SocialMediaButton } from '../../../components';
+import { GradientHeader, ButtonComponent, InputComponent, SocialMediaButton } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const CreateAccount = () => {
@@ -43,7 +43,7 @@ export const CreateAccount = () => {
             then(async (userResponse: any) => {
                 let userDetail = userResponse?.user?._user
                 await userLogin(userDetail, userInput?.fullName,).then(async (res) => {
-                    await referralEarning(userInput?.referralCode)
+                    userInput?.referralCode?.length > 0 && (await referralEarning(userInput?.referralCode))
                     await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
                 }).catch((err) => console.log(">>>err", err))
                 await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);

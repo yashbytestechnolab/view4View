@@ -172,7 +172,11 @@ export const updateUserWallet = async (payload: number) => {
 
 
 export const referralEarning = async (params: string) => {
-  let foo: any = (await userTableLogin.where("referral_code", "==", params).get()).docs
-  const { coin, userId } = foo?.[0]?._data
-  await userTableLogin.doc(userId).update({ coin: coin + 300 })
+  await userTableLogin.where("referral_code", "==", params).get().
+    then(async (foo: any) => {
+      if (foo?._docs?.length > 0) {
+        let { coin, userId } =foo?._docs[0]?._data
+        await userTableLogin.doc(userId).update({ coin: coin + 300 })
+      }
+    }).catch((err: any) => console.log("error", err))
 }
