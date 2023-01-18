@@ -1,5 +1,7 @@
 import { showMessage } from "react-native-flash-message";
+import { colors } from "react-native-swiper-flatlist/src/themes";
 import { String } from "../constants";
+import { Colors } from "../Theme";
 interface alertMessage {
     forgotPwdSuccessMsg: string,
     success: string,
@@ -10,11 +12,12 @@ interface alertMessage {
     emailAlredyInUser: string,
     validEmail: string,
     Something: string
+    refCode:string
 }
 
 export const handleFirebaseError = (type: string) => {
 
-    const { passError, tooManyRequest, danger, userNotFound, emailAlredyInUser, forgotPwdSuccessMsg, success, validEmail, Something }: alertMessage = String.flashMessage
+    const { passError, tooManyRequest, danger, userNotFound, emailAlredyInUser, forgotPwdSuccessMsg, success, validEmail, Something,refCode }: alertMessage = String.flashMessage
     switch (type) {
         case "auth/wrong-password": return AlertMessage(passError, danger)
         case "auth/too-many-requests": return AlertMessage(tooManyRequest, danger)
@@ -23,12 +26,14 @@ export const handleFirebaseError = (type: string) => {
         case "ForgotSucess": return AlertMessage(forgotPwdSuccessMsg, success)
         case "WrongEmail": return AlertMessage(validEmail, danger)
         case "coin not update": return AlertMessage(Something, danger)
+        case "refCode": return AlertMessage(refCode, success)
         default: return type
     }
 }
 
 const AlertMessage = (...params: Array<string>) => {
     showMessage({
+        backgroundColor:params[1]=="danger"&&Colors?.black,
         message: params[0],
         type: params[1],
     });

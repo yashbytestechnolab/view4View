@@ -22,7 +22,6 @@ export const bytesVideoList = firestore()?.collection("bytes_video_list")
 export const historyCampaign = firestore()?.collection("campaign_history")
 
 export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
-  console?.log("payload", payload)
   let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
   const space = fullname.indexOf(" ");
   const firstName = fullname.substring(0, space);

@@ -91,7 +91,9 @@ export const String: any = {
         viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app.",
         oldPassword:'Old password',
         newPassword:'New password',
-        conformPassword:'Confirm password'
+        conformPassword:'Confirm password',
+        ReferralCode :'Referral code ',
+        ReferralCodeEnter :'Enter referral code  '
     
     },
     flashMessage: {
@@ -103,7 +105,8 @@ export const String: any = {
         userNotFound: "User not found",
         emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
-        Something:"Something went wrong"
+        Something:"Something went wrong",
+        refCode:'Copied text !'
     },
     inviteFrd: {
         headerTitle: 'Invite friends',

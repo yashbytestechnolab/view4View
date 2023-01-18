@@ -7,8 +7,6 @@ import { LocalStorageKeys, ROUTES } from "../constants";
 import { config } from "../config";
 import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
-import { useContext } from "react";
-import { InputContextProvide } from "../context/CommonContext";
 
 GoogleSignin.configure({
     webClientId: config?.googlewebClientId,
@@ -87,7 +85,6 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
                     })
                 }
                 await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
-
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
                 navigation.reset({
                     index: 0,

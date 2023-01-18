@@ -1,15 +1,10 @@
 import { View, SafeAreaView, TouchableOpacity, StatusBar, Platform } from 'react-native';
 import React, { useContext } from 'react'
 import { style } from '../CreateAccount/style'
-import Back from '../../../assets/icons/Back';
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { AuthHeader, ORtitle } from '../Authcomponents';
-import { InputComponent } from '../../../components/InputComponent';
 import { colorBackGround, Colors, darkBackGround } from '../../../Theme';
-import { SocialMediaButton } from '../../../components/SocialMediaButton';
-import { Google } from '../../../assets/icons/Google';
-import { ButtonComponent } from '../../../components/ButtonComponent';
-import { Apple } from '../../../assets/icons/Apple';
+import { Google,Apple,Back } from '../../../assets/icons';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { useNavigation } from '@react-navigation/native';
@@ -18,7 +13,7 @@ import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../servic
 import auth from '@react-native-firebase/auth';
 import { userLogin } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
-import { GradientHeader } from '../../../components';
+import { GradientHeader,ButtonComponent,InputComponent,SocialMediaButton } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const CreateAccount = () => {
@@ -83,7 +78,7 @@ export const CreateAccount = () => {
         <>
             <SafeAreaView style={style.safeArea} />
             <StatusBar barStyle={String.StatusBar.lightContent} backgroundColor={Colors.gradient1} />
-            <View style={[style.main,darkBackGround(darkModeTheme)]}>
+            <View style={[style.main, darkBackGround(darkModeTheme)]}>
                 <TouchableOpacity
                     onPress={() => {
                         navigation.goBack(); dispatch({ type: type.EMPTY_STATE });
@@ -95,14 +90,13 @@ export const CreateAccount = () => {
                 <KeyboardAwareScrollView
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps={String.commonString.handled}
-                    style={[style.scroll,darkBackGround(darkModeTheme)]}
+                    style={[style.scroll, darkBackGround(darkModeTheme)]}
                     scrollEnabled={true}
-                    contentContainerStyle={[style.scrollContain,darkBackGround(darkModeTheme)]}>
+                    contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
                     <GradientHeader />
-                    {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
                     <View style={style.wrapperView} >
-                        <View style={[style.borderRadius, { backgroundColor: Colors.white, flex: 1 },darkBackGround(darkModeTheme)]}>
-                            <View style={[style.innerContainer,darkBackGround(darkModeTheme)]} >
+                        <View style={[style.borderRadius, { backgroundColor: Colors.white, flex: 1 }, darkBackGround(darkModeTheme)]}>
+                            <View style={[style.innerContainer, darkBackGround(darkModeTheme)]} >
                                 <AuthHeader
                                     mainTitle={String.commonString.Createanaccount}
                                     miniTitle={String.commonString.Donthaveanaccount}
@@ -165,6 +159,16 @@ export const CreateAccount = () => {
                                     isSecureIcon={true}
                                     errorMessage={userInputError?.confirmPasswordError}
                                 />
+                                <InputComponent
+                                    placeholder={String.commonString.ReferralCodeEnter}
+                                    inputTitle={String.commonString.ReferralCode}
+                                    value={userInput?.referralCode}
+                                    onChangeText={(value) => {
+                                        dispatch({ type: type.REFERRALCODE, payload: value });
+                                    }}
+
+                                />
+
 
                                 <View style={style.signIn}>
                                     <ButtonComponent loading={loading}
@@ -178,7 +182,7 @@ export const CreateAccount = () => {
 
                                         <SocialMediaButton
                                             colorBackGround={colorBackGround(darkModeTheme)}
-                                            wrapperStyle={{  width: '92%', marginLeft:16 }}
+                                            wrapperStyle={{ width: '92%', marginLeft: 16 }}
                                             socialMediaIcon={<Google />}
                                             buttonTitle={String.commonString.signInWithGoogle}
                                             onPress={() => { googleLogin(navigation, setLoading) }}
@@ -192,7 +196,7 @@ export const CreateAccount = () => {
                                             />
                                             <SocialMediaButton
                                                 colorBackGround={colorBackGround(darkModeTheme)}
-                                                socialMediaIcon={<Apple  gery={darkModeTheme}/>}
+                                                socialMediaIcon={<Apple gery={darkModeTheme} />}
                                                 buttonTitle={String.commonString.Apple}
                                                 onPress={() => appleLoginIos(navigation, setLoading)}
                                             />
@@ -201,7 +205,6 @@ export const CreateAccount = () => {
                             </View>
                         </View>
                     </View>
-                    {/* </LinearGradient> */}
                 </KeyboardAwareScrollView>
             </View>
         </>
