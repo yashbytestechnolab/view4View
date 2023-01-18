@@ -163,6 +163,11 @@ export const F60016 = StyleSheet.create({
     campaign: {
         color: Colors.black,
         fontFamily: Fonts?.InterRegular
+    },
+    bold:{
+        fontFamily:Fonts?.InterBold,
+        lineHeight:20
+
     }
 })
 

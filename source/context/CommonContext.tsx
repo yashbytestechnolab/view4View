@@ -13,6 +13,7 @@ interface input {
     confirmPasswordShow: boolean
     oldPassword?: number | string | any,
     newPassword?: number | string | any,
+    referralCode ?: number | string | any,
     oldPassword_show?: boolean,
     newPassword_show?: boolean,
 }
@@ -24,6 +25,7 @@ const intialState: input = {
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
+    referralCode:"",
     showPassword: true,
     confirmPasswordShow: true,
     oldPassword_show: true,
@@ -39,6 +41,7 @@ const reducer: Function | any = (state: any, action: any) => {
         case type.SHOW_PASSWORD: return { ...state, showPassword: action?.payload }
         case type.OLDPASSWORD: return { ...state, oldPassword: action.payload }
         case type.NEWPASSWORD: return { ...state, newPassword: action.payload }
+        case type.REFERRALCODE: return { ...state, referralCode: action.payload }
         case type.OLD_PASSWORD_SHOW: return { ...state, oldPassword_show: action?.payload }
         case type.NEWPASSWORD_SHOW: return { ...state, newPassword_show: action?.payload }
         case type.CONFIRM_PASSWORD_SHOW: return { ...state, confirmPasswordShow: action?.payload }

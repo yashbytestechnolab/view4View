@@ -116,7 +116,7 @@ export const SettingLanding = () => {
           scrollEnabled={true} contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}>
           <View style={[{ flex: 1 }, darkBackGround(darkModeTheme)]}>
             {
-              infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
+              infoLoading ? <ActivityIndicator size={"small"} color={Colors.lightPink} /> :
                 <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => navigation?.navigate(ROUTES?.EDITPROFILE)}>
                   <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
                   <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>

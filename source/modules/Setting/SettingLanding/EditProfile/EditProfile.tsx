@@ -95,7 +95,7 @@ export const EditProfile = () => {
             <SafeAreaView style={style.safeArea} />
             <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
-                {infoLoading ? <ActivityIndicator color={Colors.white} size={'large'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>}
+                {infoLoading ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>}
 
                 <View style={{ paddingTop: 24 }}>
                     <View style={style.nameWrapper} >

@@ -1,15 +1,10 @@
 import { View, SafeAreaView, TouchableOpacity, StatusBar, Platform } from 'react-native';
 import React, { useContext } from 'react'
 import { style } from '../CreateAccount/style'
-import Back from '../../../assets/icons/Back';
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { AuthHeader, ORtitle } from '../Authcomponents';
-import { InputComponent } from '../../../components/InputComponent';
 import { colorBackGround, Colors, darkBackGround } from '../../../Theme';
-import { SocialMediaButton } from '../../../components/SocialMediaButton';
-import { Google } from '../../../assets/icons/Google';
-import { ButtonComponent } from '../../../components/ButtonComponent';
-import { Apple } from '../../../assets/icons/Apple';
+import { Google,Apple,Back } from '../../../assets/icons';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { useNavigation } from '@react-navigation/native';
@@ -18,7 +13,7 @@ import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../servic
 import auth from '@react-native-firebase/auth';
 import { referralEarning, userLogin } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
-import { GradientHeader } from '../../../components';
+import { GradientHeader,ButtonComponent,InputComponent,SocialMediaButton } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const CreateAccount = () => {
@@ -96,7 +91,6 @@ export const CreateAccount = () => {
                     scrollEnabled={true}
                     contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
                     <GradientHeader />
-                    {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
                     <View style={style.wrapperView} >
                         <View style={[style.borderRadius, { backgroundColor: Colors.white, flex: 1 }, darkBackGround(darkModeTheme)]}>
                             <View style={[style.innerContainer, darkBackGround(darkModeTheme)]} >
@@ -162,6 +156,16 @@ export const CreateAccount = () => {
                                     isSecureIcon={true}
                                     errorMessage={userInputError?.confirmPasswordError}
                                 />
+                                <InputComponent
+                                    placeholder={String.commonString.ReferralCodeEnter}
+                                    inputTitle={String.commonString.ReferralCode}
+                                    value={userInput?.referralCode}
+                                    onChangeText={(value) => {
+                                        dispatch({ type: type.REFERRALCODE, payload: value });
+                                    }}
+
+                                />
+
 
                                 <View style={style.signIn}>
                                     <ButtonComponent
@@ -199,7 +203,6 @@ export const CreateAccount = () => {
                             </View>
                         </View>
                     </View>
-                    {/* </LinearGradient> */}
                 </KeyboardAwareScrollView>
             </View>
         </>
