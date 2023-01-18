@@ -29,16 +29,23 @@ const GiftModel = (props: model) => {
                     {fromAdds ? "You Won" : ""}
                 </Text>
                 <Text style={[styles.points, F60032.textStyle]}>
-                    {fromAdds ? " 100 points!" : "Not Enough Coins"}
+                    {fromAdds ? " 100 points!" : "Out of coins.."}
                 </Text>
                 <Text style={[styles.description, F40014.main, colorBackGround(darkModeTheme)]}>
-                    {fromAdds ? "Hurry, you are rewarded" : "Oops, you can't create campaign at this moment"}
+                    {fromAdds ? "Hurry, you are rewarded" : "Sorry, You don't have enough coins to create the campaign. Would you like to earn more coins?"}
                 </Text>
-                <ButtonComponent
-                    wrapperStyle={styles.button}
-                    buttonTitle={fromAdds ? "Close" : "Earn Coins"}
-                    onPrees={() => { onPress() }}
-                />
+                <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                    <ButtonComponent
+                        wrapperStyle={styles.button}
+                        buttonTitle={fromAdds ? "Close" : "Earn Coins Now"}
+                        onPrees={() => { onPress() }}
+                    />
+                    <ButtonComponent
+                        wrapperStyle={styles.button}
+                        buttonTitle={fromAdds ? "Close" : "No"}
+                        onPrees={() => setIsVisible(false)}
+                    />
+                </View>
             </View>
         </Modal>
     )
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     won: { marginTop: 24 },
-    button: { width: "80%", marginTop: 33 },
+    button: { width: "40%", marginTop: 33 },
     points: { marginTop: 12 },
     description: { marginTop: 12, textAlign: "center", opacity: 0.6 }
 })

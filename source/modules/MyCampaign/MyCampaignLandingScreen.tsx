@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, Dimensions, } from 'react-native';
+import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, Dimensions, RefreshControl, Alert, } from 'react-native';
 import { Header, Loader } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { styles } from './style';
@@ -152,11 +152,17 @@ export const MyCampaignLandingScreen = () => {
               style={[styles.flatList, darkBackGround(darkModeTheme)]}
               data={getCampaignData}
               stickyHeaderIndices={stickeyIndex}
-              refreshing={loading}
-              onRefresh={() => getVideoUrl("loading")}
+              refreshControl={
+                <RefreshControl
+                  refreshing={loading}
+                  onRefresh={() => getVideoUrl("loading")}
+                  colors={[Colors.gray]} // for android
+                  tintColor={Colors.gray} // for ios
+                />
+              }
               renderItem={renderCampaignList}
               ListEmptyComponent={handleEmptyData}
-              contentContainerStyle={{ flexGrow: 1, paddingBottom: 10, }}
+              contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
             />
             <TouchableOpacity
               onPress={() => navigation.navigate(ROUTES.ADDVIDEO)}

@@ -17,13 +17,13 @@ import GiftModel from '../../../components/GiftModel';
 export const CreateCampaign = () => {
 
   const navigation: any = useNavigation();
-  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme,setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
   const [isVisible, setIsVisible] = useState(false)
   const [expectedValue, setExpectedValue] = useState<YT>({ views: 10, timeSecond: 30 })
-  const [totalCost, setTotalCost] = useState(0)
+  const [totalCost, setTotalCost] = useState(300)
   const { views, timeSecond } = expectedValue
   const { commonString, headerTitle } = String
   const [configValue, setConfigValue] = useState<campaign>({})
@@ -72,12 +72,14 @@ export const CreateCampaign = () => {
    */
   const handleAddCampaign = async () => {
     let duration = await youTubeRef?.current?.getDuration()
+    console.log("duration", duration);
+
     getYoutubeMeta(splitUrl).then((videoTitle: any) => {
       if (!(getBalance >= totalCost)) {
         setIsVisible(true)
-      } 
-      else if(duration>=timeSecond){
-       Alert.alert("Please")   
+      }
+      else if (duration <= timeSecond) {
+        Alert.alert("Please")
       }
       else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
         setLoading(true)

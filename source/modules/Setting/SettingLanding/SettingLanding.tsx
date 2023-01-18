@@ -61,9 +61,7 @@ export const SettingLanding = () => {
 
   const settingProfile = useMemo(() => {
     return (
-      settingProfileArr?.map((item: any, index: number) => {
-        console.log("item",item?.isShowChangePass());
-        
+      settingProfileArr?.map((item: any, index: number) => {        
         return (
           <>
             {

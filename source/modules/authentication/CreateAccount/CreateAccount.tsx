@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { emailPattern } from '../../../regex/Regex';
 import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../services';
 import auth from '@react-native-firebase/auth';
-import { userLogin } from '../../../services/FireStoreServices';
+import { referralEarning, userLogin } from '../../../services/FireStoreServices';
 import * as LocalStorage from '../../../services/LocalStorage';
 import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -39,21 +39,18 @@ export const CreateAccount = () => {
 
     /**
      * This Function trigger create user account in firebase request
-     */
+    */
 
-    const handleCreateUserRequest = () => {
+    const handleCreateUserRequest = async () => {
         setLoading(true)
         auth().
             createUserWithEmailAndPassword(userInput?.email, userInput?.password).
             then(async (userResponse: any) => {
-
                 let userDetail = userResponse?.user?._user
-                await userLogin(userDetail, userInput?.fullName).then(async (res) => {
+                await userLogin(userDetail, userInput?.fullName,).then(async (res) => {
+                    await referralEarning("5GXA7GZZGI47XCX")
                     await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
-
-                }).catch((err) => {
-                    console.log(">>>err", err);
-                })
+                }).catch((err) => console.log(">>>err", err))
                 await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);
                 await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
                 navigation.reset({

@@ -32,7 +32,7 @@ export const ButtonComponent = (props: buttonProps) => {
                             <EarnCoin />
                         </View>
                     }
-                    < Text style={[F60016.textStyle,]} >
+                    < Text style={[F60016.textStyle,]} numberOfLines={1} >
                         {buttonTitle}
                     </Text></>
             }

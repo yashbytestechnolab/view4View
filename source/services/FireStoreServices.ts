@@ -1,6 +1,7 @@
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { referral_coupon_genrator } from './refeeral_coupon_genrate';
 
 export function getUserID() {
   const userId = auth()?.currentUser?.uid;
@@ -22,7 +23,7 @@ export const bytesVideoList = firestore()?.collection("bytes_video_list")
 export const historyCampaign = firestore()?.collection("campaign_history")
 
 export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
-  console?.log("payload", payload)
+  let referralCode = referral_coupon_genrator("ASECFD14275GIZX")
   let fullname = payload[0]?.displayName == null ? payload[1] : payload[0]?.displayName;
   const space = fullname.indexOf(" ");
   const firstName = fullname.substring(0, space);
@@ -37,6 +38,7 @@ export const userLogin = async (...payload: Array<object | string | undefined | 
     videoUrl: '',
     image: payload[0]?.photoURL,
     watch_videos: [],
+    referral_code: referralCode
   })
 }
 
@@ -59,7 +61,7 @@ export const updateProfile = async (...payload: Array<object | string | undefine
     lastname: lastname,
     image: payload[1] != undefined && payload[1]
   })
-  return { firstName,lastname }
+  return { firstName, lastname }
 }
 export const createCampaign = async (...payload: Array<object | undefined | string | number>) => {
   let uniqID = getUniqID();
@@ -89,7 +91,7 @@ export const payCoin = async (payload: string) => {
 export const EarnCoin = async (payload: string) => {
   console?.log(payload)
   return await userTable?.update({
-    coin: parseInt(payload) +100,
+    coin: parseInt(payload) + 100,
   })
 };
 
@@ -153,9 +155,9 @@ export const getNewUpdatedViewCount = async (...params: Array<string | [] | unde
       })
   }
   else {
-    await WatchVideoList.doc(params[0]).update({ expected_view: params[4] })
+    const history = { ...params[4], consumed_view: params[3], remaining_view: 0 }
     await WatchVideoList.doc(params[0]).delete()
-    await deleteRemainingVideo(params[3])
+    await deleteRemainingVideo(history)
   }
 
 }
@@ -169,3 +171,8 @@ export const updateUserWallet = async (payload: number) => {
 }
 
 
+export const referralEarning = async (params: string) => {
+  let foo: any = (await userTableLogin.where("referral_code", "==", params).get()).docs
+  const { coin, userId } = foo?.[0]?._data
+  await userTableLogin.doc(userId).update({ coin: coin + 300 })
+}
