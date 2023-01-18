@@ -2,6 +2,7 @@
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { referral_coupon_genrator } from './refeeral_coupon_genrate';
+import { Platform } from 'react-native';
 
 export function getUserID() {
   const userId = auth()?.currentUser?.uid;
@@ -29,11 +30,13 @@ export const userLogin = async (...payload: Array<object | string | undefined | 
   const firstName = fullname.substring(0, space);
   const lastname = fullname.substring(space + 1);
   const getCurrentUserID = getUserID()
+  const email = payload[0]?.email
+  const iosFirstName = email.split("@");
   return await userTableLogin.doc(getCurrentUserID).set({
     coin: 0,
     email: payload[0]?.email,
     userId: payload[0]?.uid,
-    firstname: firstName?.length == 0 ? lastname : firstName,
+    firstname: Platform?.OS == 'ios' ? iosFirstName[0] : firstName?.length == 0 ? lastname : firstName,
     lastname: firstName?.length == 0 ? "" : lastname,
     videoUrl: '',
     image: payload[0]?.photoURL,
@@ -175,7 +178,7 @@ export const referralEarning = async (params: string) => {
   await userTableLogin.where("referral_code", "==", params).get().
     then(async (foo: any) => {
       if (foo?._docs?.length > 0) {
-        let { coin, userId } =foo?._docs[0]?._data
+        let { coin, userId } = foo?._docs[0]?._data
         await userTableLogin.doc(userId).update({ coin: coin + 300 })
       }
     }).catch((err: any) => console.log("error", err))
