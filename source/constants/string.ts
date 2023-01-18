@@ -106,7 +106,8 @@ export const String: any = {
         emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
         Something:"Something went wrong",
-        refCode:'Copied text !'
+        refCode:'Copied text !',
+        Default:"default"
     },
     inviteFrd: {
         headerTitle: 'Invite friends',

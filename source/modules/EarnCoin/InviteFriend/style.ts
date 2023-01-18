@@ -19,7 +19,17 @@ export const style = StyleSheet?.create({
     subText: {
         textAlign: 'center', paddingBottom: 40
     },
-    title: { color: Colors?.primaryRed, paddingBottom: 16 }
+    title: { color: Colors?.primaryRed, paddingBottom: 16 },
+    referralCodeWrapper:{ paddingHorizontal: 8,
+        height: 50, marginTop: 25,
+        marginHorizontal: 16,
+        backgroundColor: Colors?.shadowPink,
+        borderWidth: 1,
+        justifyContent: 'center',
+        borderStyle: 'dashed',
+        alignItems: 'center',
+        borderColor: 'red',},
+        refText:{ textAlign: 'center', color: Colors?.gradient1,}
 
 
 })

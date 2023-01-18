@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, ScrollView, Platform, Linking, StatusBar, TouchableOpacity } from 'react-native'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import remoteConfig from '@react-native-firebase/remote-config';
 import Share from 'react-native-share';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../../Theme'
@@ -10,14 +10,19 @@ import { style } from './style'
 import { InputContextProvide } from '../../../context/CommonContext';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { handleFirebaseError } from '../../../services/AlertMessage';
+import { userDeatil } from '../../../services';
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
     const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
-    const d = "8140835436"
+    const [referralCode, setReferralCode] = useState("")
     const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
     const data = JSON?.parse(getConfigValue)
+    useEffect(() => {
+        userDeatil().then((res) => { console.log("resss", res), setReferralCode(res?.referral_code) }).catch((err) => { console?.log("err", err) })
+    }, [])
     const ReferEarn = `View4view is very usefull app and you increase your view and earn coins.\n\nDownload now:  \n\niOS App: ${data?.Upadte?.ios} \n\nAndroid App: ${data?.Upadte?.android}
-    Referral code: ${d}`;
+    \n\nReferral code: ${referralCode}`;
+
     const option = {
         title: 'Title',
         message: ReferEarn,
@@ -29,13 +34,17 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                 Linking.openURL(data?.Upadte?.android) : Linking.openURL(data?.Upadte?.ios) :
             Share.open(option)
                 .then((res: any) => {
+                    return res
                 })
                 .catch((err: any) => {
+                    return err
                 });
     }
     const copyToClipboard = () => {
-        Clipboard.setString(d?.toString());
+        Clipboard.setString(referralCode?.toString());
     };
+
+
 
     return (
         <>
@@ -53,26 +62,16 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                 <View>
                     <InviteFrdSvg />
                 </View>
-                <TouchableOpacity
+                {!notifyUpdate && <TouchableOpacity
                     activeOpacity={1}
-                    style={{
-                        paddingHorizontal: 8,
-                        height: 50, marginTop: 25,
-                        marginHorizontal: 16,
-                        backgroundColor: Colors?.shadowPink,
-                        borderWidth: 1,
-                        justifyContent: 'center',
-                        borderStyle: 'dashed',
-                        alignItems: 'center',
-                        borderColor: 'red',
-                    }} onPress={() => {
+                    style={style?.referralCodeWrapper} onPress={() => {
                         copyToClipboard()
                         handleFirebaseError("refCode")
 
                     }}>
-                    <Text style={[F60024?.textStyle, { textAlign: 'center', color: Colors?.gray, }]} numberOfLines={1}>8140835436</Text>
+                    <Text style={[F60024?.textStyle, style?.refText]} numberOfLines={1}>{referralCode}</Text>
 
-                </TouchableOpacity>
+                </TouchableOpacity>}
                 <ButtonComponent wrapperStyle={style.button} buttonTitle={notifyUpdate ? "Update" : String?.inviteFrd?.button} onPrees={() => {
                     handleButton(notifyUpdate)
 
