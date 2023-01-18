@@ -22,7 +22,7 @@ export const AddVideo = () => {
                     (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
                 }),
                 !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, })) :
-                    (Alert.alert("current campaign are running"))
+                    (Alert.alert("Campaign is already running for this video. Please wait until campaign end."))
             )
     }
 

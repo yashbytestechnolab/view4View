@@ -79,7 +79,7 @@ export const CreateCampaign = () => {
         setIsVisible(true)
       }
       else if (duration <= timeSecond) {
-        Alert.alert("Please")
+        Alert.alert("Selected duration is greater than video duration. Please Select proper video duration.")
       }
       else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
         setLoading(true)
