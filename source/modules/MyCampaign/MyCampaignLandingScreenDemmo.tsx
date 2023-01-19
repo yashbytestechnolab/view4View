@@ -5,15 +5,11 @@ import { Header } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { GetVideoCampaign } from '../../services/FireStoreServices';
-import { Campaign, EarnCoins, Home, PlusIcon,  Setting,  Star, TabEarnCoin } from '../../assets/icons';
-import { EyeIcon } from '../../assets/icons/EyeIcon';
-import EarnCoin from '../../assets/icons/EarnCoin';
-
 
 export const MyCampaignLandingScreenDemo = () => {
   const [showUrl, setShowUrl] = useState<boolean>(false);
   const [getUrl, setGetUrl] = useState<string>();
-  const [expectedView, setExpectedView]= useState<string>('');
+  const [expectedView, setExpectedView] = useState<string>('');
   const navigation = useNavigation<any>();
 
   const AddVideoUrl = () => {
@@ -42,7 +38,7 @@ export const MyCampaignLandingScreenDemo = () => {
 
   const getVideoUrl = async () => {
     GetVideoCampaign().then((res: any) => {
-      const getVideoUrl:any = []
+      const getVideoUrl: any = []
       res._docs?.filter((res: any) => {
         if (res?._data?.remiderView > 0) {
           getVideoUrl.push(res?._data)
@@ -86,7 +82,7 @@ export const MyCampaignLandingScreenDemo = () => {
               )
             })
           }
-        
+
           <TouchableOpacity
             style={styles.iconWrapper}
             activeOpacity={1}

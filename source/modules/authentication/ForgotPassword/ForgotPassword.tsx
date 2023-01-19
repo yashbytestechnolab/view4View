@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { View, Text, SafeAreaView, StatusBar, Platform } from 'react-native'
 import { Apple, Google, } from '../../../assets/icons'
-import { Colors, F40014, F60024 } from '../../../Theme'
+import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../../Theme'
 import { emailPattern, ROUTES, String } from '../../../constants'
 import { InputContextProvide } from '../../../context/CommonContext'
 import { type } from '../../../constants/types'
@@ -18,7 +18,7 @@ export const ForgotPassword = () => {
   /**
   * Context to give userinput data and error message
   */
-  const { storeCreator: { userInput, dispatch } }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme, userInput, dispatch, setLoading } }: any = useContext(InputContextProvide)
   const navigation = useNavigation()
 
   /**
@@ -46,68 +46,69 @@ export const ForgotPassword = () => {
 
       <SafeAreaView style={style.backGroundColor} />
       <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
-
       <KeyboardAwareScrollView
         alwaysBounceVertical={false}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={String.commonString.handled}
-        style={style.scroll}
+        style={[style.scroll, darkBackGround(darkModeTheme)]}
         scrollEnabled={true}
-        contentContainerStyle={style.scrollContain}>
+        contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
 
         <BackButton />
         <GradientHeader />
         {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
 
-          <View style={style.wrapperView} >
-            <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }]}>
-              <View style={style.containerWrapper} >
-                <View style={style.welcomeHeader}>
-                  <Text style={F60024.textStyle}>
-                    {String.commonString?.ForgotPassword}
-                  </Text>
-                </View>
-                <InputComponent
-                  inputTitle={String.commonString.email}
-                  viewStyle={style.marginTop}
-                  value={userInput?.email}
-                  keyboardType={String?.keyboardType?.email}
-                  onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }) }}
-                  placeholder={String.commonString.Enteryouremail}
-                />
-                <View style={style.signIn}>
-                  <ButtonComponent wrapperStyle={style.wrapperStyle} onPrees={() => { handlePasswordReset() }} buttonTitle={String.commonString?.submit} />
-                </View>
-                <View style={style.backToLoginTextWrapper}>
-                  <Text style={F40014.main}>{String.commonString?.backTo}</Text>
-                  <Text onPress={() => { navigation.navigate(ROUTES?.LOGIN) }} style={[F40014.main, F40014?.color]}>{String.commonString?.SignIn}</Text>
-                </View>
-                <ORtitle />
-                {
-                  Platform?.OS == 'android' ?
-
-                    <SocialMediaButton
-                      wrapperStyle={{ width: '90%', }}
-                      socialMediaIcon={<Google />}
-                      buttonTitle={String.commonString.signInWithGoogle}
-                      onPress={() => { googleLogin(navigation) }}
-                    /> :
-                    <View style={style.socialMedia}>
-                      <SocialMediaButton
-                        socialMediaIcon={<Google />}
-                        buttonTitle={String.commonString.Google}
-                        onPress={() => { googleLogin(navigation) }}
-                      />
-                      <SocialMediaButton
-                        socialMediaIcon={<Apple />}
-                        buttonTitle={String.commonString.Apple}
-                        onPress={() => appleLoginIos(navigation)}
-                      />
-                    </View>
-                }
+        <View style={style.wrapperView} >
+          <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }, darkBackGround(darkModeTheme)]}>
+            <View style={[style.containerWrapper, darkBackGround(darkModeTheme)]} >
+              <View style={[style.welcomeHeader]}>
+                <Text style={[F60024.textStyle, colorBackGround(darkModeTheme)]}>
+                  {String.commonString?.ForgotPassword}
+                </Text>
               </View>
+              <InputComponent
+                inputTitle={String.commonString.email}
+                viewStyle={style.marginTop}
+                value={userInput?.email}
+                keyboardType={String?.keyboardType?.email}
+                onChangeText={(value) => { dispatch({ type: type.EMAIL, payload: value }) }}
+                placeholder={String.commonString.Enteryouremail}
+              />
+              <View style={style.signIn}>
+                <ButtonComponent wrapperStyle={style.wrapperStyle} onPrees={() => { handlePasswordReset() }} buttonTitle={String.commonString?.submit} />
+              </View>
+              <View style={style.backToLoginTextWrapper}>
+                <Text style={[F40014.main, colorBackGround(darkModeTheme)]}>{String.commonString?.backTo}</Text>
+                <Text onPress={() => { navigation.navigate(ROUTES?.LOGIN) }} style={[F40014.main, F40014?.color]}>{String.commonString?.SignIn}</Text>
+              </View>
+              <ORtitle />
+              {
+                Platform?.OS == 'android' ?
+                  <SocialMediaButton
+                    colorBackGround={colorBackGround(darkModeTheme)}
+                    wrapperStyle={{ width: '92%', marginLeft:16}}
+                    socialMediaIcon={<Google />}
+                    buttonTitle={String.commonString.signInWithGoogle}
+                    onPress={() => { googleLogin(navigation, setLoading) }}
+                  /> :
+                  <View style={style.socialMedia}>
+                    <SocialMediaButton
+                      colorBackGround={colorBackGround(darkModeTheme)}
+                      socialMediaIcon={<Google />}
+                      buttonTitle={String.commonString.Google}
+                      onPress={() => { googleLogin(navigation, setLoading) }}
+                    />
+                    <SocialMediaButton
+                      colorBackGround={colorBackGround(darkModeTheme)}
+                      socialMediaIcon={<Apple gery={darkModeTheme} />}
+                      buttonTitle={String.commonString.Apple}
+                      onPress={() => appleLoginIos(navigation, setLoading)}
+                    />
+                  </View>
+              }
             </View>
           </View>
+        </View>
         {/* </LinearGradient> */}
       </KeyboardAwareScrollView>
     </>

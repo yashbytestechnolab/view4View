@@ -1,16 +1,18 @@
 import { View, Text, TouchableOpacity, SafeAreaView, StatusBar, Dimensions } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-import { Colors } from '../../../Theme';
+import { colorBackGround, Colors, darkBackGround } from '../../../Theme';
 import { ROUTES, String } from '../../../constants';
 import { useNavigation } from '@react-navigation/native';
 import { IntroductionData } from '../../../services/jsonfile';
 import { styles } from './style';
 import { ButtonComponent } from '../../../components';
+import { InputContextProvide } from '../../../context/CommonContext';
 
 const { height } = Dimensions.get('window');
 
 export const Introduction = () => {
+    const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
     const pageRef: React.MutableRefObject<undefined> = useRef();
     const navigation: any = useNavigation();
@@ -45,15 +47,15 @@ export const Introduction = () => {
 
                 <item.svg height={height - 480} />
                 <View style={styles.alignItems}>
-                    <Text style={styles.title}>{item?.title}</Text>
-                    <Text style={styles.subTitle}>{item?.subTitle}</Text>
+                    <Text style={[styles.title,colorBackGround(darkModeTheme)]}>{item?.title}</Text>
+                    <Text style={[styles.subTitle,colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
                 </View>
 
             </View>
         )
     }
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container,darkBackGround(darkModeTheme)]}>
             <StatusBar barStyle={String?.StatusBar?.darkContent} backgroundColor={Colors?.white} />
             <>
                 <SwiperFlatList
@@ -73,7 +75,7 @@ export const Introduction = () => {
                 />
                 {
                     getCurrentIndex != 3 && <TouchableOpacity onPress={skipHandler} style={styles.skipWrapper}>
-                        <Text style={styles.skipText}>{String?.introduction_swipeList?.skip}</Text>
+                        <Text style={[styles.skipText,colorBackGround(darkModeTheme)]}>{String?.introduction_swipeList?.skip}</Text>
                     </TouchableOpacity>
                 }
 

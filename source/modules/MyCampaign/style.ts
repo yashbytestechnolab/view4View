@@ -4,19 +4,27 @@ import { Colors } from "../../Theme";
 export const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: Colors?.white,
+    backgroundColor: '#FCFBFF',
+    paddingBottom: 55,
   },
   container: {
     flex: 1,
-    marginTop: "9%",
-    marginVertical: 16,
+    height: 100,
+    marginVertical: 10,
     paddingHorizontal: 16,
+    marginHorizontal: 16,
     flexDirection: "row",
     justifyContent: "center",
-    backgroundColor: Colors.white
+    shadowColor: "#E2E2E2",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 4,
+    shadowRadius: 4,
+    elevation: 8,
+    borderRadius: 16,
+    backgroundColor: '#1A1A1A'
   },
-  thumbNilImage: { height: 75, width: 93, borderRadius: 4, alignSelf: "center" },
-  discription: { flex: 1, marginLeft: 13 },
+  thumbNilImage: { height: 71, width: 93, borderRadius: 4, alignSelf: "center" },
+  discription: { flex: 1, marginLeft: 13, marginTop: 12 },
   fillContainer: { height: 4, marginTop: 8, backgroundColor: "#EAEAEA", borderRadius: 60 },
   fillView: {
     height: 4,
@@ -25,7 +33,19 @@ export const styles = StyleSheet.create({
   },
   countOfView: { flexDirection: "row", alignItems: "center", marginTop: 6 },
   views: { left: 6, top: 1 },
-  height: { height: 12 },
-  flatList: { marginBottom: 80, },
-  safeArea: { backgroundColor: Colors.linear_gradient }
+  height: { height: 5, backgroundColor: Colors?.lightWhite },
+  flatList: { backgroundColor: '#FCFBFF' },
+  safeArea: { backgroundColor: Colors.linear_gradient },
+  addIcon: {
+    position: "absolute",
+    height: 60,
+    width: 60,
+    bottom: 90,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30,
+    right: 20,
+    backgroundColor: Colors.primaryRed
+  },
+  emptyList: { flexGrow: 1, backgroundColor: "#FCFBFF", justifyContent: "center", alignItems: "center", paddingHorizontal: 16 }
 });

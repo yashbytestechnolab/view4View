@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { String } from '../../../constants';
-import { F40014, F60024 } from '../../../Theme';
+import { colorBackGround, F40014, F60024 } from '../../../Theme';
+import { InputContextProvide } from '../../../context/CommonContext';
 
 interface headerProps {
     mainTitle: string;
@@ -11,17 +12,18 @@ interface headerProps {
 }
 
 export const AuthHeader = (pros: headerProps) => {
+    const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
     const { mainTitle, miniTitle, onPress, actionTitle } = pros
     return (
         <>
             <View style={innerStyles.welcomeHeader}>
-                <Text style={F60024.textStyle}>
+                <Text style={[F60024.textStyle,colorBackGround(darkModeTheme)]}>
                     {mainTitle}
                 </Text>
             </View>
 
             <View style={innerStyles.signUpHeader}>
-                <Text style={F40014.main}>
+                <Text style={[F40014.main,colorBackGround(darkModeTheme)]}>
                     {miniTitle}
                 </Text>
                 <Text

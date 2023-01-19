@@ -21,6 +21,16 @@ export * from './EarnCoin'
 export * from './CoinIcon'
 export * from './SecondsIcon'
 export * from './ViewCoinIcon'
+export * from './BuyCoin'
+export * from './AdVideo'
+export * from './Invitefriends'
+export * from './NextIcon'
+export * from './InviteFrdSvg'
+export * from './Profile'
+export * from './More'
+export * from './EditProfileIcon'
+export  * from './ShowPassword'
+export  * from './HidePassword'
 
 
 

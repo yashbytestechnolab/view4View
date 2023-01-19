@@ -21,7 +21,10 @@ export const Authentication = () => {
         setIsFirstTimeLoginUser(res == true ? true : false)
     })
     setLoading(false)
-    SplashScreen.hide();
+    setTimeout(()=>{
+      SplashScreen.hide();
+    },1000)
+
   }
 
   useEffect(() => {

@@ -1,35 +1,42 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ROUTES } from '../constants/NavigationRoutes';
-import { ViewCoin } from '../modules/EarnCoin';
-import { CreateCamp } from '../modules/EarnCoin/CreateCamp';
-import { CreateCampaign } from '../modules/MyCampaign';
+import { EarnCoinLanding, ViewCoin, InviteFriend, ShowAdds } from '../modules/EarnCoin';
+import { BuyCoin } from '../modules/EarnCoin/BuyCoin';
+
 
 const Stack = createStackNavigator();
 
 export const EarnCoinStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName={ROUTES.VIEWCOIN}
+      initialRouteName={ROUTES.EARNCOINS_LANDING}
       screenOptions={{
         cardOverlayEnabled: false,
         headerShown: false,
         gestureEnabled: true,
       }}>
-      {/* <Stack.Screen
+      <Stack.Screen
         name={ROUTES.EARNCOINS_LANDING}
         component={EarnCoinLanding}
-      /> */}
+      />
       <Stack.Screen
+        options={{ gestureEnabled: false }}
         name={ROUTES.VIEWCOIN}
         component={ViewCoin}
       />
       <Stack.Screen
-        name={ROUTES.CREATECAMP}
-        component={CreateCamp}
+        name={ROUTES.INVITEFRIEND}
+        component={InviteFriend}
       />
-           <Stack.Screen name={ROUTES.CREATE_CAMPAIGN} component={CreateCampaign} />
-
+      <Stack.Screen
+        name={ROUTES.BUYCOIN}
+        component={BuyCoin}
+      />
+       <Stack.Screen
+        name={ROUTES.SHOWADDS}
+        component={ShowAdds}
+      />
     </Stack.Navigator>
   );
 };

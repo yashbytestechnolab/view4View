@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingHorizontal: 18,
         justifyContent: 'space-between',
-        paddingVertical:5
+        paddingVertical: 5
     },
     costStyle: {
         backgroundColor: Colors?.pink,
@@ -41,4 +41,19 @@ export const styles = StyleSheet.create({
         paddingTop: 10,
         color: Colors?.white,
     },
+    expectedView: {
+        height: 33,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 4,
+        width: 82, backgroundColor: Colors.dropdownOffWhite
+    },
+    alignSelef: { alignSelf: "center" },
+    marginTop16: { marginTop: 16 },
+    settingWrapper: { flexDirection: "row", flex: 1, justifyContent: "space-between" },
+    dropDown: { position: "absolute", right: 20 },
+    dropContain: { width: 81, flex: 1, },
+    icon: { right: 15, },
+    dropDownContainer: { width: 81, left: 20, justifyContent: "center", alignItems: "center" },
+    paddingLeft: { paddingLeft: 20 }
 });

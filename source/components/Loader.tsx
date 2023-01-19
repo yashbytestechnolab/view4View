@@ -1,6 +1,7 @@
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import React from 'react';
-import { Colors } from '../Theme';
+import React, { useContext } from 'react';
+import { Colors, darkBackGround } from '../Theme';
+import { InputContextProvide } from '../context/CommonContext';
 
 interface loder {
   spinnerColor?: string;
@@ -8,6 +9,8 @@ interface loder {
 }
 export const Loader = (props: loder) => {
   const { spinnerColor, backGroundColor } = props;
+  const { storeCreator: { campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme } }: any = useContext(InputContextProvide)
+
   return (
     <View
       style={[
@@ -15,6 +18,7 @@ export const Loader = (props: loder) => {
         {
           backgroundColor: backGroundColor ? backGroundColor : Colors.white,
         },
+        darkBackGround(darkModeTheme)
       ]}>
       <ActivityIndicator color={spinnerColor || Colors.primaryRed} size={'large'} />
     </View>
@@ -26,6 +30,6 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     width: '100%',
-    height: '100%',
+    height: '70%',
   },
 });

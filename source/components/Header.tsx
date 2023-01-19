@@ -1,57 +1,81 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import React, { useContext, } from 'react';
 import { Colors, F50018, F60016 } from '../Theme';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { get_coins } from '../services/FireStoreServices';
+import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Back, EarnCoin } from '../assets/icons';
+import { Back } from '../assets/icons';
+import { InputContextProvide } from '../context/CommonContext';
+import { ROUTES } from '../constants';
+import Lottie from 'lottie-react-native';
+import { kFormatter } from '../services/CoinValueFormat';
 
 interface IheaderProps {
   title?: string;
-  showBacKIcon?: boolean ;
-  showCoin?: boolean
+  showBacKIcon?: boolean;
+  showCoin?: boolean;
+  coin?: number | string;
+  onPrees?: () => void;
+
 }
 export const Header = (props: IheaderProps) => {
-  const { title, showBacKIcon, showCoin = true } = props;
-  const [getCoin, setGetCoin] = useState<number>(0);
-  const focus: boolean = useIsFocused();
-  const navigation = useNavigation()
-  /**
-   * return total coins
-   */
-  useEffect(() => {
-    get_coins().then((res) => {
-      setGetCoin(res?._data?.coin)
-    })
+  const {
+    storeCreator: {
+      coinBalance: { getBalance },
+    },
 
-  }, [focus, getCoin]);
+  }: any = useContext(InputContextProvide);
+
+  const { title, showBacKIcon, showCoin = true, onPrees, } = props;
+  const navigation = useNavigation();
 
   return (
     <>
-      <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]}
-        style={style.header} >
+      <LinearGradient
+        colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]}
+        style={style.header}>
         <View style={style.Wrapper}>
-          {showBacKIcon && <TouchableOpacity activeOpacity={1} onPress={() => {
-            navigation.goBack()
-          }} style={style.backButtonWrapper}>
-            <Back color={Colors?.white} />
-          </TouchableOpacity>}
+          {showBacKIcon && (
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{ padding: 10 }}
+              onPress={() => {
+                onPrees ? onPrees : navigation.goBack();
+              }}>
+              <Back color={Colors?.white} />
+            </TouchableOpacity>
+          )}
           <View style={style.titleWrapper}>
-            <Text numberOfLines={1} style={[F50018.main, style.titleText]}>{title}</Text>
-
+            <Text numberOfLines={1} style={[F50018.main, style.titleText]}>
+              {title}
+            </Text>
           </View>
-          {
-            showCoin && <View style={style.coinWrapper}>
-              <Text style={[F60016.textStyle, style.padding]}>{getCoin}</Text>
-              <EarnCoin />
-            </View>
-          }
+          {showCoin && (
+            <TouchableOpacity
+              style={[style.coinWrapper, showBacKIcon && { marginBottom: 8 }]}
+              activeOpacity={1}
+              onPress={() => {
+                navigation?.navigate(ROUTES?.VIEWCOIN);
+              }}>
+              <Text style={[F60016.textStyle, style.padding]} numberOfLines={1}>
+                {kFormatter(getBalance)}
+              </Text>
 
+              <Lottie style={{
+                height: 40,
+                marginTop: 8,
+                marginLeft: 10,
+                marginBottom: Platform?.OS == 'ios' ? 5 : 0
+
+              }}
+                source={require('../assets/flipCoin.json')}
+                autoPlay loop
+              />
+
+            </TouchableOpacity>
+          )}
         </View>
-
-
       </LinearGradient>
-
     </>
   );
 };
@@ -60,27 +84,38 @@ const style = StyleSheet.create({
     backgroundColor: Colors?.pink,
     height: 60,
     justifyContent: 'center',
-    //alignItems: 'center'
+    alignItems: 'center'
   },
   titleText: {
     textAlign: 'center',
-    //  paddingRight: 40, paddingLeft: 8 
   },
 
-  Wrapper: { flexDirection: 'row', alignItems: 'center', paddingRight: 15, marginLeft: 20 },
+  Wrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 15,
+    marginLeft: 20,
+
+  },
   coinWrapper: {
-    flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end', position: 'absolute', right: 15
-  },
-  backButtonWrapper: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    alignSelf: 'flex-end',
     position: 'absolute',
+    right: 1,
+    bottom: 0,
+    top: 0,
   },
+
   titleWrapper: {
     flex: 1,
+    paddingRight: 10,
+    alignContent: 'center',
+    alignItems: 'center',
     textAlign: 'center',
     justifyContent: 'center',
   },
   padding: {
-    paddingRight: 8
+    marginRight: Platform?.OS == 'ios' ? -40 : -35
   }
-
 });
