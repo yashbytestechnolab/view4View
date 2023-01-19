@@ -54,7 +54,12 @@ export const EarnCoinLanding = () => {
           {
             EarnCoinData.length > 0 && EarnCoinData?.map((item, index) => {
               return (
-                <TouchableOpacity key={index.toString()} style={[style.card, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? '#000' : Colors.cardshadow }]} activeOpacity={1} onPress={() => { item?.onPress == "SHOWADDS" ? showRewardAd() : navigation.navigate(item?.onPress) }}>
+                <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? '#000' : Colors.cardshadow }]} activeOpacity={1}
+                  onPress={() => {
+
+                    item?.onPress == "SHOWADDS" ? showRewardAd() :
+                      navigation.navigate(item?.onPress)
+                  }}>
                   <View style={style.leftRow}>
                     <item.svg />
                     <View style={{ marginLeft: 16 }}>
@@ -63,7 +68,7 @@ export const EarnCoinLanding = () => {
                     </View>
                   </View>
                   <View>
-                    {(loading && item?.type == CellType.ads) ? <ActivityIndicator /> : <NextIcon />}
+                    {(loading && item?.type == CellType.ads) ? <ActivityIndicator color={Colors?.primaryRed} /> : <NextIcon />}
                   </View>
                 </TouchableOpacity>
               )
