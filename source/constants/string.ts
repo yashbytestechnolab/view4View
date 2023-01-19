@@ -93,7 +93,8 @@ export const String: any = {
         newPassword:'New password',
         conformPassword:'Confirm password',
         ReferralCode :'Referral code ',
-        ReferralCodeEnter :'Enter referral code  '
+        ReferralCodeEnter :'Enter referral code  ',
+        save:'Save'
     
     },
     flashMessage: {

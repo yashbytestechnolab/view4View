@@ -119,7 +119,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                     !notifyUpdate && (
                         <TouchableOpacity
                             activeOpacity={1}
-                            style={[style?.referralCodeWrapper,darkModeTheme &&{backgroundColor:Colors?.blackOpcity}]}
+                            style={[style?.referralCodeWrapper, darkModeTheme && { backgroundColor: Colors?.blackOpcity }]}
                             onPress={() => {
                                 copyToClipboard();
                                 handleFirebaseError('refCode');
@@ -127,7 +127,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                             <Text style={[F60024?.textStyle, style?.refText]} numberOfLines={1}>
                                 {referralCode}
                             </Text>
-                        </TouchableOpacity>) : <ActivityIndicator size={'small'} color={Colors?.primaryRed} style={{marginTop:25}} />
+                        </TouchableOpacity>) : <ActivityIndicator size={'small'} color={Colors?.primaryRed} style={style. marginTop} />
                 }
                 <ButtonComponent
                     wrapperStyle={style.button}

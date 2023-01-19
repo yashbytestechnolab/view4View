@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, ActivityIndicator, Platform, Linking, } from 'react-native'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import * as LocalStorage from '../../../services/LocalStorage';
 import ToggleSwitch from 'toggle-switch-react-native'
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { colorBackGround, Colors, darkBackGround, F40014, F50012, F60012, F60016, lightBackGround } from '../../../Theme';
 import { ButtonComponent, Header } from '../../../components';
@@ -17,7 +17,7 @@ import { getSocialLoginValue, settingProfileArr } from '../../../constants/setti
 import { person } from '../../View/increment';
 
 export const SettingLanding = () => {
-  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data, error }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
 
   const configUrl = () => {
@@ -37,8 +37,6 @@ export const SettingLanding = () => {
   }
 
   useEffect(() => {
-    console.log("hyyu");
-
     getSocialLoginValue()
     getUserData()
     configUrl()
@@ -115,7 +113,7 @@ export const SettingLanding = () => {
         <Header title={String?.headerTitle?.setting} showCoin={false} />
         <ScrollView style={[style.scrollWrapper, darkBackGround(darkModeTheme)]} showsVerticalScrollIndicator={false}
           scrollEnabled={true} contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}>
-          <View style={[{ flex: 1 }, darkBackGround(darkModeTheme)]}>
+          <View style={[ style.flex, darkBackGround(darkModeTheme)]}>
             {
               infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
                 <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => navigation?.navigate(ROUTES?.EDITPROFILE)}>

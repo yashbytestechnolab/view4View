@@ -12,12 +12,17 @@ import { InputContextProvide } from '../../../context/CommonContext';
 const { height } = Dimensions.get('window');
 
 export const Introduction = () => {
+    /**
+     * useContext is used for darkModetheme 
+     */
     const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
     const pageRef: React.MutableRefObject<undefined> = useRef();
     const navigation: any = useNavigation();
     const [getCurrentIndex, setGetCurrentIndex] = useState<number>()
-
+    /**
+         * buttonHandle handle swipe data and index
+         */
     const buttonHandler = () => {
         const index: number = pageRef.current?.getCurrentIndex();
 
@@ -34,12 +39,18 @@ export const Introduction = () => {
             });
         }
     };
+    /**
+     * skipHandler  skip all swipe data and navigate login screen
+     */
     const skipHandler = () => {
         navigation.reset({
             index: 0,
             routes: [{ name: ROUTES?.LOGIN }]
         })
     }
+    /**
+        * renderDesign swipe data UI
+        */
 
     const renderDesign = (item: { svg: JSX.IntrinsicAttributes | object; title: string; subTitle: string }) => {
         return (
@@ -47,15 +58,18 @@ export const Introduction = () => {
 
                 <item.svg height={height - 480} />
                 <View style={styles.alignItems}>
-                    <Text style={[styles.title,colorBackGround(darkModeTheme)]}>{item?.title}</Text>
-                    <Text style={[styles.subTitle,colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
+                    <Text style={[styles.title, colorBackGround(darkModeTheme)]}>{item?.title}</Text>
+                    <Text style={[styles.subTitle, colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
                 </View>
 
             </View>
         )
     }
+    /**
+        * main return with SwiperFlatList with sticky skip and next button
+        */
     return (
-        <SafeAreaView style={[styles.container,darkBackGround(darkModeTheme)]}>
+        <SafeAreaView style={[styles.container, darkBackGround(darkModeTheme)]}>
             <StatusBar barStyle={String?.StatusBar?.darkContent} backgroundColor={Colors?.white} />
             <>
                 <SwiperFlatList
@@ -75,7 +89,7 @@ export const Introduction = () => {
                 />
                 {
                     getCurrentIndex != 3 && <TouchableOpacity onPress={skipHandler} style={styles.skipWrapper}>
-                        <Text style={[styles.skipText,colorBackGround(darkModeTheme)]}>{String?.introduction_swipeList?.skip}</Text>
+                        <Text style={[styles.skipText, colorBackGround(darkModeTheme)]}>{String?.introduction_swipeList?.skip}</Text>
                     </TouchableOpacity>
                 }
 

@@ -14,9 +14,15 @@ import { type as keys } from '../../constants/types';
 
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
+  /**
+   * InputContextProvide is get current coin and darktheame flag 
+   */
   const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
 
+  /***
+   * showRewardAd is load the ad and show ad 
+   */
   const showRewardAd = () => {
     setLoading(true)
     const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
@@ -43,17 +49,19 @@ export const EarnCoinLanding = () => {
     });
     rewardAd.load();
   }
-
+/**
+ * return  UI
+ */
   return (
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
       <View style={[style.main, darkModeTheme && darkBackGround(darkModeTheme)]}>
         <Header title={String?.headerTitle?.earnCoin} />
-        <View style={[{ paddingHorizontal: 16, paddingTop: 20 },]}>
+        <View style={[style.adWrapper]}>
           {
             EarnCoinData.length > 0 && EarnCoinData?.map((item, index) => {
               return (
-                <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? '#000' : Colors.cardshadow }]} activeOpacity={1}
+                <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors?.black001 : Colors.cardshadow }]} activeOpacity={1}
                   onPress={() => {
 
                     item?.onPress == "SHOWADDS" ? showRewardAd() :
@@ -61,9 +69,9 @@ export const EarnCoinLanding = () => {
                   }}>
                   <View style={style.leftRow}>
                     <item.svg />
-                    <View style={{ marginLeft: 16 }}>
+                    <View style={style?.marginLeft}>
                       <Text style={[F60016?.textStyle, { color: Colors?.primaryRed },]}>{item?.title}</Text>
-                      <Text style={[F40012?.main, { color: Colors?.black, opacity: 0.6 }, colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
+                      <Text style={[F40012?.main, style.tabSubtitle, colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
                     </View>
                   </View>
                   <View>

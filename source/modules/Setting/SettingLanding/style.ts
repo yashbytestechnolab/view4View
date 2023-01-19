@@ -9,6 +9,7 @@ export const style = StyleSheet.create({
     pinkTabWrapper: {
       alignItems: "center", flexDirection: "row", paddingHorizontal: 20, height: 41, marginTop: 24, backgroundColor: Colors?.shadowPink
     },
+    flex:{flex:1},
     marginTop: { marginTop: 35 },
     imageWrapper: { height: 60, width: 60, borderRadius: 30, backgroundColor: Colors?.shadowPink, marginBottom: 12 },
     nameWrapper: { justifyContent: "center", alignItems: "center", marginHorizontal: 16, },
