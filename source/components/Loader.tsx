@@ -30,6 +30,6 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     width: '100%',
-    height: '100%',
+    height: '70%',
   },
 });

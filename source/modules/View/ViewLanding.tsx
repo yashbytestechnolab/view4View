@@ -31,6 +31,7 @@ export const ViewLanding = () => {
   const [timer, setTimer] = useState<number>();
   const [isAnimation, setIsAnimantion] = useState(false)
   const animationProgress = useRef(new Animated.Value(0))
+  const [onLoadStop, setOnLoadStop] = useState(false)
 
   const GetCoins = async (params: string) => {
     await get_coins().then(async (res: any) => {
@@ -133,7 +134,7 @@ export const ViewLanding = () => {
     if (bytesVideo?.length > 0) {
       dispatchVideoLandingData({ types: type.BYTES_VIDEO_DATA, payload: { _vid: bytesVideo, bytes_doc: data[data?.length - 1] } })
     }
-    else { dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: false }) }
+    else { setOnLoadStop(true); dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: false }) }
   }
 
   let add_Video_Url: Array<any> | any = []
@@ -179,12 +180,15 @@ export const ViewLanding = () => {
 
   const NextVideoList = () => {
     if (nextVideo <= videoData?.length - 1) {
-      if (nextVideo === videoData?.length - 1) {
+      if (nextVideo === videoData?.length - 1 && !onLoadStop) {
         if (!isBytesVideoLoading) {
           GetLiveVideoList("", watchVideoList)
         } else {
           getBytesVideoList()
         }
+      }
+      else if (onLoadStop) {
+        return
       }
       else {
         dispatchVideoLandingData({ types: type.NEXT_VIDEO, payload: nextVideo + 1 })
@@ -204,7 +208,7 @@ export const ViewLanding = () => {
     }
   }
 
-  let debounce = onPreesNext(400)
+  let debounce = onPreesNext(100)
   return (
     <>
       <SafeAreaView style={styles.safearea} /><StatusBar

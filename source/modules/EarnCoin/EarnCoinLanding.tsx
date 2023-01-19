@@ -21,9 +21,12 @@ export const EarnCoinLanding = () => {
     setLoading(true)
     const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
     rewardAd.onAdEvent((type, error) => {
-      console.log("type", type, error);
+      console.log("error", error.name);
+
       if (type === RewardedAdEventType.LOADED) {
         rewardAd.show();
+        setLoading(false)
+      } if (error.name?.length > 0) {
         setLoading(false)
       }
 

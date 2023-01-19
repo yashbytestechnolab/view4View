@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, Dimensions, RefreshControl, Alert, } from 'react-native';
+import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, Dimensions, RefreshControl, Alert, ActivityIndicator, } from 'react-native';
 import { Header, Loader } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { styles } from './style';
@@ -144,7 +144,7 @@ export const MyCampaignLandingScreen = () => {
       <View style={[styles.mainContainer, darkBackGround(darkModeTheme)]}>
         <Header
           title={headerTitle?.myCampaign} />
-        {loding ? (<Loader />) :
+        {loding ? (<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
           (<>
             <FlatList
               showsVerticalScrollIndicator={false}
