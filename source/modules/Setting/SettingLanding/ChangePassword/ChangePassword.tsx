@@ -1,7 +1,6 @@
 import { View, SafeAreaView } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ButtonComponent, Header, InputComponent } from '../../../../components';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { InputContextProvide } from '../../../../context/CommonContext';
 import { type } from '../../../../constants/types';
 import { ROUTES, String } from '../../../../constants';
@@ -13,14 +12,15 @@ import { darkBackGround } from '../../../../Theme';
 
 export const ChangePassword = () => {
     const navigation = useNavigation();
-    const { storeCreator: { darkModeTheme, setDarkModeTheme } }: any = useContext(InputContextProvide)
-
+    const { storeCreator: { darkModeTheme, } }: any = useContext(InputContextProvide)
+    const [loading, setLoading] = useState(false)
     /**
      * Context to give userinput data and error message
      */
     const {
         storeCreator: {
             userInput,
+
             dispatch,
             userInputError,
             dispatchError,
@@ -77,25 +77,34 @@ export const ChangePassword = () => {
     };
 
     const ChangePassword = (currentPassword: any, newPassword: any) => {
+        setLoading(true)
         Reauthenticate(currentPassword)
             .then((res: any) => {
-                console.log('rosessing!', res);
-
+                setLoading(false)
                 let user: any = firebase.auth().currentUser;
-                user
-                    .updatePassword(newPassword)
+                user.updatePassword(newPassword)
                     .then(res => {
+                        setLoading(false)
+
                         handleFirebaseError('ForgotSucess');
                         dispatch({ type: type.EMPTY_STATE });
-                        navigation?.navigate(ROUTES?.SETTING_LANDING);
+                        setTimeout(() => {
+                            navigation?.navigate(ROUTES?.SETTING_LANDING);
+
+                        }, 2000);
                     })
                     .catch(error => {
+                        setLoading(false)
                         handleFirebaseError(error.code);
-                    });
+                    })
             })
             .catch(error => {
+                setLoading(false)
+
                 handleFirebaseError(error.code);
-            });
+            }).finally(() => {
+                setLoading(false)
+            })
     };
 
     return (
@@ -106,6 +115,7 @@ export const ChangePassword = () => {
                     title={String?.headerTitle?.changePassword}
                     showCoin={false}
                     showBacKIcon={true}
+
                 />
 
                 <View style={[{ paddingTop: 24, }, darkBackGround(darkModeTheme)]}>
@@ -183,7 +193,7 @@ export const ChangePassword = () => {
                         errorMessage={userInputError?.confirmPasswordError}
                     />
                     <ButtonComponent
-
+                        loading={loading}
                         wrapperStyle={{ marginTop: 30 }}
                         onPrees={() => {
                             HandleChangePassword();
