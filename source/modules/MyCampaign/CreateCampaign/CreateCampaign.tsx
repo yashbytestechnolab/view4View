@@ -104,16 +104,16 @@ export const CreateCampaign = () => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           scrollEnabled={true}
-          style={[{ backgroundColor: Colors.white, marginTop: 12, }, darkBackGround(darkModeTheme)]}
-          contentContainerStyle={[{ paddingHorizontal: 16, flexGrow: 1, paddingBottom: 90 }, darkBackGround(darkModeTheme)]}>
+          style={[styles.scrollView, darkBackGround(darkModeTheme)]}
+          contentContainerStyle={[styles.contain, darkBackGround(darkModeTheme)]}>
           <YoutubePlayer ref={youTubeRef} height={203} videoId={splitUrl?.toString()} />
-          <View style={{ marginTop: 16, flex: 1 }}>
+          <View style={styles.orderView}>
             <Text style={[F60016.textStyle, F60016.campaign, colorBackGround(darkModeTheme)]}>
               {commonString.OrderSettings}
             </Text>
           </View>
-          <View style={{ marginTop: 10, height: 1, backgroundColor: Colors.greyD8D8D8 }} />
-          <View style={{ flex: 1, marginTop: 22 }}>
+          <View style={styles.requireFild} />
+          <View style={styles.wrapperView}>
             <View style={styles.settingWrapper}>
               <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
                 {commonString.Expectedviews}
@@ -157,16 +157,16 @@ export const CreateCampaign = () => {
 
             <ButtonComponent
               buttonTitle={commonString.AddCampaign}
-              wrapperStyle={{ marginHorizontal: 0, marginTop: 32 }}
+              wrapperStyle={styles.buttonAddCamp}
               onPrees={() => handleAddCampaign()}
             />
 
-            <View style={{ marginTop: 32, flex: 1 }}>
+            <View style={styles.warnWrapper}>
               <Text style={[F60012.textStyle, colorBackGround(darkModeTheme)]}>
                 {commonString?.Warning}
               </Text>
-              <View style={{ marginTop: 12 }}>
-                <Text style={[{ textAlign: "left" }, F40014.main, colorBackGround(darkModeTheme)]}>
+              <View style={styles.warningText}>
+                <Text style={[styles.textAlign, F40014.main, colorBackGround(darkModeTheme)]}>
                   {commonString?.viewUpdateWarning}
                 </Text>
               </View>

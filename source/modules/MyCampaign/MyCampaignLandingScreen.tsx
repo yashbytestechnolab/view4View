@@ -83,14 +83,14 @@ export const MyCampaignLandingScreen = () => {
       <>
         {
           item?.stickeyHeader?.length > 0 ?
-            (<View style={
-              { height: 34, justifyContent: "center", backgroundColor: darkModeTheme ? "#fFFFFF20" : Colors.shadowPink, paddingLeft: 12 }}>
-              <Text style={[{ color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium }, colorBackGround(darkModeTheme)]}>
+            (<View style={[styles.stickeyHeaderView,
+            { backgroundColor: darkModeTheme ? Colors.drakStickey : Colors.shadowPink }]}>
+              <Text style={[styles.stickeyText, colorBackGround(darkModeTheme)]}>
                 {item?.stickeyHeader}
               </Text>
             </View>)
             :
-            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : '#E2E2E2' }]}>
+            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow }]}>
               <Image
                 style={styles.thumbNilImage}
                 source={{ uri: `http://img.youtube.com/vi/${item?.video_Id[0]}/0.jpg` }} />
@@ -129,7 +129,7 @@ export const MyCampaignLandingScreen = () => {
         {
           !loading && !loding && getCampaignData?.length <= 0 &&
           <View style={[styles.emptyList, darkBackGround(darkModeTheme)]}>
-            <Text style={[F50013.main, { textAlign: "center" }, colorBackGround(darkModeTheme)]}>
+            <Text style={[F50013.main, styles.textAlign, colorBackGround(darkModeTheme)]}>
               {commonString?.emptyList}
             </Text>
           </View>
@@ -144,7 +144,7 @@ export const MyCampaignLandingScreen = () => {
       <View style={[styles.mainContainer, darkBackGround(darkModeTheme)]}>
         <Header
           title={headerTitle?.myCampaign} />
-        {loding ? (<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
+        {loding ? (<View style={styles.loader}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
           (<>
             <FlatList
               showsVerticalScrollIndicator={false}
@@ -156,13 +156,13 @@ export const MyCampaignLandingScreen = () => {
                 <RefreshControl
                   refreshing={loading}
                   onRefresh={() => getVideoUrl("loading")}
-                  colors={[Colors.gray]} // for android
-                  tintColor={Colors.gray} // for ios
+                  colors={[Colors.gray]}
+                  tintColor={Colors.gray}
                 />
               }
               renderItem={renderCampaignList}
               ListEmptyComponent={handleEmptyData}
-              contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
+              contentContainerStyle={styles.flatlistContain}
             />
             <TouchableOpacity
               onPress={() => navigation.navigate(ROUTES.ADDVIDEO)}

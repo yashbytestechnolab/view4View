@@ -21,4 +21,7 @@ export const style = StyleSheet.create({
   main: { flex: 1, backgroundColor: Colors?.lightWhite },
   leftRow: { flexDirection: 'row', alignItems: 'center' },
   text: { margin: 10, fontSize: 30, color: Colors?.green, textAlign: 'center' },
+  wrapperView: { paddingHorizontal: 16, paddingTop: 20 },
+  title: { color: Colors?.primaryRed },
+  textWrapper: { marginLeft: 16 }
 })

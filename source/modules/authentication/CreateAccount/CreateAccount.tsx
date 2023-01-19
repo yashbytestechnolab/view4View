@@ -21,7 +21,7 @@ export const CreateAccount = () => {
     /**
    * Context to give userinput data and error message
    */
-    const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError, loading, setLoading } }: any = useContext(InputContextProvide)
+    const { storeCreator: { reward: { referReward }, darkModeTheme, userInput, dispatch, userInputError, dispatchError, loading, setLoading } }: any = useContext(InputContextProvide)
 
     /**
      *  This Function dispatch error message
@@ -54,7 +54,6 @@ export const CreateAccount = () => {
         uid = userInfo?.uid
         image = userInfo?.photoURL
         return { videoUrl, firstname, lastname, email, uid, image, watch_videos }
-
     }
     const handleCreateUserRequest = async () => {
         setLoading(true)
@@ -64,7 +63,7 @@ export const CreateAccount = () => {
                 let userDetail = onUserInfo(userResponse?.user?._user)
 
                 await userLogin(userDetail).then(async (res) => {
-                    userInput?.referralCode?.length > 0 && (await referralEarning(userInput?.referralCode))
+                    userInput?.referralCode?.length > 0 && (await referralEarning(userInput?.referralCode, referReward))
                     await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
                 }).catch((err) => console.log(">>>err", err))
                 await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);

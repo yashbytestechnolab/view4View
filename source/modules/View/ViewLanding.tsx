@@ -23,7 +23,8 @@ import Lottie from 'lottie-react-native';
 
 
 export const ViewLanding = () => {
-  const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { reward, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
+
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -229,7 +230,7 @@ export const ViewLanding = () => {
           </View>
           {
             videoLoading ?
-              <View style={{ flex: 1, marginTop: "20%", justifyContent: "center", alignItems: "center" }}>
+              <View style={styles.loader}>
                 <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
               </View> :
               <>

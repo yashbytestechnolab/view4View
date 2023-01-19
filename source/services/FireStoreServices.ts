@@ -86,16 +86,15 @@ export const createCampaign = async (...payload: Array<object | undefined | stri
 export const payCoin = async (payload: string) => {
   const userId = await getUserID()?.toString()
 
-  return await userTable?.doc(userId)?. update({
+  return await userTable?.doc(userId)?.update({
     coin: parseInt(payload) - 10,
   })
 };
-export const EarnCoin = async (payload: string) => {
+export const EarnCoin = async (...payload: Array<number | any>) => {
+  // payload[0]=coin payload[1]=rewardAmt 
   const userId = await getUserID()?.toString()
-
-  console?.log("payloadpayload",payload,userId)
-  return await userTable?.doc(userId)?. update({
-    coin: parseInt(payload) + 100,
+  return await userTable?.doc(userId)?.update({
+    coin: parseInt(payload[0]) + payload[1],
   })
 };
 
@@ -129,12 +128,12 @@ export const addWatchUrl = async (...payload: Array<any | object>) => {
   const userId = await getUserID()?.toString()
 
   if (payload[3]) {
-    return await userTable?.doc(userId)?. update({
+    return await userTable?.doc(userId)?.update({
       coin: payload[2],
     })
   }
   else {
-    return await userTable?.doc(userId)?. update({
+    return await userTable?.doc(userId)?.update({
       coin: payload[2],
       watch_videos: payload[0]?.length > 0 ? [...payload[0], payload[1]] : [payload[1]]
     })
@@ -176,12 +175,12 @@ export const updateUserWallet = async (payload: number) => {
   return payload
 }
 
-export const referralEarning = async (params: string) => {
+export const referralEarning = async (params: string, referReward: number) => {
   await userTableLogin.where("referral_code", "==", params).get().
     then(async (foo: any) => {
       if (foo?._docs?.length > 0) {
         let { coin, userId } = foo?._docs[0]?._data
-        await userTableLogin.doc(userId).update({ coin: coin + 300 })
+        await userTableLogin.doc(userId).update({ coin: coin + referReward })
       }
     }).catch((err: any) => console.log("error", err))
 }

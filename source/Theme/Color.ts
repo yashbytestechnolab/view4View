@@ -29,6 +29,7 @@ export const Colors = {
     darkModeColor1: "#fFFFFF20",
     whiteShadow: '#E2E2E2',
     yellow: '#FFC75B',
-    blackOpcity: "#FFF5G8"
+    blackOpcity: "#FFF5G8",
+    drakStickey: "#fFFFFF20"
 
 }

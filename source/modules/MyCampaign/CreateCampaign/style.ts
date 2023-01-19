@@ -55,5 +55,14 @@ export const styles = StyleSheet.create({
     dropContain: { width: 81, flex: 1, },
     icon: { right: 15, },
     dropDownContainer: { width: 81, left: 20, justifyContent: "center", alignItems: "center" },
-    paddingLeft: { paddingLeft: 20 }
+    paddingLeft: { paddingLeft: 20 },
+    orderView: { marginTop: 16, flex: 1 },
+    scrollView: { backgroundColor: Colors.white, marginTop: 12, },
+    contain: { paddingHorizontal: 16, flexGrow: 1, paddingBottom: 90 },
+    requireFild: { marginTop: 10, height: 1, backgroundColor: Colors.greyD8D8D8 },
+    wrapperView: { flex: 1, marginTop: 22 },
+    buttonAddCamp: { marginHorizontal: 0, marginTop: 32 },
+    warnWrapper: { marginTop: 32, flex: 1 },
+    warningText: { marginTop: 12 },
+    textAlign: { textAlign: "left" }
 });
