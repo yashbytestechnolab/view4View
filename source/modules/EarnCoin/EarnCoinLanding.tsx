@@ -55,7 +55,6 @@ export const EarnCoinLanding = () => {
               return (
                 <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? '#000' : Colors.cardshadow }]} activeOpacity={1}
                   onPress={() => {
-
                     item?.onPress == "SHOWADDS" ? showRewardAd() :
                       navigation.navigate(item?.onPress)
                   }}>

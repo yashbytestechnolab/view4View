@@ -15,6 +15,7 @@
 		14D57D2B10394426A3DBACA4 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52537650E27C44BD829ACF92 /* Inter-SemiBold.ttf */; };
 		1CEDE3ADEFCC433484413CA4 /* index.ts in Resources */ = {isa = PBXBuildFile; fileRef = 6F4F971AFC094939BD390E30 /* index.ts */; };
 		22496045EBF44B4AA0C1F322 /* Inter-VariableFont_slnt,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3CECF5AAEA4D433B9C730E0D /* Inter-VariableFont_slnt,wght.ttf */; };
+		43333F7B297E594F00FA9C7E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43333F7A297E594F00FA9C7E /* StoreKit.framework */; };
 		4AD6819E9D3B41CD919A398C /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B22FC5561B949538558B12D /* Inter-Bold.ttf */; };
 		4E682F6709C0474FA2C95711 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32FD4B263A8246BDAFDC3160 /* Inter-Medium.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -52,6 +53,7 @@
 		29CD6A66F93545F991EBDA40 /* Inter-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.ttf"; path = "../source/assets/fonts/Inter-Light.ttf"; sourceTree = "<group>"; };
 		32FD4B263A8246BDAFDC3160 /* Inter-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Medium.ttf"; path = "../source/assets/fonts/Inter-Medium.ttf"; sourceTree = "<group>"; };
 		3CECF5AAEA4D433B9C730E0D /* Inter-VariableFont_slnt,wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-VariableFont_slnt,wght.ttf"; path = "../source/assets/fonts/Inter-VariableFont_slnt,wght.ttf"; sourceTree = "<group>"; };
+		43333F7A297E594F00FA9C7E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4390640A29640275004B388E /* view4view.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = view4view.entitlements; path = view4view/view4view.entitlements; sourceTree = "<group>"; };
 		43EE34FE29713925008F30EA /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
 		52537650E27C44BD829ACF92 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../source/assets/fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA962D7A887A11A6BD995D25 /* libPods-view4view.a in Frameworks */,
+				43333F7B297E594F00FA9C7E /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +126,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43333F7A297E594F00FA9C7E /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				7F11C4EF997D7D8ACC58B286 /* libPods-view4view.a */,
 			);
