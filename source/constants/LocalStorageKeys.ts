@@ -1,6 +1,7 @@
 export enum LocalStorageKeys {
     UserId = 'UserId',
-    IsFirstTimeLogin='isFirstTimeLogin',
-    DarkMode="DarkMode",
-    isSocialLogin="isSocialLogin"
+    IsFirstTimeLogin = 'isFirstTimeLogin',
+    DarkMode = "DarkMode",
+    isSocialLogin = "isSocialLogin",
+    notificationToken = "notificationToken"
 }

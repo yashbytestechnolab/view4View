@@ -17,7 +17,7 @@ import GiftModel from '../../../components/GiftModel';
 export const CreateCampaign = () => {
 
   const navigation: any = useNavigation();
-  const { storeCreator: { setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { token, setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
@@ -88,7 +88,7 @@ export const CreateCampaign = () => {
         /**
          * Create Campaign api call & decrement wallet amount
          */
-        createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title)
+        createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title, token)
           .then((res: any) => updateCoinBalance(updateWallet)).catch((err: any) => setLoading(false))
       }
     }).catch((err: any) => Alert.alert("Entered video url looks invalid. Please make sure you've entered correct video url"))

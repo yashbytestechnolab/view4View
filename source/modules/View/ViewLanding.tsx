@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, StyleSheet, Animated } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator,  Animated } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
-import { String } from '../../constants';
+import { LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
 import {
   addWatchUrl,
@@ -19,11 +19,11 @@ import { InputContextProvide } from '../../context/CommonContext';
 import { type } from '../../constants/types';
 import { person } from './increment';
 import Lottie from 'lottie-react-native';
-
+import * as LocalStorage from '../../services/LocalStorage';
 
 
 export const ViewLanding = () => {
-  const { storeCreator: { reward, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { token, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
 
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
@@ -42,9 +42,16 @@ export const ViewLanding = () => {
     });
   };
 
+  const getNotificationToken = async () => {
+    let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
+    setToken(Ntoken)
+  }
+
   useEffect(() => {
     GetCoins("isInitialRenderUpdate");
+    getNotificationToken()
   }, []);
+  console.log("token", token);
 
   useEffect(() => {
     if (firstStart.current) {
@@ -147,7 +154,7 @@ export const ViewLanding = () => {
     getPlayVideoList(docOS)
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
-        res._docs?.filter((res: any) => {
+        res._docs?.filter((res: any) => {          
           if (res?._data?.upload_by !== getUserID() && !watchVideoList?.includes(res?._data?.video_Id[0])) {
             add_Video_Url.push(res?._data)
             return res?._data
@@ -209,7 +216,7 @@ export const ViewLanding = () => {
     }
   }
 
-  let debounce = onPreesNext(100)
+  let debounce = onPreesNext(400)
   return (
     <>
       <SafeAreaView style={styles.safearea} /><StatusBar

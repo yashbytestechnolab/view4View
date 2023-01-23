@@ -16,6 +16,9 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.AccountInformation,
         isHeaderUi: true,
+
+        isUiRender: false,
+        action: "",
         icon: Profile,
         isShowChangePass: () => {
             return false
@@ -24,6 +27,10 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.EditProfile,
         action: ROUTES?.EDITPROFILE,
+        isHeaderUi: false,
+        isUiRender: false,
+
+        icon: "",
         isShowChangePass: () => {
             return false
         }
@@ -32,6 +39,10 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.ChangePassword,
         action: ROUTES?.CHANGEPASSWORD,
+        isHeaderUi: false,
+        isUiRender: false,
+
+        icon: "",
         isShowChangePass: () => {
             return socilaLoginFlag
         }
@@ -39,6 +50,9 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.More,
         isHeaderUi: true,
+
+        isUiRender: false,
+        action: "",
         icon: More,
         isShowChangePass: () => {
             return false
@@ -47,6 +61,10 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.RateUs,
         action: "",
+        isHeaderUi: false,
+        isUiRender: false,
+
+        icon: "",
         isShowChangePass: () => {
             return false
         }
@@ -54,6 +72,10 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.InviteFriends,
         action: ROUTES?.INVITEFRIEND,
+        isHeaderUi: false,
+        isUiRender: false,
+
+        icon: "",
         isShowChangePass: () => {
             return false
         }
@@ -62,6 +84,10 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.PrivacyPolicy,
         action: "",
+        isHeaderUi: false,
+        isUiRender: false,
+
+        icon: "",
         isShowChangePass: () => {
             return false
         }
@@ -69,6 +95,10 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.DarkMode,
         isUiRender: true,
+        isHeaderUi: false,
+
+        icon: "",
+        action: "",
         isShowChangePass: () => {
             return false
         }

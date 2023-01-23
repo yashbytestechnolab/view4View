@@ -24,7 +24,7 @@ export const EarnCoinLanding = () => {
       if (type === RewardedAdEventType.LOADED) {
         rewardAd.show();
         setLoading(false)
-      } if (error.name?.length > 0) {
+      } if (error?.name?.length > 0) {
         setLoading(false)
       }
 

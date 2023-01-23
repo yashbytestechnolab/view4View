@@ -21,11 +21,11 @@ export const SettingLanding = () => {
   const navigation: any = useNavigation()
 
   const configUrl = () => {
-    const getConfigValue: any = remoteConfig().getValue("share_link").asString()
-
-    const details = JSON?.parse(getConfigValue)
-
-    person.getConfigValueFnc(details)
+    remoteConfig().fetchAndActivate().then(()=>{
+      const getConfigValue: any = remoteConfig().getValue("share_link").asString()
+      const details = JSON?.parse(getConfigValue)
+      person.getConfigValueFnc(details)  
+    })
   }
 
 
@@ -67,9 +67,9 @@ export const SettingLanding = () => {
           <>
             {
               item?.isHeaderUi ?
-                <View key={index?.toString()} style={[style.pinkTabWrapper, darkModeTheme && lightBackGround(darkModeTheme)]}>
-                  {<item.icon key={index?.toString()} />}
-                  <Text key={index?.toString()} style={[F60012.textStyle, F60012.colorAccount, style.paddingLeft, colorBackGround(darkModeTheme)]}>
+                <View key={item?.name} style={[style.pinkTabWrapper, darkModeTheme && lightBackGround(darkModeTheme)]}>
+                  {<item.icon key={item?.name} />}
+                  <Text key={item?.name} style={[F60012.textStyle, F60012.colorAccount, style.paddingLeft, colorBackGround(darkModeTheme)]}>
                     {item?.name}
                   </Text>
                 </View> :
@@ -83,9 +83,9 @@ export const SettingLanding = () => {
                           : navigation.navigate(item?.action)
                       }}
                       activeOpacity={1} style={style.tabWrapper}>
-                      <Text key={index?.toString()} style={[F40014?.main, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
-                      {!item?.isUiRender ? (<NextIcon key={index?.toString()} color={darkModeTheme ? Colors?.white : Colors?.black} />) : <ToggleSwitch
-                        key={index?.toString()}
+                      <Text key={item?.name} style={[F40014?.main, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
+                      {!item?.isUiRender ? (<NextIcon key={item?.name} color={darkModeTheme ? Colors?.white : Colors?.black} />) : <ToggleSwitch
+                        key={item?.name}
                         isOn={darkModeTheme}
                         onColor={Colors?.green}
                         offColor={Colors?.toggleBG}

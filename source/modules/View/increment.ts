@@ -4,6 +4,7 @@ class increment {
     retryDocument: any = {}
     toggleNextPrees: boolean = false
     configvalue = ""
+    devicesPermission = false
     getInc() {
         this.retryCount += 1
     }
@@ -19,8 +20,11 @@ class increment {
     nextPress(params: boolean) {
         this.toggleNextPrees = params
     }
-    getConfigValueFnc(params:any) {
-        this.configvalue=params
+    getConfigValueFnc(params: any) {
+        this.configvalue = params
+    }
+    getPermissionOfDevices(params: boolean) {
+        this.devicesPermission = params
     }
 }
 

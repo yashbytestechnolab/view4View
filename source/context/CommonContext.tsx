@@ -22,13 +22,13 @@ interface input {
 }
 
 const intialState: input = {
-    fullName: "",
-    email: "",
-    password: "",
+    fullName: "hii",
+    email: "killer@gmail.com",
+    password: "Test@123",
     oldPassword: "",
     newPassword: "",
-    confirmPassword: "",
-    referralCode: "",
+    confirmPassword: "Test@123",
+    referralCode: "15555X72X4ED2ID",
     showPassword: true,
     confirmPasswordShow: true,
     oldPassword_show: true,
@@ -63,7 +63,8 @@ const CommonContext = ({ children, reward, setReward }: any) => {
     const [addVideoUrl, setVideoUrl] = useState()
     const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
-
+    const [token, setToken] = useState("")
+    
     const storeCreator = {
         userInput,
         dispatch,
@@ -84,7 +85,9 @@ const CommonContext = ({ children, reward, setReward }: any) => {
         addVideoUrl,
         setVideoUrl,
         reward,
-        setReward
+        setReward,
+        token,
+        setToken
     }
 
     return (

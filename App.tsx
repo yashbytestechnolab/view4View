@@ -7,6 +7,9 @@ import { UpdateBuildVersion } from './source/services/UpdateBuildVersion';
 import { InviteFriend } from './source/modules/EarnCoin';
 import { NavigationContainer } from '@react-navigation/native';
 import { rewardConfig } from './source/services';
+import messaging from '@react-native-firebase/messaging';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { person } from './source/modules/View/increment';
 
 interface reward {
   adsRewarAmt: number | string,
@@ -18,12 +21,27 @@ export default function App() {
 
   const getReward = async () => {
     let remo = await rewardConfig()
+    UpdateBuildVersion(setUpdateAlert)
     setReward(remo)
+  }
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      person?.getPermissionOfDevices(true)
+    }
+    else {
+      person?.getPermissionOfDevices(false)
+    }
   }
 
   useEffect(() => {
     getReward()
-    UpdateBuildVersion(setUpdateAlert)
+    PushNotificationIOS.removeAllDeliveredNotifications();
+    requestUserPermission()
   }, [updateAlert])
 
   return (

@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 import { userLogin } from "./FireStoreServices";
 import * as LocalStorage from './LocalStorage';
 import { NavigationProp } from "@react-navigation/native";
-import { LocalStorageKeys, ROUTES } from "../constants";
+import { getNotificationToken, LocalStorageKeys, ROUTES } from "../constants";
 import { config } from "../config";
 import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
@@ -22,7 +22,7 @@ GoogleSignin.configure({
 
 
 
- const onUserInfo = (userInfo: any) => {
+const onUserInfo = async (userInfo: any) => {
     let fullname = "";
     let space: number | string;
     let firstname: any = "";
@@ -32,7 +32,8 @@ GoogleSignin.configure({
     let videoUrl: any = '';
     let image: string = ''
     let watch_videos: any = []
-
+    let device_token: string = await getNotificationToken();
+    let device_type: string = Platform.OS
 
 
     if (Platform.OS === 'android') {
@@ -44,14 +45,14 @@ GoogleSignin.configure({
         uid = userInfo?.uid
         image = userInfo?.photoURL
         console?.log("userLoginuserLogin", videoUrl, firstname, lastname, email, uid, image, watch_videos)
-        return { videoUrl, firstname, lastname, email, uid, image, watch_videos }
+        return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     } else {
         let splitEmail = userInfo?.email.split("@");
         firstname = splitEmail[0]
         email = userInfo?.email
         uid = userInfo?.uid
         image = userInfo?.photoURL
-        return { videoUrl, firstname, lastname, email, uid, image, watch_videos }
+        return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     }
 }
 
