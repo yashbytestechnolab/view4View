@@ -516,6 +516,7 @@
 				PRODUCT_NAME = view4view;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "Pods/**";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -545,6 +546,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bytes.view4View;
 				PRODUCT_NAME = view4view;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "Pods/**";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
