@@ -191,7 +191,15 @@ export const F60012 = StyleSheet.create({
         color: Colors.placeHolderTextBlack,
     }
 })
-
+export const F60012SemiBold = StyleSheet.create({
+    textStyle: {
+        color: Colors.black,
+        fontSize: 12,
+        fontWeight: "600",
+        fontFamily: Fonts?.InterSemiBold
+    },
+  
+})
 export const F70032 = StyleSheet.create({
     textStyle: {
         color: Colors.primaryRed,

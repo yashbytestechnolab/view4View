@@ -27,14 +27,16 @@ export const BuyCoin = () => {
             .then(() => remoteConfig.fetchAndActivate())
             .then(() => {
                 const getConfigValue: any = remoteConfig.getValue("inApp_purchase_description").asString()
-                const d = JSON.parse(getConfigValue)
-                setParseData(d)
+                console.log(">>>>>>", getConfigValue);
+
+                // const d = JSON.parse(getConfigValue)
+                setParseData(getConfigValue)
             })
             .catch((error: any) => { console.error("error", error) });
     }
     useEffect(() => {
         InAppPurches()
-    }, [])
+    }, [parseData])
 
 
     const onReadioButtonPress = (idx) => {
@@ -83,7 +85,7 @@ export const BuyCoin = () => {
                         })
                     }
                     <Text style={[F40014.main, style.subTextWrapper]}>{String?.commonString?.buyCoinSubText}</Text>
-                    <ButtonComponent buttonTitle={"Buy" +" "+parseData?.[selectRB]?.name} onPrees={() => { }} wrapperStyle={style.buttonWrapper} />
+                    <ButtonComponent buttonTitle={"Buy" + " " + parseData?.[selectRB]?.name} onPrees={() => { }} wrapperStyle={style.buttonWrapper} />
                 </ScrollView>
             </View>
         </>
