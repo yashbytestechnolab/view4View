@@ -21,7 +21,7 @@ export const EarnCoinLanding = () => {
   const [loading, setLoading] = useState(false)
 
   /***
-   * showRewardAd is load the ad and show ad 
+   * showRewardAd is load the ad and show ad
    */
   const showRewardAd = () => {
     setLoading(true)
@@ -49,19 +49,17 @@ export const EarnCoinLanding = () => {
     });
     rewardAd.load();
   }
-/**
- * return  UI
- */
+
   return (
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
       <View style={[style.main, darkModeTheme && darkBackGround(darkModeTheme)]}>
         <Header title={String?.headerTitle?.earnCoin} />
-        <View style={[style.adWrapper]}>
+        <View style={[{ paddingHorizontal: 16, paddingTop: 20 },]}>
           {
             EarnCoinData.length > 0 && EarnCoinData?.map((item, index) => {
               return (
-                <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors?.black001 : Colors.cardshadow }]} activeOpacity={1}
+                <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? '#000' : Colors.cardshadow }]} activeOpacity={1}
                   onPress={() => {
 
                     item?.onPress == "SHOWADDS" ? showRewardAd() :
@@ -69,7 +67,7 @@ export const EarnCoinLanding = () => {
                   }}>
                   <View style={style.leftRow}>
                     <item.svg />
-                    <View style={style?.marginLeft}>
+                    <View style={{ marginLeft: 16 }}>
                       <Text style={[F60016?.textStyle, { color: Colors?.primaryRed },]}>{item?.title}</Text>
                       <Text style={[F40012?.main, style.tabSubtitle, colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
                     </View>

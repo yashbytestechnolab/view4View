@@ -13,7 +13,6 @@ export const UpdateBuildVersion = async (updateAlert: any) => {
         .then(() => {
             const getConfigValue: any = remoteConfig.getValue("UpdateDescription").asString()
             const data = JSON?.parse(getConfigValue)
-            console.log("data", data,)
             try {
                 if (data?.build_version != getVersionNo) {
                     updateAlert(true);

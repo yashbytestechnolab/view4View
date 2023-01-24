@@ -55,7 +55,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
     };
     useEffect(() => {
         GetReferralCode();
-    }, []);
+    }, [darkModeTheme]);
     const ReferEarn = `View4view is very usefull app and you increase your view and earn coins.\n\nDownload now:  \n\niOS App: ${data?.Upadte?.ios} \n\nAndroid App: ${data?.Upadte?.android}
     \n\nReferral code: ${referralCode}`;
 
@@ -119,7 +119,8 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                     !notifyUpdate && (
                         <TouchableOpacity
                             activeOpacity={1}
-                            style={[style?.referralCodeWrapper, darkModeTheme && { backgroundColor: Colors?.blackOpcity }]}
+                            style={[style?.referralCodeWrapper, { backgroundColor: darkModeTheme ? Colors?.blackOpcity : Colors?.shadowPink },
+                            ]}
                             onPress={() => {
                                 copyToClipboard();
                                 handleFirebaseError('refCode');
@@ -127,7 +128,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                             <Text style={[F60024?.textStyle, style?.refText]} numberOfLines={1}>
                                 {referralCode}
                             </Text>
-                        </TouchableOpacity>) : <ActivityIndicator size={'small'} color={Colors?.primaryRed} style={style. marginTop} />
+                        </TouchableOpacity>) : <ActivityIndicator size={'small'} color={Colors?.primaryRed} style={style.marginTop} />
                 }
                 <ButtonComponent
                     wrapperStyle={style.button}

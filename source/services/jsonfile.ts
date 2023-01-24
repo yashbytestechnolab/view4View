@@ -29,12 +29,12 @@ export enum CellType {
     ads = "ads"
 }
 export const EarnCoinData = [
-    // {
-    //     svg: BuyCoin,
-    //     title: 'Buy Coins',
-    //     subTitle: 'Buy world coins of countries',
-    //     onPress: ROUTES?.BUYCOIN
-    // },
+    {
+        svg: BuyCoin,
+        title: 'Buy Coins',
+        subTitle: 'Buy world coins of countries',
+        onPress: ROUTES?.BUYCOIN
+    },
     {
         svg: Invitefriends,
         title: 'Invite friends',
