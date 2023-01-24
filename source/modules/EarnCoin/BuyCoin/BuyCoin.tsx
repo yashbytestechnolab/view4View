@@ -137,7 +137,6 @@ export const BuyCoin = () => {
         setSelectRB(idx);
     };
 
-
     const onPressBuyCoins = async (productData: any) => {
         setloading(true)
         let sku = onGetProdutId(productData);
@@ -151,14 +150,6 @@ export const BuyCoin = () => {
             </View>
         )
     }
-    useEffect(() => {
-        InAppPurches()
-    }, [])
-
-
-    const onReadioButtonPress = (idx) => {
-        setSelectRB(idx);
-    };
 
     return (
         <>
