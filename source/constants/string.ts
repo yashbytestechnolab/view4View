@@ -94,7 +94,8 @@ export const String: any = {
         conformPassword:'Confirm password',
         ReferralCode :'Referral code ',
         ReferralCodeEnter :'Enter referral code',
-        buyCoinSubText: 'Contact us if you have some special orders or if you \n have any problem with in-app-purchase by sending \n an email to :mobile.apps@bytestechnolab.com'
+        save:'Save',
+        buyCoinSubText:'Contact us if you have some special orders or if you\n have any problem with in-app-purchase by sending\n an email to :mobile.apps@bytestechnolab.com'
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",

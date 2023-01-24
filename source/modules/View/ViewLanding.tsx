@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, StyleSheet, Animated } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
-import { String } from '../../constants';
+import { LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
 import {
   addWatchUrl,
@@ -19,11 +19,12 @@ import { InputContextProvide } from '../../context/CommonContext';
 import { type } from '../../constants/types';
 import { person } from './increment';
 import Lottie from 'lottie-react-native';
-
-
-
+import * as LocalStorage from '../../services/LocalStorage';
+import { Anaylitics } from '../../constants/analytics';
+import { crashlyticslog } from '../../services/crashlyticslog';
 export const ViewLanding = () => {
-  const { storeCreator: { coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
+
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -34,6 +35,8 @@ export const ViewLanding = () => {
   const [onLoadStop, setOnLoadStop] = useState(false)
 
   const GetCoins = async (params: string) => {
+    // @ sign screen name in crash console
+    crashlyticslog(`get user coin @ ${ROUTES.VIEW_LANDING}`)
     await get_coins().then(async (res: any) => {
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: res?._data?.watch_videos })
@@ -41,8 +44,14 @@ export const ViewLanding = () => {
     });
   };
 
+  const getNotificationToken = async () => {
+    let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
+    setToken(Ntoken)
+  }
+
   useEffect(() => {
     GetCoins("isInitialRenderUpdate");
+    getNotificationToken()
   }, []);
 
   useEffect(() => {
@@ -127,6 +136,7 @@ export const ViewLanding = () => {
 
 
   const getBytesVideoList = async () => {
+    crashlyticslog(`get bytes campaign list @ ${ROUTES.VIEW_LANDING}`)
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let data = await bytesVideoListData(bytesDocData)
     let bytesVideo = data?.map((item: any) => item?._data)
@@ -139,9 +149,9 @@ export const ViewLanding = () => {
 
   let add_Video_Url: Array<any> | any = []
   async function GetLiveVideoList(params: string, watchVideoList: any) {
-
+    crashlyticslog(`get campaign list @ ${ROUTES.VIEW_LANDING}`)
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
-    let docOS: any = Object.keys(docData).length > 0 ? docData : person?.retryDocument
+    let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
 
     getPlayVideoList(docOS)
       .then(async (res: any) => {
@@ -179,6 +189,7 @@ export const ViewLanding = () => {
   }
 
   const NextVideoList = () => {
+    crashlyticslog(`next campaign list @ ${ROUTES.VIEW_LANDING}`)
     if (nextVideo <= videoData?.length - 1) {
       if (nextVideo === videoData?.length - 1 && !onLoadStop) {
         if (!isBytesVideoLoading) {
@@ -208,7 +219,7 @@ export const ViewLanding = () => {
     }
   }
 
-  let debounce = onPreesNext(100)
+  let debounce = onPreesNext(400)
   return (
     <>
       <SafeAreaView style={styles.safearea} /><StatusBar
@@ -229,7 +240,7 @@ export const ViewLanding = () => {
           </View>
           {
             videoLoading ?
-              <View style={{ flex: 1, marginTop: "20%", justifyContent: "center", alignItems: "center" }}>
+              <View style={styles.loader}>
                 <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
               </View> :
               <>
@@ -260,7 +271,10 @@ export const ViewLanding = () => {
                 </View>
                 <ButtonComponent
                   loading={videoLoading}
-                  onPrees={() => debounce()}
+                  onPrees={() => {
+                    let { remaining_view }: any = videoData?.[nextVideo]
+                    Anaylitics("next_video", { getBalance, remaining_view }); debounce()
+                  }}
                   wrapperStyle={styles.marginTop}
                   buttonTitle={String?.viewTab?.nextVideo} />
 

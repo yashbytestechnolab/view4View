@@ -45,6 +45,6 @@ export const styles = StyleSheet.create({
         top: 0,
         bottom: -230,
         left: 0, right: 0,
-
-    }
+    },
+    loader: { flex: 1, marginTop: "20%", justifyContent: "center", alignItems: "center" }
 });

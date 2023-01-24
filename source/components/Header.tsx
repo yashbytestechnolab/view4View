@@ -9,6 +9,7 @@ import { InputContextProvide } from '../context/CommonContext';
 import { ROUTES } from '../constants';
 import Lottie from 'lottie-react-native';
 import { kFormatter } from '../services/CoinValueFormat';
+import { Anaylitics } from '../constants/analytics';
 
 interface IheaderProps {
   title?: string;
@@ -40,6 +41,7 @@ export const Header = (props: IheaderProps) => {
               activeOpacity={1}
               style={{ padding: 10 }}
               onPress={() => {
+                Anaylitics("user_coin", { getBalance })
                 onPrees ? onPrees : navigation.goBack();
               }}>
               <Back color={Colors?.white} />

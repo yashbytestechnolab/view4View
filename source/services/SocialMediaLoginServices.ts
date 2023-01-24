@@ -3,11 +3,13 @@ import auth from '@react-native-firebase/auth';
 import { userLogin } from "./FireStoreServices";
 import * as LocalStorage from './LocalStorage';
 import { NavigationProp } from "@react-navigation/native";
-import { LocalStorageKeys, ROUTES } from "../constants";
+import { getNotificationToken, LocalStorageKeys, ROUTES } from "../constants";
 import { config } from "../config";
 import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
 import { Platform } from "react-native";
+import { Anaylitics } from "../constants/analytics";
+import { crashlyticslog } from "./crashlyticslog";
 
 GoogleSignin.configure({
     webClientId: config?.googlewebClientId,
@@ -22,7 +24,7 @@ GoogleSignin.configure({
 
 
 
- const onUserInfo = (userInfo: any) => {
+const onUserInfo = async (userInfo: any) => {
     let fullname = "";
     let space: number | string;
     let firstname: any = "";
@@ -32,7 +34,8 @@ GoogleSignin.configure({
     let videoUrl: any = '';
     let image: string = ''
     let watch_videos: any = []
-
+    let device_token: string = await getNotificationToken();
+    let device_type: string = Platform.OS
 
 
     if (Platform.OS === 'android') {
@@ -44,19 +47,20 @@ GoogleSignin.configure({
         uid = userInfo?.uid
         image = userInfo?.photoURL
         console?.log("userLoginuserLogin", videoUrl, firstname, lastname, email, uid, image, watch_videos)
-        return { videoUrl, firstname, lastname, email, uid, image, watch_videos }
+        return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     } else {
         let splitEmail = userInfo?.email.split("@");
         firstname = splitEmail[0]
         email = userInfo?.email
         uid = userInfo?.uid
         image = userInfo?.photoURL
-        return { videoUrl, firstname, lastname, email, uid, image, watch_videos }
+        return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     }
 }
 
 export const googleLogin = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     setLoading(true)
+    crashlyticslog("google login")
     try {
         await GoogleSignin.hasPlayServices();
         const { accessToken, idToken }: any = await GoogleSignin.signIn();
@@ -67,14 +71,10 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
         await auth()
             .signInWithCredential(credential)
             .then(async (res: any) => {
-                console.log("res", res)
-                let userDetail = onUserInfo(res?.user?._user)
-
+                let userDetail = await onUserInfo(res?.user?._user)
                 if (res?.additionalUserInfo?.isNewUser) {
                     userLogin(userDetail).then(() => {
-                        console.log("loginUser", res)
-                    }).catch((err) => {
-                        console.log("loginUser", err);
+                        Anaylitics("google_login", { user_id: userDetail?.uid, socialLogin: true })
                     })
                 }
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
@@ -95,6 +95,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
 export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     // create login request for apple
     setLoading(true)
+    crashlyticslog("apple login")
     const appleAuthRequestResponse: any = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
@@ -109,18 +110,13 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
         await auth()
             .signInWithCredential(appleCredential)
             .then(async (res: any) => {
-
-                let userDetail = onUserInfo(res?.user?._user)
+                let userDetail = await onUserInfo(res?.user?._user)
                 if (res?.additionalUserInfo?.isNewUser) {
                     userLogin(userDetail).then(() => {
-                        console.log("loginUser", res)
-
-                    }).catch((err) => {
-                        console.log("loginUser", err);
+                        Anaylitics("apple_login", { user_id: userDetail?.uid, socialLogin: true })
                     })
                 }
                 await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
-
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
                 navigation.reset({
                     index: 0,

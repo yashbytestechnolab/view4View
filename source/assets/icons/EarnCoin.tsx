@@ -1,9 +1,9 @@
 import React from 'react'
 import { Path, Svg } from 'react-native-svg'
 
-export const EarnCoin = (props:string|number) => {
+export const EarnCoin = (props:any) => {
     return (
-        <Svg width={props?.width? props?.width:"17"} height={props?.height? props?.height:"21"} viewBox="0 0 17 21" fill="none">
+        <Svg width={props?.width? props?.width:"70"} height={props?.height? props?.height:"81"} viewBox="0 0 17 21" fill="none">
             <Path d="M8.23775 2.74576C8.0482 2.74576 7.89453 2.5921 7.89453 2.40254V0.34322C7.89453 0.153665 8.0482 0 8.23775 0C8.42731 0 8.58097 0.153665 8.58097 0.34322V2.40254C8.58097 2.5921 8.42731 2.74576 8.23775 2.74576Z" fill="#F0C419" />
             <Path d="M10.6401 3.08898C10.4505 3.08898 10.2969 2.93532 10.2969 2.74576V0.34322C10.2969 0.153665 10.4505 0 10.6401 0C10.8297 0 10.9833 0.153665 10.9833 0.34322V2.74576C10.9833 2.93532 10.8297 3.08898 10.6401 3.08898Z" fill="#F0C419" />
             <Path d="M13.0424 4.11865C12.8529 4.11865 12.6992 3.96498 12.6992 3.77543V2.40255C12.6992 2.21299 12.8529 2.05933 13.0424 2.05933C13.232 2.05933 13.3857 2.21299 13.3857 2.40255V3.77543C13.3857 3.96498 13.232 4.11865 13.0424 4.11865Z" fill="#F0C419" />

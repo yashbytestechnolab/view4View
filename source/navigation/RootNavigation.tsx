@@ -9,6 +9,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { useContext } from 'react';
 import { InputContextProvide } from '../context/CommonContext';
 import { Appearance } from 'react-native';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 
 
@@ -40,6 +41,7 @@ export const RootNavigation = () => {
 
   useEffect(() => {
     authFlow()
+    crashlytics().log("auth token")
   }, [userId]);
 
   return (

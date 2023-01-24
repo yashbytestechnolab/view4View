@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Colors } from "../../Theme";
+import { Fonts } from "../../assets/fonts";
 
 export const styles = StyleSheet.create({
   mainContainer: {
@@ -47,5 +48,10 @@ export const styles = StyleSheet.create({
     right: 20,
     backgroundColor: Colors.primaryRed
   },
-  emptyList: { flexGrow: 1, backgroundColor: "#FCFBFF", justifyContent: "center", alignItems: "center", paddingHorizontal: 16 }
+  loader: { flex: 1, justifyContent: "center", alignItems: "center" },
+  emptyList: { flexGrow: 1, backgroundColor: "#FCFBFF", justifyContent: "center", alignItems: "center", paddingHorizontal: 16 },
+  flatlistContain: { flexGrow: 1, paddingBottom: 10 },
+  textAlign: { textAlign: "center" },
+  stickeyHeaderView: { height: 34, justifyContent: "center", paddingLeft: 12 },
+  stickeyText: { color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium },
 });

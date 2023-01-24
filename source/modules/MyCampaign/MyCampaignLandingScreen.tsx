@@ -1,18 +1,17 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, Dimensions, RefreshControl, Alert, ActivityIndicator, } from 'react-native';
-import { Header, Loader } from '../../components';
+import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, RefreshControl, ActivityIndicator, } from 'react-native';
+import { Header } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { styles } from './style';
-import { colorBackGround, Colors, darkBackGround, F40010, F40012, F40014, F50013, F60024, lightBackGround } from '../../Theme';
+import { colorBackGround, Colors, darkBackGround, F40010, F40012, F40014, F50013, lightBackGround } from '../../Theme';
 import { InputContextProvide } from '../../context/CommonContext';
-import { GetVideoCampaign, campaignHistory, deleteRemaining } from '../../services/FireStoreServices';
+import { GetVideoCampaign, campaignHistory } from '../../services/FireStoreServices';
 import { type } from '../../constants/types';
 import { PlusIcon } from '../../assets/icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { lastSeen } from '../../services';
-import { Fonts } from '../../assets/fonts';
 import { useState } from 'react';
-
+import { crashlyticslog } from '../../services/crashlyticslog';
 export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
   const navigation = useNavigation()
@@ -30,6 +29,7 @@ export const MyCampaignLandingScreen = () => {
   const getHistoryData = async (params: Array<object> | any) => {
     let historyList = await campaignHistory()
     if (params?.length > 0 && historyList?.length > 0) {
+      crashlyticslog(`get user uploaded complete campaign list @ ${ROUTES.MYCAMPAIGN_LANDING}`)
       dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [...params, { stickeyHeader: "Past Campaign" }, ...historyList], index: [0, params.length] } })
     }
     else if (params?.length <= 0 && historyList?.length > 0) {
@@ -45,6 +45,7 @@ export const MyCampaignLandingScreen = () => {
   *
   **/
   const getVideoUrl = async (params: string) => {
+    crashlyticslog(`get user upload campaign list @ ${ROUTES.MYCAMPAIGN_LANDING}`)
     params ? setLoading(true) : dispatchcampaign({ types: type.CAMPAIGN_LOADING, payload: true })
     await GetVideoCampaign().then((res: any) => {
       const getVideoUrl: any = []
@@ -83,14 +84,14 @@ export const MyCampaignLandingScreen = () => {
       <>
         {
           item?.stickeyHeader?.length > 0 ?
-            (<View style={
-              { height: 34, justifyContent: "center", backgroundColor: darkModeTheme ? "#fFFFFF20" : Colors.shadowPink, paddingLeft: 12 }}>
-              <Text style={[{ color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium }, colorBackGround(darkModeTheme)]}>
+            (<View style={[styles.stickeyHeaderView,
+            { backgroundColor: darkModeTheme ? Colors.drakStickey : Colors.shadowPink }]}>
+              <Text style={[styles.stickeyText, colorBackGround(darkModeTheme)]}>
                 {item?.stickeyHeader}
               </Text>
             </View>)
             :
-            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : '#E2E2E2' }]}>
+            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow }]}>
               <Image
                 style={styles.thumbNilImage}
                 source={{ uri: `http://img.youtube.com/vi/${item?.video_Id[0]}/0.jpg` }} />
@@ -129,7 +130,7 @@ export const MyCampaignLandingScreen = () => {
         {
           !loading && !loding && getCampaignData?.length <= 0 &&
           <View style={[styles.emptyList, darkBackGround(darkModeTheme)]}>
-            <Text style={[F50013.main, { textAlign: "center" }, colorBackGround(darkModeTheme)]}>
+            <Text style={[F50013.main, styles.textAlign, colorBackGround(darkModeTheme)]}>
               {commonString?.emptyList}
             </Text>
           </View>
@@ -144,7 +145,7 @@ export const MyCampaignLandingScreen = () => {
       <View style={[styles.mainContainer, darkBackGround(darkModeTheme)]}>
         <Header
           title={headerTitle?.myCampaign} />
-        {loding ? (<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
+        {loding ? (<View style={styles.loader}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
           (<>
             <FlatList
               showsVerticalScrollIndicator={false}
@@ -155,17 +156,23 @@ export const MyCampaignLandingScreen = () => {
               refreshControl={
                 <RefreshControl
                   refreshing={loading}
-                  onRefresh={() => getVideoUrl("loading")}
-                  colors={[Colors.gray]} // for android
-                  tintColor={Colors.gray} // for ios
+                  onRefresh={() => {
+                    crashlyticslog(`on referesh campaign list @ ${ROUTES.MYCAMPAIGN_LANDING}`);
+                    getVideoUrl("loading")
+                  }}
+                  colors={[Colors.gray]}
+                  tintColor={Colors.gray}
                 />
               }
               renderItem={renderCampaignList}
               ListEmptyComponent={handleEmptyData}
-              contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
+              contentContainerStyle={styles.flatlistContain}
             />
             <TouchableOpacity
-              onPress={() => navigation.navigate(ROUTES.ADDVIDEO)}
+              onPress={() => {
+                crashlyticslog(`add campaign video @ ${ROUTES.MYCAMPAIGN_LANDING}`);
+                navigation.navigate(ROUTES.ADDVIDEO)
+              }}
               activeOpacity={0.8}
               style={styles.addIcon}>
               <PlusIcon />

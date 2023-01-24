@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, ActivityIndicator, Platform, Linking, } from 'react-native'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import * as LocalStorage from '../../../services/LocalStorage';
 import ToggleSwitch from 'toggle-switch-react-native'
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { colorBackGround, Colors, darkBackGround, F40014, F50012, F60012, F60016, lightBackGround } from '../../../Theme';
 import { ButtonComponent, Header } from '../../../components';
@@ -15,19 +15,20 @@ import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { getSocialLoginValue, settingProfileArr } from '../../../constants/settingProfileArr';
 import { person } from '../../View/increment';
+import { Anaylitics } from '../../../constants/analytics';
 
 export const SettingLanding = () => {
-  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data, error }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
 
   const configUrl = () => {
-    const getConfigValue: any = remoteConfig().getValue("share_link").asString()
-
-    const details = JSON?.parse(getConfigValue)
-
-    person.getConfigValueFnc(details)
+    remoteConfig().fetchAndActivate().then(() => {
+      const getConfigValue: any = remoteConfig().getValue("share_link").asString()
+      const details = JSON?.parse(getConfigValue)
+      person.getConfigValueFnc(details)
+    })
   }
-
+  let anaylitics: any = Anaylitics("user_info", { userName: data.firstname })
 
   const getUserData = async () => {
     dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
@@ -37,8 +38,6 @@ export const SettingLanding = () => {
   }
 
   useEffect(() => {
-    console.log("hyyu");
-
     getSocialLoginValue()
     getUserData()
     configUrl()
@@ -57,6 +56,7 @@ export const SettingLanding = () => {
 
   const handleDarkMode = () => {
     setDarkModeTheme(!darkModeTheme)
+    Anaylitics("dark_mode", { darkModeTheme })
     LocalStorage.setValue(LocalStorageKeys.DarkMode, { isDarkMode: !darkModeTheme })
   }
 
@@ -67,9 +67,9 @@ export const SettingLanding = () => {
           <>
             {
               item?.isHeaderUi ?
-                <View key={index?.toString()} style={[style.pinkTabWrapper, darkModeTheme && lightBackGround(darkModeTheme)]}>
-                  {<item.icon key={index?.toString()} />}
-                  <Text key={index?.toString()} style={[F60012.textStyle, F60012.colorAccount, style.paddingLeft, colorBackGround(darkModeTheme)]}>
+                <View key={item?.name} style={[style.pinkTabWrapper, darkModeTheme && lightBackGround(darkModeTheme)]}>
+                  {<item.icon key={item?.name} />}
+                  <Text key={item?.name} style={[F60012.textStyle, F60012.colorAccount, style.paddingLeft, colorBackGround(darkModeTheme)]}>
                     {item?.name}
                   </Text>
                 </View> :
@@ -83,9 +83,9 @@ export const SettingLanding = () => {
                           : navigation.navigate(item?.action)
                       }}
                       activeOpacity={1} style={style.tabWrapper}>
-                      <Text key={index?.toString()} style={[F40014?.main, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
-                      {!item?.isUiRender ? (<NextIcon key={index?.toString()} color={darkModeTheme ? Colors?.white : Colors?.black} />) : <ToggleSwitch
-                        key={index?.toString()}
+                      <Text key={item?.name} style={[F40014?.main, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
+                      {!item?.isUiRender ? (<NextIcon key={item?.name} color={darkModeTheme ? Colors?.white : Colors?.black} />) : <ToggleSwitch
+                        key={item?.name}
                         isOn={darkModeTheme}
                         onColor={Colors?.green}
                         offColor={Colors?.toggleBG}
@@ -115,10 +115,10 @@ export const SettingLanding = () => {
         <Header title={String?.headerTitle?.setting} showCoin={false} />
         <ScrollView style={[style.scrollWrapper, darkBackGround(darkModeTheme)]} showsVerticalScrollIndicator={false}
           scrollEnabled={true} contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}>
-          <View style={[{ flex: 1 }, darkBackGround(darkModeTheme)]}>
+          <View style={[ style.flex, darkBackGround(darkModeTheme)]}>
             {
               infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
-                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => navigation?.navigate(ROUTES?.EDITPROFILE)}>
+                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => { anaylitics(), navigation?.navigate(ROUTES?.EDITPROFILE) }}>
                   <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
                   <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
                     {data?.firstname + " " + data?.lastname}

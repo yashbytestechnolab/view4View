@@ -9,6 +9,7 @@ export const style = StyleSheet?.create({
         paddingHorizontal: 16
 
     },
+    marginTop:{ marginTop: 25},
     button: { width: '100%', marginTop: 40, },
     scrollContain: {
         alignItems: 'center',

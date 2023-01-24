@@ -2,8 +2,11 @@ import React, { createContext, useReducer, useState } from 'react'
 import { type } from '../constants/types'
 import { ValidationFnc, getCurrentCoinBalance, getUserCampaign, userInfoFnc, videoLanding } from '.';
 
-export const InputContextProvide: any = createContext({})
-
+export const InputContextProvide: any = createContext({ data: "mehandi" })
+interface reward {
+    adsRewarAmt: number | string,
+    referRewardAmt: number | string
+}
 interface input {
     fullName?: number | string | any,
     email?: number | string | any,
@@ -13,19 +16,19 @@ interface input {
     confirmPasswordShow: boolean
     oldPassword?: number | string | any,
     newPassword?: number | string | any,
-    referralCode ?: number | string | any,
+    referralCode?: number | string | any,
     oldPassword_show?: boolean,
     newPassword_show?: boolean,
 }
 
 const intialState: input = {
-    fullName: "",
-    email: "",
-    password: "",
+    fullName: "hii",
+    email: "killer@gmail.com",
+    password: "Test@123",
     oldPassword: "",
     newPassword: "",
-    confirmPassword: "",
-    referralCode:"",
+    confirmPassword: "Test@123",
+    referralCode: "15555X72X4ED2ID",
     showPassword: true,
     confirmPasswordShow: true,
     oldPassword_show: true,
@@ -50,7 +53,7 @@ const reducer: Function | any = (state: any, action: any) => {
     }
 }
 
-const CommonContext = ({ children }: any) => {
+const CommonContext = ({ children, reward, setReward }: any) => {
     const [userInput, dispatch] = useReducer(reducer, intialState)
     const { userInputError, dispatchError } = ValidationFnc();
     const { campaignData, dispatchcampaign } = getUserCampaign()
@@ -60,7 +63,8 @@ const CommonContext = ({ children }: any) => {
     const [addVideoUrl, setVideoUrl] = useState()
     const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
-
+    const [token, setToken] = useState("")
+    
     const storeCreator = {
         userInput,
         dispatch,
@@ -79,7 +83,11 @@ const CommonContext = ({ children }: any) => {
         userDetail,
         dispatchuserDetail,
         addVideoUrl,
-        setVideoUrl
+        setVideoUrl,
+        reward,
+        setReward,
+        token,
+        setToken
     }
 
     return (

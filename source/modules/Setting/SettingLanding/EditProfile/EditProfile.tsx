@@ -95,19 +95,15 @@ export const EditProfile = () => {
             <SafeAreaView style={style.safeArea} />
             <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
-                {infoLoading ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>Save</Text>}
+                {infoLoading ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>{String?.commonString?.save}</Text>}
 
-                <View style={{ paddingTop: 24 }}>
+                <View style={style.paddingTop}>
                     <View style={style.nameWrapper} >
                         {onPhotoLoad ? <ActivityIndicator size={"small"} color={Colors.lightPink} /> :
                             <>
                                 <Image source={{ uri: profilePic != null ? profilePic?.uri : `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
                                 <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { openGallery() }}
-                                    style={{
-                                        position: "relative", left: 20, bottom: 25,
-                                        justifyContent: "center", alignItems: "center",
-                                        height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13
-                                    }}>
+                                    style={style.editIconWrapper}>
                                     <EditProfileIcon />
                                 </TouchableOpacity>
                             </>
@@ -130,10 +126,7 @@ export const EditProfile = () => {
                             editable={false}
                             inputTitle={String.commonString.email}
                             placeholder={String.commonString.Enteryouremail}
-                            value={userInput?.email}
-                            onChangeText={(value) => {
-                            }}
-                        />
+                            value={userInput?.email} />
                     </View>
 
                 </View>
@@ -152,5 +145,9 @@ const style = StyleSheet.create({
     mainWrapper: { backgroundColor: Colors.white, flex: 1 },
     scrollWrapper: { backgroundColor: Colors?.white },
     containWrapper: { backgroundColor: Colors?.white, flexGrow: 1, },
-    marginTop33: { marginTop: 25 }
+    marginTop33: { marginTop: 25 },
+    editIconWrapper:{position: "relative", left: 20, bottom: 25,
+    justifyContent: "center", alignItems: "center",
+    height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13},
+    paddingTop:{paddingTop: 24}
 })

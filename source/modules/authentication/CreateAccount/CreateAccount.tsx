@@ -1,7 +1,7 @@
 import { View, SafeAreaView, TouchableOpacity, StatusBar, Platform } from 'react-native';
 import React, { useContext } from 'react'
 import { style } from '../CreateAccount/style'
-import { LocalStorageKeys, ROUTES, String } from '../../../constants';
+import { getNotificationToken, LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { AuthHeader, ORtitle } from '../Authcomponents';
 import { colorBackGround, Colors, darkBackGround } from '../../../Theme';
 import { Google, Apple, Back } from '../../../assets/icons';
@@ -12,16 +12,18 @@ import { emailPattern } from '../../../regex/Regex';
 import { appleLoginIos, googleLogin, handleFirebaseError, } from '../../../services';
 import auth from '@react-native-firebase/auth';
 import { referralEarning, userLogin } from '../../../services/FireStoreServices';
-import * as LocalStorage from '../../../services/LocalStorage';
 import { GradientHeader, ButtonComponent, InputComponent, SocialMediaButton } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import * as LocalStorage from '../../../services/LocalStorage';
+import { Anaylitics } from '../../../constants/analytics';
+import { crashlyticslog } from '../../../services/crashlyticslog';
 
 export const CreateAccount = () => {
     const navigation = useNavigation()
     /**
    * Context to give userinput data and error message
    */
-    const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError, loading, setLoading } }: any = useContext(InputContextProvide)
+    const { storeCreator: { reward: { referReward }, darkModeTheme, userInput, dispatch, userInputError, dispatchError, loading, setLoading } }: any = useContext(InputContextProvide)
 
     /**
      *  This Function dispatch error message
@@ -36,8 +38,8 @@ export const CreateAccount = () => {
      * This Function trigger create user account in firebase request
     */
 
-    const onUserInfo = (userInfo: any) => {
-        console.log(userInfo)
+    const onUserInfo = async (userInfo: any) => {
+        let device_token: string = await getNotificationToken();
         let fullname = userInput?.fullName;
         let space: number | string;
         let firstname: any = "";
@@ -47,33 +49,35 @@ export const CreateAccount = () => {
         let videoUrl: any = '';
         let image: string = ''
         let watch_videos: any = []
+        let device_type: string = Platform.OS
         space = fullname.indexOf(" ");
         firstname = fullname.substring(0, space);
         lastname = fullname.substring(space + 1);
         email = userInfo?.email
         uid = userInfo?.uid
         image = userInfo?.photoURL
-        return { videoUrl, firstname, lastname, email, uid, image, watch_videos }
-
+        return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     }
     const handleCreateUserRequest = async () => {
         setLoading(true)
+        crashlyticslog("create account")
         auth().
             createUserWithEmailAndPassword(userInput?.email, userInput?.password).
             then(async (userResponse: any) => {
-                let userDetail = onUserInfo(userResponse?.user?._user)
-
+                let userDetail = await onUserInfo(userResponse?.user?._user)
                 await userLogin(userDetail).then(async (res) => {
-                    userInput?.referralCode?.length > 0 && (await referralEarning(userInput?.referralCode))
+                    userInput?.referralCode?.length > 0 && (await referralEarning(userInput?.referralCode, referReward))
                     await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
+                    await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);
+                    await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: ROUTES.TABLIST }],
+                    });
+                    dispatch({ type: type.EMPTY_STATE })
+                    Anaylitics("create_account", { user_id: userDetail?.uid, socialLogin: false, })
                 }).catch((err) => console.log(">>>err", err))
-                await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);
-                await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: ROUTES.TABLIST }],
-                });
-                dispatch({ type: type.EMPTY_STATE })
+
             }).
             catch((userError) => handleFirebaseError(userError?.code)).
             finally(() => setLoading(false))

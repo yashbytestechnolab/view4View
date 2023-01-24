@@ -151,6 +151,15 @@ export const BuyCoin = () => {
             </View>
         )
     }
+    useEffect(() => {
+        InAppPurches()
+    }, [])
+
+
+    const onReadioButtonPress = (idx) => {
+        setSelectRB(idx);
+    };
+
     return (
         <>
             <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
