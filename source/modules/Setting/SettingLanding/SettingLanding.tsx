@@ -5,7 +5,7 @@ import ToggleSwitch from 'toggle-switch-react-native'
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import { colorBackGround, Colors, darkBackGround, F40014, F50012, F60012, F60016, lightBackGround } from '../../../Theme';
+import { colorBackGround, Colors, darkBackGround, F40014, F50012, F60012, F60012Bold, F60016, lightBackGround } from '../../../Theme';
 import { ButtonComponent, Header } from '../../../components';
 import { NextIcon } from '../../../assets/icons';
 import { userDeatil } from '../../../services/FireStoreServices';
@@ -37,7 +37,6 @@ export const SettingLanding = () => {
   }
 
   useEffect(() => {
-    console.log("hyyu");
 
     getSocialLoginValue()
     getUserData()
@@ -69,7 +68,7 @@ export const SettingLanding = () => {
               item?.isHeaderUi ?
                 <View key={index?.toString()} style={[style.pinkTabWrapper, darkModeTheme && lightBackGround(darkModeTheme)]}>
                   {<item.icon key={index?.toString()} />}
-                  <Text key={index?.toString()} style={[F60012.textStyle, F60012.colorAccount, style.paddingLeft, colorBackGround(darkModeTheme)]}>
+                  <Text key={index?.toString()} style={[F60012Bold.textStyle, F60012.colorAccount, style.paddingLeft, colorBackGround(darkModeTheme)]}>
                     {item?.name}
                   </Text>
                 </View> :

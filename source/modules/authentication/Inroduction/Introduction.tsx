@@ -19,7 +19,7 @@ export const Introduction = () => {
     const [getCurrentIndex, setGetCurrentIndex] = useState<number>()
 
     const buttonHandler = () => {
-        const index: number = pageRef.current?.getCurrentIndex();
+         const index: number = pageRef.current?.getCurrentIndex();
 
         if (index === IntroductionData?.length - 1) {
 

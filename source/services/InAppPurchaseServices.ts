@@ -11,6 +11,12 @@ const itemSkus: any = Platform.select({
 
 
 export const getPurchaseData = async () => {
+    let fetch = await remoteConfig()?.fetchAndActivate()
+    if (fetch) {
+        let data: any = remoteConfig().getValue("in_app_purchase_data");
+        return JSON.parse(data?._value);
+
+    }
     let data: any = remoteConfig().getValue("in_app_purchase_data");
     return JSON.parse(data?._value);
 }
