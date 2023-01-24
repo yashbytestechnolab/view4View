@@ -15,19 +15,20 @@ import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { getSocialLoginValue, settingProfileArr } from '../../../constants/settingProfileArr';
 import { person } from '../../View/increment';
+import { Anaylitics } from '../../../constants/analytics';
 
 export const SettingLanding = () => {
   const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data, error }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
 
   const configUrl = () => {
-    remoteConfig().fetchAndActivate().then(()=>{
+    remoteConfig().fetchAndActivate().then(() => {
       const getConfigValue: any = remoteConfig().getValue("share_link").asString()
       const details = JSON?.parse(getConfigValue)
-      person.getConfigValueFnc(details)  
+      person.getConfigValueFnc(details)
     })
   }
-
+  let anaylitics: any = Anaylitics("user_info", { userName: data.firstname })
 
   const getUserData = async () => {
     dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
@@ -37,8 +38,6 @@ export const SettingLanding = () => {
   }
 
   useEffect(() => {
-    console.log("hyyu");
-
     getSocialLoginValue()
     getUserData()
     configUrl()
@@ -57,6 +56,7 @@ export const SettingLanding = () => {
 
   const handleDarkMode = () => {
     setDarkModeTheme(!darkModeTheme)
+    Anaylitics("dark_mode", { darkModeTheme })
     LocalStorage.setValue(LocalStorageKeys.DarkMode, { isDarkMode: !darkModeTheme })
   }
 
@@ -118,7 +118,7 @@ export const SettingLanding = () => {
           <View style={[{ flex: 1 }, darkBackGround(darkModeTheme)]}>
             {
               infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
-                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => navigation?.navigate(ROUTES?.EDITPROFILE)}>
+                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => { anaylitics(), navigation?.navigate(ROUTES?.EDITPROFILE) }}>
                   <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
                   <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
                     {data?.firstname + " " + data?.lastname}

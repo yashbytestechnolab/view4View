@@ -12,7 +12,7 @@ import { firebase } from '@react-native-firebase/auth'
 import { ORtitle } from '../Authcomponents'
 import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../services'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import LinearGradient from 'react-native-linear-gradient'
+import { crashlyticslog } from '../../../services/crashlyticslog'
 
 export const ForgotPassword = () => {
   /**
@@ -28,10 +28,9 @@ export const ForgotPassword = () => {
 
   const handlePasswordReset = async () => {
     if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
-
       handleFirebaseError("WrongEmail")
-
     } else {
+      crashlyticslog("Forgot password")
       return await firebase.auth().sendPasswordResetEmail(userInput?.email).then((response) => {
         handleFirebaseError("ForgotSucess")
         dispatch({ type: type.EMPTY_STATE });

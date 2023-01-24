@@ -10,6 +10,8 @@ import { rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
+import { Platform } from 'react-native';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 interface reward {
   adsRewarAmt: number | string,
@@ -40,8 +42,9 @@ export default function App() {
 
   useEffect(() => {
     getReward()
-    PushNotificationIOS.removeAllDeliveredNotifications();
+    Platform.OS === "ios" && PushNotificationIOS.removeAllDeliveredNotifications();
     requestUserPermission()
+    crashlytics().log("config file")
   }, [updateAlert])
 
   return (

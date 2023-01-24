@@ -139,8 +139,6 @@ export const addWatchUrl = async (...payload: Array<any | object>) => {
     })
   }
   else {
-    let datak=[...payload[0], payload[1]]
-    console.log("[...payload[0], payload[1]]",datak);
     return await userTable?.doc(userId)?.update({
       coin: payload[2],
       watch_videos: payload[0]?.length > 0 ? [...payload[0], payload[1]] : [payload[1]]
@@ -189,9 +187,9 @@ export const referralEarning = async (params: string, referReward: number) => {
     then(async (foo: any) => {
       if (foo?._docs?.length > 0) {
         let { coin, userId, device_token } = foo?._docs[0]?._data
-        await userTableLogin.doc(userId).update({ coin: coin + referReward })
+        await userTableLogin.doc(userId).update({ coin: coin + referReward || 300 })
         // This function Will Push notification for user he recvied 300 coin end other
-        person?.devicesPermission && (await notificationSend(device_token, `congratulation you recives ${referReward} coins`, "Reward"))
+        person?.devicesPermission && (await notificationSend(device_token, `congratulation you recives ${referReward || 300} coins`, "Reward"))
       }
     }).catch((err: any) => console.log("error", err))
 }

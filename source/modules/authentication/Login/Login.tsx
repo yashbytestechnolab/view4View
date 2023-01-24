@@ -20,7 +20,8 @@ import { handleFirebaseError } from '../../../services';
 import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Platform } from 'react-native';
-
+import { Anaylitics } from '../../../constants/analytics';
+import { crashlyticslog } from '../../../services/crashlyticslog';
 export const Login = () => {
   /**
    * Context to give userinput data and error message
@@ -40,6 +41,7 @@ export const Login = () => {
   }
   const handleUserLoginRequest = () => {
     setLoading(true)
+    crashlyticslog("login account")
     auth().signInWithEmailAndPassword(userInput?.email, userInput?.password).
       then(async (userResponse: any) => {
         let userDetail = userResponse?.user?._user
@@ -52,6 +54,7 @@ export const Login = () => {
         });
         await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
         dispatch({ type: type.EMPTY_STATE })
+        Anaylitics("login", { user_id: userDetail?.uid })
       }).
       catch((userError) => handleFirebaseError(userError.code)).
       finally(() => setLoading(false))

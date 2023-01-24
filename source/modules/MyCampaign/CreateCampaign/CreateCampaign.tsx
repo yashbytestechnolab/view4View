@@ -13,6 +13,8 @@ import { type } from '../../../constants/types';
 import { getYoutubeMeta, } from 'react-native-youtube-iframe';
 import { YT, campaign } from './interface';
 import GiftModel from '../../../components/GiftModel';
+import { Anaylitics } from '../../../constants/analytics';
+import { crashlyticslog } from '../../../services/crashlyticslog';
 
 export const CreateCampaign = () => {
 
@@ -39,6 +41,7 @@ export const CreateCampaign = () => {
 
   useEffect(() => {
     confingFnc()
+    crashlyticslog(`get config value @ ${ROUTES.CREATE_CAMPAIGN}`)
   }, [dropdownConfigValue])
 
   // config value
@@ -72,8 +75,6 @@ export const CreateCampaign = () => {
    */
   const handleAddCampaign = async () => {
     let duration = await youTubeRef?.current?.getDuration()
-    console.log("duration", duration);
-
     getYoutubeMeta(splitUrl).then((videoTitle: any) => {
       if (!(getBalance >= totalCost)) {
         setIsVisible(true)
@@ -84,6 +85,7 @@ export const CreateCampaign = () => {
       else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
         setLoading(true)
         const updateWallet = getBalance - totalCost
+        Anaylitics("add_campaign", { getBalance, updateWallet, totalCost, views })
         const userAddUrl: string = route?.params?.url
         /**
          * Create Campaign api call & decrement wallet amount

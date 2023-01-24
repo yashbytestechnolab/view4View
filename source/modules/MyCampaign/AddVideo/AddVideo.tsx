@@ -1,11 +1,13 @@
 import { Alert, SafeAreaView, Text, View } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { colorBackGround, darkBackGround, F40012, F50012, F60016, } from '../../../Theme'
 import { ButtonComponent, Header, InputComponent } from '../../../components'
 import { ROUTES, String, addVideoText } from '../../../constants'
 import { styles } from './styles'
 import { InputContextProvide } from '../../../context/CommonContext'
 import { useNavigation } from '@react-navigation/native'
+import { Anaylitics } from '../../../constants/analytics'
+import { crashlyticslog } from '../../../services/crashlyticslog'
 
 export const AddVideo = () => {
     const navigation = useNavigation()
@@ -21,7 +23,7 @@ export const AddVideo = () => {
                 getCampaignData?.map((res: { video_url: string | undefined; remaining_view: number | any }) => {
                     (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
                 }),
-                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, })) :
+                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), crashlyticslog(`add campaign @${ROUTES.ADDVIDEO}`), Anaylitics("add_video", { addVideoUrl })) :
                     (Alert.alert("Campaign is already running for this video. Please wait until campaign end."))
             )
     }

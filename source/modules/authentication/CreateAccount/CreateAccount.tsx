@@ -15,7 +15,8 @@ import { referralEarning, userLogin } from '../../../services/FireStoreServices'
 import { GradientHeader, ButtonComponent, InputComponent, SocialMediaButton } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as LocalStorage from '../../../services/LocalStorage';
-
+import { Anaylitics } from '../../../constants/analytics';
+import { crashlyticslog } from '../../../services/crashlyticslog';
 
 export const CreateAccount = () => {
     const navigation = useNavigation()
@@ -39,7 +40,6 @@ export const CreateAccount = () => {
 
     const onUserInfo = async (userInfo: any) => {
         let device_token: string = await getNotificationToken();
-
         let fullname = userInput?.fullName;
         let space: number | string;
         let firstname: any = "";
@@ -60,6 +60,7 @@ export const CreateAccount = () => {
     }
     const handleCreateUserRequest = async () => {
         setLoading(true)
+        crashlyticslog("create account")
         auth().
             createUserWithEmailAndPassword(userInput?.email, userInput?.password).
             then(async (userResponse: any) => {
@@ -74,6 +75,7 @@ export const CreateAccount = () => {
                         routes: [{ name: ROUTES.TABLIST }],
                     });
                     dispatch({ type: type.EMPTY_STATE })
+                    Anaylitics("create_account", { user_id: userDetail?.uid, socialLogin: false, })
                 }).catch((err) => console.log(">>>err", err))
 
             }).

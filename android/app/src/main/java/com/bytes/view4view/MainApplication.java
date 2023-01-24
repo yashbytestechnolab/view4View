@@ -12,6 +12,7 @@ import com.facebook.soloader.SoLoader;
 import com.bytes.view4view.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage;
 
 import cx.evermeet.versioninfo.RNVersionInfoPackage;
 
@@ -36,7 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
            new SplashScreenReactPackage();  //here
           new RNVersionInfoPackage() ;// here
           new LinearGradientPackage() ;// <---- and This!
-
+ new ReactNativeFirebaseAnalyticsPackage();
           return packages;
         }
 
