@@ -16,7 +16,7 @@ export const style = StyleSheet.create({
         borderTopStartRadius: 40,
         marginTop: -35,
     },
-
+googleWrapper:{ width: '92%', marginLeft:16},
     backToLoginTextWrapper: { flexDirection: 'row', justifyContent: 'center', paddingTop: 24 },
     welcomeHeader: {
         alignItems: "center", paddingTop: 30

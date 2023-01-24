@@ -55,8 +55,6 @@ export const ForgotPassword = () => {
 
         <BackButton />
         <GradientHeader />
-        {/* <LinearGradient colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]} style={{ flex: 1 }}> */}
-
         <View style={style.wrapperView} >
           <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }, darkBackGround(darkModeTheme)]}>
             <View style={[style.containerWrapper, darkBackGround(darkModeTheme)]} >
@@ -85,7 +83,7 @@ export const ForgotPassword = () => {
                 Platform?.OS == 'android' ?
                   <SocialMediaButton
                     colorBackGround={colorBackGround(darkModeTheme)}
-                    wrapperStyle={{ width: '92%', marginLeft:16}}
+                    wrapperStyle={style.googleWrapper}
                     socialMediaIcon={<Google />}
                     buttonTitle={String.commonString.signInWithGoogle}
                     onPress={() => { googleLogin(navigation, setLoading) }}
@@ -108,7 +106,6 @@ export const ForgotPassword = () => {
             </View>
           </View>
         </View>
-        {/* </LinearGradient> */}
       </KeyboardAwareScrollView>
     </>
   )

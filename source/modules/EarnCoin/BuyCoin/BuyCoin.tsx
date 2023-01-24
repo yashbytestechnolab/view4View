@@ -1,64 +1,132 @@
-import { View, Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native';
-import VersionInfo from 'react-native-version-info';
-import React from 'react';
+import { View, Text, SafeAreaView, StyleSheet, Platform, TouchableOpacity, ScrollView, } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
 import { String } from '../../../constants';
-import { Colors, F40014, F60016, F60024 } from '../../../Theme';
-import { Star } from '../../../assets/icons';
-import { Header } from '../../../components';
-
+import { Colors, darkBackGround, F40014, } from '../../../Theme';
+import { EarnCoin, } from '../../../assets/icons';
+import { ButtonComponent, Header } from '../../../components';
+import { InputContextProvide } from '../../../context/CommonContext';
+import makeRemoteConfig from "@react-native-firebase/remote-config";
 export const BuyCoin = () => {
-    const getVersionNo = VersionInfo.appVersion;
-    const multitext: any = "Play quiz by paying 30 coins\n Based on your score you will win coins\n use coins in sections of game like \nSee enjoy & win rewards coins"
-    const reanderCard = (color: string) => {
-        return (
-            <View style={[style.cardWrapper, { backgroundColor: color }]}>
-                <Star />
-                <Text style={[F60024?.textStyle, style.cardTitle]}>5000 Coins</Text>
-                <Text style={[F40014?.main, style.cardMultiText]}>
-                    {multitext}
-                </Text>
-                <View style={style.cardAmountWrapper}>
-                    <Text style={F60016?.textStyle, F60016?.semiBolt}>$8.34</Text>
-                </View>
+    const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
+    const [selectRB, setSelectRB] = useState(0)
+    const [parseData, setParseData] = useState()
 
-            </View>
-        )
+
+
+    const InAppPurches = () => {
+        const remoteConfig: any = makeRemoteConfig();
+
+        remoteConfig
+            .setDefaults({
+                someValue: {
+                    name: "1000 Coins",
+                    price: "89 ₹",
+                    subInfo: "MOST POPULAR"
+                }
+            })
+            .then(() => remoteConfig.fetchAndActivate())
+            .then(() => {
+                const getConfigValue: any = remoteConfig.getValue("inApp_purchase_description").asString()
+                const d = JSON.parse(getConfigValue)
+                setParseData(d)
+            })
+            .catch((error: any) => { console.error("error", error) });
     }
+    useEffect(() => {
+        InAppPurches()
+    }, [])
+
+
+    const onReadioButtonPress = (idx) => {
+        setSelectRB(idx);
+    };
+
     return (
         <>
             <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
             <View style={style.main}>
                 <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} />
-                <View style={{ flex: 0.8 }}>
-                    <ScrollView style={style.scrollWrapper} horizontal={true}
-                        nestedScrollEnabled={true}
-                        scrollEnabled={true}
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={{ flexGrow: 1 }}>
-                        {reanderCard(Colors?.gradient1)}
-                        {reanderCard(Colors?.yellow)}
-                        {reanderCard(Colors?.gradient3)}
-                    </ScrollView>
-                </View>
 
-                <View style={style?.marginHorizontal}>
-                    <Text style={F40014?.main}>Version{" " + getVersionNo}</Text>
-                    <Text style={[F40014?.main, style?.marginTop]}>Lorem Ipsum is simply dummy text of the printing and  simply dum industry dummy text</Text>
-                </View>
+                <ScrollView showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps={String.commonString.handled}
+                    style={[style.scroll, darkBackGround(darkModeTheme)]}
+                    scrollEnabled={true}
+                    contentContainerStyle={[style.scrollContain,]}>
+                    <EarnCoin />
+
+                    {
+                        parseData && parseData?.map((res, index) => {
+                            let isChecked = selectRB === index ? true : false;
+
+
+                            return (
+                                <TouchableOpacity activeOpacity={1} style={[style.card, isChecked && {
+                                    borderWidth: 1, borderColor: Colors?.primaryRed,
+                                }]} onPress={() => {
+                                    onReadioButtonPress(index)
+
+                                }}>
+                                    <View style={style.rbWrapper}>
+                                        <TouchableOpacity activeOpacity={1} style={style.isChecked} >
+                                            {isChecked && <View
+                                                style={style.selectRB} />}
+                                        </TouchableOpacity>
+                                        <View style={{ paddingLeft: 12 }}>
+                                            <Text style={[F40014?.main,]}>{res?.name}</Text>
+                                            <Text style={[F40014.main, { color: Colors?.primaryRed }]}>{res?.subInfo}</Text>
+                                        </View>
+                                    </View>
+
+                                    <Text style={[F40014?.main,]}>{res?.price}</Text>
+                                </TouchableOpacity>)
+
+                        })
+                    }
+                    <Text style={[F40014.main, style.subTextWrapper]}>{String?.commonString?.buyCoinSubText}</Text>
+                    <ButtonComponent buttonTitle={"Buy" +" "+parseData?.[selectRB]?.name} onPrees={() => { }} wrapperStyle={style.buttonWrapper} />
+                </ScrollView>
             </View>
         </>
     );
 };
 const style = StyleSheet.create({
+    scroll: {
+        backgroundColor: Colors.lightWhite,
+        flex: 1
+    },
+    scrollContain: {
+        flexGrow: 1,
+        backgroundColor: Colors?.lightWhite,
 
-    main: { flex: 1, backgroundColor: Colors?.white, height: '100%' },
-    leftRow: { flexDirection: 'row', alignItems: 'center' },
-    text: { margin: 10, fontSize: 30, color: Colors?.green, textAlign: 'center' },
-    cardTitle: { color: Colors?.white, paddingTop: 28, paddingBottom: 19 },
-    cardMultiText: { color: Colors?.white, lineHeight: 35, textAlign: 'center' },
-    scrollWrapper: { marginTop: 32, flex: 1, paddingHorizontal: 12 },
-    marginHorizontal: { marginHorizontal: 16 },
-    marginTop: { marginTop: 12 },
-    cardAmountWrapper: { marginTop: 20, backgroundColor: Colors?.white, height: 42, width: 100, borderRadius: 50, justifyContent: 'center', alignItems: 'center' },
-    cardWrapper: { height: 434, width: 315, borderRadius: 16, paddingTop: 52, paddingHorizontal: 24, alignItems: 'center', marginRight: 16 }
-});
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingTop: 40,
+
+        paddingBottom: Platform.OS === "ios" ? 100 : 70
+    },
+    logoWrapper: {},
+
+    main: { flex: 1, backgroundColor: Colors?.lightWhite, height: '100%' },
+    card: {
+        shadowColor: Colors?.whiteShadow,
+        width: '100%',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 4,
+        backgroundColor: Colors?.white,
+        padding: 16,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        marginTop: 30,
+        alignItems: 'center',
+        borderRadius: 8,
+        shadowRadius: 4,
+        elevation: 8,
+
+    },
+    subTextWrapper: { width: '100%', position: 'absolute', bottom: 180 },
+    rbWrapper: { flexDirection: 'row', alignItems: 'center' },
+    isChecked: { height: 22, width: 22, borderRadius: 13, borderColor: Colors?.primaryRed, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+    buttonWrapper: { width: '100%', position: 'absolute', bottom: 85 },
+    selectRB: { height: 10, width: 10, borderRadius: 8, backgroundColor: Colors.primaryRed, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }
+})
+

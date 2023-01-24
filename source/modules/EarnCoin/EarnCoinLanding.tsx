@@ -14,9 +14,15 @@ import { type as keys } from '../../constants/types';
 
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
-  const { storeCreator: { reward: { adsReward }, coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
+  /**
+   * InputContextProvide is get current coin and darktheame flag 
+   */
+  const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
 
+  /***
+   * showRewardAd is load the ad and show ad
+   */
   const showRewardAd = () => {
     setLoading(true)
     const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
@@ -38,6 +44,7 @@ export const EarnCoinLanding = () => {
       }
 
       if (type === "closed") {
+        setLoading(false)
       }
     });
     rewardAd.load();
