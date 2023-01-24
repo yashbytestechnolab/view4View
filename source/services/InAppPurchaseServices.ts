@@ -1,11 +1,19 @@
 import { Platform } from "react-native";
 import { showMessage } from "react-native-flash-message";
+import remoteConfig from '@react-native-firebase/remote-config';
+
 import * as RNIap from 'react-native-iap';
 
 const itemSkus: any = Platform.select({
     ios: ["1KCoins", "2.5KCoins", "5KCoins"],
     android: ["1kcoins", "2.5kcoins", "5kcoins"]
 });
+
+
+export const getPurchaseData = async () => {
+    let data: any = remoteConfig().getValue("in_app_purchase_data");
+    return JSON.parse(data?._value);
+}
 
 export const initilizeIAPConnection = async () => {
     await RNIap.initConnection()
@@ -64,6 +72,7 @@ export const onGetCoinAmount = async (rewardId: any) => {
 }
 
 export const onPurchase = async (sku: string) => {
+
     try {
         RNIap.requestPurchase({
             sku,
@@ -73,3 +82,8 @@ export const onPurchase = async (sku: string) => {
         console.warn(err.code, err.message);
     }
 };
+
+export const onGetProdutId = (productData: any) => {
+
+    return Platform.OS === "android" ? productData?.androidId : productData?.iosId
+}
