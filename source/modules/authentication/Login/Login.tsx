@@ -86,7 +86,6 @@ export const Login = () => {
     dispatchError({ type: type.EMPTY_STATE })
   }
 
-
   return (
     <>
       <SafeAreaView style={style.safeArea} />

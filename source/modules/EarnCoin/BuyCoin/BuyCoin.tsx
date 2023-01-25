@@ -105,12 +105,10 @@ export const BuyCoin = () => {
         });
     }, []);
 
-
-
     const onRewardCoins = async (rewardId: any) => {
         let redeemCoin: any = await onGetCoinAmount(rewardId);
         if (redeemCoin) {
-            await EarnCoin(getBalance)?.then((res: any) => {
+            await EarnCoin(getBalance + redeemCoin)?.then((res: any) => {
                 dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + redeemCoin })
                 showMessage({
                     message: `${redeemCoin} coins credited`,
@@ -161,7 +159,7 @@ export const BuyCoin = () => {
                     keyboardShouldPersistTaps={String.commonString.handled}
                     style={[style.scroll, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}
                     scrollEnabled={true}
-                    contentContainerStyle={[style.scrollContain, ,{ backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
+                    contentContainerStyle={[style.scrollContain, , { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
                     {
                         parseData && parseData?.map((res: {
                             name: string | number | boolean |

@@ -854,8 +854,6 @@ PODS:
     - React-Core
   - RNIap (11.0.7):
     - React-Core
-  - RNRate (1.2.12):
-    - React-Core
   - RNScreens (3.19.0):
     - React-Core
     - React-RCTImage
@@ -961,7 +959,6 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNIap (from `../node_modules/react-native-iap`)
-  - RNRate (from `../node_modules/react-native-rate`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNStoreReview (from `../node_modules/react-native-store-review`)
@@ -1130,8 +1127,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-google-signin/google-signin"
   RNIap:
     :path: "../node_modules/react-native-iap"
-  RNRate:
-    :path: "../node_modules/react-native-rate"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNShare:
@@ -1244,7 +1239,6 @@ SPEC CHECKSUMS:
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNGoogleSignin: 22e468a9474dbcb8618d8847205ad4f0b2575d13
   RNIap: b699b537ca34fa1cd15b78f4ec383ab502d01f6c
-  RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
   RNScreens: ea4cd3a853063cda19a4e3c28d2e52180c80f4eb
   RNShare: 48b3113cd089a2be8ff0515c3ae7a46a4db8a76b
   RNStoreReview: 18cf6adbd193eadb049d2f6c37ef2ab3d5a28706

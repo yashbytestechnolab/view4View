@@ -95,7 +95,6 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
 
 export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     // create login request for apple
-    setLoading(true)
     crashlyticslog("apple login")
     const appleAuthRequestResponse: any = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
@@ -105,7 +104,7 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
         identityToken,
         nonce
     } = appleAuthRequestResponse;
-
+    setLoading(true)
     if (identityToken) {
         const appleCredential = await auth.AppleAuthProvider.credential(identityToken, nonce);
         await auth()
