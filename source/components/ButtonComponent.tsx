@@ -1,8 +1,7 @@
 import { ActivityIndicator, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React, { useContext } from 'react'
-import EarnCoin from '../assets/icons/EarnCoin'
+import EarnCoin from '../assets/icons/BuyCoinIcon'
 import { Colors, F60016 } from '../Theme'
-import { InputContextProvide } from '../context/CommonContext'
 
 interface buttonProps {
     buttonTitle: string,

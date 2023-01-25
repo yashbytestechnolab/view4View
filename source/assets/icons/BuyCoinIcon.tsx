@@ -1,7 +1,7 @@
 import React from 'react'
 import { Path, Svg } from 'react-native-svg'
 
-export const EarnCoin = (props:any) => {
+export const BuyCoinIcon = (props:any) => {
     return (
         <Svg width={props?.width? props?.width:"70"} height={props?.height? props?.height:"81"} viewBox="0 0 17 21" fill="none">
             <Path d="M8.23775 2.74576C8.0482 2.74576 7.89453 2.5921 7.89453 2.40254V0.34322C7.89453 0.153665 8.0482 0 8.23775 0C8.42731 0 8.58097 0.153665 8.58097 0.34322V2.40254C8.58097 2.5921 8.42731 2.74576 8.23775 2.74576Z" fill="#F0C419" />
@@ -22,5 +22,5 @@ export const EarnCoin = (props:any) => {
     )
 }
 
-export default EarnCoin
+export default BuyCoinIcon
 
