@@ -12,7 +12,6 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
 import { Platform } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Rating } from './source/services/Rating';
 
 interface reward {
   adsRewarAmt: number | string,

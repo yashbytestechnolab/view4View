@@ -21,6 +21,7 @@ interface input {
     newPassword_show?: boolean,
 }
 
+
 const intialState: input = {
     fullName: "",
     email: "",
@@ -64,6 +65,8 @@ const CommonContext = ({ children, reward, setReward }: any) => {
     const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
     const [token, setToken] = useState("")
+    const [getReferralCode, setGetReferralCode] = useState("")
+
 
     const storeCreator = {
         userInput,
@@ -87,7 +90,9 @@ const CommonContext = ({ children, reward, setReward }: any) => {
         reward,
         setReward,
         token,
-        setToken
+        setToken,
+        getReferralCode,
+        setGetReferralCode
     }
 
     return (

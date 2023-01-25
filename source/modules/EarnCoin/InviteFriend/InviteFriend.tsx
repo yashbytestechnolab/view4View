@@ -7,9 +7,9 @@ import {
     Linking,
     StatusBar,
     TouchableOpacity,
-    ActivityIndicator,
+
 } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
 import Share from 'react-native-share';
 import {
@@ -26,38 +26,17 @@ import { style } from './style';
 import { InputContextProvide } from '../../../context/CommonContext';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { handleFirebaseError } from '../../../services/AlertMessage';
-import { userDeatil } from '../../../services';
+import { useRoute } from '@react-navigation/native';
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
-    const {
-        storeCreator: { darkModeTheme },
-    }: any = useContext(InputContextProvide);
-    const [referralCode, setReferralCode] = useState('');
-    const [loading, setloading] = useState(false);
-    const getConfigValue: any = remoteConfig()
+    const { storeCreator: { darkModeTheme,getReferralCode } }: any = useContext(InputContextProvide)
+     const getConfigValue: any = remoteConfig()
+
         .getValue('UpdateDescription')
         .asString();
     const data = JSON?.parse(getConfigValue);
-    const GetReferralCode = () => {
-        setloading(true);
-
-        userDeatil()
-            .then(res => {
-                setloading(false);
-                setReferralCode(res?.referral_code);
-            })
-            .catch(err => {
-                setloading(false);
-            })
-            .finally(() => {
-                setloading(false);
-            });
-    };
-    useEffect(() => {
-        GetReferralCode();
-    }, [darkModeTheme]);
     const ReferEarn = `View4view is very usefull app and you increase your view and earn coins.\n\nDownload now:  \n\niOS App: ${data?.Upadte?.ios} \n\nAndroid App: ${data?.Upadte?.android}
-    \n\nReferral code: ${referralCode}`;
+    \n\nReferral code: ${getReferralCode}`;
 
     const option = {
         title: 'Title',
@@ -78,7 +57,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                 });
     };
     const copyToClipboard = () => {
-        Clipboard.setString(referralCode?.toString());
+        Clipboard.setString(getReferralCode?.toString());
     };
 
     return (
@@ -115,21 +94,19 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                     <InviteFrdSvg />
                 </View>
 
-                {!loading ?
-                    !notifyUpdate && (
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            style={[style?.referralCodeWrapper, { backgroundColor: darkModeTheme ? Colors?.blackOpcity : Colors?.shadowPink },
-                            ]}
-                            onPress={() => {
-                                copyToClipboard();
-                                handleFirebaseError('refCode');
-                            }}>
-                            <Text style={[F60024?.textStyle, style?.refText]} numberOfLines={1}>
-                                {referralCode}
-                            </Text>
-                        </TouchableOpacity>) : <ActivityIndicator size={'small'} color={Colors?.primaryRed} style={style.marginTop} />
-                }
+                {/* {!loading ? */}
+                {!notifyUpdate && (
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        style={[style?.referralCodeWrapper, darkModeTheme && { backgroundColor: Colors?.blackOpcity }]}
+                        onPress={() => {
+                            copyToClipboard();
+                            handleFirebaseError('refCode');
+                        }}>
+                        <Text style={[F60024?.textStyle, style?.refText]} numberOfLines={1}>
+                            {getReferralCode}
+                        </Text>
+                    </TouchableOpacity>)}
                 <ButtonComponent
                     wrapperStyle={style.button}
                     buttonTitle={notifyUpdate ? 'Update' : String?.inviteFrd?.button}

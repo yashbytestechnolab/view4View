@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Header } from '../../components';
 import { String } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
@@ -9,8 +9,8 @@ import { CellType, EarnCoinData } from '../../services/jsonfile';
 import { style } from './style';
 import { InputContextProvide } from '../../context/CommonContext';
 import { TestIds, RewardedAd, RewardedAdEventType } from '@react-native-firebase/admob';
-import { EarnCoin } from '../../services';
-import { type as keys } from '../../constants/types';
+import { EarnCoin,  } from '../../services';
+import { type as keys,  } from '../../constants/types';
 
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
@@ -49,6 +49,7 @@ export const EarnCoinLanding = () => {
     });
     rewardAd.load();
   }
+  
 
   return (
     <>

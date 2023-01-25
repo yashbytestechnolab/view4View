@@ -21,6 +21,9 @@ export const SettingLanding = () => {
   const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
 
+  
+
+
   const configUrl = () => {
     remoteConfig().fetchAndActivate().then(() => {
       const getConfigValue: any = remoteConfig().getValue("share_link").asString()
@@ -40,6 +43,7 @@ export const SettingLanding = () => {
     getSocialLoginValue()
     getUserData()
     configUrl()
+
   }, [])
 
   const logoutHandle = async () => {
