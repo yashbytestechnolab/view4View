@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, StatusBar } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { colorBackGround, Colors, darkBackGround, F40014, } from '../../../Theme';
 import { useNavigation } from '@react-navigation/native';
 import { getNotificationToken, LocalStorageKeys, ROUTES, String } from '../../../constants';
@@ -22,6 +22,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Platform } from 'react-native';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
+import crashlytics from "@react-native-firebase/crashlytics"
 export const Login = () => {
   /**
    * Context to give userinput data and error message
@@ -65,22 +66,22 @@ export const Login = () => {
    *  Handle Login Flow to check login detail & validation
   */
   const handleLoginFlow = () => {
-    try {
-      let isFormValid: boolean = false
-      if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
-        dispatchHandler(type.EMAIL_ERROR, String.commonString.PleaseProvideValidEmailMsg)
-        isFormValid = true
-      }
-      if (userInput?.password?.length <= 0 || userInput?.password?.length < 8) {
-        isFormValid = true
-        dispatchHandler(type.PASSWORD_ERROR, String.commonString.PasswordErrorMsg)
-      }
-      !isFormValid && handleUserLoginRequest()
-    } catch (fncError) {
-      console.log("FncError", fncError);
-    }
+    crashlytics().crash()
+    // try {
+    //   let isFormValid: boolean = false
+    //   if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
+    //     dispatchHandler(type.EMAIL_ERROR, String.commonString.PleaseProvideValidEmailMsg)
+    //     isFormValid = true
+    //   }
+    //   if (userInput?.password?.length <= 0 || userInput?.password?.length < 8) {
+    //     isFormValid = true
+    //     dispatchHandler(type.PASSWORD_ERROR, String.commonString.PasswordErrorMsg)
+    //   }
+    //   !isFormValid && handleUserLoginRequest()
+    // } catch (fncError) {
+    //   console.log("FncError", fncError);
+    // }
   }
-
 
   return (
     <>

@@ -29,6 +29,7 @@ target 'view4view' do
   pod 'Firebase/AdMob'
   pod 'Firebase/Analytics'
   pod 'Firebase/Messaging'
+  pod 'RNFBCrashlytics', :path => '../node_modules/@react-native-firebase/crashlytics'
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'Firebase/Auth', :modular_headers => true
