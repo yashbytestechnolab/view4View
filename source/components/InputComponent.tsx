@@ -77,8 +77,9 @@ const innerStyles = StyleSheet.create({
     },
     eye: {
         position: "absolute",
-        right: 12,
-        top: Platform.OS === "ios" ? 35.5 : 37
+        right: 11,
+        padding:2,
+        top: Platform.OS === "ios" ? 34.5 : 36
     },
     hidePass: {
         height: 20,

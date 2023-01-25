@@ -19,7 +19,7 @@ export const Introduction = () => {
     const [getCurrentIndex, setGetCurrentIndex] = useState<number>()
 
     const buttonHandler = () => {
-         const index: number = pageRef.current?.getCurrentIndex();
+        const index: number = pageRef.current?.getCurrentIndex();
 
         if (index === IntroductionData?.length - 1) {
 
@@ -67,11 +67,12 @@ export const Introduction = () => {
                     paginationStyle={styles.pagenationStyle}
                     paginationStyleItem={styles.paginationStyle}
                     paginationDefaultColor={Colors.paginationGray}
-                    autoplayDelay={2}
-                    autoplayLoop
-                    index={0}
+                   // autoplay
+                    autoplayDelay={5}
+                    autoplayLoopKeepAnimation={true}	
                     data={IntroductionData}
                     renderItem={({ item }) => (renderDesign(item))}
+                    
                 />
                 {
                     getCurrentIndex != 3 && <TouchableOpacity onPress={skipHandler} style={styles.skipWrapper}>

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Header } from '../../components';
 import { String } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
@@ -9,13 +9,14 @@ import { CellType, EarnCoinData } from '../../services/jsonfile';
 import { style } from './style';
 import { InputContextProvide } from '../../context/CommonContext';
 import { TestIds, RewardedAd, RewardedAdEventType } from '@react-native-firebase/admob';
-import { EarnCoin } from '../../services';
-import { type as keys } from '../../constants/types';
+import { EarnCoin, userDeatil } from '../../services';
+import { type as keys, type } from '../../constants/types';
 
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
   const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
+  const [getReferralCode, setGetReferralCode] = useState("")
 
   const showRewardAd = () => {
     setLoading(true)
@@ -43,6 +44,15 @@ export const EarnCoinLanding = () => {
     });
     rewardAd.load();
   }
+  const GetReferralCode = async () => {
+    await userDeatil().then(async (res: any) => {
+      setGetReferralCode(res?.referral_code)
+    });
+  };
+  useEffect(() => {
+    GetReferralCode()
+  }, [getReferralCode])
+
 
   return (
     <>
@@ -56,7 +66,7 @@ export const EarnCoinLanding = () => {
                 <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? '#000' : Colors.cardshadow }]} activeOpacity={1}
                   onPress={() => {
                     item?.onPress == "SHOWADDS" ? showRewardAd() :
-                      navigation.navigate(item?.onPress)
+                      navigation.navigate(item?.onPress,{referralCode:getReferralCode})
                   }}>
                   <View style={style.leftRow}>
                     <item.svg />
