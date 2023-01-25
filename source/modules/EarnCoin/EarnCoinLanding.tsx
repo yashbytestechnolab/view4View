@@ -35,8 +35,8 @@ export const EarnCoinLanding = () => {
       }
 
       if (type === RewardedAdEventType.EARNED_REWARD) {
-        EarnCoin(getBalance)?.then((res) => {
-          dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + adsReward })
+        EarnCoin(getBalance, 100)?.then((res) => {
+          dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + 100 })
           setLoading(false)
         }).catch((err) => {
           navigation.goBack()
@@ -50,7 +50,7 @@ export const EarnCoinLanding = () => {
     rewardAd.load();
   }
   
-
+``
   return (
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
