@@ -167,7 +167,6 @@ export const F60016 = StyleSheet.create({
     bold:{
         fontFamily:Fonts?.InterBold,
         lineHeight:20
-
     }
 })
 
@@ -189,7 +188,9 @@ export const F60012 = StyleSheet.create({
     },
     colorAccount: {
         color: Colors.placeHolderTextBlack,
-    }
+        fontFamily:Fonts.InterBold
+    },
+
 })
 
 export const F70032 = StyleSheet.create({

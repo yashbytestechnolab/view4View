@@ -15,6 +15,7 @@ import { YT, campaign } from './interface';
 import GiftModel from '../../../components/GiftModel';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
+import { Fonts } from '../../../assets/fonts';
 
 export const CreateCampaign = () => {
 
@@ -110,7 +111,7 @@ export const CreateCampaign = () => {
           contentContainerStyle={[styles.contain, darkBackGround(darkModeTheme)]}>
           <YoutubePlayer ref={youTubeRef} height={203} videoId={splitUrl?.toString()} />
           <View style={styles.orderView}>
-            <Text style={[F60016.textStyle, F60016.campaign, colorBackGround(darkModeTheme)]}>
+            <Text style={[F60016.textStyle, F60016.campaign, F60016.bold, colorBackGround(darkModeTheme)]}>
               {commonString.OrderSettings}
             </Text>
           </View>

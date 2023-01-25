@@ -16,16 +16,14 @@ export const AddVideo = () => {
     const onAddVideo = () => {
         let youtubeUrl = 'https://youtu.be/'
         let expetedViewNotRepeat = false
-        addVideoUrl == "" || !youtubeUrl.includes(addVideoUrl.slice(0, 16)) ? null
+        addVideoUrl == "" || !youtubeUrl.includes(addVideoUrl?.slice(0, 16)) ? null
             :
-            (
-                getCampaignData.length > 0 &&
+            (getCampaignData.length > 0 &&
                 getCampaignData?.map((res: { video_url: string | undefined; remaining_view: number | any }) => {
                     (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
                 }),
                 !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), crashlyticslog(`add campaign @${ROUTES.ADDVIDEO}`), Anaylitics("add_video", { addVideoUrl })) :
-                    (Alert.alert("Campaign is already running for this video. Please wait until campaign end."))
-            )
+                    (Alert.alert("Campaign is already running for this video. Please wait until campaign end.")))
     }
 
     return (
@@ -53,7 +51,7 @@ export const AddVideo = () => {
                         />
                     </View>
                     <View style={styles.discretion}>
-                        <Text style={[F60016.textStyle, F60016.campaign, colorBackGround(darkModeTheme)]}>
+                        <Text style={[F60016.textStyle, F60016.campaign, F60016.bold, colorBackGround(darkModeTheme)]}>
                             {commonString.createContain}
                         </Text>
                         <View style={styles.disWrap}>

@@ -16,7 +16,7 @@ export const style = StyleSheet.create({
         borderTopStartRadius: 40,
         marginTop: -35,
     },
-googleWrapper:{ width: '92%', marginLeft:16},
+    googleWrapper: { width: '92%', marginLeft: 16 },
     backToLoginTextWrapper: { flexDirection: 'row', justifyContent: 'center', paddingTop: 24 },
     welcomeHeader: {
         alignItems: "center", paddingTop: 30
@@ -34,10 +34,10 @@ googleWrapper:{ width: '92%', marginLeft:16},
         marginTop: 4,
         backgroundColor: Colors.greyD8D8D8,
     },
-    socialMedia: { flexDirection: "row", justifyContent: "space-between" ,paddingLeft:16,paddingRight:10},
+    socialMedia: { flexDirection: "row", justifyContent: "space-between", paddingLeft: 16, paddingRight: 10 },
     wrapperStyle: {
         alignSelf: 'center',
-        width: '80%'
+        width: '90%'
     },
     marginTop: { marginTop: 33 },
     scroll: { backgroundColor: Colors.white },

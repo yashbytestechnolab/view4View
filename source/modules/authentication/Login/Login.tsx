@@ -45,16 +45,16 @@ export const Login = () => {
     auth().signInWithEmailAndPassword(userInput?.email, userInput?.password).
       then(async (userResponse: any) => {
         let userDetail = userResponse?.user?._user
+        Anaylitics("login", { user_id: userDetail?.uid })
         await getNotificationToken()
         await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
         await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
+        await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
+        dispatch({ type: type.EMPTY_STATE })
         navigation.reset({
           index: 0,
           routes: [{ name: ROUTES.TABLIST }],
         });
-        await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
-        dispatch({ type: type.EMPTY_STATE })
-        Anaylitics("login", { user_id: userDetail?.uid })
       }).
       catch((userError) => handleFirebaseError(userError.code)).
       finally(() => setLoading(false))
@@ -71,7 +71,7 @@ export const Login = () => {
         dispatchHandler(type.EMAIL_ERROR, String.commonString.PleaseProvideValidEmailMsg)
         isFormValid = true
       }
-      if (userInput?.password?.length <= 0 || userInput?.password?.length < 8) {
+      if (userInput?.password?.length <= 0 || userInput?.password?.length < 6) {
         isFormValid = true
         dispatchHandler(type.PASSWORD_ERROR, String.commonString.PasswordErrorMsg)
       }
@@ -79,6 +79,11 @@ export const Login = () => {
     } catch (fncError) {
       console.log("FncError", fncError);
     }
+  }
+
+  const clearStateValue = () => {
+    dispatch({ type: type.EMPTY_STATE });
+    dispatchError({ type: type.EMPTY_STATE })
   }
 
 
@@ -102,7 +107,7 @@ export const Login = () => {
                   mainTitle={String.commonString.WelcomeBack}
                   miniTitle={String.commonString.Donthaveanaccount}
                   actionTitle={String.commonString.SignUp}
-                  onPress={() => { navigation.navigate(ROUTES.CREATEACCOUNT); dispatch({ type: type.EMPTY_STATE }); dispatchError({ type: type.EMPTY_STATE }) }}
+                  onPress={() => { navigation.navigate(ROUTES.CREATEACCOUNT); }}
                 />
 
                 <InputComponent
@@ -126,7 +131,7 @@ export const Login = () => {
                   value={userInput?.password}
                   onChangeText={(value) => {
                     dispatch({ type: type.PASSWORD, payload: value });
-                    if (value?.length > 7) {
+                    if (value?.length > 5) {
                       dispatchError({ type: type.PASSWORD_ERROR, payload: "" })
                     }
                   }}
@@ -160,20 +165,20 @@ export const Login = () => {
                       socialMediaIcon={<Google />}
                       buttonTitle={String.commonString.signInWithGoogle}
                       colorBackGround={colorBackGround(darkModeTheme)}
-                      onPress={() => { googleLogin(navigation, setLoading) }}
+                      onPress={() => { clearStateValue(); googleLogin(navigation, setLoading) }}
                     />) :
                     (<View style={style.socialMedia}>
                       <SocialMediaButton
                         colorBackGround={colorBackGround(darkModeTheme)}
                         socialMediaIcon={<Google />}
                         buttonTitle={String.commonString.Google}
-                        onPress={() => { googleLogin(navigation, setLoading) }}
+                        onPress={() => { clearStateValue(); googleLogin(navigation, setLoading) }}
                       />
                       <SocialMediaButton
                         colorBackGround={colorBackGround(darkModeTheme)}
                         socialMediaIcon={<Apple gery={darkModeTheme} />}
                         buttonTitle={String.commonString.Apple}
-                        onPress={() => appleLoginIos(navigation, setLoading)}
+                        onPress={() => { clearStateValue(); appleLoginIos(navigation, setLoading) }}
                       />
                     </View>)
                 }

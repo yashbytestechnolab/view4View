@@ -46,7 +46,7 @@ export default function App() {
     Platform.OS === "ios" && PushNotificationIOS.removeAllDeliveredNotifications();
     requestUserPermission()
     crashlytics().log("config file")
-    Rating(updateAlert)
+    // Rating(updateAlert)
   }, [updateAlert])
 
   return (

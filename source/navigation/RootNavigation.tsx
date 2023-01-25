@@ -11,8 +11,6 @@ import { InputContextProvide } from '../context/CommonContext';
 import { Appearance } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-
-
 export const RootNavigation = () => {
   const Stack = createStackNavigator();
   const [userId, setUserId] = useState(null);
@@ -21,7 +19,6 @@ export const RootNavigation = () => {
   /**
    * This Function Check user id is in localstorage
    */
-  //then((darkMode: boolean | any) => darkMode ? setDarkModeTheme(darkMode?.isDarkMode) : setDarkModeTheme(false))
   const colorScheme = Appearance.getColorScheme();
   
   const authFlow = async () => {
@@ -43,7 +40,7 @@ export const RootNavigation = () => {
     authFlow()
     crashlytics().log("auth token")
   }, [userId]);
-
+  
   return (
     <>
       {

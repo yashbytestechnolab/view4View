@@ -17,6 +17,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as LocalStorage from '../../../services/LocalStorage';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
+import { string } from 'prop-types';
 
 export const CreateAccount = () => {
     const navigation = useNavigation()
@@ -38,6 +39,7 @@ export const CreateAccount = () => {
      * This Function trigger create user account in firebase request
     */
 
+    const { fullnameErrorMsg, PleaseProvideValidEmailMsg, PasswordErrorMsg, ConfirmPasswordErrorMsg } = String.commonString
     const onUserInfo = async (userInfo: any) => {
         let device_token: string = await getNotificationToken();
         let fullname = userInput?.fullName;
@@ -89,23 +91,25 @@ export const CreateAccount = () => {
     const handleCreateAccountFlow = () => {
         let isNotValidForm: boolean = false
         const { fullName, email, password, confirmPassword } = userInput
-        fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, String.commonString.fullnameErrorMsg));
-        (email?.length <= 0 || !emailPattern.test(email)) && (isNotValidForm = true, dispatchHandler(type.EMAIL_ERROR, String.commonString.PleaseProvideValidEmailMsg));
-        (password?.length <= 0 || password?.length < 8) && (isNotValidForm = true, dispatchHandler(type.PASSWORD_ERROR, String.commonString.PasswordErrorMsg));
-        (password !== confirmPassword) && (isNotValidForm = true, dispatchHandler(type.CONFIRM_PASSWORD_ERROR, String.commonString.ConfirmPasswordErrorMsg));
+        fullName?.trim()?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, fullnameErrorMsg));
+        (email?.length <= 0 || !emailPattern.test(email)) && (isNotValidForm = true, dispatchHandler(type.EMAIL_ERROR, PleaseProvideValidEmailMsg));
+        (password?.length <= 0 || password?.length < 6) && (isNotValidForm = true, dispatchHandler(type.PASSWORD_ERROR, PasswordErrorMsg));
+        (password !== confirmPassword) && (isNotValidForm = true, dispatchHandler(type.CONFIRM_PASSWORD_ERROR, ConfirmPasswordErrorMsg));
         !isNotValidForm && handleCreateUserRequest()
     }
 
+    const clearStateValue = () => {
+        dispatch({ type: type.EMPTY_STATE });
+        dispatchError({ type: type.EMPTY_STATE })
+    }
+    
     return (
         <>
             <SafeAreaView style={style.safeArea} />
             <StatusBar barStyle={String.StatusBar.lightContent} backgroundColor={Colors.gradient1} />
             <View style={[style.main, darkBackGround(darkModeTheme)]}>
                 <TouchableOpacity
-                    onPress={() => {
-                        navigation.goBack(); dispatch({ type: type.EMPTY_STATE });
-                        dispatchError({ type: type.EMPTY_STATE })
-                    }}
+                    onPress={() => { navigation.goBack(); clearStateValue() }}
                     style={style.headerBack}>
                     <Back />
                 </TouchableOpacity>
@@ -156,7 +160,7 @@ export const CreateAccount = () => {
                                     value={userInput?.password}
                                     onChangeText={(value) => {
                                         dispatch({ type: type.PASSWORD, payload: value });
-                                        if (value?.length > 7) {
+                                        if (value?.length > 5) {
                                             dispatchError({ type: type.PASSWORD_ERROR, payload: "" })
                                         }
                                     }}
@@ -172,7 +176,7 @@ export const CreateAccount = () => {
                                     value={userInput?.confirmPassword}
                                     onChangeText={(value) => {
                                         dispatch({ type: type.CONFIRM_PASSWORD, payload: value });
-                                        if (value?.length > 7 && value == userInput?.password) {
+                                        if (value?.length > 5 && value == userInput?.password) {
                                             dispatchError({ type: type.CONFIRM_PASSWORD_ERROR, payload: "" })
                                         }
                                     }}
@@ -208,20 +212,20 @@ export const CreateAccount = () => {
                                             wrapperStyle={{ width: '92%', marginLeft: 16 }}
                                             socialMediaIcon={<Google />}
                                             buttonTitle={String.commonString.signInWithGoogle}
-                                            onPress={() => { googleLogin(navigation, setLoading) }}
+                                            onPress={() => { googleLogin(navigation, setLoading); clearStateValue() }}
                                         /> :
                                         <View style={style.socialMedia}>
                                             <SocialMediaButton
                                                 colorBackGround={colorBackGround(darkModeTheme)}
                                                 socialMediaIcon={<Google />}
                                                 buttonTitle={String.commonString.Google}
-                                                onPress={() => { googleLogin(navigation, setLoading) }}
+                                                onPress={() => { googleLogin(navigation, setLoading); clearStateValue() }}
                                             />
                                             <SocialMediaButton
                                                 colorBackGround={colorBackGround(darkModeTheme)}
                                                 socialMediaIcon={<Apple gery={darkModeTheme} />}
                                                 buttonTitle={String.commonString.Apple}
-                                                onPress={() => appleLoginIos(navigation, setLoading)}
+                                                onPress={() => { clearStateValue(); appleLoginIos(navigation, setLoading) }}
                                             />
                                         </View>
                                 }

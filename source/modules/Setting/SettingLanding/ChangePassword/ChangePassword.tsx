@@ -43,13 +43,13 @@ export const ChangePassword = () => {
     const HandleChangePassword = () => {
         let isNotValidForm: boolean = false;
         const { oldPassword, newPassword, confirmPassword }: any = userInput;
-        (oldPassword?.length <= 0 || oldPassword?.length < 8) &&
+        (oldPassword?.length <= 0 || oldPassword?.length < 6) &&
             ((isNotValidForm = true),
                 dispatchHandler(
                     type.OLD_PASSWORD_ERROR,
                     String.commonString.OldPasswordError,
                 ));
-        (newPassword?.length <= 0 || newPassword?.length < 8) &&
+        (newPassword?.length <= 0 || newPassword?.length < 6) &&
             ((isNotValidForm = true),
                 dispatchHandler(
                     type.NEW_PASSWORD_ERROR,
@@ -127,7 +127,7 @@ export const ChangePassword = () => {
                         onChangeText={value => {
                             dispatch({ type: type.OLDPASSWORD, payload: value });
 
-                            if (value?.length > 7 && value == userInput?.oldPassword) {
+                            if (value?.length > 5 && value == userInput?.oldPassword) {
                                 dispatchError({ type: type.OLD_PASSWORD_ERROR, payload: '' });
                             }
                             dispatchError({ type: type.OLD_PASSWORD_ERROR, payload: '' });
@@ -149,7 +149,7 @@ export const ChangePassword = () => {
                         value={userInput?.newPassword}
                         onChangeText={value => {
                             dispatch({ type: type.NEWPASSWORD, payload: value });
-                            if (value?.length > 7 && value == userInput?.newPassword) {
+                            if (value?.length > 5 && value == userInput?.newPassword) {
                                 dispatchError({ type: type.NEW_PASSWORD_ERROR, payload: '' });
                             }
                             dispatchError({ type: type.NEW_PASSWORD_ERROR, payload: '' });
@@ -171,7 +171,7 @@ export const ChangePassword = () => {
                         value={userInput?.confirmPassword}
                         onChangeText={value => {
                             dispatch({ type: type.CONFIRM_PASSWORD, payload: value });
-                            if (value?.length > 7 && value == userInput?.oldPassword) {
+                            if (value?.length > 5 && value == userInput?.oldPassword) {
                                 dispatchError({
                                     type: type.CONFIRM_PASSWORD_ERROR,
                                     payload: '',
