@@ -18,6 +18,7 @@ interface input {
     newPassword_show?: boolean,
 }
 
+
 const intialState: input = {
     fullName: "",
     email: "",
@@ -60,6 +61,8 @@ const CommonContext = ({ children }: any) => {
     const [addVideoUrl, setVideoUrl] = useState()
     const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [getReferralCode, setGetReferralCode] = useState("")
+
 
     const storeCreator = {
         userInput,
@@ -79,7 +82,9 @@ const CommonContext = ({ children }: any) => {
         userDetail,
         dispatchuserDetail,
         addVideoUrl,
-        setVideoUrl
+        setVideoUrl,
+        getReferralCode,
+        setGetReferralCode
     }
 
     return (

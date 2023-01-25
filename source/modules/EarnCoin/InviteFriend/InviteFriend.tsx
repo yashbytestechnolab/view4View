@@ -29,10 +29,8 @@ import { handleFirebaseError } from '../../../services/AlertMessage';
 import { useRoute } from '@react-navigation/native';
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
-    const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
-    const route = useRoute()
-    const getReferralCode = route?.params?.referralCode
-    const getConfigValue: any = remoteConfig()
+    const { storeCreator: { darkModeTheme,getReferralCode } }: any = useContext(InputContextProvide)
+     const getConfigValue: any = remoteConfig()
 
         .getValue('UpdateDescription')
         .asString();
