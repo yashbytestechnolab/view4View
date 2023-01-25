@@ -108,7 +108,7 @@ export const BuyCoin = () => {
     const onRewardCoins = async (rewardId: any) => {
         let redeemCoin: any = await onGetCoinAmount(rewardId);
         if (redeemCoin) {
-            await EarnCoin(getBalance + redeemCoin)?.then((res: any) => {
+            await EarnCoin(getBalance, redeemCoin)?.then((res: any) => {
                 dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + redeemCoin })
                 showMessage({
                     message: `${redeemCoin} coins credited`,

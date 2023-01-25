@@ -18,7 +18,7 @@ export const MyCampaignLandingScreen = () => {
   let route: object | any = useRoute()
 
   /**context data coin and campaign data */
-  const { storeCreator: { campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
   /**
  * 
@@ -170,6 +170,7 @@ export const MyCampaignLandingScreen = () => {
             />
             <TouchableOpacity
               onPress={() => {
+                setVideoUrl("")
                 crashlyticslog(`add campaign video @ ${ROUTES.MYCAMPAIGN_LANDING}`);
                 navigation.navigate(ROUTES.ADDVIDEO)
               }}
