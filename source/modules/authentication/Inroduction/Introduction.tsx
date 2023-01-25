@@ -24,7 +24,7 @@ export const Introduction = () => {
          * buttonHandle handle swipe data and index
          */
     const buttonHandler = () => {
-        const index: number = pageRef.current?.getCurrentIndex();
+         const index: number = pageRef.current?.getCurrentIndex();
 
         if (index === IntroductionData?.length - 1) {
 

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Platform, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions, } from 'react-native';
 import { String } from '../../../constants';
-import { Colors, darkBackGround, F40014, } from '../../../Theme';
+import { colorBackGround, Colors, darkBackGround, F40014, } from '../../../Theme';
 import { EarnCoin } from '../../../services';
 // import { EarnCoinIcon } from '../../../assets/icons';
 import { ButtonComponent, Header } from '../../../components';
@@ -154,15 +154,14 @@ export const BuyCoin = () => {
     return (
         <>
             <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
-            <View style={style.main}>
+            <View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
                 <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} />
                 {loading && <Loader />}
                 <ScrollView showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps={String.commonString.handled}
-                    style={[style.scroll, darkBackGround(darkModeTheme)]}
+                    style={[style.scroll, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}
                     scrollEnabled={true}
-                    contentContainerStyle={[style.scrollContain,]}>
-                    {/* <EarnCoinIcon /> */}
+                    contentContainerStyle={[style.scrollContain, ,{ backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
                     {
                         parseData && parseData?.map((res: {
                             name: string | number | boolean |
@@ -179,7 +178,7 @@ export const BuyCoin = () => {
                             let isChecked = selectRB === index ? true : false;
 
                             return (
-                                <TouchableOpacity activeOpacity={1} style={[style.card, isChecked && {
+                                <TouchableOpacity activeOpacity={1} style={[style.card, darkBackGround(darkModeTheme), isChecked && {
                                     borderWidth: 1, borderColor: Colors?.primaryRed,
                                 }]} onPress={() => { onReadioButtonPress(index) }}
                                     disabled={loading}
@@ -190,7 +189,7 @@ export const BuyCoin = () => {
                                                 style={style.selectRB} />}
                                         </TouchableOpacity>
                                         <View style={{ paddingLeft: 12 }}>
-                                            <Text style={[F40014?.main,]}>{res?.name}</Text>
+                                            <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{res?.name}</Text>
                                             <Text style={[F40014.main, { color: Colors?.primaryRed }]}>{res?.subInfo}</Text>
                                         </View>
                                     </View>
@@ -200,7 +199,7 @@ export const BuyCoin = () => {
 
                         })
                     }
-                    <Text style={[F40014.main, style.subTextWrapper]}>{String?.commonString?.buyCoinSubText}</Text>
+                    <Text style={[F40014.main, style.subTextWrapper, colorBackGround(darkModeTheme)]}>{String?.commonString?.buyCoinSubText}</Text>
                     <ButtonComponent buttonTitle={"Buy" + " " + parseData?.[selectRB]?.name}
                         onPrees={() => onPressBuyCoins(parseData[selectRB])}
 

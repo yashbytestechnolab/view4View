@@ -8,7 +8,7 @@ export const String: any = {
         subTitle2: 'Create Your Campaigns, set the goals/ \ntargets, and skyrocket views on your added\nvideos like never before.',
         subTitle3: 'Are you running out? Not a problem. Watch \n other videos in the app to earn coins. Watch\nmore to earn more. It’s that simple!',
         subTitle4: 'Limitless access to browse and watch \n videos, earn coins, and create campaigns to \nadd your videos to boost views.',
-        skip: 'skip',
+        skip: 'Skip',
         getStartedNow: 'Get Started Now',
         next: 'Next'
 
@@ -19,7 +19,7 @@ export const String: any = {
         createCampaign: 'Create Campaign',
         forgotPassword: 'Forgot Password',
         myCampaign: 'My Campaign',
-        setting: 'Setting',
+        setting: 'Settings',
         view4view: 'view4view',
         YourCoin: 'Your Coin',
         AddYourVideo: "Add Your Video",
@@ -136,9 +136,9 @@ export const String: any = {
     },
     settingScreen:{
         EditProfile:'Edit profile',
-        AccountInformation:'Account Information',
+        AccountInformation:'ACCOUNT INFORMATION',
         ChangePassword:'Change password',
-        More:'More',
+        More:'MORE',
         RateUs:'Rate Us',
         InviteFriends:'Invite Friends',
         PrivacyPolicy :'Privacy Policy',
