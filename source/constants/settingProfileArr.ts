@@ -8,7 +8,6 @@ let socilaLoginFlag: boolean | undefined | null = false
 
 export const getSocialLoginValue = async () => {
     socilaLoginFlag = await LocalStorage.getValue(LocalStorageKeys.isSocialLogin)
-    console.log("socilaLoginFlag", socilaLoginFlag);
     return socilaLoginFlag
 }
 
@@ -16,7 +15,6 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.AccountInformation,
         isHeaderUi: true,
-
         isUiRender: false,
         action: "",
         icon: Profile,
@@ -29,7 +27,6 @@ export const settingProfileArr: any = [
         action: ROUTES?.EDITPROFILE,
         isHeaderUi: false,
         isUiRender: false,
-
         icon: "",
         isShowChangePass: () => {
             return false
@@ -41,7 +38,6 @@ export const settingProfileArr: any = [
         action: ROUTES?.CHANGEPASSWORD,
         isHeaderUi: false,
         isUiRender: false,
-
         icon: "",
         isShowChangePass: () => {
             return socilaLoginFlag
@@ -50,7 +46,6 @@ export const settingProfileArr: any = [
     {
         name: String?.settingScreen?.More,
         isHeaderUi: true,
-
         isUiRender: false,
         action: "",
         icon: More,
@@ -63,7 +58,6 @@ export const settingProfileArr: any = [
         action: "",
         isHeaderUi: false,
         isUiRender: false,
-
         icon: "",
         isShowChangePass: () => {
             return false
@@ -74,7 +68,6 @@ export const settingProfileArr: any = [
         action: ROUTES?.INVITEFRIEND,
         isHeaderUi: false,
         isUiRender: false,
-
         icon: "",
         isShowChangePass: () => {
             return false
@@ -86,7 +79,6 @@ export const settingProfileArr: any = [
         action: "",
         isHeaderUi: false,
         isUiRender: false,
-
         icon: "",
         isShowChangePass: () => {
             return false
@@ -94,9 +86,9 @@ export const settingProfileArr: any = [
     },
     {
         name: String?.settingScreen?.DarkMode,
+        id:"100",
         isUiRender: true,
         isHeaderUi: false,
-
         icon: "",
         action: "",
         isShowChangePass: () => {

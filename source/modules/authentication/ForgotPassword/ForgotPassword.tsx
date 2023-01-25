@@ -26,14 +26,18 @@ export const ForgotPassword = () => {
    * @returns firebase share link in user gmail and user change password 
    */
 
+  const clearState = () => {
+    dispatch({ type: type.EMPTY_STATE });
+  }
+
   const handlePasswordReset = async () => {
     if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
       handleFirebaseError("WrongEmail")
     } else {
       crashlyticslog("Forgot password")
       return await firebase.auth().sendPasswordResetEmail(userInput?.email).then((response) => {
+        clearState()
         handleFirebaseError("ForgotSucess")
-        dispatch({ type: type.EMPTY_STATE });
       }).catch((forgotError) => {
         handleFirebaseError(forgotError.code)
       })
@@ -76,7 +80,7 @@ export const ForgotPassword = () => {
               </View>
               <View style={style.backToLoginTextWrapper}>
                 <Text style={[F40014.main, colorBackGround(darkModeTheme)]}>{String.commonString?.backTo}</Text>
-                <Text onPress={() => { navigation.navigate(ROUTES?.LOGIN) }} style={[F40014.main, F40014?.color]}>{String.commonString?.SignIn}</Text>
+                <Text onPress={() => { navigation.navigate(ROUTES?.LOGIN); clearState() }} style={[F40014.main, F40014?.color]}>{String.commonString?.SignIn}</Text>
               </View>
               <ORtitle />
               {

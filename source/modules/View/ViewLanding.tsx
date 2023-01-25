@@ -46,6 +46,7 @@ export const ViewLanding = () => {
 
   const getNotificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
+    console.log("Ntoken",Ntoken);
     setToken(Ntoken)
   }
 
@@ -53,6 +54,7 @@ export const ViewLanding = () => {
     GetCoins("isInitialRenderUpdate");
     getNotificationToken()
   }, []);
+
 
   useEffect(() => {
     if (firstStart.current) {

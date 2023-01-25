@@ -46,7 +46,6 @@ const onUserInfo = async (userInfo: any) => {
         email = userInfo?.email
         uid = userInfo?.uid
         image = userInfo?.photoURL
-        console?.log("userLoginuserLogin", videoUrl, firstname, lastname, email, uid, image, watch_videos)
         return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     } else {
         let splitEmail = userInfo?.email.split("@");
@@ -72,18 +71,20 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
             .signInWithCredential(credential)
             .then(async (res: any) => {
                 let userDetail = await onUserInfo(res?.user?._user)
+                console.log("userDetail", userDetail);
+
                 if (res?.additionalUserInfo?.isNewUser) {
                     userLogin(userDetail).then(() => {
-                        Anaylitics("google_login", { user_id: userDetail?.uid, socialLogin: true })
                     })
                 }
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
+                await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
+                await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
+                Anaylitics("google_login", { user_id: userDetail?.uid, socialLogin: true })
                 navigation.reset({
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],
                 });
-                await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
-                await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
                 setLoading(false)
             }).finally(() => setLoading(false))
     } catch (error) {
@@ -118,11 +119,11 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
                 }
                 await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
+                await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
                 navigation.reset({
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],
                 });
-                await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
                 setLoading(false)
             }).catch(() => setLoading(false)).finally(() => setLoading(false))
     }

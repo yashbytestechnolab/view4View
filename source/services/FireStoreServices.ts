@@ -26,8 +26,6 @@ export const historyCampaign = firestore()?.collection("campaign_history")
 export const userLogin = async (...payload: Array<object | string | undefined | any>) => {
   let referralCode = referral_coupon_genrator("ASECFD14275GIZX")
   const getCurrentUserID = getUserID()
-  console.log("payload", payload);
-
   return await userTableLogin.doc(getCurrentUserID).set({
     coin: 0,
     email: payload[0]?.email,
@@ -49,7 +47,7 @@ export const get_coins = async () => {
 };
 
 export const userDeatil = async () => {
-  const userId = await getUserID()?.toString()
+  const userId =  getUserID()?.toString()
   return await (await userTableLogin.doc(userId).get()).data()
 }
 
@@ -58,7 +56,7 @@ export const updateProfile = async (...payload: Array<object | string | undefine
   const space = payload[0].indexOf(" ");
   const firstName = payload[0].substring(0, space);
   const lastname = payload[0].substring(space + 1);
-  const userId = await getUserID()?.toString()
+  const userId = getUserID()?.toString()
 
   await userTable?.doc(userId).update({
     firstname: firstName,
@@ -132,7 +130,7 @@ export const campaignHistory = async () => {
 }
 
 export const addWatchUrl = async (...payload: Array<any | object>) => {
-  const userId = await getUserID()?.toString()
+  const userId = getUserID()?.toString()
   if (payload[3]) {
     return await userTable?.doc(userId)?.update({
       coin: payload[2],
