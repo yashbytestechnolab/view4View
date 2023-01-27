@@ -45,6 +45,8 @@ export const RootNavigation = () => {
 
   useEffect(() => {
     authFlow()
+    crashlytics().log("config file")
+
   }, [userId, internetCheck]);
 
 

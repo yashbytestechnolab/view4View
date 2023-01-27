@@ -21,6 +21,7 @@ export const getPurchaseData = async () => {
     return JSON.parse(data?._value);
 }
 
+
 export const initilizeIAPConnection = async () => {
     await RNIap.initConnection()
         .then(async (connection) => {

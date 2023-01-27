@@ -10,7 +10,7 @@ import { rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
-import { Platform } from 'react-native';
+import { LogBox, Platform } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 interface reward {
@@ -22,13 +22,19 @@ export default function App() {
   const [reward, setReward] = useState<reward>({ adsRewarAmt: 0, referRewardAmt: 0 })
 
   const getReward = async () => {
-    let remo = await rewardConfig()
     UpdateBuildVersion(setUpdateAlert)
+
+    LogBox.ignoreAllLogs(); //Ignore all log notifications
+
+    let remo = await rewardConfig()
     setReward(remo)
   }
+  console.log(",ckxk");
   
 
   const requestUserPermission = async () => {
+    UpdateBuildVersion(setUpdateAlert)
+
     const authStatus = await messaging().requestPermission();
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -43,10 +49,10 @@ export default function App() {
 
   useEffect(() => {
     getReward()
+
     Platform.OS === "ios" && PushNotificationIOS.removeAllDeliveredNotifications();
     requestUserPermission()
     crashlytics().log("config file")
-    // Rating(updateAlert)
   }, [updateAlert])
 
   return (

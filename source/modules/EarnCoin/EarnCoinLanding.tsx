@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext,  useState } from 'react';
 import { Header } from '../../components';
 import { String } from '../../constants';
 import { useNavigation } from '@react-navigation/native';

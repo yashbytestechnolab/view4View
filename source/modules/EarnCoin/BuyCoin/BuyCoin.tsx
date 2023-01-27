@@ -11,7 +11,6 @@ import { useNavigation } from '@react-navigation/native';
 import { type as keys } from '../../../constants/types';
 import * as RNIap from 'react-native-iap';
 import { BuyCoinIcon } from '../../../assets/icons';
-import { Fonts } from '../../../assets/fonts';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;

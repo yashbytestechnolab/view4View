@@ -9,8 +9,7 @@ import {
     TouchableOpacity,
 
 } from 'react-native';
-import React, { useContext } from 'react';
-import remoteConfig from '@react-native-firebase/remote-config';
+import React, { useContext, useEffect, useState } from 'react';
 import Share from 'react-native-share';
 import {
     colorBackGround,
@@ -26,16 +25,18 @@ import { style } from './style';
 import { InputContextProvide } from '../../../context/CommonContext';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { handleFirebaseError } from '../../../services/AlertMessage';
-import { useRoute } from '@react-navigation/native';
+import { getBuildVersionData } from '../../../services/BuildVesrionCheck';
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
-    const { storeCreator: { darkModeTheme,getReferralCode } }: any = useContext(InputContextProvide)
-     const getConfigValue: any = remoteConfig()
+    const { storeCreator: { darkModeTheme, getReferralCode } }: any = useContext(InputContextProvide)
+    const [buildData, setBuildData] = useState("")
 
-        .getValue('UpdateDescription')
-        .asString();
-    const data = JSON?.parse(getConfigValue);
-    const ReferEarn = `View4view is very usefull app and you increase your view and earn coins.\n\nDownload now:  \n\niOS App: ${data?.Upadte?.ios} \n\nAndroid App: ${data?.Upadte?.android}
+    const getUpdateBuildData = async () => {
+        const IAPData = await getBuildVersionData();
+        setBuildData(IAPData)
+
+    }
+    const ReferEarn = `View4view is very usefull app and you increase your view and earn coins.\n\nDownload now:  \n\niOS App: ${buildData?.Upadte?.ios} \n\nAndroid App: ${buildData?.Upadte?.android}
     \n\nReferral code: ${getReferralCode}`;
 
     const option = {
@@ -43,11 +44,12 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
         message: ReferEarn,
         subject: 'Subject',
     };
+
     const handleButton = (notifyUpdate: boolean) => {
         notifyUpdate
             ? Platform?.OS == 'android'
-                ? Linking.openURL(data?.Upadte?.android)
-                : Linking.openURL(data?.Upadte?.ios)
+                ? Linking.openURL(buildData?.Upadte?.android)
+                : Linking.openURL(buildData?.Upadte?.ios)
             : Share.open(option)
                 .then((res: any) => {
                     return res;
@@ -59,6 +61,9 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
     const copyToClipboard = () => {
         Clipboard.setString(getReferralCode?.toString());
     };
+    useEffect(() => {
+        getUpdateBuildData()
+    }, [])
 
     return (
         <>
@@ -84,11 +89,11 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                     darkBackGround(darkModeTheme),
                 ]}>
                 <Text style={[F60024?.textStyle, style.title]}>
-                    {notifyUpdate ? data?.title : String?.inviteFrd?.title}
+                    {notifyUpdate ? buildData?.title : String?.inviteFrd?.title}
                 </Text>
                 <Text
                     style={[F40014?.main, style.subText, colorBackGround(darkModeTheme)]}>
-                    {notifyUpdate ? data?.subTtile : String?.inviteFrd?.subTitle}
+                    {notifyUpdate ? buildData?.subTtile : String?.inviteFrd?.subTitle}
                 </Text>
                 <View>
                     <InviteFrdSvg />
