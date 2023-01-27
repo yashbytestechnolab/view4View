@@ -23,9 +23,9 @@ export const String: any = {
         view4view: 'view4view',
         YourCoin: 'Your Coin',
         AddYourVideo: "Add Your Video",
-        buyCoin:'Buy coin',
-        editProfile:'Edit Profile',
-        changePassword:'Change Password'
+        buyCoin: 'Buy coin',
+        editProfile: 'Edit Profile',
+        changePassword: 'Change Password'
     },
     homeTab: {
         plus: '+',
@@ -70,8 +70,8 @@ export const String: any = {
         PleaseProvideValidEmailMsg: "Please enter a valid email address",
         fullnameErrorMsg: "Please enter your full name",
         PasswordErrorMsg: "Your password must be at least 6 characters long",
-        OldPasswordError:"Your password must be at least 6 characters long",
-        NewPAsswordError:"Your password must be at least 6 characters long",
+        OldPasswordError: "Your password must be at least 6 characters long",
+        NewPAsswordError: "Your password must be at least 6 characters long",
         ConfirmPasswordErrorMsg: "Confirm password doesn't match",
         darkcontent: "dark-content",
         signInWithGoogle: 'Sign in with Google',
@@ -86,16 +86,16 @@ export const String: any = {
         AddCampaign: "Add Campaign",
         Warning: "Note:",
         EarnPoints: "Earn Points",
-        emptyList:"No campaigns available. Please create campaigns by clicking on the + button",
-        viewsofthisvideo:"views of this video",
+        emptyList: "No campaigns available. Please create campaigns by clicking on the + button",
+        viewsofthisvideo: "views of this video",
         viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app.",
-        oldPassword:'Old password',
-        newPassword:'New password',
-        conformPassword:'Confirm password',
-        ReferralCode :'Referral code ',
-        ReferralCodeEnter :'Enter referral code',
-        save:'Save',
-        buyCoinSubText:'Contact us if you have some special orders or if you\n have any problem with in-app-purchase by sending\n an email to :mobile.apps@bytestechnolab.com'
+        oldPassword: 'Old password',
+        newPassword: 'New password',
+        conformPassword: 'Confirm password',
+        ReferralCode: 'Referral code ',
+        ReferralCodeEnter: 'Enter referral code',
+        save: 'Save',
+        buyCoinSubText: 'Contact us if you have some special orders or if you have any problem with in-app-purchase by sending an email to :mobile.apps@bytestechnolab.com'
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
@@ -106,9 +106,9 @@ export const String: any = {
         userNotFound: "User not found",
         emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
-        Something:"Something went wrong",
-        refCode:'Copied text !',
-        Default:"default"
+        Something: "Something went wrong",
+        refCode: 'Copied text !',
+        Default: "default"
     },
     inviteFrd: {
         headerTitle: 'Invite friends',
@@ -134,16 +134,16 @@ export const String: any = {
     keyboardType: {
         email: 'email-address'
     },
-    settingScreen:{
-        EditProfile:'Edit profile',
-        AccountInformation:'ACCOUNT INFORMATION',
-        ChangePassword:'Change password',
-        More:'MORE',
-        RateUs:'Rate Us',
-        InviteFriends:'Invite Friends',
-        PrivacyPolicy :'Privacy Policy',
-        DarkMode:'Dark Mode',
-        logout:'Sign out'
+    settingScreen: {
+        EditProfile: 'Edit profile',
+        AccountInformation: 'ACCOUNT INFORMATION',
+        ChangePassword: 'Change password',
+        More: 'MORE',
+        RateUs: 'Rate Us',
+        InviteFriends: 'Invite Friends',
+        PrivacyPolicy: 'Privacy Policy',
+        DarkMode: 'Dark Mode',
+        logout: 'Sign out'
 
     }
 

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Platform, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions, } from 'react-native';
 import { String } from '../../../constants';
-import { colorBackGround, Colors, darkBackGround, F40014, lightBackGround, } from '../../../Theme';
+import { colorBackGround, Colors, F40014, lightBackGround, } from '../../../Theme';
 import { EarnCoin } from '../../../services';
 import { ButtonComponent, Header } from '../../../components';
 import { InputContextProvide } from '../../../context/CommonContext';
@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { type as keys } from '../../../constants/types';
 import * as RNIap from 'react-native-iap';
 import { BuyCoinIcon } from '../../../assets/icons';
+import { Fonts } from '../../../assets/fonts';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
@@ -203,7 +204,7 @@ export const BuyCoin = () => {
 
                         })
                     }
-                    <Text style={[F40014.main, style.subTextWrapper, colorBackGround(darkModeTheme)]}>{String?.commonString?.buyCoinSubText}</Text>
+                    <Text style={[style.subTextWrapper, colorBackGround(darkModeTheme)]}>{String?.commonString?.buyCoinSubText}</Text>
                     <ButtonComponent buttonTitle={"Buy" + " " + parseData?.[selectRB]?.name}
                         onPrees={() => onPressBuyCoins(parseData[selectRB])}
 
@@ -247,7 +248,10 @@ const style = StyleSheet.create({
         shadowRadius: 4,
         elevation: 8,
     },
-    subTextWrapper: { width: '100%', marginVertical: 50 },
+    subTextWrapper: {  marginVertical: 50,width:'100%',color: Colors.placeHolderTextBlack,
+    fontSize: 14,
+    fontWeight: "400",
+     },
     rbWrapper: { flexDirection: 'row', alignItems: 'center' },
     isChecked: { height: 22, width: 22, borderRadius: 13, borderColor: Colors?.primaryRed, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
     buttonWrapper: { width: '100%', },
