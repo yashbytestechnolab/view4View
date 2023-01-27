@@ -26,6 +26,7 @@ export default function App() {
     UpdateBuildVersion(setUpdateAlert)
     setReward(remo)
   }
+  
 
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
@@ -53,7 +54,7 @@ export default function App() {
       <CommonContext reward={reward} setReward={setReward}>
         <AppLoader />
         <>
-          <NavigationContainer>
+           <NavigationContainer>
             {updateAlert ?
               <InviteFriend notifyUpdate={updateAlert} /> :
               <>
@@ -62,7 +63,8 @@ export default function App() {
               </>
             }
 
-          </NavigationContainer>
+          </NavigationContainer> 
+
         </>
       </CommonContext>
 

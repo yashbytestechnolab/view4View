@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { colorBackGround, Colors, darkBackGround, F40012Black, F60016, F60024, F70032 } from '../../../Theme'
 import { ButtonComponent, Header } from '../../../components'
 import { ROUTES, String } from '../../../constants'
-import { EarnCoin, ViewCoinIcon } from '../../../assets/icons'
+import { BuyCoinIcon, ViewCoinIcon } from '../../../assets/icons'
 import { useNavigation } from '@react-navigation/native'
 import { style } from './style'
 import { InputContextProvide } from '../../../context/CommonContext'
@@ -33,7 +33,7 @@ export const ViewCoin = () => {
                     contentContainerStyle={[style.scrollContain,darkBackGround(darkModeTheme)]}>
                     <Text style={[F60024?.textStyle, style.textAlign,colorBackGround(darkModeTheme)]}> {String?.viewCoinScreen?.yourCoins}</Text>
                     <View style={style.coinTextWrapper}>
-                        <EarnCoin height={40} width={32} />
+                        <BuyCoinIcon height={40} width={32} />
                         <Text style={[F70032.textStyle, style.paddingLeft,]}>{getBalance}</Text>
                     </View>
                     <Text style={[F60016?.textStyle, { color: Colors?.black },colorBackGround(darkModeTheme)]}>{String?.viewCoinScreen?.title}</Text>
