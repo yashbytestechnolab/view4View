@@ -66,6 +66,8 @@ const CommonContext = ({ children, reward, setReward }: any) => {
     const [loading, setLoading] = useState(false)
     const [token, setToken] = useState("")
     const [getReferralCode, setGetReferralCode] = useState("")
+    const [netInfo, setNetInfo] = useState<boolean | null>(true)
+
 
 
     const storeCreator = {
@@ -92,7 +94,9 @@ const CommonContext = ({ children, reward, setReward }: any) => {
         token,
         setToken,
         getReferralCode,
-        setGetReferralCode
+        setGetReferralCode,
+        netInfo,
+        setNetInfo
     }
 
     return (

@@ -26,7 +26,7 @@ import { crashlyticslog } from '../../services/crashlyticslog';
 
 export const ViewLanding = () => {
 
-  const { storeCreator: { setToken,coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
+  const { storeCreator: { setToken,coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme,netInfo, setGetReferralCode } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -55,7 +55,7 @@ export const ViewLanding = () => {
   useEffect(() => {
     GetCoins("isInitialRenderUpdate");
     getNotificationToken()
-  }, []);
+  }, [netInfo]);
 
 
   useEffect(() => {
