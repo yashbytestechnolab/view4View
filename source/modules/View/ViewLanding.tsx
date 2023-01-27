@@ -68,7 +68,7 @@ export const ViewLanding = () => {
         if (timer > 0) {
           setTimer(timer - 1);
         }
-      }, 5000);
+      }, 1000);
     } else {
       clearInterval(controlRef.current);
     }
@@ -181,7 +181,7 @@ export const ViewLanding = () => {
         if (add_Video_Url?.length > 0) {
           person?.emptyCount();
           params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
-          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { vid: add_Video_Url, doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
+          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: {  _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
         } else {
           if (person.retryCount >= 3) {
             dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })
