@@ -11,6 +11,7 @@ import {
   getPlayVideoList,
   getUserID,
   get_coins,
+  userDeatil,
 } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
@@ -22,9 +23,10 @@ import Lottie from 'lottie-react-native';
 import * as LocalStorage from '../../services/LocalStorage';
 import { Anaylitics } from '../../constants/analytics';
 import { crashlyticslog } from '../../services/crashlyticslog';
-export const ViewLanding = () => {
-  const { storeCreator: { setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme } }: any = useContext(InputContextProvide)
 
+export const ViewLanding = () => {
+
+  const { storeCreator: { setToken,coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme,netInfo, setGetReferralCode } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -46,13 +48,15 @@ export const ViewLanding = () => {
 
   const getNotificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
+    console.log("Ntoken",Ntoken);
     setToken(Ntoken)
   }
 
   useEffect(() => {
     GetCoins("isInitialRenderUpdate");
     getNotificationToken()
-  }, []);
+  }, [netInfo]);
+
 
   useEffect(() => {
     if (firstStart.current) {
@@ -98,13 +102,24 @@ export const ViewLanding = () => {
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
     }
   }
+   /**
+    * user get referral code and set in csetGetReferralCode context 
+    */
+  const GetReferralCode = async () => {
+    await userDeatil().then(async (res: any) => {
+      setGetReferralCode(res?.referral_code)
+    });
+  };
 
   useEffect(() => {
+
     if (timer === 0) {
       GetEarning();
       animationProgress?.current.setValue(0)
       showAnimation()
     }
+    GetReferralCode()
+
   }, [timer]);
 
   const onStateChange = async (state: string) => {

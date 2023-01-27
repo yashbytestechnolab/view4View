@@ -21,6 +21,9 @@ export const SettingLanding = () => {
   const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
 
+  
+
+
   const configUrl = () => {
     remoteConfig().fetchAndActivate().then(() => {
       const getConfigValue: any = remoteConfig().getValue("share_link").asString()
@@ -28,7 +31,6 @@ export const SettingLanding = () => {
       person.getConfigValueFnc(details)
     })
   }
-  let anaylitics: any = Anaylitics("user_info", { userName: data.firstname })
 
   const getUserData = async () => {
     dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
@@ -41,6 +43,7 @@ export const SettingLanding = () => {
     getSocialLoginValue()
     getUserData()
     configUrl()
+
   }, [])
 
   const logoutHandle = async () => {
@@ -79,19 +82,20 @@ export const SettingLanding = () => {
                     <TouchableOpacity
                       key={index.toString()}
                       onPress={() => {
-                        (index == 6 || index == 4) ? actionLinking(index)
+                        (index == 6 || index == 4) ? actionLinking(index) : index == 7 ? handleDarkMode()
                           : navigation.navigate(item?.action)
                       }}
                       activeOpacity={1} style={style.tabWrapper}>
                       <Text key={item?.name} style={[F40014?.main, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
-                      {!item?.isUiRender ? (<NextIcon key={item?.name} color={darkModeTheme ? Colors?.white : Colors?.black} />) : <ToggleSwitch
-                        key={item?.name}
-                        isOn={darkModeTheme}
-                        onColor={Colors?.green}
-                        offColor={Colors?.toggleBG}
-                        size="small"
-                        onToggle={() => { handleDarkMode() }}
-                      />}
+                      {!item?.isUiRender ? (<NextIcon key={item?.name} color={darkModeTheme ? Colors?.white : Colors?.black} />) :
+                        <ToggleSwitch
+                          key={item?.id}
+                          isOn={darkModeTheme}
+                          onColor={Colors?.green}
+                          offColor={Colors?.toggleBG}
+                          size="small"
+                          onToggle={() => { handleDarkMode() }}
+                        />}
                     </TouchableOpacity>
                   }
                 </>
@@ -115,10 +119,10 @@ export const SettingLanding = () => {
         <Header title={String?.headerTitle?.setting} showCoin={false} />
         <ScrollView style={[style.scrollWrapper, darkBackGround(darkModeTheme)]} showsVerticalScrollIndicator={false}
           scrollEnabled={true} contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}>
-          <View style={[ style.flex, darkBackGround(darkModeTheme)]}>
+          <View style={[style.flex, darkBackGround(darkModeTheme)]}>
             {
               infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
-                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => { anaylitics(), navigation?.navigate(ROUTES?.EDITPROFILE) }}>
+                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => { navigation?.navigate(ROUTES?.EDITPROFILE) }}>
                   <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
                   <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
                     {data?.firstname + " " + data?.lastname}

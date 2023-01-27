@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Platform, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions, } from 'react-native';
 import { String } from '../../../constants';
-import { colorBackGround, Colors, darkBackGround, F40014, } from '../../../Theme';
+import { colorBackGround, Colors, F40014, lightBackGround, } from '../../../Theme';
 import { EarnCoin } from '../../../services';
-// import { EarnCoinIcon } from '../../../assets/icons';
 import { ButtonComponent, Header } from '../../../components';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { getItems, getPurchaseData, initilizeIAPConnection, onGetCoinAmount, onGetProdutId, onPurchase } from '../../../services/InAppPurchaseServices';
@@ -11,6 +10,8 @@ import { showMessage } from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { type as keys } from '../../../constants/types';
 import * as RNIap from 'react-native-iap';
+import { BuyCoinIcon } from '../../../assets/icons';
+import { Fonts } from '../../../assets/fonts';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
@@ -105,12 +106,10 @@ export const BuyCoin = () => {
         });
     }, []);
 
-
-
     const onRewardCoins = async (rewardId: any) => {
         let redeemCoin: any = await onGetCoinAmount(rewardId);
         if (redeemCoin) {
-            await EarnCoin(getBalance)?.then((res: any) => {
+            await EarnCoin(getBalance, redeemCoin)?.then((res: any) => {
                 dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + redeemCoin })
                 showMessage({
                     message: `${redeemCoin} coins credited`,
@@ -157,11 +156,16 @@ export const BuyCoin = () => {
             <View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
                 <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} />
                 {loading && <Loader />}
+
                 <ScrollView showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps={String.commonString.handled}
                     style={[style.scroll, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}
                     scrollEnabled={true}
-                    contentContainerStyle={[style.scrollContain, ,{ backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
+                    contentContainerStyle={[style.scrollContain, , { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
+                    <View style={{ alignItems: 'center', marginTop: 20 }}>
+                        <BuyCoinIcon />
+
+                    </View>
                     {
                         parseData && parseData?.map((res: {
                             name: string | number | boolean |
@@ -178,7 +182,8 @@ export const BuyCoin = () => {
                             let isChecked = selectRB === index ? true : false;
 
                             return (
-                                <TouchableOpacity activeOpacity={1} style={[style.card, darkBackGround(darkModeTheme), isChecked && {
+                                <TouchableOpacity activeOpacity={1} style={[style.card, lightBackGround(darkModeTheme),
+                                { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, }, isChecked && {
                                     borderWidth: 1, borderColor: Colors?.primaryRed,
                                 }]} onPress={() => { onReadioButtonPress(index) }}
                                     disabled={loading}
@@ -199,7 +204,7 @@ export const BuyCoin = () => {
 
                         })
                     }
-                    <Text style={[F40014.main, style.subTextWrapper, colorBackGround(darkModeTheme)]}>{String?.commonString?.buyCoinSubText}</Text>
+                    <Text style={[style.subTextWrapper, colorBackGround(darkModeTheme)]}>{String?.commonString?.buyCoinSubText}</Text>
                     <ButtonComponent buttonTitle={"Buy" + " " + parseData?.[selectRB]?.name}
                         onPrees={() => onPressBuyCoins(parseData[selectRB])}
 
@@ -215,7 +220,7 @@ export const BuyCoin = () => {
 const style = StyleSheet.create({
     scroll: {
         backgroundColor: Colors.lightWhite,
-        flex: 1
+        //flex: 1
     },
     scrollContain: {
         flexGrow: 1,
@@ -223,13 +228,11 @@ const style = StyleSheet.create({
 
         alignItems: 'center',
         paddingHorizontal: 16,
-        paddingTop: 40,
-
         paddingBottom: Platform.OS === "ios" ? 100 : 70
     },
     logoWrapper: {},
 
-    main: { flex: 1, backgroundColor: Colors?.lightWhite, height: '100%' },
+    main: { flex: 1, backgroundColor: Colors?.lightWhite, height: Height },
     card: {
         shadowColor: Colors?.whiteShadow,
         width: '100%',
@@ -244,12 +247,14 @@ const style = StyleSheet.create({
         borderRadius: 8,
         shadowRadius: 4,
         elevation: 8,
-
     },
-    subTextWrapper: { width: '100%', position: 'absolute', bottom: 180 },
+    subTextWrapper: {  marginVertical: 50,width:'100%',color: Colors.placeHolderTextBlack,
+    fontSize: 14,
+    fontWeight: "400",
+     },
     rbWrapper: { flexDirection: 'row', alignItems: 'center' },
     isChecked: { height: 22, width: 22, borderRadius: 13, borderColor: Colors?.primaryRed, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
-    buttonWrapper: { width: '100%', position: 'absolute', bottom: 85 },
+    buttonWrapper: { width: '100%', },
     selectRB: { height: 10, width: 10, borderRadius: 8, backgroundColor: Colors.primaryRed, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' },
     loaderHead: { position: 'absolute', top: Height / 2.3, left: Width / 2.3, zIndex: 1000 }
 })

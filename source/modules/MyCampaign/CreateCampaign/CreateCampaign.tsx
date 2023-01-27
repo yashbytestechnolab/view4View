@@ -19,7 +19,7 @@ import { crashlyticslog } from '../../../services/crashlyticslog';
 export const CreateCampaign = () => {
 
   const navigation: any = useNavigation();
-  const { storeCreator: { token, setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { token, loading, setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
@@ -95,6 +95,18 @@ export const CreateCampaign = () => {
       }
     }).catch((err: any) => Alert.alert("Entered video url looks invalid. Please make sure you've entered correct video url"))
   }
+  function debounce(time: number) {
+    let getTimeId: any | number
+    clearTimeout(getTimeId)
+    return () => {
+      if (getTimeId) clearTimeout(getTimeId)
+      getTimeId = setTimeout(() => {
+        handleAddCampaign()
+      }, 400);
+    }
+  }
+
+  const addCampaignDebounce = debounce(200)
 
   return (
     <>
@@ -110,7 +122,7 @@ export const CreateCampaign = () => {
           contentContainerStyle={[styles.contain, darkBackGround(darkModeTheme)]}>
           <YoutubePlayer ref={youTubeRef} height={203} videoId={splitUrl?.toString()} />
           <View style={styles.orderView}>
-            <Text style={[F60016.textStyle, F60016.campaign, colorBackGround(darkModeTheme)]}>
+            <Text style={[F60016.textStyle, F60016.campaign, F60016.bold, colorBackGround(darkModeTheme)]}>
               {commonString.OrderSettings}
             </Text>
           </View>
@@ -158,9 +170,10 @@ export const CreateCampaign = () => {
             </View>
 
             <ButtonComponent
+              disable={loading}
               buttonTitle={commonString.AddCampaign}
               wrapperStyle={styles.buttonAddCamp}
-              onPrees={() => handleAddCampaign()}
+              onPrees={() => addCampaignDebounce()}
             />
 
             <View style={styles.warnWrapper}>

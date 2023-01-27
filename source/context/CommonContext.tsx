@@ -21,14 +21,15 @@ interface input {
     newPassword_show?: boolean,
 }
 
+
 const intialState: input = {
-    fullName: "hii",
-    email: "killer@gmail.com",
-    password: "Test@123",
+    fullName: "",
+    email: "",
+    password: "",
     oldPassword: "",
     newPassword: "",
-    confirmPassword: "Test@123",
-    referralCode: "15555X72X4ED2ID",
+    confirmPassword: "",
+    referralCode: "",
     showPassword: true,
     confirmPasswordShow: true,
     oldPassword_show: true,
@@ -64,7 +65,11 @@ const CommonContext = ({ children, reward, setReward }: any) => {
     const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
     const [token, setToken] = useState("")
-    
+    const [getReferralCode, setGetReferralCode] = useState("")
+    const [netInfo, setNetInfo] = useState<boolean | null>(true)
+
+
+
     const storeCreator = {
         userInput,
         dispatch,
@@ -87,7 +92,11 @@ const CommonContext = ({ children, reward, setReward }: any) => {
         reward,
         setReward,
         token,
-        setToken
+        setToken,
+        getReferralCode,
+        setGetReferralCode,
+        netInfo,
+        setNetInfo
     }
 
     return (

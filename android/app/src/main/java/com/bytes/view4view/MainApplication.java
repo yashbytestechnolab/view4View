@@ -58,7 +58,13 @@ public class MainApplication extends Application implements ReactApplication {
       return mReactNativeHost;
     }
   }
+    public void addListener(String eventName) {
 
+    }
+
+    public void removeListeners(Integer count) {
+
+    }
   @Override
   public void onCreate() {
     super.onCreate();

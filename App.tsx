@@ -12,7 +12,6 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
 import { Platform } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Rating } from './source/services/Rating';
 
 interface reward {
   adsRewarAmt: number | string,
@@ -27,6 +26,7 @@ export default function App() {
     UpdateBuildVersion(setUpdateAlert)
     setReward(remo)
   }
+  
 
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
@@ -46,7 +46,7 @@ export default function App() {
     Platform.OS === "ios" && PushNotificationIOS.removeAllDeliveredNotifications();
     requestUserPermission()
     crashlytics().log("config file")
-    Rating(updateAlert)
+    // Rating(updateAlert)
   }, [updateAlert])
 
   return (
@@ -54,7 +54,7 @@ export default function App() {
       <CommonContext reward={reward} setReward={setReward}>
         <AppLoader />
         <>
-          <NavigationContainer>
+           <NavigationContainer>
             {updateAlert ?
               <InviteFriend notifyUpdate={updateAlert} /> :
               <>
@@ -63,7 +63,8 @@ export default function App() {
               </>
             }
 
-          </NavigationContainer>
+          </NavigationContainer> 
+
         </>
       </CommonContext>
 

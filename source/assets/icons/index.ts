@@ -17,7 +17,7 @@ export * from './Google'
 export * from './Apple'
 export * from './TabEarnCoin'
 export * from './Setting'
-export * from './EarnCoin'
+export * from './BuyCoinIcon'
 export * from './CoinIcon'
 export * from './SecondsIcon'
 export * from './ViewCoinIcon'
@@ -31,6 +31,7 @@ export * from './More'
 export * from './EditProfileIcon'
 export  * from './ShowPassword'
 export  * from './HidePassword'
+export * from './BuyCoinIcon'
 
 
 
