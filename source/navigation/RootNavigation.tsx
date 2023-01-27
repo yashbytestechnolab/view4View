@@ -10,12 +10,11 @@ import { InputContextProvide } from '../context/CommonContext';
 import { Appearance } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useNetInfo } from "@react-native-community/netinfo";
-import { NoInternetConnect } from '../services/NoInternetConnect';
 
 export const RootNavigation = () => {
   const Stack = createStackNavigator();
   const [userId, setUserId] = useState(null);
-  const { storeCreator: { setDarkModeTheme, netInfo, setNetInfo } }: any = useContext(InputContextProvide)
+  const { storeCreator: { setDarkModeTheme, } }: any = useContext(InputContextProvide)
   const internetCheck = useNetInfo();
 
 
@@ -54,28 +53,28 @@ export const RootNavigation = () => {
   return (
 
     <>
-      {internetCheck?.isConnected == true ?
+      {/* {internetCheck?.isConnected == true ? */}
 
-        userId == null ? null :
-          < Stack.Navigator
-            screenOptions={{ headerShown: false, gestureEnabled: false }}>
-            {
-              userId.length > 0 ? (
-                <Stack.Screen
-                  name={ROUTES.ONBORDING}
-                  component={Dashboard}
-                  options={{ gestureEnabled: false }}
-                />
-              ) : (
-                <Stack.Screen
-                  name={ROUTES.AUTH}
-                  component={Authentication}
-                  options={{ gestureEnabled: false }}
-                />
-              )
-            }
-          </Stack.Navigator >
-        : <NoInternetConnect />}
+      {userId == null ? null :
+        < Stack.Navigator
+          screenOptions={{ headerShown: false, gestureEnabled: false }}>
+          {
+            userId ? (
+              <Stack.Screen
+                name={ROUTES.ONBORDING}
+                component={Dashboard}
+                options={{ gestureEnabled: false }}
+              />
+            ) : (
+              <Stack.Screen
+                name={ROUTES.AUTH}
+                component={Authentication}
+                options={{ gestureEnabled: false }}
+              />
+            )
+          }
+        </Stack.Navigator >}
+      {/* // : <NoInternetConnect />} */}
 
     </>
   );

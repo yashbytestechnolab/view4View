@@ -26,7 +26,7 @@ import { crashlyticslog } from '../../services/crashlyticslog';
 
 export const ViewLanding = () => {
 
-  const { storeCreator: { setToken,coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme,netInfo, setGetReferralCode } }: any = useContext(InputContextProvide)
+  const { storeCreator: { setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -40,6 +40,7 @@ export const ViewLanding = () => {
     // @ sign screen name in crash console
     crashlyticslog(`get user coin @ ${ROUTES.VIEW_LANDING}`)
     await get_coins().then(async (res: any) => {
+      console.log("res", res);
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: res?._data?.watch_videos })
       GetLiveVideoList(params, res?._data?.watch_videos)
@@ -48,14 +49,13 @@ export const ViewLanding = () => {
 
   const getNotificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
-    console.log("Ntoken",Ntoken);
     setToken(Ntoken)
   }
 
   useEffect(() => {
     GetCoins("isInitialRenderUpdate");
     getNotificationToken()
-  }, [netInfo]);
+  }, []);
 
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export const ViewLanding = () => {
         if (timer > 0) {
           setTimer(timer - 1);
         }
-      }, 1000);
+      }, 5000);
     } else {
       clearInterval(controlRef.current);
     }
@@ -94,17 +94,17 @@ export const ViewLanding = () => {
       setTimer(0);
       clearInterval(controlRef?.current);
       const totalAmount = getBalance + (coin / expected_view);
-      dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[0]] : [video_Id[0]] })
+      dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
 
-      await addWatchUrl(watchVideoList, video_Id[0], totalAmount, isBytesVideoLoading)
+      await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
 
       await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
     }
   }
-   /**
-    * user get referral code and set in csetGetReferralCode context 
-    */
+  /**
+   * user get referral code and set in csetGetReferralCode context 
+   */
   const GetReferralCode = async () => {
     await userDeatil().then(async (res: any) => {
       setGetReferralCode(res?.referral_code)
@@ -172,7 +172,7 @@ export const ViewLanding = () => {
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
         res._docs?.filter((res: any) => {
-          if (res?._data?.upload_by !== getUserID() && !watchVideoList?.includes(res?._data?.video_Id[0])) {
+          if (res?._data?.upload_by !== getUserID() && !watchVideoList?.includes(res?._data?.video_Id[1])) {
             add_Video_Url.push(res?._data)
             return res?._data
           }
@@ -181,7 +181,7 @@ export const ViewLanding = () => {
         if (add_Video_Url?.length > 0) {
           person?.emptyCount();
           params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
-          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
+          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { vid: add_Video_Url, doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
         } else {
           if (person.retryCount >= 3) {
             dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })

@@ -74,6 +74,8 @@ export const CreateCampaign = () => {
    * Add Campaign list in campaign table  
    */
   const handleAddCampaign = async () => {
+    const randomeId = Math.floor(Math.random() * 9999)
+    splitUrl.push(randomeId.toString())
     let duration = await youTubeRef?.current?.getDuration()
     getYoutubeMeta(splitUrl).then((videoTitle: any) => {
       if (!(getBalance >= totalCost)) {

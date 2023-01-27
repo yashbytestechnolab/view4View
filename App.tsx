@@ -12,6 +12,8 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
 import { LogBox, Platform } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
+import { useNetInfo } from '@react-native-community/netinfo';
+import { NoInternetConnect } from './source/services/NoInternetConnect';
 
 interface reward {
   adsRewarAmt: number | string,
@@ -20,6 +22,7 @@ interface reward {
 export default function App() {
   const [updateAlert, setUpdateAlert] = useState(false)
   const [reward, setReward] = useState<reward>({ adsRewarAmt: 0, referRewardAmt: 0 })
+  const internetCheck = useNetInfo();
 
   const getReward = async () => {
     UpdateBuildVersion(setUpdateAlert)
@@ -29,8 +32,7 @@ export default function App() {
     let remo = await rewardConfig()
     setReward(remo)
   }
-  console.log(",ckxk");
-  
+
 
   const requestUserPermission = async () => {
     UpdateBuildVersion(setUpdateAlert)
@@ -60,16 +62,20 @@ export default function App() {
       <CommonContext reward={reward} setReward={setReward}>
         <AppLoader />
         <>
-           <NavigationContainer>
-            {updateAlert ?
-              <InviteFriend notifyUpdate={updateAlert} /> :
-              <>
-                <RootNavigation />
-                <FlashMessage position="top" />
-              </>
-            }
+          {
+            internetCheck?.isConnected ? <NavigationContainer>
+              {updateAlert ?
+                <InviteFriend notifyUpdate={updateAlert} /> :
+                <>
+                  <RootNavigation />
+                  <FlashMessage position="top" />
+                </>
+              }
 
-          </NavigationContainer> 
+            </NavigationContainer> : <NoInternetConnect />
+
+          }
+
 
         </>
       </CommonContext>
