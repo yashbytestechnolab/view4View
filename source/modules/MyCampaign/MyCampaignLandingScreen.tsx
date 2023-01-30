@@ -128,7 +128,7 @@ export const MyCampaignLandingScreen = () => {
     return (
       <>
         {
-          !loading && !loding && getCampaignData?.length <= 0 &&
+          !loading && getCampaignData?.length <= 0 &&
           <View style={[styles.emptyList, darkBackGround(darkModeTheme)]}>
             <Text style={[F50013.main, styles.textAlign, colorBackGround(darkModeTheme)]}>
               {commonString?.emptyList}

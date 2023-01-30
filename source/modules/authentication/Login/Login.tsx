@@ -22,7 +22,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Platform } from 'react-native';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
-import crashlytics from "@react-native-firebase/crashlytics"
 export const Login = () => {
   /**
    * Context to give userinput data and error message

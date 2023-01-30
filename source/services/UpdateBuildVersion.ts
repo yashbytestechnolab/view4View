@@ -4,7 +4,6 @@ import makeRemoteConfig from "@react-native-firebase/remote-config";
 
 export const UpdateBuildVersion = async (updateAlert: any) => {
     const getVersionNo = VersionInfo.appVersion;
-    console.log("getVersionNogetVersionNo",getVersionNo);
     
     const remoteConfig: any = makeRemoteConfig();
     remoteConfig

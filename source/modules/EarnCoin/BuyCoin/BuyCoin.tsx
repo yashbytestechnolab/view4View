@@ -61,7 +61,6 @@ export const BuyCoin = () => {
                             await RNIap?.finishTransaction({ purchase });
                         }
                     } catch (ackErr: any) {
-                        console.log('ackErr INAPP>>>>', ackErr);
                         if (Platform.OS === 'ios') {
                             await RNIap.clearTransactionIOS();
                             await RNIap.clearProductsIOS()

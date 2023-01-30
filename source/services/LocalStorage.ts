@@ -34,7 +34,6 @@ const getAllValue = async () => {
         try {
             const keys = await AsyncStorage.getAllKeys();
             const result = await AsyncStorage.multiGet(keys);
-            console.log("localres ===>", result)
             return result.map((req: any) => JSON.parse(req)).forEach(console.log);
         } catch (error) {
             console.error("ERROR====>", error)

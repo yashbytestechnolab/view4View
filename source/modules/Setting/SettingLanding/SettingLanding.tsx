@@ -16,13 +16,11 @@ import { type } from '../../../constants/types';
 import { getSocialLoginValue, settingProfileArr } from '../../../constants/settingProfileArr';
 import { person } from '../../View/increment';
 import { Anaylitics } from '../../../constants/analytics';
+import { crashlyticslog } from '../../../services/crashlyticslog';
 
 export const SettingLanding = () => {
   const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
-
-  
-
 
   const configUrl = () => {
     remoteConfig().fetchAndActivate().then(() => {
@@ -43,7 +41,6 @@ export const SettingLanding = () => {
     getSocialLoginValue()
     getUserData()
     configUrl()
-
   }, [])
 
   const logoutHandle = async () => {
@@ -55,6 +52,7 @@ export const SettingLanding = () => {
       index: 0,
       routes: [{ name: ROUTES?.LOGIN }]
     })
+    crashlyticslog(`Logout_Press`);
   }
 
   const handleDarkMode = () => {
@@ -134,7 +132,7 @@ export const SettingLanding = () => {
             }
             {settingProfile}
             <ButtonComponent
-              disable={data && Object.keys(data)?.length < 0}
+              disable={Object.keys(data)?.length < 0}
               onPrees={() => {
                 logoutHandle();
                 dispatch({ type: type.EMPTY_STATE })

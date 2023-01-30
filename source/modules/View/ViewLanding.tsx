@@ -40,7 +40,6 @@ export const ViewLanding = () => {
     // @ sign screen name in crash console
     crashlyticslog(`get user coin @ ${ROUTES.VIEW_LANDING}`)
     await get_coins().then(async (res: any) => {
-      console.log("res", res);
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: res?._data?.watch_videos })
       GetLiveVideoList(params, res?._data?.watch_videos)

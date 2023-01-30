@@ -73,10 +73,7 @@ export default function App() {
               }
 
             </NavigationContainer> : <NoInternetConnect />
-
           }
-
-
         </>
       </CommonContext>
 
