@@ -1,7 +1,7 @@
 import { Alert, Linking, Platform } from "react-native";
 import * as LocalStorage from '../../source/services/LocalStorage';
 import { LocalStorageKeys } from "../constants";
-import Rate, { AndroidMarket } from "react-native-rate";
+// import Rate, { AndroidMarket } from "react-native-rate";
 
 export const AppRating = async (updateAlert: boolean) => {
     const countStartApp = await LocalStorage?.getValue(LocalStorageKeys?.AppActiveStatus)
@@ -19,27 +19,27 @@ export const AppRating = async (updateAlert: boolean) => {
                 {
                     text: 'OK',
                     onPress: () => {
-                        setTimeout(() => {
+                        // setTimeout(() => {
                           
-                            let options = {
-                                GooglePackageName: "com.bytes.photolia",
-                                preferredAndroidMarket: AndroidMarket.Google,
-                                // OtherAndroidURL:
-                                //     'https://play.google.com/store/apps/details?id=com.bytes.photolia',
-                                preferInApp: false,
-                                openAppStoreIfInAppFails: true,
-                            };
-                            Rate.rate(options, (success, error) => {
-                                if (error) {
-                                    if (Platform.OS === 'android') {
-                                        Linking.openURL(
-                                            'https://play.google.com/store/apps/details?id=com.bytes.photolia',
-                                        );
-                                    }
-                                    console.error(error);
-                                }
-                            });
-                        }, 500);
+                        //     let options = {
+                        //         GooglePackageName: "com.bytes.photolia",
+                        //         preferredAndroidMarket: AndroidMarket.Google,
+                        //         // OtherAndroidURL:
+                        //         //     'https://play.google.com/store/apps/details?id=com.bytes.photolia',
+                        //         preferInApp: false,
+                        //         openAppStoreIfInAppFails: true,
+                        //     };
+                        //     Rate.rate(options, (success, error) => {
+                        //         if (error) {
+                        //             if (Platform.OS === 'android') {
+                        //                 Linking.openURL(
+                        //                     'https://play.google.com/store/apps/details?id=com.bytes.photolia',
+                        //                 );
+                        //             }
+                        //             console.error(error);
+                        //         }
+                        //     });
+                        // }, 500);
                     },
                 },
             ]
