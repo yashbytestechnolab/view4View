@@ -15,7 +15,6 @@ export const RootNavigation = () => {
   const Stack = createStackNavigator();
   const [userId, setUserId] = useState(null);
   const { storeCreator: { setDarkModeTheme, } }: any = useContext(InputContextProvide)
-  const internetCheck = useNetInfo();
 
 
 
@@ -45,15 +44,13 @@ export const RootNavigation = () => {
   useEffect(() => {
     authFlow()
     crashlytics().log("config file")
-
-  }, [userId, internetCheck]);
+  }, [userId]);
 
 
 
   return (
 
     <>
-      {/* {internetCheck?.isConnected == true ? */}
 
       {userId == null ? null :
         < Stack.Navigator
@@ -74,8 +71,8 @@ export const RootNavigation = () => {
             )
           }
         </Stack.Navigator >}
-      {/* // : <NoInternetConnect />} */}
 
     </>
   );
 };
+

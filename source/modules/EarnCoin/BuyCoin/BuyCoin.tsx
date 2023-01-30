@@ -152,7 +152,7 @@ export const BuyCoin = () => {
         <>
             <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
             <View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
-                <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} />
+                <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} titleStyle={{marginRight:30}} />
                 {loading && <Loader />}
 
                 <ScrollView showsVerticalScrollIndicator={false}
@@ -180,7 +180,7 @@ export const BuyCoin = () => {
                             let isChecked = selectRB === index ? true : false;
 
                             return (
-                                <TouchableOpacity activeOpacity={1} style={[style.card, lightBackGround(darkModeTheme),
+                                <TouchableOpacity key={index?.toString()}  activeOpacity={1} style={[style.card, lightBackGround(darkModeTheme),
                                 { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, }, isChecked && {
                                     borderWidth: 1, borderColor: Colors?.primaryRed,
                                 }]} onPress={() => { onReadioButtonPress(index) }}
