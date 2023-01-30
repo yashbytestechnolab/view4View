@@ -21,7 +21,6 @@ export const RootNavigation = () => {
    */
   const colorScheme = Appearance.getColorScheme();
 
-
   const authFlow = async () => {
     let appearance: any = await LocalStorage.getValue(LocalStorageKeys.DarkMode)
     if (appearance != null) {

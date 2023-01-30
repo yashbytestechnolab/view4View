@@ -9,16 +9,18 @@ export const BackButton = (props: IBackProps) => {
     const { onPrees } = props
     const navigation = useNavigation()
     return (
-        <TouchableOpacity style={style.headerBack} activeOpacity={1} onPress={() => { onPrees ? onPrees() : navigation.goBack() }}>
+        <TouchableOpacity style={style.headerBack} activeOpacity={1} onPress={() => { onPrees ? (onPrees(), navigation.goBack()) : navigation.goBack() }}>
             <Back />
         </TouchableOpacity>
     )
 }
 const style = StyleSheet.create({
-    headerBack: {  position: "absolute",
-    zIndex: 999,
-    top: 31,
-    paddingLeft: 24,
-    left: 0 },
+    headerBack: {
+        position: "absolute",
+        zIndex: 999,
+        top: 31,
+        paddingLeft: 24,
+        left: 0
+    },
 
 })

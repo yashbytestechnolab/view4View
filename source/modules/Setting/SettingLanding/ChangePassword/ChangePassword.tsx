@@ -12,21 +12,11 @@ import { darkBackGround } from '../../../../Theme';
 
 export const ChangePassword = () => {
     const navigation = useNavigation();
-    const { storeCreator: { darkModeTheme, } }: any = useContext(InputContextProvide)
     const [loading, setLoading] = useState(false)
     /**
      * Context to give userinput data and error message
      */
-    const {
-        storeCreator: {
-            userInput,
-
-            dispatch,
-            userInputError,
-            dispatchError,
-
-        },
-    }: any = useContext(InputContextProvide);
+    const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError, }, }: any = useContext(InputContextProvide);
 
     /**
      *  This Function dispatch error message
@@ -119,6 +109,11 @@ export const ChangePassword = () => {
                     title={String?.headerTitle?.changePassword}
                     showCoin={false}
                     showBacKIcon={true}
+                    onPrees={() => {
+                        dispatch({ type: type.EMPTY_STATE });
+                        dispatchError({ type: type.EMPTY_STATE })
+                        navigation?.goBack()
+                    }}
 
                 />
 

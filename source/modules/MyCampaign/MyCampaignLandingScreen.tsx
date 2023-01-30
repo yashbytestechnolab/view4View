@@ -95,7 +95,7 @@ export const MyCampaignLandingScreen = () => {
               <Image
                 style={styles.thumbNilImage}
                 source={{ uri: `http://img.youtube.com/vi/${item?.video_Id[0]}/0.jpg` }} />
-              <View style={styles.discription}>
+              <View style={styles.discription}> 
                 <Text
                   style={[F50013.main, colorBackGround(darkModeTheme)]}
                   numberOfLines={1}>

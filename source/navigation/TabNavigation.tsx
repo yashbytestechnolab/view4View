@@ -12,7 +12,7 @@ import { Rating } from '../services/Rating';
 
 export const TabNavigation = () => {
   const Tab = createBottomTabNavigator();
-  const { storeCreator: { setDarkModeTheme, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
   const { darkModeColor, white } = Colors
 

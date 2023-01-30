@@ -73,7 +73,7 @@ export const ForgotPassword = () => {
         <BackButton onPrees={() => { handleBackButtonClick() }} />
         <GradientHeader />
         <View style={style.wrapperView} >
-          <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }, darkBackGround(darkModeTheme)]}>
+          <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1 }, darkBackGround(darkModeTheme)]}>
             <View style={[style.containerWrapper, darkBackGround(darkModeTheme)]} >
               <View style={[style.welcomeHeader]}>
                 <Text style={[F60024.textStyle, colorBackGround(darkModeTheme)]}>

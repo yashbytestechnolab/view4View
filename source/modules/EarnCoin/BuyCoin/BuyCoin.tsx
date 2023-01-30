@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, StyleSheet, Platform, TouchableOpacity, Scrol
 import { String } from '../../../constants';
 import { colorBackGround, Colors, F40014, lightBackGround, } from '../../../Theme';
 import { EarnCoin } from '../../../services';
-import { ButtonComponent, Header } from '../../../components';
+import { ButtonComponent, Header, Loader } from '../../../components';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { getItems, getPurchaseData, initilizeIAPConnection, onGetCoinAmount, onGetProdutId, onPurchase } from '../../../services/InAppPurchaseServices';
 import { showMessage } from 'react-native-flash-message';
@@ -20,7 +20,7 @@ const Width = Dimensions.get('screen').width;
 
 export const BuyCoin = () => {
     const [selectRB, setSelectRB] = useState(0)
-    const [parseData, setParseData]: any = useState()
+    const [parseData, setParseData]: any = useState(undefined)
     const [products, setProducts]: any = useState();
     const navigation = useNavigation();
     const [loading, setloading]: any = useState(false)
@@ -140,83 +140,76 @@ export const BuyCoin = () => {
         sku && await onPurchase(sku)
     }
 
-    const Loader = () => {
-        return (
-            <View style={style.loaderHead}>
-                <ActivityIndicator size="large" color={Colors.primaryRed} />
-            </View>
-        )
-    }
+    // const Loader = () => {
+    //     return (
+    //         <View style={style.loaderHead}>
+    //             <ActivityIndicator size="large" color={Colors.primaryRed} />
+    //         </View>
+    //     )
+    // }
 
     return (
         <>
-            {
-                parseData == undefined ?
-                    <Loader /> :
-                    <>
-                        <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
-                        <View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
-                            <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} titleStyle={{ marginRight: 30 }} />
-                            {loading && <Loader />}
+        {parseData === undefined ? <Loader/> :
+            <><SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} /><View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
+                    <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} titleStyle={{ marginRight: 30 }} />
+                    {loading && <Loader />}
 
-                            <ScrollView showsVerticalScrollIndicator={false}
-                                keyboardShouldPersistTaps={String.commonString.handled}
-                                style={[style.scroll, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}
-                                scrollEnabled={true}
-                                contentContainerStyle={[style.scrollContain, , { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
-                                <View style={{ alignItems: 'center', marginTop: 20 }}>
-                                    <BuyCoinIcon />
+                    <ScrollView showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps={String.commonString.handled}
+                        style={[style.scroll, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}
+                        scrollEnabled={true}
+                        contentContainerStyle={[style.scrollContain, , { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
+                        <View style={{ alignItems: 'center', marginTop: 20 }}>
+                            <BuyCoinIcon />
 
-                                </View>
-                                {
-                                    parseData && parseData?.map((res: {
-                                        name: string | number | boolean |
-                                        React.ReactElement<any, string | React.JSXElementConstructor<any>> |
-                                        React.ReactFragment | React.ReactPortal | null |
-                                        undefined; subInfo: string | number | boolean |
-                                        React.ReactElement<any, string | React.JSXElementConstructor<any>>
-                                        | React.ReactFragment | React.ReactPortal
-                                        | null | undefined; price: string | number | boolean
-                                        | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-                                        | React.ReactFragment | React.ReactPortal | null | undefined;
-                                    },
-                                        index: number): any => {
-                                        let isChecked = selectRB === index ? true : false;
+                        </View>
+                        {parseData && parseData?.map((res: {
+                            name: string | number | boolean |
+                            React.ReactElement<any, string | React.JSXElementConstructor<any>> |
+                            React.ReactFragment | React.ReactPortal | null |
+                            undefined; subInfo: string | number | boolean |
+                            React.ReactElement<any, string | React.JSXElementConstructor<any>> |
+                            React.ReactFragment | React.ReactPortal |
+                            null | undefined; price: string | number | boolean |
+                            React.ReactElement<any, string | React.JSXElementConstructor<any>> |
+                            React.ReactFragment | React.ReactPortal | null | undefined;
+                        },
+                            index: number): any => {
+                            let isChecked = selectRB === index ? true : false;
 
-                                        return (
-                                            <TouchableOpacity key={index?.toString()} activeOpacity={1} style={[style.card, lightBackGround(darkModeTheme),
-                                            { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, }, isChecked && {
-                                                borderWidth: 1, borderColor: Colors?.primaryRed,
-                                            }]} onPress={() => { onReadioButtonPress(index) }}
-                                                disabled={loading}
-                                            >
-                                                <View style={style.rbWrapper}>
-                                                    <TouchableOpacity activeOpacity={1} style={style.isChecked} >
-                                                        {isChecked && <View
-                                                            style={style.selectRB} />}
-                                                    </TouchableOpacity>
-                                                    <View style={{ paddingLeft: 12 }}>
-                                                        <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{res?.name}</Text>
-                                                        <Text style={[F40014.main, { color: Colors?.primaryRed }]}>{res?.subInfo}</Text>
-                                                    </View>
-                                                </View>
+                            return (
+                                <TouchableOpacity key={index?.toString()} activeOpacity={1} style={[style.card, lightBackGround(darkModeTheme),
+                                { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, }, isChecked && {
+                                    borderWidth: 1, borderColor: Colors?.primaryRed,
+                                }]} onPress={() => { onReadioButtonPress(index); } }
+                                    disabled={loading}
+                                >
+                                    <View style={style.rbWrapper}>
+                                        <TouchableOpacity activeOpacity={1} style={style.isChecked}>
+                                            {isChecked && <View
+                                                style={style.selectRB} />}
+                                        </TouchableOpacity>
+                                        <View style={{ paddingLeft: 12 }}>
+                                            <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{res?.name}</Text>
+                                            <Text style={[F40014.main, { color: Colors?.primaryRed }]}>{res?.subInfo}</Text>
+                                        </View>
+                                    </View>
 
-                                                <Text style={[F40014?.main,]}>{res?.price}</Text>
-                                            </TouchableOpacity>)
+                                    <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{res?.price}</Text>
+                                </TouchableOpacity>);
 
-                                    })
-                                }
-                                <Text style={[style.subTextWrapper, colorBackGround(darkModeTheme)]}>{String?.commonString?.buyCoinSubText}</Text>
-                                <ButtonComponent buttonTitle={"Buy" + " " + parseData?.[selectRB]?.name}
-                                    onPrees={() => onPressBuyCoins(parseData[selectRB])}
+                        })}
+                        <Text style={[style.subTextWrapper, colorBackGround(darkModeTheme)]}>{String?.commonString?.buyCoinSubText}</Text>
+                        <ButtonComponent buttonTitle={"Buy" + " " + parseData?.[selectRB]?.name}
+                            onPrees={() => onPressBuyCoins(parseData[selectRB])}
 
-                                    wrapperStyle={style.buttonWrapper} />
+                            wrapperStyle={style.buttonWrapper} />
 
 
-                            </ScrollView>
-                        </View></>
-            }
-
+                    </ScrollView>
+                </View></>
+}
         </>
     );
 };
