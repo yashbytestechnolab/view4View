@@ -15,6 +15,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import { NoInternetConnect } from './source/services/NoInternetConnect';
 import SplashScreen from 'react-native-splash-screen';
 import  { useNetInfo } from '@react-native-community/netinfo';
+import { Rating } from './source/services/Rating';
 
 interface reward {
   adsRewarAmt: number | string,

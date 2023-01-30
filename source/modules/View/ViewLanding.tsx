@@ -23,6 +23,7 @@ import Lottie from 'lottie-react-native';
 import * as LocalStorage from '../../services/LocalStorage';
 import { Anaylitics } from '../../constants/analytics';
 import { crashlyticslog } from '../../services/crashlyticslog';
+import { Rating } from '../../services/Rating';
 
 export const ViewLanding = () => {
 
@@ -37,6 +38,7 @@ export const ViewLanding = () => {
   const [onLoadStop, setOnLoadStop] = useState(false)
 
   const GetCoins = async (params: string) => {
+
     // @ sign screen name in crash console
     crashlyticslog(`get user coin @ ${ROUTES.VIEW_LANDING}`)
     await get_coins().then(async (res: any) => {
@@ -47,6 +49,7 @@ export const ViewLanding = () => {
   };
 
   const getNotificationToken = async () => {
+    await Rating()
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
     setToken(Ntoken)
   }
@@ -180,7 +183,7 @@ export const ViewLanding = () => {
         if (add_Video_Url?.length > 0) {
           person?.emptyCount();
           params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
-          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: {  _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
+          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
         } else {
           if (person.retryCount >= 3) {
             dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })
