@@ -727,6 +727,8 @@ PODS:
     - React-Core
   - react-native-image-picker (5.0.1):
     - React-Core
+  - react-native-netinfo (9.3.7):
+    - React-Core
   - react-native-safe-area-context (4.5.0):
     - RCT-Folly
     - RCTRequired
@@ -852,7 +854,9 @@ PODS:
   - RNGoogleSignin (9.0.2):
     - GoogleSignIn (~> 6.2)
     - React-Core
-  - RNIap (11.0.7):
+  - RNIap (11.0.0-rc.7):
+    - React-Core
+  - RNRate (1.2.12):
     - React-Core
   - RNScreens (3.19.0):
     - React-Core
@@ -927,6 +931,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-compressor (from `../node_modules/react-native-compressor`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-version-info (from `../node_modules/react-native-version-info`)
@@ -959,6 +964,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNIap (from `../node_modules/react-native-iap`)
+  - RNRate (from `../node_modules/react-native-rate`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNStoreReview (from `../node_modules/react-native-store-review`)
@@ -1063,6 +1069,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-compressor"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
@@ -1127,6 +1135,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-google-signin/google-signin"
   RNIap:
     :path: "../node_modules/react-native-iap"
+  RNRate:
+    :path: "../node_modules/react-native-rate"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNShare:
@@ -1207,6 +1217,7 @@ SPEC CHECKSUMS:
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
   react-native-compressor: ebcf8bc36f8e44581a8f831583caee8a27e55a01
   react-native-image-picker: 8cb4280e2c1efc3daeb2d9d597f9429a60472e40
+  react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-version-info: a106f23009ac0db4ee00de39574eb546682579b9
@@ -1238,7 +1249,8 @@ SPEC CHECKSUMS:
   RNFBRemoteConfig: e8d462f46e1759a5921d0e4b76d0ab89aef9baee
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNGoogleSignin: 22e468a9474dbcb8618d8847205ad4f0b2575d13
-  RNIap: b699b537ca34fa1cd15b78f4ec383ab502d01f6c
+  RNIap: cc309cf426a6df5240e38108ffa6c270a52c03ac
+  RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
   RNScreens: ea4cd3a853063cda19a4e3c28d2e52180c80f4eb
   RNShare: 48b3113cd089a2be8ff0515c3ae7a46a4db8a76b
   RNStoreReview: 18cf6adbd193eadb049d2f6c37ef2ab3d5a28706
@@ -1247,6 +1259,6 @@ SPEC CHECKSUMS:
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 4d10814663a44d188ca039041a50e1ad45e4a1d3
+PODFILE CHECKSUM: 0ae56969ebfaf6938f2d872e206569f1e34142b4
 
 COCOAPODS: 1.11.3

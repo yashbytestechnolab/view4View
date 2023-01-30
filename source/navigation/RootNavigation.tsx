@@ -16,10 +16,6 @@ export const RootNavigation = () => {
   const [userId, setUserId] = useState(null);
   const { storeCreator: { setDarkModeTheme, } }: any = useContext(InputContextProvide)
 
-
-
-
-
   /**
    * This Function Check user id is in localstorage
    */
@@ -46,12 +42,8 @@ export const RootNavigation = () => {
     crashlytics().log("config file")
   }, [userId]);
 
-
-
   return (
-
     <>
-
       {userId == null ? null :
         < Stack.Navigator
           screenOptions={{ headerShown: false, gestureEnabled: false }}>
@@ -71,7 +63,6 @@ export const RootNavigation = () => {
             )
           }
         </Stack.Navigator >}
-
     </>
   );
 };

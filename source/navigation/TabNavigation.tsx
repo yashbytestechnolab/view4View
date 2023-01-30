@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { String, ROUTES } from '../constants';
@@ -8,6 +8,7 @@ import { SvgProps } from 'react-native-svg';
 import { ActiveTabText, Colors, F50010 } from '../Theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { InputContextProvide } from '../context/CommonContext';
+import { Rating } from '../services/Rating';
 
 export const TabNavigation = () => {
   const Tab = createBottomTabNavigator();
@@ -37,7 +38,6 @@ export const TabNavigation = () => {
   };
 
   return (
-
     <>
       <Tab.Navigator
         initialRouteName={ROUTES.VIEW}
@@ -102,21 +102,8 @@ export const TabNavigation = () => {
 };
 const styles = StyleSheet.create({
   tab: {
-    // marginTop: 10,
     position: 'absolute',
-    // bottom: 0,
-    // left: 0,
-    // elevation: 7,
-    // shadowColor: Colors?.blackShadow,
-    // shadowOpacity: 0.8,
-    // shadowRadius: 4,
-    // // shadowOffset: {
-    // //   height: 1,
-    // //   width: 1
-    // // },
-
     borderTopWidth: 1,
-    // backgroundColor: dark,
     height: 55,
     paddingBottom: "1%",
   },

@@ -8,6 +8,7 @@ const defaultValue = {
     Update: "https://play.google.com/store/apps/details?id=com.bytes.photolia"
 }
 export const UpdateBuildVersion = async (updateAlert: any) => {
+    
 
     await remoteConfig().setConfigSettings({
         minimumFetchIntervalMillis: 30000,
