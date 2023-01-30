@@ -9,7 +9,7 @@ export const BackButton = (props: IBackProps) => {
     const { onPrees } = props
     const navigation = useNavigation()
     return (
-        <TouchableOpacity style={style.headerBack} activeOpacity={1} onPress={() => { onPrees ? onPrees : navigation.goBack() }}>
+        <TouchableOpacity style={style.headerBack} activeOpacity={1} onPress={() => { onPrees ? onPrees() : navigation.goBack() }}>
             <Back />
         </TouchableOpacity>
     )

@@ -13,12 +13,13 @@ interface alertMessage {
     validEmail: string,
     Something: string
     refCode: string
-    Default: string
+    Default: string,
+    ChangePasswordSuccess:string
 }
 
 export const handleFirebaseError = (type: string) => {
 
-    const { passError, tooManyRequest, danger, userNotFound, emailAlredyInUser, forgotPwdSuccessMsg, success, validEmail, Something, refCode, Default }: alertMessage = String.flashMessage
+    const { passError, tooManyRequest, danger, userNotFound, emailAlredyInUser, ChangePasswordSuccess,forgotPwdSuccessMsg, success, validEmail, Something, refCode, Default }: alertMessage = String.flashMessage
     switch (type) {
         case "auth/wrong-password": return AlertMessage(passError, danger)
         case "auth/too-many-requests": return AlertMessage(tooManyRequest, danger)
@@ -28,6 +29,7 @@ export const handleFirebaseError = (type: string) => {
         case "WrongEmail": return AlertMessage(validEmail, danger)
         case "coin not update": return AlertMessage(Something, danger)
         case "refCode": return AlertMessage(refCode, Default)
+        case "ChangePasswordSuccess":return AlertMessage(ChangePasswordSuccess,success)
         default: return type
     }
 }

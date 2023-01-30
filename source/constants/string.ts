@@ -108,7 +108,8 @@ export const String: any = {
         validEmail: "Please enter valid email",
         Something: "Something went wrong",
         refCode: 'Copied text !',
-        Default: "default"
+        Default: "default",
+        ChangePasswordSuccess:'Succesfully change Password please login with your new password'
     },
     inviteFrd: {
         headerTitle: 'Invite friends',

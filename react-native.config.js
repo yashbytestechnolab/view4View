@@ -10,5 +10,10 @@ module.exports = {
           android: null,
         },
       },
+      'react-native-rate': {
+        platforms: {
+          android: null,
+        },
+      },
     },
   };

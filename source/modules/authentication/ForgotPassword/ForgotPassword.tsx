@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { View, Text, SafeAreaView, StatusBar, Platform } from 'react-native'
+import React, { useContext, useEffect } from 'react'
+import { View, Text, SafeAreaView, StatusBar, Platform, BackHandler } from 'react-native'
 import { Apple, Google, } from '../../../assets/icons'
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../../Theme'
 import { emailPattern, ROUTES, String } from '../../../constants'
@@ -44,6 +44,19 @@ export const ForgotPassword = () => {
     }
 
   }
+  const handleBackButtonClick = () => {
+    navigation.goBack();
+    clearState()
+    return true;
+  }
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+    };
+  }, []);
+
+
   return (
     <>
 
@@ -57,7 +70,7 @@ export const ForgotPassword = () => {
         scrollEnabled={true}
         contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
 
-        <BackButton />
+        <BackButton onPrees={() => { handleBackButtonClick() }} />
         <GradientHeader />
         <View style={style.wrapperView} >
           <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }, darkBackGround(darkModeTheme)]}>
@@ -85,27 +98,27 @@ export const ForgotPassword = () => {
               <ORtitle />
               {
                 Platform?.OS == 'android' ?
-                  <SocialMediaButton
-                    colorBackGround={colorBackGround(darkModeTheme)}
+                  (<SocialMediaButton
                     wrapperStyle={style.googleWrapper}
                     socialMediaIcon={<Google />}
                     buttonTitle={String.commonString.signInWithGoogle}
-                    onPress={() => { googleLogin(navigation, setLoading) }}
-                  /> :
-                  <View style={style.socialMedia}>
+                    colorBackGround={colorBackGround(darkModeTheme)}
+                    onPress={() => { clearState(), googleLogin(navigation, setLoading) }}
+                  />) :
+                  (<View style={style.socialMedia}>
                     <SocialMediaButton
                       colorBackGround={colorBackGround(darkModeTheme)}
                       socialMediaIcon={<Google />}
                       buttonTitle={String.commonString.Google}
-                      onPress={() => { googleLogin(navigation, setLoading) }}
+                      onPress={() => { clearState(), googleLogin(navigation, setLoading) }}
                     />
                     <SocialMediaButton
                       colorBackGround={colorBackGround(darkModeTheme)}
                       socialMediaIcon={<Apple gery={darkModeTheme} />}
                       buttonTitle={String.commonString.Apple}
-                      onPress={() => appleLoginIos(navigation, setLoading)}
+                      onPress={() => { clearState(), appleLoginIos(navigation, setLoading) }}
                     />
-                  </View>
+                  </View>)
               }
             </View>
           </View>

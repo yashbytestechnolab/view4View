@@ -37,7 +37,7 @@ export const style = StyleSheet.create({
     socialMedia: { flexDirection: "row", justifyContent: "space-between", paddingLeft: 16, paddingRight: 10 },
     wrapperStyle: {
         alignSelf: 'center',
-        width: '90%'
+        width: 310
     },
     marginTop: { marginTop: 33 },
     scroll: { backgroundColor: Colors.white },

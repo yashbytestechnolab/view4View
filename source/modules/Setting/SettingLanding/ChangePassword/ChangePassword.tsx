@@ -80,13 +80,17 @@ export const ChangePassword = () => {
         setLoading(true)
         Reauthenticate(currentPassword)
             .then((res: any) => {
+                console.log("res1",res);
+                
                 setLoading(false)
                 let user: any = firebase.auth().currentUser;
                 user.updatePassword(newPassword)
                     .then(res => {
+                        console.log("res2",res);
+
                         setLoading(false)
 
-                        handleFirebaseError('ForgotSucess');
+                        handleFirebaseError('ChangePasswordSuccess');
                         dispatch({ type: type.EMPTY_STATE });
                         setTimeout(() => {
                             navigation?.navigate(ROUTES?.SETTING_LANDING);
