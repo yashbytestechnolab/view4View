@@ -16,6 +16,7 @@ interface IheaderProps {
   showBacKIcon?: boolean;
   showCoin?: boolean;
   coin?: number | string;
+  titleStyle?:object;
   onPrees?: () => void;
 
 }
@@ -27,7 +28,7 @@ export const Header = (props: IheaderProps) => {
 
   }: any = useContext(InputContextProvide);
 
-  const { title, showBacKIcon, showCoin = true, onPrees, } = props;
+  const { title, showBacKIcon, showCoin = true, onPrees,titleStyle } = props;
   const navigation = useNavigation();
 
   return (
@@ -47,7 +48,7 @@ export const Header = (props: IheaderProps) => {
               <Back color={Colors?.white} />
             </TouchableOpacity>
           )}
-          <View style={style.titleWrapper}>
+          <View style={[style.titleWrapper,titleStyle]}>
             <Text numberOfLines={1} style={[F50018.main, style.titleText]}>
               {title}
             </Text>

@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { RootNavigation } from './source/navigation/RootNavigation';
 import CommonContext from './source/context/CommonContext';
 import FlashMessage from 'react-native-flash-message';
 import AppLoader from './source/components/AppLoader';
-import { UpdateBuildVersion } from './source/services/UpdateBuildVersion';
+import {  UpdateBuildVersion } from './source/services/UpdateBuildVersion';
 import { InviteFriend } from './source/modules/EarnCoin';
 import { NavigationContainer } from '@react-navigation/native';
 import { rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
-import { LogBox, Platform } from 'react-native';
+import { Platform, } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { useNetInfo } from '@react-native-community/netinfo';
 import { NoInternetConnect } from './source/services/NoInternetConnect';
+import SplashScreen from 'react-native-splash-screen';
+import  { useNetInfo } from '@react-native-community/netinfo';
 
 interface reward {
   adsRewarAmt: number | string,
@@ -22,20 +23,16 @@ interface reward {
 export default function App() {
   const [updateAlert, setUpdateAlert] = useState(false)
   const [reward, setReward] = useState<reward>({ adsRewarAmt: 0, referRewardAmt: 0 })
-  const internetCheck = useNetInfo();
+  const netInfoStaus = useNetInfo()
+  const status = netInfoStaus?.isConnected
 
   const getReward = async () => {
     UpdateBuildVersion(setUpdateAlert)
 
-    LogBox.ignoreAllLogs(); //Ignore all log notifications
-
     let remo = await rewardConfig()
     setReward(remo)
   }
-
-
   const requestUserPermission = async () => {
-    UpdateBuildVersion(setUpdateAlert)
 
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -48,37 +45,37 @@ export default function App() {
       person?.getPermissionOfDevices(false)
     }
   }
+  useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000)
+
+  }, [netInfoStaus, status])
 
   useEffect(() => {
     getReward()
-
     Platform.OS === "ios" && PushNotificationIOS.removeAllDeliveredNotifications();
     requestUserPermission()
     crashlytics().log("config file")
   }, [updateAlert])
 
+
   return (
     <>
-      <CommonContext reward={reward} setReward={setReward}>
-        <AppLoader />
-        <>
-          {
-            internetCheck?.isConnected ? <NavigationContainer>
-              {updateAlert ?
-                <InviteFriend notifyUpdate={updateAlert} /> :
-                <>
-                  <RootNavigation />
-                  <FlashMessage position="top" />
-                </>
-              }
-
-            </NavigationContainer> : <NoInternetConnect />
-
-          }
-
-
-        </>
-      </CommonContext>
+      {status ?
+        <CommonContext reward={reward} setReward={setReward}>
+          <AppLoader />
+          <NavigationContainer>
+            {updateAlert ?
+              <InviteFriend notifyUpdate={updateAlert} /> :
+              <>
+                <RootNavigation />
+                <FlashMessage position="top" />
+              </>}
+          </NavigationContainer>
+        </CommonContext>
+        : <NoInternetConnect />
+      }
 
     </>
   );
