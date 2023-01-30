@@ -40,15 +40,15 @@ const onUserInfo = async (userInfo: any) => {
 
     if (Platform.OS === 'android') {
         fullname = userInfo?.displayName == null ? userInfo[1] : userInfo?.displayName;
-        space = fullname.indexOf(" ");
-        firstname = fullname.substring(0, space);
-        lastname = fullname.substring(space + 1);
+        space = fullname?.indexOf(" ");
+        firstname = fullname?.substring(0, space);
+        lastname = fullname?.substring(space + 1);
         email = userInfo?.email
         uid = userInfo?.uid
         image = userInfo?.photoURL
         return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     } else {
-        let splitEmail = userInfo?.email.split("@");
+        let splitEmail = userInfo?.email?.split("@");
         firstname = splitEmail[0]
         email = userInfo?.email
         uid = userInfo?.uid
@@ -71,8 +71,6 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
             .signInWithCredential(credential)
             .then(async (res: any) => {
                 let userDetail = await onUserInfo(res?.user?._user)
-                console.log("userDetail", userDetail);
-
                 if (res?.additionalUserInfo?.isNewUser) {
                     userLogin(userDetail).then(() => {
                     })
@@ -86,10 +84,10 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
                     routes: [{ name: ROUTES.TABLIST }],
                 });
                 setLoading(false)
-            }).finally(() => setLoading(false))
+            }).catch((error: any) => console.log("error", error)).finally(() => setLoading(false))
     } catch (error) {
         setLoading(false)
-        console.log("error", error);
+        console.log("error>>>>>>>>>>", error);
     }
 };
 

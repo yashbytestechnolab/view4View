@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
         marginHorizontal: 16,
         flex: 1
     },
-    link: { marginTop: 8 },
+    link: { marginTop: 0 },
     inputStyle: { marginTop: 0, marginHorizontal: 0 },
     button: { marginTop: 16 },
     buttonWrap: { marginHorizontal: 0 },

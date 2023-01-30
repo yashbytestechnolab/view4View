@@ -43,7 +43,7 @@ export const Header = (props: IheaderProps) => {
               style={{ padding: 10 }}
               onPress={() => {
                 Anaylitics("user_coin", { getBalance })
-                onPrees ? onPrees : navigation.goBack();
+                onPrees ? onPrees() : navigation.goBack();
               }}>
               <Back color={Colors?.white} />
             </TouchableOpacity>

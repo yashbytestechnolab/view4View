@@ -132,7 +132,6 @@ export const SettingLanding = () => {
             }
             {settingProfile}
             <ButtonComponent
-              disable={Object.keys(data)?.length < 0}
               onPrees={() => {
                 logoutHandle();
                 dispatch({ type: type.EMPTY_STATE })

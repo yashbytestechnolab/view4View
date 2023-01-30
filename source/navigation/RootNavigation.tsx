@@ -16,15 +16,10 @@ export const RootNavigation = () => {
   const [userId, setUserId] = useState(null);
   const { storeCreator: { setDarkModeTheme, } }: any = useContext(InputContextProvide)
 
-
-
-
-
   /**
    * This Function Check user id is in localstorage
    */
   const colorScheme = Appearance.getColorScheme();
-
 
   const authFlow = async () => {
     let appearance: any = await LocalStorage.getValue(LocalStorageKeys.DarkMode)

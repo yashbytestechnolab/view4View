@@ -7,8 +7,6 @@ import { EarnCoinLanding, ViewCoin } from '../modules/EarnCoin';
 const Stack = createStackNavigator();
 
 export const ViewStack = () => {
-
-
   return (
     <Stack.Navigator
       initialRouteName={ROUTES.VIEW_LANDING}
@@ -18,13 +16,13 @@ export const ViewStack = () => {
         gestureEnabled: true,
       }}>
       <Stack.Screen
-
-        name={ROUTES.VIEW_LANDING} component={ViewLanding} />
+        name={ROUTES.VIEW_LANDING}
+        component={ViewLanding} />
       <Stack.Screen
         name={ROUTES.VIEWCOIN}
         component={ViewCoin}
       />
-       <Stack.Screen
+      <Stack.Screen
         name={ROUTES.EARNCOINS_LANDING}
         component={EarnCoinLanding}
       />

@@ -11,7 +11,7 @@ import { InputContextProvide } from '../context/CommonContext';
 
 export const TabNavigation = () => {
   const Tab = createBottomTabNavigator();
-  const { storeCreator: { setDarkModeTheme, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
   const { darkModeColor, white } = Colors
 
@@ -102,21 +102,8 @@ export const TabNavigation = () => {
 };
 const styles = StyleSheet.create({
   tab: {
-    // marginTop: 10,
     position: 'absolute',
-    // bottom: 0,
-    // left: 0,
-    // elevation: 7,
-    // shadowColor: Colors?.blackShadow,
-    // shadowOpacity: 0.8,
-    // shadowRadius: 4,
-    // // shadowOffset: {
-    // //   height: 1,
-    // //   width: 1
-    // // },
-
     borderTopWidth: 1,
-    // backgroundColor: dark,
     height: 55,
     paddingBottom: "1%",
   },

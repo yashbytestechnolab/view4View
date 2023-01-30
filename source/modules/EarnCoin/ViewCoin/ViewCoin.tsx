@@ -48,8 +48,7 @@ export const ViewCoin = () => {
                         <ViewCoinIcon />
                         <Text style={[F60016?.textStyle, style.viewCoinText]}>{String?.viewCoinScreen?.bottomsubLine}</Text>
                     </View>
-                    <ButtonComponent onPrees={() => { navigation?.navigate(ROUTES?.EARNCOINS_LANDING) }} buttonTitle={String?.viewCoinScreen?.buttonText} />
-
+                    <ButtonComponent onPrees={() => { navigation?.navigate(ROUTES?.EARNCOINS) }} buttonTitle={String?.viewCoinScreen?.buttonText} />
                 </ScrollView>
             </SafeAreaView>
         </>
