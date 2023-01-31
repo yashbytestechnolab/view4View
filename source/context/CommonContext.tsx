@@ -54,7 +54,7 @@ const reducer: Function | any = (state: any, action: any) => {
     }
 }
 
-const CommonContext = ({ children, reward, setReward }: any) => {
+const CommonContext = ({ children, reward, setReward, darkModeTheme, setDarkModeTheme }: any) => {
     const [userInput, dispatch] = useReducer(reducer, intialState)
     const { userInputError, dispatchError } = ValidationFnc();
     const { campaignData, dispatchcampaign } = getUserCampaign()
@@ -62,12 +62,9 @@ const CommonContext = ({ children, reward, setReward }: any) => {
     const { videoLandingData, dispatchVideoLandingData } = videoLanding()
     const { userDetail, dispatchuserDetail } = userInfoFnc()
     const [addVideoUrl, setVideoUrl] = useState()
-    const [darkModeTheme, setDarkModeTheme] = useState(false)
     const [loading, setLoading] = useState(false)
     const [token, setToken] = useState("")
     const [getReferralCode, setGetReferralCode] = useState("")
-
-
 
     const storeCreator = {
         userInput,
@@ -94,7 +91,6 @@ const CommonContext = ({ children, reward, setReward }: any) => {
         setToken,
         getReferralCode,
         setGetReferralCode,
-       
     }
 
     return (

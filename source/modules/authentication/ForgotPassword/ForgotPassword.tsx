@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { View, Text, SafeAreaView, StatusBar, Platform, BackHandler } from 'react-native'
 import { Apple, Google, } from '../../../assets/icons'
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../../Theme'
-import { emailPattern, ROUTES, String } from '../../../constants'
+import { ROUTES, String } from '../../../constants'
 import { InputContextProvide } from '../../../context/CommonContext'
 import { type } from '../../../constants/types'
 import { useNavigation } from '@react-navigation/native'
@@ -13,6 +13,7 @@ import { ORtitle } from '../Authcomponents'
 import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../services'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { crashlyticslog } from '../../../services/crashlyticslog'
+import { emailPattern } from '../../../regex/Regex'
 
 export const ForgotPassword = () => {
   /**

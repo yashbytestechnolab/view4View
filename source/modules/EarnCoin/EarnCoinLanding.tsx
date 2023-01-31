@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
-import React, { useContext,  useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Header } from '../../components';
-import { String } from '../../constants';
+import { ROUTES, String } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
 import { colorBackGround, Colors, darkBackGround, F40012, F60016, lightBackGround } from '../../Theme';
 import { NextIcon } from '../../assets/icons';
@@ -9,22 +9,26 @@ import { CellType, EarnCoinData } from '../../services/jsonfile';
 import { style } from './style';
 import { InputContextProvide } from '../../context/CommonContext';
 import { TestIds, RewardedAd, RewardedAdEventType } from '@react-native-firebase/admob';
-import { EarnCoin,  } from '../../services';
-import { type as keys,  } from '../../constants/types';
+import { EarnCoin, } from '../../services';
+import { type as keys, } from '../../constants/types';
+import { Anaylitics } from '../../constants/analytics';
+import { crashlyticslog } from '../../services/crashlyticslog';
 
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
   /**
    * InputContextProvide is get current coin and darktheame flag 
    */
-  const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { reward, coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
+  console.log("reward", reward);
 
   /***
    * showRewardAd is load the ad and show ad
    */
   const showRewardAd = () => {
-    setLoading(true)
+    crashlyticslog(`user watch video ${ROUTES.EARNCOINS_LANDING}`)
+    Anaylitics("show_add", { getBalance });
     const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
     rewardAd.onAdEvent((type, error) => {
       if (type === RewardedAdEventType.LOADED) {
@@ -36,7 +40,7 @@ export const EarnCoinLanding = () => {
 
       if (type === RewardedAdEventType.EARNED_REWARD) {
         EarnCoin(getBalance, 100)?.then((res) => {
-          dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + 100 })
+          dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
           setLoading(false)
         }).catch((err) => {
           navigation.goBack()
@@ -49,8 +53,8 @@ export const EarnCoinLanding = () => {
     });
     rewardAd.load();
   }
-  
-``
+
+  ``
   return (
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />

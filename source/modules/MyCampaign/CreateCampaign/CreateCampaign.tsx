@@ -2,7 +2,7 @@ import { View, Text, ScrollView, SafeAreaView, Alert } from 'react-native';
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { ButtonComponent, CommonDropDown, Header } from '../../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import YoutubePlayer from 'react-native-youtube-iframe';
+import YoutubePlayer, { getYoutubeMeta, } from 'react-native-youtube-iframe';
 import { ROUTES, String } from '../../../constants';
 import { styles } from './style';
 import { colorBackGround, Colors, darkBackGround, F40014, F60012, F60016 } from '../../../Theme';
@@ -10,7 +10,6 @@ import { Expected, dropdownConfigValue } from '../../../services';
 import { createCampaign, updateUserWallet } from '../../../services/FireStoreServices';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
-import { getYoutubeMeta, } from 'react-native-youtube-iframe';
 import { YT, campaign } from './interface';
 import GiftModel from '../../../components/GiftModel';
 import { Anaylitics } from '../../../constants/analytics';
@@ -92,7 +91,7 @@ export const CreateCampaign = () => {
         /**
          * Create Campaign api call & decrement wallet amount
          */
-        createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title, token)
+        createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
           .then((res: any) => updateCoinBalance(updateWallet)).catch((err: any) => setLoading(false))
       }
     }).catch((err: any) => Alert.alert("Entered video url looks invalid. Please make sure you've entered correct video url"))

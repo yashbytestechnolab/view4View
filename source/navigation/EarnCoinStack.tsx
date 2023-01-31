@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { ROUTES } from '../constants/NavigationRoutes';
 import { EarnCoinLanding, ViewCoin, InviteFriend, ShowAdds } from '../modules/EarnCoin';
 import { BuyCoin } from '../modules/EarnCoin/BuyCoin';
+import { person } from '../modules/View/increment';
 
 
 const Stack = createStackNavigator();
@@ -10,8 +11,12 @@ const Stack = createStackNavigator();
 export const EarnCoinStack = () => {
   return (
     <Stack.Navigator
+      screenListeners={(props) => person?.getRouteName(props?.route?.name)}
       initialRouteName={ROUTES.EARNCOINS_LANDING}
       screenOptions={{
+        cardStyle: {
+          backgroundColor: "red"
+        },
         cardOverlayEnabled: false,
         headerShown: false,
         gestureEnabled: true,
@@ -33,7 +38,7 @@ export const EarnCoinStack = () => {
         name={ROUTES.BUYCOIN}
         component={BuyCoin}
       />
-       <Stack.Screen
+      <Stack.Screen
         name={ROUTES.SHOWADDS}
         component={ShowAdds}
       />
