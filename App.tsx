@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RootNavigation } from './source/navigation/RootNavigation';
 import CommonContext from './source/context/CommonContext';
 import FlashMessage from 'react-native-flash-message';

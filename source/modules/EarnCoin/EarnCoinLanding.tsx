@@ -63,7 +63,8 @@ export const EarnCoinLanding = () => {
         <View style={style.wrapperView}>
           {EarnCoinData.length > 0 && EarnCoinData?.map((item: any, index) => {
             return (
-              <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow }]} activeOpacity={1}
+              <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card,
+              lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme && 0 }]} activeOpacity={1}
                 onPress={() => {
                   item?.onPress == "SHOWADDS" ? showRewardAd() :
                     navigation.navigate(item?.onPress)
