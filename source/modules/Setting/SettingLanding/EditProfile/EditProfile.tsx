@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, Platform, } from 'react-native'
+import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, Platform, BackHandler, } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Header, InputComponent } from '../../../../components'
 import { Colors, darkBackGround, F50018 } from '../../../../Theme'
@@ -89,6 +89,12 @@ export const EditProfile = () => {
             console.log("err", err);
         }).finally(() => dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: false }))
     }
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', dispatchError({ type: type.EMPTY_STATE }));
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', dispatchError({ type: type.EMPTY_STATE }));
+        };
+    }, []);
 
     return (
         <>
@@ -146,8 +152,10 @@ const style = StyleSheet.create({
     scrollWrapper: { backgroundColor: Colors?.white },
     containWrapper: { backgroundColor: Colors?.white, flexGrow: 1, },
     marginTop33: { marginTop: 25 },
-    editIconWrapper:{position: "relative", left: 20, bottom: 25,
-    justifyContent: "center", alignItems: "center",
-    height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13},
-    paddingTop:{paddingTop: 24}
+    editIconWrapper: {
+        position: "relative", left: 20, bottom: 25,
+        justifyContent: "center", alignItems: "center",
+        height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13
+    },
+    paddingTop: { paddingTop: 24 }
 })

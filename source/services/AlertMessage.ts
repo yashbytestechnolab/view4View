@@ -14,12 +14,11 @@ interface alertMessage {
     Something: string
     refCode: string
     Default: string,
-    ChangePasswordSuccess:string
+    ChangePasswordSuccess: string
 }
 
 export const handleFirebaseError = (type: string) => {
-
-    const { passError, tooManyRequest, danger, userNotFound, emailAlredyInUser, ChangePasswordSuccess,forgotPwdSuccessMsg, success, validEmail, Something, refCode, Default }: alertMessage = String.flashMessage
+    const { passError, tooManyRequest, danger, userNotFound, emailAlredyInUser, ChangePasswordSuccess, forgotPwdSuccessMsg, success, validEmail, Something, refCode, Default }: alertMessage = String.flashMessage
     switch (type) {
         case "auth/wrong-password": return AlertMessage(passError, danger)
         case "auth/too-many-requests": return AlertMessage(tooManyRequest, danger)
@@ -29,16 +28,24 @@ export const handleFirebaseError = (type: string) => {
         case "WrongEmail": return AlertMessage(validEmail, danger)
         case "coin not update": return AlertMessage(Something, danger)
         case "refCode": return AlertMessage(refCode, Default)
-        case "ChangePasswordSuccess":return AlertMessage(ChangePasswordSuccess,success)
+        case "ChangePasswordSuccess": return AlertMessage(ChangePasswordSuccess, success)
         default: return type
     }
 }
 
 const AlertMessage = (...params: Array<string>) => {
-
-    showMessage({
-        backgroundColor: params[1] == "default" && "#FF1359",
-        message: params[0],
-        type: params[1],
-    });
+    if (params[1] == "default") {
+        showMessage({
+            backgroundColor: "#FF1359",
+            message: params[0],
+            type: params[1],
+        })
+    }
+    
+    else {
+        showMessage({
+            message: params[0],
+            type: params[1],
+        })
+    }
 }

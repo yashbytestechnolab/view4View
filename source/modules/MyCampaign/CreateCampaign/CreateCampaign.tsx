@@ -96,6 +96,7 @@ export const CreateCampaign = () => {
       }
     }).catch((err: any) => Alert.alert("Entered video url looks invalid. Please make sure you've entered correct video url"))
   }
+  
   function debounce(time: number) {
     let getTimeId: any | number
     clearTimeout(getTimeId)
@@ -103,11 +104,11 @@ export const CreateCampaign = () => {
       if (getTimeId) clearTimeout(getTimeId)
       getTimeId = setTimeout(() => {
         handleAddCampaign()
-      }, 400);
+      }, time);
     }
   }
 
-  const addCampaignDebounce = debounce(200)
+  const addCampaignDebounce = debounce(300)
 
   return (
     <>

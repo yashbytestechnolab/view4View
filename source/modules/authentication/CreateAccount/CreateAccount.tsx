@@ -61,6 +61,7 @@ export const CreateAccount = () => {
         return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     }
     const handleCreateUserRequest = async () => {
+        dispatchError({ type: type.EMPTY_STATE })
         setLoading(true)
         crashlyticslog("create account")
         auth().

@@ -104,7 +104,7 @@ export const Login = () => {
           contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
           <GradientHeader />
           <View style={[style.wrapperView,]} >
-            <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1, }, darkBackGround(darkModeTheme)]}>
+            <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1 }, darkBackGround(darkModeTheme)]}>
               <View style={[style.innerContainer, darkBackGround(darkModeTheme)]} >
                 <AuthHeader
                   mainTitle={String.commonString.WelcomeBack}
