@@ -37,13 +37,13 @@ export const EarnCoinData = [
     },
     {
         svg: Invitefriends,
-        title: 'Invite friends',
+        title: 'Invite Friends',
         subTitle: 'Earn 300 coin for a referral',
         onPress: ROUTES?.INVITEFRIEND,
         type: CellType.invite
     }, {
         svg: AdVideo,
-        title: 'Watch Ads video',
+        title: 'Watch Ads Video',
         subTitle: 'Watch ads video and earn coins',
         onPress: "SHOWADDS",
         type: CellType.ads

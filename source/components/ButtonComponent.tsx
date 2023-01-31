@@ -11,8 +11,7 @@ interface buttonProps {
     loading?: boolean,
     disable?: boolean,
     spinnerColor?: boolean
-}
-
+}	
 export const ButtonComponent = (props: buttonProps) => {
     const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading, disable, spinnerColor } = props
     return (

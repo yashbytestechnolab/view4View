@@ -120,7 +120,7 @@ export const ChangePassword = () => {
                 <View style={[{ paddingTop: 24, }, darkBackGround(darkModeTheme)]}>
 
                     <InputComponent
-                        placeholder={String.commonString.oldPassword}
+                        placeholder={String.commonString.enterOldPwd}
                         inputTitle={String.commonString.oldPassword}
                         value={userInput?.oldPassword}
                         onChangeText={value => {
@@ -143,7 +143,7 @@ export const ChangePassword = () => {
                         errorMessage={userInputError?.oldPasswoedError}
                     />
                     <InputComponent
-                        placeholder={String.commonString.newPassword}
+                        placeholder={String.commonString.enterNewPwd}
                         inputTitle={String.commonString.newPassword}
                         value={userInput?.newPassword}
                         onChangeText={value => {

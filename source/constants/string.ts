@@ -23,7 +23,7 @@ export const String: any = {
         view4view: 'view4view',
         YourCoin: 'Your Coin',
         AddYourVideo: "Add Your Video",
-        buyCoin: 'Buy coin',
+        buyCoin: 'Buy Coin',
         editProfile: 'Edit Profile',
         changePassword: 'Change Password'
     },
@@ -89,13 +89,15 @@ export const String: any = {
         emptyList: "No campaigns available. Please create campaigns by clicking on the + button",
         viewsofthisvideo: "views of this video",
         viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app.",
-        oldPassword: 'Old password',
-        newPassword: 'New password',
-        conformPassword: 'Confirm password',
-        ReferralCode: 'Referral code ',
+        oldPassword: 'Old Password',
+        enterOldPwd:'Enter your password ',
+        enterNewPwd:'Enter your new password',
+        newPassword: 'New Password',
+        conformPassword: 'Confirm Password',
+        ReferralCode: 'Referral Code ',
         ReferralCodeEnter: 'Enter referral code',
         save: 'Save',
-        buyCoinSubText: 'Contact us if you have some special orders or if you have any problem with in-app-purchase by sending an email to :mobile.apps@bytestechnolab.com'
+        buyCoinSubText: 'Contact us if you have some special orders or if you have any problem with in-app-purchase by sending an email to : mobile.apps@bytestechnolab.com'
     },
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
@@ -112,7 +114,7 @@ export const String: any = {
         ChangePasswordSuccess:'Succesfully change Password please login with your new password'
     },
     inviteFrd: {
-        headerTitle: 'Invite friends',
+        headerTitle: 'Invite Friends',
         title: "Refer, Invite, and Earn",
         subTitle: "Earn GREAT rewards and coins by bringing \n your friends and family to our app. You don’t\n wanna miss it.",
         button: "Invite Now"
@@ -136,15 +138,15 @@ export const String: any = {
         email: 'email-address'
     },
     settingScreen: {
-        EditProfile: 'Edit profile',
+        EditProfile: 'Edit Profile',
         AccountInformation: 'ACCOUNT INFORMATION',
-        ChangePassword: 'Change password',
+        ChangePassword: 'Change Password',
         More: 'MORE',
         RateUs: 'Rate Us',
         InviteFriends: 'Invite Friends',
         PrivacyPolicy: 'Privacy Policy',
         DarkMode: 'Dark Mode',
-        logout: 'Sign out'
+        logout: 'Sign Out'
 
     }
 
