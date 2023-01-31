@@ -1,5 +1,5 @@
-import { View, SafeAreaView } from 'react-native';
-import React, { useContext, useState } from 'react';
+import { View, SafeAreaView, BackHandler } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
 import { ButtonComponent, Header, InputComponent } from '../../../../components';
 import { InputContextProvide } from '../../../../context/CommonContext';
 import { type } from '../../../../constants/types';
@@ -31,6 +31,7 @@ export const ChangePassword = () => {
      * This Function trigger create user account in firebase request
      */
     const HandleChangePassword = () => {
+        dispatchError({ type: type.EMPTY_STATE })
         let isNotValidForm: boolean = false;
         const { oldPassword, newPassword, confirmPassword }: any = userInput;
         (oldPassword?.length <= 0 || oldPassword?.length < 6) &&
@@ -79,7 +80,6 @@ export const ChangePassword = () => {
                         console.log("res2", res);
 
                         setLoading(false)
-
                         handleFirebaseError('ChangePasswordSuccess');
                         dispatch({ type: type.EMPTY_STATE });
                         setTimeout(() => {
@@ -101,6 +101,13 @@ export const ChangePassword = () => {
                 setLoading(false)
             })
     };
+    
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', dispatchError({ type: type.EMPTY_STATE }));
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', dispatchError({ type: type.EMPTY_STATE }));
+        };
+    }, []);
 
     return (
         <>

@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 import { View, Modal, StyleSheet, ActivityIndicator } from 'react-native';
-
 import { InputContextProvide } from '../context/CommonContext';
 import { Colors } from '../Theme';
 
 const AppLoader = () => {
-    const { storeCreator: { loading} }: any = useContext(InputContextProvide)
+    const { storeCreator: { loading } }: any = useContext(InputContextProvide)
     return (
         <Modal
             transparent
