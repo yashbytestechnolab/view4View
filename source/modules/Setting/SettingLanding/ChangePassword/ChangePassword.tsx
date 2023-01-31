@@ -70,13 +70,13 @@ export const ChangePassword = () => {
         setLoading(true)
         Reauthenticate(currentPassword)
             .then((res: any) => {
-                console.log("res1",res);
-                
+                console.log("res1", res);
+
                 setLoading(false)
                 let user: any = firebase.auth().currentUser;
                 user.updatePassword(newPassword)
                     .then(res => {
-                        console.log("res2",res);
+                        console.log("res2", res);
 
                         setLoading(false)
 
@@ -94,6 +94,7 @@ export const ChangePassword = () => {
             })
             .catch(error => {
                 setLoading(false)
+                console.log("error.codeerror.code", error.code);
 
                 handleFirebaseError(error.code);
             }).finally(() => {

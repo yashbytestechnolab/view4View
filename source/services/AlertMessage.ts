@@ -37,7 +37,7 @@ export const handleFirebaseError = (type: string) => {
 const AlertMessage = (...params: Array<string>) => {
 
     showMessage({
-        backgroundColor: params[1] == "default" && "#FF1359",
+       
         message: params[0],
         type: params[1],
     });

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Platform, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions, } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, Platform, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions, StatusBar, } from 'react-native';
 import { String } from '../../../constants';
 import { colorBackGround, Colors, F40014, lightBackGround, } from '../../../Theme';
 import { EarnCoin } from '../../../services';
@@ -139,22 +139,20 @@ export const BuyCoin = () => {
         let sku = onGetProdutId(productData);
         sku && await onPurchase(sku)
     }
-
-    // const Loader = () => {
-    //     return (
-    //         <View style={style.loaderHead}>
-    //             <ActivityIndicator size="large" color={Colors.primaryRed} />
-    //         </View>
-    //     )
-    // }
-
+    const HandleLoader = () => {
+        return (
+            <View style={style?.loaderHead}>
+                <ActivityIndicator size={'large'} color={Colors?.primaryRed} />
+            </View>
+        )
+    }
     return (
         <>
-        {parseData === undefined ? <Loader/> :
-            <><SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} /><View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
+            {parseData === undefined ? <Loader /> :
+                <><SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} /><View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
                     <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} titleStyle={{ marginRight: 30 }} />
-                    {loading && <Loader />}
-
+<StatusBar barStyle={'light-content'} backgroundColor={Colors?.gradient1}/>
+                    {loading && <HandleLoader />}
                     <ScrollView showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps={String.commonString.handled}
                         style={[style.scroll, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}
@@ -180,9 +178,9 @@ export const BuyCoin = () => {
 
                             return (
                                 <TouchableOpacity key={index?.toString()} activeOpacity={1} style={[style.card, lightBackGround(darkModeTheme),
-                                { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, }, isChecked && {
+                                { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme ? 0 : 8 }, isChecked && {
                                     borderWidth: 1, borderColor: Colors?.primaryRed,
-                                }]} onPress={() => { onReadioButtonPress(index); } }
+                                }]} onPress={() => { onReadioButtonPress(index); }}
                                     disabled={loading}
                                 >
                                     <View style={style.rbWrapper}>
@@ -206,10 +204,9 @@ export const BuyCoin = () => {
 
                             wrapperStyle={style.buttonWrapper} />
 
-
                     </ScrollView>
                 </View></>
-}
+            }
         </>
     );
 };
@@ -254,5 +251,15 @@ const style = StyleSheet.create({
     isChecked: { height: 22, width: 22, borderRadius: 13, borderColor: Colors?.primaryRed, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
     buttonWrapper: { width: '100%', },
     selectRB: { height: 10, width: 10, borderRadius: 8, backgroundColor: Colors.primaryRed, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' },
-    loaderHead: { position: 'absolute', top: Height / 2.3, left: Width / 2.3, zIndex: 1000 }
+    loaderHead: {
+        // alignItems:'center',
+        // justifyContent:'center',
+        // flex:1,
+        // //position:'absolute',
+        // marginTop:150,
+        position: 'absolute',
+        top: Height / 2.3,
+        left: Width / 2.3,
+        zIndex: 999
+    }
 })
