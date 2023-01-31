@@ -79,7 +79,6 @@ export const MyCampaignLandingScreen = () => {
    */
   const renderCampaignList = ({ item }: any) => {
     let fillValue = item?.consumed_view * 100 / item?.expected_view
-
     return (
       <>
         {
@@ -94,8 +93,8 @@ export const MyCampaignLandingScreen = () => {
             <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow }]}>
               <Image
                 style={styles.thumbNilImage}
-                source={{ uri: `http://img.youtube.com/vi/${item?.video_Id[0]}/0.jpg` }} />
-              <View style={styles.discription}> 
+                source={{ uri: item?.thumbnail_url }} />
+              <View style={styles.discription}>
                 <Text
                   style={[F50013.main, colorBackGround(darkModeTheme)]}
                   numberOfLines={1}>

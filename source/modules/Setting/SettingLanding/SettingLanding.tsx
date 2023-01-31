@@ -44,14 +44,14 @@ export const SettingLanding = () => {
   }, [])
 
   const logoutHandle = async () => {
+    await navigation.reset({
+      index: 0,
+      routes: [{ name: ROUTES?.LOGIN }]
+    })
     await LocalStorage.setValue(LocalStorageKeys.UserId, "")
     auth().signOut().then(() => { })
     dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: false })
     dispatchuserDetail({ type: type.USER_INFO_DELETE })
-    navigation.reset({
-      index: 0,
-      routes: [{ name: ROUTES?.LOGIN }]
-    })
     crashlyticslog(`Logout_Press`);
   }
 

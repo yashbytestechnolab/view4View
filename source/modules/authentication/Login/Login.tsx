@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, StatusBar } from 'react-native';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { colorBackGround, Colors, darkBackGround, F40014, } from '../../../Theme';
 import { useNavigation } from '@react-navigation/native';
 import { getNotificationToken, LocalStorageKeys, ROUTES, String } from '../../../constants';
@@ -22,6 +22,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Platform } from 'react-native';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
+
 export const Login = () => {
   /**
    * Context to give userinput data and error message
@@ -46,17 +47,19 @@ export const Login = () => {
       then(async (userResponse: any) => {
         let userDetail = userResponse?.user?._user
         Anaylitics("login", { user_id: userDetail?.uid })
-        await getNotificationToken()
         await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
         await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
         await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
+        await getNotificationToken()
         dispatch({ type: type.EMPTY_STATE })
         navigation.reset({
           index: 0,
           routes: [{ name: ROUTES.TABLIST }],
         });
+        setLoading(false)
+        console.log("after login process");
       }).
-      catch((userError) => handleFirebaseError(userError.code)).
+      catch((userError) => handleFirebaseError(userError?.code)).
       finally(() => setLoading(false))
   }
 
@@ -86,6 +89,7 @@ export const Login = () => {
     dispatchError({ type: type.EMPTY_STATE })
   }
 
+
   return (
     <>
       <SafeAreaView style={style.safeArea} />
@@ -106,7 +110,7 @@ export const Login = () => {
                   mainTitle={String.commonString.WelcomeBack}
                   miniTitle={String.commonString.Donthaveanaccount}
                   actionTitle={String.commonString.SignUp}
-                  onPress={() => { navigation.navigate(ROUTES.CREATEACCOUNT); }}
+                  onPress={() => { navigation.navigate(ROUTES.CREATEACCOUNT); clearStateValue() }}
                 />
 
                 <InputComponent

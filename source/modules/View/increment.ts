@@ -5,6 +5,7 @@ class increment {
     toggleNextPrees: boolean = false
     configvalue = ""
     devicesPermission = false
+    routesName: "" | undefined | string
     getInc() {
         this.retryCount += 1
     }
@@ -25,6 +26,9 @@ class increment {
     }
     getPermissionOfDevices(params: boolean) {
         this.devicesPermission = params
+    }
+    getRouteName(params: string | any) {
+        this.routesName = params
     }
 }
 

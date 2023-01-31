@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
-import YoutubePlayer from 'react-native-youtube-iframe';
+import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
@@ -48,10 +48,13 @@ export const ViewLanding = () => {
 
   const getNotificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
+    console.log("Ntoken",Ntoken);
+    
     setToken(Ntoken)
   }
 
   useEffect(() => {
+    console.log("viewLanding");
     GetCoins("isInitialRenderUpdate");
     getNotificationToken()
   }, []);
@@ -94,9 +97,7 @@ export const ViewLanding = () => {
       clearInterval(controlRef?.current);
       const totalAmount = getBalance + (coin / expected_view);
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
-
       await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
-
       await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
     }
@@ -111,14 +112,12 @@ export const ViewLanding = () => {
   };
 
   useEffect(() => {
-
     if (timer === 0) {
       GetEarning();
       animationProgress?.current.setValue(0)
       showAnimation()
     }
     GetReferralCode()
-
   }, [timer]);
 
   const onStateChange = async (state: string) => {
@@ -131,19 +130,15 @@ export const ViewLanding = () => {
       setStart(false);
     }
     if (state === 'paused') {
-      setPlaying(false);
       setStart(false);
     }
     if (state === 'buffering') {
-      setPlaying(false);
       setStart(false);
     }
     if (state === 'unstarted') {
-      setPlaying(false);
       setStart(false);
     }
     if (state === 'video cued') {
-      setPlaying(false);
       setStart(false);
     }
   };
@@ -180,7 +175,7 @@ export const ViewLanding = () => {
         if (add_Video_Url?.length > 0) {
           person?.emptyCount();
           params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
-          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: {  _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
+          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
         } else {
           if (person.retryCount >= 3) {
             dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })
@@ -234,6 +229,7 @@ export const ViewLanding = () => {
   }
 
   let debounce = onPreesNext(400)
+
   return (
     <>
       <SafeAreaView style={styles.safearea} /><StatusBar
