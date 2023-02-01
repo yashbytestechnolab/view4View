@@ -240,7 +240,7 @@ const style = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 8,
         shadowRadius: 4,
-        elevation: 8,
+        //elevation: 8,
     },
     subTextWrapper: {
         marginVertical: 50, width: '100%', color: Colors.placeHolderTextBlack,
