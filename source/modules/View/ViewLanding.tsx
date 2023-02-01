@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
-import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
+import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
@@ -48,16 +48,14 @@ export const ViewLanding = () => {
     });
   };
 
+  
   const getNotificationToken = async () => {
     await Rating()
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
-    console.log("Ntoken",Ntoken);
-    
-    setToken(Ntoken)
+     setToken(Ntoken)
   }
 
   useEffect(() => {
-    console.log("viewLanding");
     GetCoins("isInitialRenderUpdate");
     getNotificationToken()
   }, []);
@@ -219,7 +217,8 @@ export const ViewLanding = () => {
       }
     }
   };
-
+  console.log("")
+console.log("timerrr",timer)
   const onPreesNext = (time: number) => {
     let intialSetTime: number | any;
     clearTimeout(intialSetTime)

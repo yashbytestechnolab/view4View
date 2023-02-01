@@ -70,7 +70,7 @@ export const EditProfile = () => {
             ) {
                 Platform.OS == "ios" ? await iosBase64Compress(response) : setProfilePic(response?.assets[0])
             } else {
-                Alert.alert('Image size must be less than 5MB');
+                Alert.alert(String?.commonString?.imageSize);
             }
             setPhotoLoad(false)
         }).catch(err => setPhotoLoad(false)).finally(() => setPhotoLoad(false))
@@ -89,10 +89,15 @@ export const EditProfile = () => {
             console.log("err", err);
         }).finally(() => dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: false }))
     }
+    const handleBackButtonClick = () => {
+        navigation.goBack();
+        dispatchError({ type: type.EMPTY_STATE })
+        return true;
+      }
     useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', dispatchError({ type: type.EMPTY_STATE }));
+        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
         return () => {
-            BackHandler.removeEventListener('hardwareBackPress', dispatchError({ type: type.EMPTY_STATE }));
+            BackHandler.removeEventListener('hardwareBackPress',handleBackButtonClick);
         };
     }, []);
 
@@ -100,7 +105,7 @@ export const EditProfile = () => {
         <>
             <SafeAreaView style={style.safeArea} />
             <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
-                <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
+                <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} titleStyle={{paddingRight:25}} />
                 {infoLoading ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>{String?.commonString?.save}</Text>}
 
                 <View style={style.paddingTop}>
@@ -145,7 +150,7 @@ const style = StyleSheet.create({
     safeArea: {
         backgroundColor: Colors.gradient1
     },
-    saveTextWrapper: { position: 'absolute', right: 12, top: 13, padding: 5, textAlign: 'center' },
+    saveTextWrapper: { position: 'absolute', right: 12, top: 10, padding: 5, textAlign: 'center' },
     imageWrapper: { height: 60, width: 60, borderRadius: 30, backgroundColor: Colors?.shadowPink, },
     nameWrapper: { justifyContent: "center", alignItems: "center", marginHorizontal: 16, },
     mainWrapper: { backgroundColor: Colors.white, flex: 1 },
