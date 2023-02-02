@@ -1,44 +1,49 @@
-import React, { useState } from 'react'
-import { View, Text, Appearance, StyleSheet } from 'react-native'
+import React, { useEffect, useState, } from 'react'
+import { View, Text, Modal, StyleSheet } from 'react-native'
 import AnimatedLottieView from 'lottie-react-native'
 import { F60016, F60024, colorBackGround, darkBackGround } from '../Theme'
-import * as LocalStorage from '../services/LocalStorage';
-import { LocalStorageKeys, String } from '../constants'
 import { ButtonComponent } from '../components';
 import NetInfo from "@react-native-community/netinfo";
+import { String } from '../constants';
+export const NoInternetConnect = ({ darkModeTheme, isInternetBack, setIsInternetBack }: any) => {
+    const [isConncectLoading, setIsConncectLoading] = useState(false)
 
-export const NoInternetConnect = () => {
-    let colorScheme = LocalStorage.getValue(LocalStorageKeys.DarkMode);
-    const [isLoading, setIsLoading] = useState(false);
-    (colorScheme == null || colorScheme == undefined) && Appearance.getColorScheme();
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state !== null) {
+                setIsInternetBack(state?.isConnected)
+            }
+        });
+        return () => { unsubscribe(); }
+    }, [])
+
     const HandleTryAgain = () => {
-        setIsLoading(true)
+        setIsConncectLoading(true)
+        NetInfo.refresh().then(state => {
+            if (state !== null) {
 
-        setTimeout(() => {
-            NetInfo.fetch().then(state => {
-                setIsLoading(false)
-            }).catch((err) => {
-                setIsLoading(false)
-            }).finally(() => {
-                setIsLoading(false)
-            })
-        }, 3000)
-
-
+            }
+        }).finally(() => setTimeout(() => setIsConncectLoading(false), 3000));
     }
+
     return (
         <>
+            <Modal
+                transparent
+                visible={!isInternetBack}
+                animationType="none"
+                supportedOrientations={['portrait', 'landscape']}>
+                <View style={[style.main, darkBackGround(darkModeTheme)]}>
+                    <AnimatedLottieView
+                        style={style.animation}
+                        source={require('../assets/noInternet.json')} autoPlay />
 
-            <View style={[style.main, darkBackGround(colorScheme)]}>
-                <AnimatedLottieView
-                    style={style.animation}
-                    source={require('../assets/noInternet.json')} autoPlay />
-
-                <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(colorScheme)]}>{String?.noInterNetScreen?.title}</Text>
-                <Text style={[F60016?.semiBolt, style.subText, colorBackGround(colorScheme)]}>{String?.noInterNetScreen?.subTitle}</Text>
-                <ButtonComponent loading={isLoading} buttonTitle={String?.noInterNetScreen?.buttonTitle} onPrees={() => { HandleTryAgain() }}
-                    wrapperStyle={style.button} />
-            </View>
+                    <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.title}</Text>
+                    <Text style={[F60016?.semiBolt, style.subText, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.subTitle}</Text>
+                    <ButtonComponent loading={isConncectLoading} buttonTitle={String?.noInterNetScreen?.buttonTitle} onPrees={() => { HandleTryAgain() }}
+                        wrapperStyle={style.button} />
+                </View>
+            </Modal>
         </>
 
     )

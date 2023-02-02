@@ -29,6 +29,7 @@ export const EarnCoinLanding = () => {
     setLoading(true)
     crashlyticslog(`user watch video ${ROUTES.EARNCOINS_LANDING}`)
     Anaylitics("show_add", { getBalance });
+    setLoading(true)
     const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
     rewardAd.onAdEvent((type, error) => {
       if (type === RewardedAdEventType.LOADED) {
@@ -65,7 +66,7 @@ export const EarnCoinLanding = () => {
           {EarnCoinData.length > 0 && EarnCoinData?.map((item: any, index) => {
             return (
               <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card,
-              lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme ? 0 : 8 }]} activeOpacity={1}
+              lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme ?0:8 }]} activeOpacity={1}
                 onPress={() => {
                   item?.onPress == "SHOWADDS" ? showRewardAd() :
                     navigation.navigate(item?.onPress)

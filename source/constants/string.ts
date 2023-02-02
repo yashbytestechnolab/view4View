@@ -83,7 +83,7 @@ export const String: any = {
         darkcontent: "dark-content",
         signInWithGoogle: 'Sign in with Google',
         Addvideolink: "Add video link",
-        pasteyourvideolinkhere: "Paste your video link here",
+        pasteyourvideolinkhere: "Paste your video link",
         Addnow: "Add Now",
         createContain: "Steps to CREATE & ADD a campaign.",
         OrderSettings: "Order Settings",
@@ -134,6 +134,15 @@ export const String: any = {
     StatusBar: {
         darkContent: 'dark-content',
         lightContent: 'light-content'
+    },
+    Notification: {
+        congratulations: 'Congratulations you received',
+        coins: 'coins',
+        Reward: "Reward",
+        campaignCompleted: function (params: string) {
+            return `Your campaign ${`"${params}"`} has been completed.`
+        },
+        completed: "Campaign Completed"
     },
     viewCoinScreen: {
         yourCoins: 'Your Coins!',
