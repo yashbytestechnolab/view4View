@@ -46,7 +46,7 @@ export const initilizeIAPConnection = async () => {
 
 export const getItems = async () => {
     try {
-        const Products = await RNIap.getProducts({ skus: itemSkus });
+        const Products = await RNIap.getProducts({ skus: itemSkus });        
         if (Products?.length !== 0) {
             return Products
         }
@@ -66,13 +66,13 @@ export const onGetCoinAmount = async (rewardId: any) => {
         case '1KCoins':
             return 1000
         case '2.5kcoins':
-            return 2500
+            return 2800
         case '2.5KCoins':
-            return 2500
+            return 2800
         case '5KCoins':
-            return 5000
+            return 6000
         case '5kcoins':
-            return 5000
+            return 6000
         default:
             return 0
     }
@@ -84,6 +84,7 @@ export const onPurchase = async (sku: string) => {
         RNIap.requestPurchase({
             sku,
             andDangerouslyFinishTransactionAutomaticallyIOS: false,
+            
         })
     } catch (err: any) {
         console.warn(err.code, err.message);

@@ -90,7 +90,7 @@ export const MyCampaignLandingScreen = () => {
               </Text>
             </View>)
             :
-            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow }]}>
+            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow, elevation: darkModeTheme ? 0 : 8 }]}>
               <Image
                 style={styles.thumbNilImage}
                 source={{ uri: item?.thumbnail_url }} />

@@ -1,9 +1,10 @@
 import React, { useEffect, useState, } from 'react'
-import { View, Text, Modal } from 'react-native'
+import { View, Text, Modal, StyleSheet } from 'react-native'
 import AnimatedLottieView from 'lottie-react-native'
 import { F60016, F60024, colorBackGround, darkBackGround } from '../Theme'
 import { ButtonComponent } from '../components';
 import NetInfo from "@react-native-community/netinfo";
+import { String } from '../constants';
 export const NoInternetConnect = ({ darkModeTheme, isInternetBack, setIsInternetBack }: any) => {
     const [isConncectLoading, setIsConncectLoading] = useState(false)
 
@@ -32,17 +33,28 @@ export const NoInternetConnect = ({ darkModeTheme, isInternetBack, setIsInternet
                 visible={!isInternetBack}
                 animationType="none"
                 supportedOrientations={['portrait', 'landscape']}>
-                <View style={[{ flex: 1, alignItems: 'center', paddingTop: 150, paddingHorizontal: 16, }, darkBackGround(darkModeTheme)]}>
+                <View style={[style.main, darkBackGround(darkModeTheme)]}>
                     <AnimatedLottieView
-                        style={{ height: 100, width: 100 }}
+                        style={style.animation}
                         source={require('../assets/noInternet.json')} autoPlay />
-                    <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(darkModeTheme)]}>No Internet Connection</Text>
-                    <Text style={[F60016?.semiBolt, { textAlign: 'center', marginTop: 20 }, colorBackGround(darkModeTheme)]}>Make sure Wi-Fi or Mobile data is Turned on {`\n`} then try agin</Text>
-                    <ButtonComponent loading={isConncectLoading} buttonTitle={'Try again'} onPrees={() => { HandleTryAgain() }}
-                        wrapperStyle={{ width: 312, marginTop: 75, backgroundColor: '#2E8B79' }} />
+
+                    <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.title}</Text>
+                    <Text style={[F60016?.semiBolt, style.subText, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.subTitle}</Text>
+                    <ButtonComponent loading={isConncectLoading} buttonTitle={String?.noInterNetScreen?.buttonTitle} onPrees={() => { HandleTryAgain() }}
+                        wrapperStyle={style.button} />
                 </View>
             </Modal>
         </>
 
     )
 }
+const style = StyleSheet.create({
+    main: {
+        flex: 1, alignItems: 'center', paddingTop: 150, paddingHorizontal: 16,
+    }, animation: {
+        height: 100, width: 100
+    },
+    subText: { textAlign: 'center', marginTop: 20 },
+    button: { width: 312, marginTop: 75, backgroundColor: '#2E8B79' }
+
+})

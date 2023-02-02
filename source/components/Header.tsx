@@ -40,7 +40,7 @@ export const Header = (props: IheaderProps) => {
           {showBacKIcon && (
             <TouchableOpacity
               activeOpacity={1}
-              style={{ padding: 10 }}
+              style={{ padding: 8, }}
               onPress={() => {
                 Anaylitics("user_coin", { getBalance })
                 onPrees ? onPrees() : navigation.goBack();
@@ -55,7 +55,7 @@ export const Header = (props: IheaderProps) => {
           </View>
           {showCoin && (
             <TouchableOpacity
-              style={[style.coinWrapper, showBacKIcon && { marginBottom: 8 }]}
+              style={[style.coinWrapper, showBacKIcon && { marginBottom: showBacKIcon?2:8 }]}
               activeOpacity={1}
               onPress={() => {
                 navigation?.navigate(ROUTES?.VIEWCOIN);
@@ -87,18 +87,17 @@ const style = StyleSheet.create({
     backgroundColor: Colors?.pink,
     height: 60,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal:6
   },
   titleText: {
     textAlign: 'center',
+    //paddingRight:25
   },
 
   Wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 15,
-    marginLeft: 20,
-
   },
   coinWrapper: {
     flexDirection: 'row',
@@ -106,7 +105,7 @@ const style = StyleSheet.create({
     alignSelf: 'flex-end',
     position: 'absolute',
     right: 1,
-    bottom: 0,
+    bottom: 2,
     top: 0,
   },
 

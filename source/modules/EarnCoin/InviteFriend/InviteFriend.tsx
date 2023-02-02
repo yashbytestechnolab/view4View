@@ -36,7 +36,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
         setBuildData(IAPData)
 
     }
-    const ReferEarn = `View4view is very usefull app and you increase your view and earn coins.\n\nDownload now:  \n\niOS App: ${buildData?.Upadte?.ios} \n\nAndroid App: ${buildData?.Upadte?.android}
+    const ReferEarn = `${String?.inviteFrd?.linkText} \n\nDownload now:  \n\niOS App: ${buildData?.Upadte?.ios} \n\nAndroid App: ${buildData?.Upadte?.android}
     \n\nReferral code: ${getReferralCode}`;
 
     const option = {
@@ -71,13 +71,16 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
             <StatusBar
                 backgroundColor={Colors?.gradient1}
                 barStyle={'light-content'}
+
             />
             {!notifyUpdate && (
-                <Header
-                    title={String?.inviteFrd?.headerTitle}
-                    showCoin={false}
-                    showBacKIcon={true}
-                />
+                 <Header
+                 title={String?.inviteFrd?.headerTitle}
+                 showCoin={false}
+                 showBacKIcon={true}
+                 titleStyle={{ paddingRight: 25 }}
+
+             />
             )}
             <ScrollView
                 style={[style.main, darkBackGround(darkModeTheme)]}

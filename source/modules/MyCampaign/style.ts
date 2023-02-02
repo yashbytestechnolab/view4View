@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 4,
     shadowRadius: 4,
-    elevation: 8,
+    //elevation: 8,
     borderRadius: 16,
     backgroundColor: '#1A1A1A'
   },

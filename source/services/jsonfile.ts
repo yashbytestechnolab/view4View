@@ -26,14 +26,17 @@ export const IntroductionData = [{
 
 export enum CellType {
     invite = "invite",
-    ads = "ads"
+    ads = "ads",
+    buyCoin="buyCoin"
 }
 export const EarnCoinData = [
     {
         svg: BuyCoin,
         title: 'Buy Coins',
         subTitle: 'Buy world coins of countries',
-        onPress: ROUTES?.BUYCOIN
+        onPress: ROUTES?.BUYCOIN,
+        type: CellType.buyCoin
+
     },
     {
         svg: Invitefriends,

@@ -71,10 +71,14 @@ export const ChangePassword = () => {
         setLoading(true)
         Reauthenticate(currentPassword)
             .then((res: any) => {
+                console.log("res1", res);
+
                 setLoading(false)
                 let user: any = firebase.auth().currentUser;
                 user.updatePassword(newPassword)
                     .then(res => {
+                        console.log("res2", res);
+
                         setLoading(false)
                         handleFirebaseError('ChangePasswordSuccess');
                         dispatch({ type: type.EMPTY_STATE });
@@ -90,6 +94,8 @@ export const ChangePassword = () => {
             })
             .catch(error => {
                 setLoading(false)
+                console.log("error.codeerror.code", error.code);
+
                 handleFirebaseError(error.code);
             }).finally(() => {
                 setLoading(false)
@@ -111,6 +117,7 @@ export const ChangePassword = () => {
                     title={String?.headerTitle?.changePassword}
                     showCoin={false}
                     showBacKIcon={true}
+                  
                     onPrees={() => {
                         dispatch({ type: type.EMPTY_STATE });
                         dispatchError({ type: type.EMPTY_STATE })

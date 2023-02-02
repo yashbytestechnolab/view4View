@@ -114,7 +114,7 @@ export const CreateCampaign = () => {
     <>
       <SafeAreaView style={{ backgroundColor: Colors.linear_gradient }} />
       <View style={[styles.main, darkBackGround(darkModeTheme)]}>
-        <Header
+      <Header
           showBacKIcon={true}
           title={headerTitle?.createCampaign} />
         <ScrollView

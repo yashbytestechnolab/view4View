@@ -26,6 +26,7 @@ export const EarnCoinLanding = () => {
    * showRewardAd is load the ad and show ad
    */
   const showRewardAd = () => {
+    setLoading(true)
     crashlyticslog(`user watch video ${ROUTES.EARNCOINS_LANDING}`)
     Anaylitics("show_add", { getBalance });
     setLoading(true)
@@ -59,7 +60,8 @@ export const EarnCoinLanding = () => {
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
       <View style={[style.main, darkModeTheme && darkBackGround(darkModeTheme)]}>
-        <Header title={String?.headerTitle?.earnCoin} />
+        <Header title={String?.headerTitle?.earnCoin} titleStyle={{  paddingRight: 10 }}
+        />
         <View style={style.wrapperView}>
           {EarnCoinData.length > 0 && EarnCoinData?.map((item: any, index) => {
             return (

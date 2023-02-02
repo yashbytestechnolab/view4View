@@ -23,14 +23,16 @@ export const AddVideo = () => {
                     (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
                 }),
                 !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), crashlyticslog(`add campaign @${ROUTES.ADDVIDEO}`), Anaylitics("add_video", { addVideoUrl })) :
-                    (Alert.alert("Campaign is already running for this video. Please wait until campaign end.")))
+                    (Alert.alert(String?.commonStringCampaignAlert)))
     }
 
     return (
         <>
             <SafeAreaView style={styles.safeArea} />
             <View style={[styles.mainWrapper, darkBackGround(darkModeTheme)]}>
-                <Header
+            <Header
+                    titleStyle={{ paddingRight: 25 }}
+
                     showBacKIcon={true}
                     title={headerTitle?.AddYourVideo} />
                 <View style={styles.childWrapper}>
