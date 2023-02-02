@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useContext, } from 'react';
 import { Colors, F50018, F60016 } from '../Theme';
 import { useNavigation } from '@react-navigation/native';
