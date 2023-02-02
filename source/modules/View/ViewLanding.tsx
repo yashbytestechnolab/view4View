@@ -40,9 +40,9 @@ export const ViewLanding = () => {
 
   
   const getNotificationToken = async () => {
-    await Rating()
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
     setToken(Ntoken)
+    await Rating()
   }
 
   useEffect(() => {
