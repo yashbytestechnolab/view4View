@@ -42,10 +42,10 @@ export const String: any = {
 
     },
     earnCoinTab: {
-        googleLogin: 'google login',
-        versionNumber: 'versionNumber',
-        alreadyUpdated: 'already updated',
-        pleaseUpdateYourApp: 'please update your app'
+        googleLogin: 'Google login',
+        versionNumber: 'VersionNumber',
+        alreadyUpdated: 'Already updated',
+        pleaseUpdateYourApp: 'Please update your app'
     },
     commonString: {
         WelcomeBack: "Welcome Back!",
@@ -76,7 +76,7 @@ export const String: any = {
         darkcontent: "dark-content",
         signInWithGoogle: 'Sign in with Google',
         Addvideolink: "Add video link",
-        pasteyourvideolinkhere: "Paste your video link here",
+        pasteyourvideolinkhere: "Paste your video link",
         Addnow: "Add Now",
         createContain: "Steps to CREATE & ADD a campaign.",
         OrderSettings: "Order Settings",
@@ -87,8 +87,8 @@ export const String: any = {
         Warning: "Note:",
         EarnPoints: "Earn Points",
         emptyList: "No campaigns available. Please create campaigns by clicking on the + button",
-        viewsofthisvideo: "views of this video",
-        viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app.",
+        viewsofthisvideo: "Views of this video",
+        viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on YouTube app.",
         oldPassword: 'Old Password',
         enterOldPwd:'Enter your password ',
         enterNewPwd:'Enter your new password',
@@ -104,14 +104,14 @@ export const String: any = {
         success: 'success',
         danger: 'danger',
         tooManyRequest: "Too many request",
-        passError: "Wrong password",
+        passError: "Invalid password",
         userNotFound: "User not found",
         emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
         Something: "Something went wrong",
-        refCode: 'Copied text !',
+        refCode: 'Copied text!',
         Default: "default",
-        ChangePasswordSuccess:'Succesfully change Password please login with your new password'
+        ChangePasswordSuccess: 'Your password has been changed successfully. Please login with your new password and get more views on videos.'
     },
     inviteFrd: {
         headerTitle: 'Invite Friends',
@@ -122,6 +122,15 @@ export const String: any = {
     StatusBar: {
         darkContent: 'dark-content',
         lightContent: 'light-content'
+    },
+    Notification: {
+        congratulations: 'Congratulations you received',
+        coins: 'coins',
+        Reward: "Reward",
+        campaignCompleted: function (params: string) {
+            return `Your campaign ${`"${params}"`} has been completed.`
+        },
+        completed: "Campaign Completed"
     },
     viewCoinScreen: {
         yourCoins: 'Your Coins!',

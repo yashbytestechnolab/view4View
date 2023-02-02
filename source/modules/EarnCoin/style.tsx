@@ -15,9 +15,7 @@ export const style = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     shadowRadius: 4,
-   elevation: 8,
-
-
+   //elevation: 8,
   },
   adWrapper:{ paddingHorizontal: 16, paddingTop: 20 },
   tabSubtitle:{ color: Colors?.black, opacity: 0.6 },

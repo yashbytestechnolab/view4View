@@ -13,8 +13,6 @@ import { person } from './source/modules/View/increment';
 import { Platform, Appearance } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { NoInternetConnect } from './source/services/NoInternetConnect';
-import SplashScreen from 'react-native-splash-screen';
-import { useNetInfo } from '@react-native-community/netinfo';
 import { LocalStorageKeys } from './source/constants';
 import * as LocalStorage from './source/services/LocalStorage';
 import { Colors } from './source/Theme';
@@ -26,14 +24,14 @@ export default function App() {
   const [updateAlert, setUpdateAlert] = useState(false)
   const [reward, setReward] = useState<reward>({ adsRewarAmt: 0, referRewardAmt: 0 })
   const [darkModeTheme, setDarkModeTheme] = useState(false)
-  const netInfoStaus = useNetInfo()
-  const status = netInfoStaus?.isConnected
+  const [isInternetBack, setIsInternetBack] = useState(true)
 
   const getReward = async () => {
     UpdateBuildVersion(setUpdateAlert)
     let remo = await rewardConfig()
     setReward(remo)
   }
+
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -61,13 +59,7 @@ export default function App() {
       colorScheme == "light" ? setDarkModeTheme(false) : setDarkModeTheme(true)
     }
   }
-
-  useEffect(() => {
-    setTimeout(() => {
-      SplashScreen.hide();
-    }, 2000)
-  }, [netInfoStaus, status])
-
+  
   useEffect(() => {
     getDarkModeUI()
     getReward()
@@ -86,20 +78,27 @@ export default function App() {
 
   return (
     <>
-      {status ?
-        <CommonContext reward={reward} setReward={setReward} darkModeTheme={darkModeTheme} setDarkModeTheme={setDarkModeTheme} >
-          <AppLoader />
-          <NavigationContainer theme={MyTheme}  >
-            {updateAlert ?
-              <InviteFriend notifyUpdate={updateAlert} /> :
-              <>
-                <RootNavigation />
-                <FlashMessage position="top" />
-              </>}
-          </NavigationContainer>
-        </CommonContext>
-        : <NoInternetConnect />
-      }
+      <CommonContext
+        reward={reward}
+        isInternetBack={isInternetBack}
+        setIsInternetBack={setIsInternetBack}
+        setReward={setReward}
+        darkModeTheme={darkModeTheme}
+        setDarkModeTheme={setDarkModeTheme} >
+        <AppLoader />
+        <NoInternetConnect
+          darkModeTheme={darkModeTheme}
+          isInternetBack={isInternetBack}
+          setIsInternetBack={setIsInternetBack} />
+        <NavigationContainer theme={MyTheme}  >
+          {updateAlert ?
+            <InviteFriend notifyUpdate={updateAlert} /> :
+            <>
+              <RootNavigation />
+              <FlashMessage position="top" />
+            </>}
+        </NavigationContainer>
+      </CommonContext>
     </>
   );
 }

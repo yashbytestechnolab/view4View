@@ -180,7 +180,7 @@ export const BuyCoin = () => {
 
                             return (
                                 <TouchableOpacity key={index?.toString()} activeOpacity={1} style={[style.card, lightBackGround(darkModeTheme),
-                                { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, }, isChecked && {
+                                { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation:darkModeTheme?0:8 }, isChecked && {
                                     borderWidth: 1, borderColor: Colors?.primaryRed,
                                 }]} onPress={() => { onReadioButtonPress(index); } }
                                     disabled={loading}
@@ -243,7 +243,7 @@ const style = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 8,
         shadowRadius: 4,
-        elevation: 8,
+        //elevation: 8,
     },
     subTextWrapper: {
         marginVertical: 50, width: '100%', color: Colors.placeHolderTextBlack,
