@@ -117,7 +117,6 @@ export const ChangePassword = () => {
                     title={String?.headerTitle?.changePassword}
                     showCoin={false}
                     showBacKIcon={true}
-                  
                     onPrees={() => {
                         dispatch({ type: type.EMPTY_STATE });
                         dispatchError({ type: type.EMPTY_STATE })
@@ -125,7 +124,6 @@ export const ChangePassword = () => {
                     }}
 
                 />
-
                 <View style={[{ paddingTop: 24, }, darkBackGround(darkModeTheme)]}>
 
                     <InputComponent

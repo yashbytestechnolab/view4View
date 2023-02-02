@@ -114,7 +114,7 @@ export const SettingLanding = () => {
     <>
       <SafeAreaView style={style.safeArea} />
       <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
-        <Header title={String?.headerTitle?.setting} showCoin={false} />
+        <Header title={String?.headerTitle?.setting} showCoin={false}  titleStyle={{paddingLeft:2}}/>
         <ScrollView style={[style.scrollWrapper, darkBackGround(darkModeTheme)]} showsVerticalScrollIndicator={false}
           scrollEnabled={true} contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}>
           <View style={[style.flex, darkBackGround(darkModeTheme)]}>

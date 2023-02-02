@@ -9,8 +9,6 @@ export const Rating = async () => {
     const count = countStartApp ? parseInt(countStartApp) : 1;
     const appVersion: any = VersionInfo.appVersion;
     const RateMessageBox = async () => {
-        console.log("aaaaavyu");
-
         let options = {
             AppleAppID: "1658265805",
             GooglePackageName: "com.bytes.view4View",
