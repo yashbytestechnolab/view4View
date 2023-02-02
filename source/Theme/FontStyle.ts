@@ -127,7 +127,7 @@ export const F50012 = StyleSheet.create({
         fontFamily: Fonts?.InterMedium
     },
     opacity: {
-        opacity: 0.5
+        opacity: 0.5,
     },
     fontStyleVideo: {
         fontFamily: Fonts?.InterMedium
@@ -157,6 +157,7 @@ export const F60016 = StyleSheet.create({
         fontFamily: Fonts?.InterSemiBold
     },
     semiBolt: {
+        fontSize: 17,
         color: Colors.placeHolderTextBlack,
         fontFamily: Fonts?.InterSemiBold
     },
@@ -164,9 +165,9 @@ export const F60016 = StyleSheet.create({
         color: Colors.black,
         fontFamily: Fonts?.InterRegular
     },
-    bold:{
-        fontFamily:Fonts?.InterBold,
-        lineHeight:20
+    bold: {
+        fontFamily: Fonts?.InterBold,
+        lineHeight: 20
     }
 })
 
@@ -188,7 +189,7 @@ export const F60012 = StyleSheet.create({
     },
     colorAccount: {
         color: Colors.placeHolderTextBlack,
-        fontFamily:Fonts.InterBold
+        fontFamily: Fonts.InterBold
     },
 
 })
@@ -199,7 +200,7 @@ export const F60012Bold = StyleSheet.create({
         fontWeight: "600",
         fontFamily: Fonts?.InterSemiBold
     },
-   
+
 })
 
 

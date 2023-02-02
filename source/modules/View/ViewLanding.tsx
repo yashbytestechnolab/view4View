@@ -1,18 +1,10 @@
-import React, { useState, useRef, useEffect, useContext, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
-import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
+import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
-import {
-  addWatchUrl,
-  bytesVideoListData,
-  getNewUpdatedViewCount,
-  getPlayVideoList,
-  getUserID,
-  get_coins,
-  userDeatil,
-} from '../../services/FireStoreServices';
+import { addWatchUrl, bytesVideoListData, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -26,7 +18,6 @@ import { crashlyticslog } from '../../services/crashlyticslog';
 import { Rating } from '../../services/Rating';
 
 export const ViewLanding = () => {
-
   const { storeCreator: { isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
@@ -38,8 +29,7 @@ export const ViewLanding = () => {
   const [onLoadStop, setOnLoadStop] = useState(false)
 
   const GetCoins = async (params: string) => {
-
-    // @ sign screen name in crash console  
+    // @ signin screen name in crash console  
     crashlyticslog(`get user coin @ ${ROUTES.VIEW_LANDING}`)
     await get_coins().then(async (res: any) => {
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
@@ -135,7 +125,6 @@ export const ViewLanding = () => {
       setStart(false);
     }
     if (state === 'paused') {
-      setPlaying(false);
       setStart(false);
     }
     if (state === 'buffering') {
@@ -170,6 +159,7 @@ export const ViewLanding = () => {
     getPlayVideoList(docOS)
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
+
         res._docs?.filter((res: any) => {
           if (res?._data?.upload_by !== getUserID() && !watchVideoList?.includes(res?._data?.video_Id[1])) {
             add_Video_Url.push(res?._data)
@@ -178,8 +168,6 @@ export const ViewLanding = () => {
         });
 
         if (add_Video_Url?.length > 0) {
-          console.log("add_Video_Url", add_Video_Url);
-
           person?.emptyCount();
           params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
           dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
@@ -222,7 +210,7 @@ export const ViewLanding = () => {
         setTimer(videoData?.[nextVideo + 1]?.require_duration);
       }
     }
-  };
+  }
 
   const onPreesNext = (time: number) => {
     let intialSetTime: number | any;
@@ -251,56 +239,51 @@ export const ViewLanding = () => {
               <YoutubePlayer
                 height={270}
                 videoId={videoData?.[nextVideo]?.video_Id[0]}
-                // ref={controlRef}
-                play={playing || !isInternetBack}
+                play={playing}
                 onChangeState={onStateChange}
-                onError={(err) => console.log("wrr", err)}
-              />}
+                onError={(err) => console.log("wrr", err)} />}
           </View>
-          {
-            videoLoading || !isInternetBack ?
-              <View style={styles.loader}>
-                <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
-              </View> :
-              <>
-                <View style={styles.iconRow}>
-                  <View style={styles.iconWrapper}>
-                    <SecondsIcon />
-                    <View style={styles.marginLeft}>
-                      <Text
-                        numberOfLines={1}
-                        style={[F60024.textStyle, { color: Colors?.primaryRed },]}>
-                        {timer > 0 ? timer : 0}
-                      </Text>
-
-                      <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.second}</Text>
-                    </View>
-                  </View>
-                  <View style={styles.iconWrapper}>
-                    <CoinIcon />
-                    <View style={styles.marginLeft}>
-                      <Text
-                        numberOfLines={1}
-                        style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
-                        {videoData?.[nextVideo]?.coin > 0 ? (videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view) : 0}
-                      </Text>
-                      <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.coin}</Text>
-                    </View>
+          {videoLoading || !isInternetBack ?
+            <View style={styles.loader}>
+              <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
+            </View> :
+            <>
+              <View style={styles.iconRow}>
+                <View style={styles.iconWrapper}>
+                  <SecondsIcon />
+                  <View style={styles.marginLeft}>
+                    <Text
+                      numberOfLines={1}
+                      style={[F60024.textStyle, { color: Colors?.primaryRed },]}>
+                      {timer > 0 ? timer : 0}
+                    </Text>
+                    <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.second}</Text>
                   </View>
                 </View>
-                <ButtonComponent
-                  loading={videoLoading}
-                  onPrees={() => { Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce() }}
-                  wrapperStyle={styles.marginTop}
-                  buttonTitle={String?.viewTab?.nextVideo} />
-
-              </>}
+                <View style={styles.iconWrapper}>
+                  <CoinIcon />
+                  <View style={styles.marginLeft}>
+                    <Text
+                      numberOfLines={1}
+                      style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
+                      {videoData?.[nextVideo]?.coin > 0 ? (videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view) : 0}
+                    </Text>
+                    <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.coin}</Text>
+                  </View>
+                </View>
+              </View>
+              <ButtonComponent
+                loading={videoLoading}
+                onPrees={() => { Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce() }}
+                wrapperStyle={styles.marginTop}
+                buttonTitle={String?.viewTab?.nextVideo} />
+            </>
+          }
         </ScrollView>
       </View>
       {isAnimation &&
         <Lottie style={styles.animation}
-          source={require('../../assets/animation.json')} progress={animationProgress.current} />
-      }
+          source={require('../../assets/animation.json')} progress={animationProgress.current} />}
     </>
   );
 };

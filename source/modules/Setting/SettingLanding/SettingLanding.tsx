@@ -84,7 +84,7 @@ export const SettingLanding = () => {
                           : navigation.navigate(item?.action)
                       }}
                       activeOpacity={1} style={style.tabWrapper}>
-                      <Text key={item?.name} style={[F40014?.main, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
+                      <Text key={item?.name} style={[F40014?.main, { fontSize: 15 }, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
                       {!item?.isUiRender ? (<NextIcon key={item?.name} color={darkModeTheme ? Colors?.white : Colors?.black} />) :
                         <ToggleSwitch
                           key={item?.id}
@@ -122,10 +122,10 @@ export const SettingLanding = () => {
               infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
                 <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => { navigation?.navigate(ROUTES?.EDITPROFILE) }}>
                   <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
-                  <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
+                  <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, { fontSize: 16 }, colorBackGround(darkModeTheme)]}>
                     {data?.firstname + " " + data?.lastname}
                   </Text>
-                  <Text numberOfLines={1} style={[F50012.main, F50012.opacity, colorBackGround(darkModeTheme)]}>
+                  <Text numberOfLines={1} style={[F50012.main, F50012.opacity, { fontSize: 15 }, colorBackGround(darkModeTheme)]}>
                     {data?.email}
                   </Text>
                 </TouchableOpacity>

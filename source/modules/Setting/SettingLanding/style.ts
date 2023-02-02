@@ -22,5 +22,5 @@ export const style = StyleSheet.create({
   mainWrapper: { backgroundColor: Colors.white, flex: 1 },
   scrollWrapper: { paddingTop: 24, backgroundColor: Colors?.white },
   containWrapper: { backgroundColor: Colors?.white, flexGrow: 1, paddingBottom: 130 },
-  paddingLeft: { paddingLeft: 8 }
+  paddingLeft: { paddingLeft: 8,fontSize:15 }
 })

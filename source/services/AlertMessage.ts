@@ -33,7 +33,7 @@ export const handleFirebaseError = (type: string) => {
     }
 }
 
-const AlertMessage = (...params: Array<string>) => {
+const AlertMessage = (...params: Array<string | any>) => {
     if (params[1] == "default") {
         showMessage({
             backgroundColor: "#FF1359",
@@ -41,7 +41,6 @@ const AlertMessage = (...params: Array<string>) => {
             type: params[1],
         })
     }
-    
     else {
         showMessage({
             message: params[0],
