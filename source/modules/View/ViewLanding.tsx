@@ -203,7 +203,7 @@ export const ViewLanding = () => {
     if (nextVideo <= videoData?.length - 1) {
       if (nextVideo === videoData?.length - 1 && !onLoadStop) {
         if (!isBytesVideoLoading) {
-          GetLiveVideoList("", watchVideoList)
+          GetLiveVideoList("abc", watchVideoList)
         } else {
           getBytesVideoList()
         }
@@ -217,7 +217,7 @@ export const ViewLanding = () => {
       }
     }
   };
-  console.log("")
+  console.log("nextVideo",videoData?.[nextVideo + 1]?.require_duration)
 console.log("timerrr",timer)
   const onPreesNext = (time: number) => {
     let intialSetTime: number | any;
