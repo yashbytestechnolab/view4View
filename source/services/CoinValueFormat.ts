@@ -1,4 +1,5 @@
 export const kFormatter = (num: number | any) => {
+  const number = num.toFixed()
   const lookup = [
     { value: 1, symbol: "" },
     { value: 1e3, symbol: "k" },
@@ -10,7 +11,7 @@ export const kFormatter = (num: number | any) => {
   ];
   const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
   var item = lookup.slice().reverse().find(function (item) {
-    return num >= item.value;
+    return number >= item.value;
   });
-  return item ? (num / item.value).toFixed(1).replace(rx, "$1") + item.symbol : "0";
+  return item ? (number / item.value).toFixed(1).replace(rx, "$1") + item.symbol : "0";
 }

@@ -144,7 +144,7 @@ export const ViewLanding = () => {
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let data = await bytesVideoListData(bytesDocData)
     let bytesVideo = data?.map((item: any) => item?._data)
-    if (!isBytesVideoLoading || params?.length > 0) (setTimer(bytesVideo[0]?.require_duration))
+    if ((!isBytesVideoLoading || params?.length > 0) && bytesVideo?.length > 0) (setTimer(bytesVideo[0]?.require_duration))
     if (bytesVideo?.length > 0) {
       dispatchVideoLandingData({ types: type.BYTES_VIDEO_DATA, payload: { _vid: bytesVideo, bytes_doc: data[data?.length - 1] } })
     }

@@ -16,7 +16,7 @@ interface IheaderProps {
   showBacKIcon?: boolean;
   showCoin?: boolean;
   coin?: number | string;
-  titleStyle?:object;
+  titleStyle?: object;
   onPrees?: () => void;
 
 }
@@ -28,9 +28,8 @@ export const Header = (props: IheaderProps) => {
 
   }: any = useContext(InputContextProvide);
 
-  const { title, showBacKIcon, showCoin = true, onPrees,titleStyle } = props;
+  const { title, showBacKIcon, showCoin = true, onPrees, titleStyle } = props;
   const navigation = useNavigation();
-
   return (
     <>
       <LinearGradient
@@ -48,14 +47,14 @@ export const Header = (props: IheaderProps) => {
               <Back color={Colors?.white} />
             </TouchableOpacity>
           )}
-          <View style={[style.titleWrapper,titleStyle]}>
+          <View style={[style.titleWrapper, titleStyle]}>
             <Text numberOfLines={1} style={[F50018.main, style.titleText]}>
               {title}
             </Text>
           </View>
           {showCoin && (
             <TouchableOpacity
-              style={[style.coinWrapper, showBacKIcon && { marginBottom: showBacKIcon?2:8 }]}
+              style={[style.coinWrapper, showBacKIcon && { marginBottom: showBacKIcon ? 2 : 8 }]}
               activeOpacity={1}
               onPress={() => {
                 navigation?.navigate(ROUTES?.VIEWCOIN);
@@ -88,7 +87,7 @@ const style = StyleSheet.create({
     height: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal:6
+    paddingHorizontal: 6
   },
   titleText: {
     textAlign: 'center',
