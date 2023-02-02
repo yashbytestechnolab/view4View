@@ -57,7 +57,6 @@ export const Login = () => {
           routes: [{ name: ROUTES.TABLIST }],
         });
         setLoading(false)
-        console.log("after login process");
       }).
       catch((userError) => handleFirebaseError(userError?.code)).
       finally(() => setLoading(false))
@@ -80,7 +79,6 @@ export const Login = () => {
       }
       !isFormValid && handleUserLoginRequest()
     } catch (fncError) {
-      console.log("FncError", fncError);
     }
   }
 

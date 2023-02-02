@@ -18,7 +18,7 @@ export const MyCampaignLandingScreen = () => {
   let route: object | any = useRoute()
 
   /**context data coin and campaign data */
-  const { storeCreator: { campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
   /**
  * 
@@ -67,7 +67,7 @@ export const MyCampaignLandingScreen = () => {
     if (!route?.params?.createCampaign) {
       getVideoUrl("")
     }
-  }, [dispatchcampaign])
+  }, [dispatchcampaign, isInternetBack])
 
   /** convert last seen by uploaded video  */
   const getUploadedTime = useCallback((item: any) => {

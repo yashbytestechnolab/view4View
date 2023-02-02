@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
-import { SafeAreaView, StatusBar, ActivityIndicator, Alert } from 'react-native'
+import {  useNavigation } from '@react-navigation/native';
+import { SafeAreaView, StatusBar, ActivityIndicator } from 'react-native'
 import { Header } from '../../../components';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { EarnCoin } from '../../../services';

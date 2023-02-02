@@ -41,12 +41,19 @@ export const String: any = {
         nextVideo: 'Next Video'
 
     },
+    // earnCoinTab: {
+    //     googleLogin: 'google login',
+    //     versionNumber: 'versionNumber',
+    //     alreadyUpdated: 'already updated',
+    //     pleaseUpdateYourApp: 'please update your app'
+    // },
     earnCoinTab: {
-        googleLogin: 'google login',
-        versionNumber: 'versionNumber',
-        alreadyUpdated: 'already updated',
-        pleaseUpdateYourApp: 'please update your app'
+        googleLogin: 'Google login',
+        versionNumber: 'VersionNumber',
+        alreadyUpdated: 'Already updated',
+        pleaseUpdateYourApp: 'Please update your app'
     },
+
     commonString: {
         WelcomeBack: "Welcome Back!",
         Donthaveanaccount: "Don’t have an account? ",
@@ -76,7 +83,7 @@ export const String: any = {
         darkcontent: "dark-content",
         signInWithGoogle: 'Sign in with Google',
         Addvideolink: "Add video link",
-        pasteyourvideolinkhere: "Paste your video link here",
+        pasteyourvideolinkhere: "Paste your video link",
         Addnow: "Add Now",
         createContain: "Steps to CREATE & ADD a campaign.",
         OrderSettings: "Order Settings",
@@ -87,16 +94,20 @@ export const String: any = {
         Warning: "Note:",
         EarnPoints: "Earn Points",
         emptyList: "No campaigns available. Please create campaigns by clicking on the + button",
-        viewsofthisvideo: "views of this video",
-        viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app.",
+        viewsofthisvideo: "Views of this video",
+        viewUpdateWarning: "YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on YouTube app.",
         oldPassword: 'Old Password',
-        enterOldPwd:'Enter your password ',
-        enterNewPwd:'Enter your new password',
+        enterOldPwd: 'Enter your password ',
+        enterNewPwd: 'Enter your new password',
         newPassword: 'New Password',
         conformPassword: 'Confirm Password',
         ReferralCode: 'Referral Code ',
         ReferralCodeEnter: 'Enter referral code',
         save: 'Save',
+        imageSize: "Image size must be less than 5MB",
+        errorMsg: "Oops, Something went wrong..",
+        buy: 'Buy',
+        CampaignAlert: 'Campaign is already running for this video. Please wait until campaign end.',
         buyCoinSubText: 'Contact us if you have some special orders or if you have any problem with in-app-purchase by sending an email to : mobile.apps@bytestechnolab.com'
     },
     flashMessage: {
@@ -104,24 +115,34 @@ export const String: any = {
         success: 'success',
         danger: 'danger',
         tooManyRequest: "Too many request",
-        passError: "Wrong password",
+        passError: "Invalid password",
         userNotFound: "User not found",
         emailAlredyInUser: "Email already in use",
         validEmail: "Please enter valid email",
         Something: "Something went wrong",
-        refCode: 'Copied text !',
+        refCode: 'Copied text!',
         Default: "default",
-        ChangePasswordSuccess:'Succesfully change Password please login with your new password'
+        ChangePasswordSuccess: 'Your password has been changed successfully. Please login with your new password and get more views on videos.'
     },
     inviteFrd: {
         headerTitle: 'Invite Friends',
         title: "Refer, Invite, and Earn",
         subTitle: "Earn GREAT rewards and coins by bringing \n your friends and family to our app. You don’t\n wanna miss it.",
-        button: "Invite Now"
+        button: "Invite Now",
+        linkText: 'View4view is very usefull app and you can increase your view and earn coins'
     },
     StatusBar: {
         darkContent: 'dark-content',
         lightContent: 'light-content'
+    },
+    Notification: {
+        congratulations: 'Congratulations you received',
+        coins: 'coins',
+        Reward: "Reward",
+        campaignCompleted: function (params: string) {
+            return `Your campaign ${`"${params}"`} has been completed.`
+        },
+        completed: "Campaign Completed"
     },
     viewCoinScreen: {
         yourCoins: 'Your Coins!',
@@ -148,6 +169,21 @@ export const String: any = {
         DarkMode: 'Dark Mode',
         logout: 'Sign Out'
 
-    }
+    },
+    noInterNetScreen: {
+        title: 'No Internet Connection',
+        subTitle: 'Make sure you are connected to the internet\nthen try agin',
+        buttonTitle: 'Try again'
+    },
+    Notification: {
+        congratulations: 'Congratulations you received',
+        coins: 'coins',
+        Reward: "Reward",
+        campaignCompleted: function (params: string) {
+            return `Your campaign ${`"${params}"`} has been completed.`
+        },
+        completed: "Campaign Completed"
+    },
 
 }
+

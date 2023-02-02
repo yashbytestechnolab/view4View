@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext, useCallback, useMemo } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
-import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
+import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
@@ -27,7 +27,7 @@ import { Rating } from '../../services/Rating';
 
 export const ViewLanding = () => {
 
-  const { storeCreator: { setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
+  const { storeCreator: { isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -39,7 +39,7 @@ export const ViewLanding = () => {
 
   const GetCoins = async (params: string) => {
 
-    // @ sign screen name in crash console
+    // @ sign screen name in crash console  
     crashlyticslog(`get user coin @ ${ROUTES.VIEW_LANDING}`)
     await get_coins().then(async (res: any) => {
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
@@ -48,16 +48,14 @@ export const ViewLanding = () => {
     });
   };
 
+  
   const getNotificationToken = async () => {
     await Rating()
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
-    console.log("Ntoken",Ntoken);
-    
     setToken(Ntoken)
   }
 
   useEffect(() => {
-    console.log("viewLanding");
     GetCoins("isInitialRenderUpdate");
     getNotificationToken()
   }, []);
@@ -79,6 +77,11 @@ export const ViewLanding = () => {
     }
     return () => clearInterval(controlRef.current);
   }, [start, controlRef, timer]);
+
+  useEffect(() => {
+    if (!isInternetBack) setStart(false)
+    else if (playing) setStart(true)
+  }, [isInternetBack])
 
   const showAnimation = () => {
     setIsAnimantion(true)
@@ -133,6 +136,7 @@ export const ViewLanding = () => {
       setStart(false);
     }
     if (state === 'paused') {
+      setPlaying(false);
       setStart(false);
     }
     if (state === 'buffering') {
@@ -146,13 +150,12 @@ export const ViewLanding = () => {
     }
   };
 
-
-  const getBytesVideoList = async () => {
+  const getBytesVideoList = async (params: string) => {
     crashlyticslog(`get bytes campaign list @ ${ROUTES.VIEW_LANDING}`)
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let data = await bytesVideoListData(bytesDocData)
     let bytesVideo = data?.map((item: any) => item?._data)
-    !isBytesVideoLoading && (setTimer(bytesVideo[0]?.require_duration))
+    if (!isBytesVideoLoading || params?.length > 0) (setTimer(bytesVideo[0]?.require_duration))
     if (bytesVideo?.length > 0) {
       dispatchVideoLandingData({ types: type.BYTES_VIDEO_DATA, payload: { _vid: bytesVideo, bytes_doc: data[data?.length - 1] } })
     }
@@ -176,13 +179,15 @@ export const ViewLanding = () => {
         });
 
         if (add_Video_Url?.length > 0) {
+          console.log("add_Video_Url", add_Video_Url);
+
           person?.emptyCount();
           params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
           dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
         } else {
           if (person.retryCount >= 3) {
             dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })
-            !isBytesVideoLoading && getBytesVideoList()
+            !isBytesVideoLoading && getBytesVideoList("")
           }
           else {
             person?.retryDoc(res?._docs[res?._docs?.length - 1])
@@ -205,9 +210,9 @@ export const ViewLanding = () => {
     if (nextVideo <= videoData?.length - 1) {
       if (nextVideo === videoData?.length - 1 && !onLoadStop) {
         if (!isBytesVideoLoading) {
-          GetLiveVideoList("", watchVideoList)
+          GetLiveVideoList("onNetUserVideo", watchVideoList)
         } else {
-          getBytesVideoList()
+          getBytesVideoList("onNetBytesVideo")
         }
       }
       else if (onLoadStop) {
@@ -219,7 +224,8 @@ export const ViewLanding = () => {
       }
     }
   };
-
+  console.log("nextVideo",videoData?.[nextVideo + 1]?.require_duration)
+console.log("timerrr",timer)
   const onPreesNext = (time: number) => {
     let intialSetTime: number | any;
     clearTimeout(intialSetTime)
@@ -231,7 +237,7 @@ export const ViewLanding = () => {
     }
   }
 
-  let debounce = onPreesNext(400)
+  let debounce = onPreesNext(100)
 
   return (
     <>
@@ -243,16 +249,18 @@ export const ViewLanding = () => {
         <Header coin={getBalance} title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
           <View style={styles.videoWrapper}>
-            <YoutubePlayer
-              height={270}
-              videoId={videoData?.[nextVideo]?.video_Id[0]}
-              ref={controlRef}
-              play={playing}
-              onChangeState={onStateChange}
-            />
+            {isInternetBack &&
+              <YoutubePlayer
+                height={270}
+                videoId={videoData?.[nextVideo]?.video_Id[0]}
+                // ref={controlRef}
+                play={playing || !isInternetBack}
+                onChangeState={onStateChange}
+                onError={(err) => console.log("wrr", err)}
+              />}
           </View>
           {
-            videoLoading ?
+            videoLoading || !isInternetBack ?
               <View style={styles.loader}>
                 <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
               </View> :
@@ -284,10 +292,7 @@ export const ViewLanding = () => {
                 </View>
                 <ButtonComponent
                   loading={videoLoading}
-                  onPrees={() => {
-                    let { remaining_view }: any = videoData?.[nextVideo]
-                    Anaylitics("next_video", { getBalance, remaining_view }); debounce()
-                  }}
+                  onPrees={() => { Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce() }}
                   wrapperStyle={styles.marginTop}
                   buttonTitle={String?.viewTab?.nextVideo} />
 

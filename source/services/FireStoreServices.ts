@@ -4,6 +4,8 @@ import auth from '@react-native-firebase/auth';
 import { referral_coupon_genrator } from './refeeral_coupon_genrate';
 import { notificationSend } from './notificationSend';
 import { person } from '../modules/View/increment';
+import { String } from '../constants';
+const { congratulations, coins, Reward, completed, campaignCompleted } = String.Notification
 
 export function getUserID() {
   const userId = auth()?.currentUser?.uid;
@@ -47,7 +49,7 @@ export const get_coins = async () => {
 };
 
 export const userDeatil = async () => {
-  const userId =  getUserID()?.toString()
+  const userId = getUserID()?.toString()
   return await (await userTableLogin.doc(userId).get()).data()
 }
 
@@ -82,7 +84,7 @@ export const createCampaign = async (...payload: Array<object | undefined | stri
     video_Id: payload[1],
     video_url: payload[0],
     video_title: payload[5],
-    thumbnail_url:payload[7],
+    thumbnail_url: payload[7],
   }
   await WatchVideoList.doc(uniqID).set(updateObj)
   return updateObj
@@ -104,7 +106,7 @@ export const EarnCoin = async (...payload: Array<number | any>) => {
 };
 
 export const deleteRemainingVideo = async (payload: any) => {
-  (payload?.device_token?.length > 0 && person?.devicesPermission) && (await notificationSend(payload?.device_token, `Your campaign ${`"${payload?.video_title}"`} has been completed.`, "Campaign Completed"))
+  (payload?.device_token?.length > 0 && person?.devicesPermission) && (await notificationSend(payload?.device_token, campaignCompleted(payload?.video_title), completed))
   return await historyCampaign?.add(payload)
 }
 
@@ -188,7 +190,7 @@ export const referralEarning = async (params: string, referReward: number) => {
         let { coin, userId, device_token } = foo?._docs[0]?._data
         await userTableLogin.doc(userId).update({ coin: coin + referReward || 300 })
         // This function Will Push notification for user he recvied 300 coin end other
-        person?.devicesPermission && (await notificationSend(device_token, `Congratulations you received ${referReward || 300} coins`, "Reward"))
+        person?.devicesPermission && (await notificationSend(device_token, `${congratulations} ${referReward || 300} ${coins}`, `${Reward}`))
       }
     }).catch((err: any) => console.log("error", err))
 }

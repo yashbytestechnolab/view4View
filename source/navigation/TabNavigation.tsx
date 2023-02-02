@@ -8,9 +8,8 @@ import { SvgProps } from 'react-native-svg';
 import { ActiveTabText, Colors, F50010 } from '../Theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { InputContextProvide } from '../context/CommonContext';
-import { Rating } from '../services/Rating';
 
-export const TabNavigation = () => {
+export const TabNavigation = () => {  
   const Tab = createBottomTabNavigator();
   const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
