@@ -1,5 +1,5 @@
-import { View, SafeAreaView, TouchableOpacity, StatusBar, Platform } from 'react-native';
-import React, { useContext } from 'react'
+import { View, SafeAreaView, TouchableOpacity, StatusBar, Platform, BackHandler } from 'react-native';
+import React, { useContext, useEffect } from 'react'
 import { style } from '../CreateAccount/style'
 import { getNotificationToken, LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { AuthHeader, ORtitle } from '../Authcomponents';
@@ -99,11 +99,18 @@ export const CreateAccount = () => {
         !isNotValidForm && handleCreateUserRequest()
     }
 
-    const clearStateValue = () => {
+    const clearStateValue = (): any => {
         dispatch({ type: type.EMPTY_STATE });
         dispatchError({ type: type.EMPTY_STATE })
     }
-    
+
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', clearStateValue);
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', clearStateValue);
+        };
+    }, []);
+
     return (
         <>
             <SafeAreaView style={style.safeArea} />
