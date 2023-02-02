@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, Platform, BackHandler, } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
-import { Header, InputComponent } from '../../../../components'
+import {  InputComponent } from '../../../../components'
 import { Colors, darkBackGround, F50018 } from '../../../../Theme'
 import { updateProfile } from '../../../../services/FireStoreServices'
 import { InputContextProvide } from '../../../../context/CommonContext'
@@ -151,7 +151,7 @@ const style = StyleSheet.create({
     safeArea: {
         backgroundColor: Colors.gradient1
     },
-    saveTextWrapper: { position: 'absolute', right: 12, top: 10, padding: 5, textAlign: 'center' },
+    saveTextWrapper: { position: 'absolute', right: 12, top: 13, padding: 5, textAlign: 'center' },
     imageWrapper: { height: 60, width: 60, borderRadius: 30, backgroundColor: Colors?.shadowPink, },
     nameWrapper: { justifyContent: "center", alignItems: "center", marginHorizontal: 16, },
     mainWrapper: { backgroundColor: Colors.white, flex: 1 },
