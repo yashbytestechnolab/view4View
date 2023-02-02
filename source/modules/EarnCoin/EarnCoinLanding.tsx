@@ -55,7 +55,6 @@ export const EarnCoinLanding = () => {
     rewardAd.load();
   }
 
-  ``
   return (
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />

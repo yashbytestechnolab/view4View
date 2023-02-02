@@ -23,7 +23,7 @@ export const AddVideo = () => {
                     (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
                 }),
                 !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), crashlyticslog(`add campaign @${ROUTES.ADDVIDEO}`), Anaylitics("add_video", { addVideoUrl })) :
-                    (Alert.alert(String?.commonStringCampaignAlert)))
+                    (Alert.alert(String?.commonString?.CampaignAlert)))
     }
 
     return (

@@ -20,7 +20,7 @@ export const String: any = {
         forgotPassword: 'Forgot Password',
         myCampaign: 'My Campaign',
         setting: 'Settings',
-        view4view: 'view4view',
+        view4view: 'UView',
         YourCoin: 'Your Coin',
         AddYourVideo: "Add Your Video",
         buyCoin: 'Buy Coin',
@@ -129,7 +129,7 @@ export const String: any = {
         title: "Refer, Invite, and Earn",
         subTitle: "Earn GREAT rewards and coins by bringing \n your friends and family to our app. You don’t\n wanna miss it.",
         button: "Invite Now",
-        linkText: 'View4view is very usefull app and you can increase your view and earn coins'
+        linkText: 'UView is very usefull app and you can increase your view and earn coins'
     },
     StatusBar: {
         darkContent: 'dark-content',

@@ -101,13 +101,20 @@ export const ChangePassword = () => {
                 setLoading(false)
             })
     };
-    
+    const handleBackButtonClick = () => {
+        navigation.goBack();
+        dispatch({ type: type.EMPTY_STATE });
+        dispatchError({ type: type.EMPTY_STATE })
+        return true;
+    }
     useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', dispatchError({ type: type.EMPTY_STATE }));
+        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
         return () => {
-            BackHandler.removeEventListener('hardwareBackPress', dispatchError({ type: type.EMPTY_STATE }));
+            BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
         };
     }, []);
+
+
 
     return (
         <>
