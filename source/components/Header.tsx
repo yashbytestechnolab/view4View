@@ -87,7 +87,8 @@ const style = StyleSheet.create({
     backgroundColor: Colors?.pink,
     height: 60,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal:6
   },
   titleText: {
     textAlign: 'center',
@@ -97,10 +98,6 @@ const style = StyleSheet.create({
   Wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 15,
-    marginLeft: 20,
-    //backgroundColor:'red'
-
   },
   coinWrapper: {
     flexDirection: 'row',

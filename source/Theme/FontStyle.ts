@@ -154,7 +154,7 @@ export const F60016 = StyleSheet.create({
         color: Colors.white,
         fontSize: 16,
         fontWeight: "600",
-        fontFamily: Fonts?.InterSemiBold
+        fontFamily: Fonts?.InterSemiBold,
     },
     semiBolt: {
         color: Colors.placeHolderTextBlack,

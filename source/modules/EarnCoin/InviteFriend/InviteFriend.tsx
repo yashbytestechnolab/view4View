@@ -74,13 +74,13 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
 
             />
             {!notifyUpdate && (
-                <Header
-                    title={String?.inviteFrd?.headerTitle}
-                    showCoin={false}
-                    showBacKIcon={true}
-                    titleStyle={{ paddingRight: 25 }}
+                 <Header
+                 title={String?.inviteFrd?.headerTitle}
+                 showCoin={false}
+                 showBacKIcon={true}
+                 titleStyle={{ paddingRight: 25 }}
 
-                />
+             />
             )}
             <ScrollView
                 style={[style.main, darkBackGround(darkModeTheme)]}

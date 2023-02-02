@@ -160,7 +160,7 @@ export const BuyCoin = () => {
                     {loading && <HandleLoader />}
 
                     <View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
-                        <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true}
+                    <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true}
                             titleStyle={{ paddingRight: 35 }}
                         />
                         <StatusBar barStyle={'light-content'} backgroundColor={Colors?.gradient1} />

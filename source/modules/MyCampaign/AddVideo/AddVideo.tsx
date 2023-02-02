@@ -30,7 +30,7 @@ export const AddVideo = () => {
         <>
             <SafeAreaView style={styles.safeArea} />
             <View style={[styles.mainWrapper, darkBackGround(darkModeTheme)]}>
-                <Header
+            <Header
                     titleStyle={{ paddingRight: 25 }}
 
                     showBacKIcon={true}
