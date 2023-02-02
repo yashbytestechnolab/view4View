@@ -27,7 +27,6 @@ export const BuyCoin = () => {
 
     const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
 
-
     useEffect(() => {
         const isConnectedIAP: any = initilizeIAPConnection();
         if (isConnectedIAP) {
@@ -49,28 +48,23 @@ export const BuyCoin = () => {
             async (purchase: any) => {
                 const receipt = Platform.OS === 'ios' ? purchase?.transactionReceipt : purchase?.purchaseToken;
                 if (receipt) {
-                    try {
-                        if (Platform.OS === 'ios') {
-                            await onRewardCoins(purchase?.productId)
-                            await RNIap.finishTransaction({ purchase });
-                            await RNIap.clearTransactionIOS()
-                            await RNIap.clearProductsIOS();
-                        }
-                        else if (Platform.OS === 'android') {
-                            await RNIap?.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken });
-                            await RNIap?.finishTransaction({ purchase });
-                        }
-                    } catch (ackErr: any) {
-                        if (Platform.OS === 'ios') {
-                            await RNIap.clearTransactionIOS();
-                            await RNIap.clearProductsIOS()
-                        }
-                        setloading(false)
-                        showMessage({
-                            message: "Oops, Something went wrong..",
-                            type: 'danger'
+                    if (Platform.OS === 'ios') {
+                        await RNIap?.finishTransaction({ purchase: purchase }).then(() => {
+                            onRewardCoins(purchase?.productId)
+                            RNIap.clearTransactionIOS()
+                        }).catch(err => {
+                            _onError(err.message)
+                        });
+                    }
+                    if (Platform.OS === 'android') {
+                        await RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(() => {
+                            onRewardCoins(purchase?.productId);
+                            RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then(() => {
+                            }).catch(err => {
+                                console.log("err", err);
+                                _onError(err.message)
+                            });
                         })
-                        navigation.goBack()
                     }
                 }
             },
@@ -103,6 +97,21 @@ export const BuyCoin = () => {
             }
         });
     }, []);
+
+
+    const _onError = async (message: any) => {
+        if (Platform.OS === 'ios') {
+            await RNIap.clearTransactionIOS();
+            await RNIap.clearProductsIOS()
+        }
+        setloading(false)
+        showMessage({
+            message: message,
+            type: 'danger',
+            duration: 6000
+        })
+        navigation.goBack()
+    }
 
     const onRewardCoins = async (rewardId: any) => {
         let redeemCoin: any = await onGetCoinAmount(rewardId);
@@ -151,7 +160,7 @@ export const BuyCoin = () => {
             {parseData === undefined ? <Loader /> :
                 <><SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} /><View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
                     <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true} titleStyle={{ marginRight: 30 }} />
-<StatusBar barStyle={'light-content'} backgroundColor={Colors?.gradient1}/>
+                    <StatusBar barStyle={'light-content'} backgroundColor={Colors?.gradient1} />
                     {loading && <HandleLoader />}
                     <ScrollView showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps={String.commonString.handled}
