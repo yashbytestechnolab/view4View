@@ -9,6 +9,7 @@ import { firebase } from '@react-native-firebase/firestore';
 import { handleFirebaseError } from '../../../../services';
 import { style } from './style';
 import { darkBackGround } from '../../../../Theme';
+import { HeaderTest } from '../../../../components/HeaderTest';
 
 export const ChangePassword = () => {
     const navigation = useNavigation();

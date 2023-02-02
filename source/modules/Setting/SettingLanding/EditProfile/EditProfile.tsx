@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, Platform, BackHandler, } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
-import {  InputComponent } from '../../../../components'
+import {  Header, InputComponent } from '../../../../components'
 import { Colors, darkBackGround, F50018 } from '../../../../Theme'
 import { updateProfile } from '../../../../services/FireStoreServices'
 import { InputContextProvide } from '../../../../context/CommonContext'
@@ -106,7 +106,7 @@ export const EditProfile = () => {
         <>
             <SafeAreaView style={style.safeArea} />
             <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
-                <HeaderTest title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
+                <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
                 {infoLoading ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>{String?.commonString?.save}</Text>}
 
                 <View style={style.paddingTop}>

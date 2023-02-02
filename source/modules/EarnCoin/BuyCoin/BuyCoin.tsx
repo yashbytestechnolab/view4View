@@ -12,6 +12,7 @@ import { type as keys } from '../../../constants/types';
 import * as RNIap from 'react-native-iap';
 import { BuyCoinIcon } from '../../../assets/icons';
 import { style } from './style';
+import { HeaderTest } from '../../../components/HeaderTest';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
@@ -160,8 +161,8 @@ export const BuyCoin = () => {
                     {loading && <HandleLoader />}
 
                     <View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
-                    <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true}
-                            titleStyle={{ paddingRight: 35 }}
+                        <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true}
+
                         />
                         <StatusBar barStyle={'light-content'} backgroundColor={Colors?.gradient1} />
                         <ScrollView showsVerticalScrollIndicator={false}

@@ -78,7 +78,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                  title={String?.inviteFrd?.headerTitle}
                  showCoin={false}
                  showBacKIcon={true}
-                 titleStyle={{ paddingRight: 25 }}
+               
 
              />
             )}

@@ -41,7 +41,7 @@ export const HeaderTest = (props: IheaderProps) => {
                         <TouchableOpacity
                             activeOpacity={1}
                             style={{
-                                width: '33.33%'
+                                flex: 1,
                             }}
                             onPress={() => {
                                 Anaylitics("user_coin", { getBalance })
@@ -107,15 +107,12 @@ const style = StyleSheet.create({
     coinWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: '33.33%',
+        flex: 1,
         justifyContent: 'flex-end',
     },
     titleWrapper: {
         alignSelf: 'center',
-        width: '33.33%'
+        flex: 3,
     },
-    padding: {
 
-        // paddingRight:0
-    }
 });

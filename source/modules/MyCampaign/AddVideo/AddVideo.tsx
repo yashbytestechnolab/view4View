@@ -8,6 +8,7 @@ import { InputContextProvide } from '../../../context/CommonContext'
 import { useNavigation } from '@react-navigation/native'
 import { Anaylitics } from '../../../constants/analytics'
 import { crashlyticslog } from '../../../services/crashlyticslog'
+import { HeaderTest } from '../../../components/HeaderTest'
 
 export const AddVideo = () => {
     const navigation = useNavigation()
@@ -30,10 +31,7 @@ export const AddVideo = () => {
         <>
             <SafeAreaView style={styles.safeArea} />
             <View style={[styles.mainWrapper, darkBackGround(darkModeTheme)]}>
-            <Header
-                    titleStyle={{ paddingRight: 25 }}
-
-                    showBacKIcon={true}
+                <Header showBacKIcon={true}
                     title={headerTitle?.AddYourVideo} />
                 <View style={styles.childWrapper}>
                     <Text style={[F50012.main, F50012.fontStyleVideo, colorBackGround(darkModeTheme)]}>{commonString?.Addvideolink}</Text>

@@ -16,7 +16,6 @@ interface IheaderProps {
   showBacKIcon?: boolean;
   showCoin?: boolean;
   coin?: number | string;
-  titleStyle?: object;
   onPrees?: () => void;
 
 }
@@ -28,95 +27,95 @@ export const Header = (props: IheaderProps) => {
 
   }: any = useContext(InputContextProvide);
 
-  const { title, showBacKIcon, showCoin = true, onPrees, titleStyle } = props;
+  const { title, showBacKIcon, showCoin = true, onPrees } = props;
   const navigation = useNavigation();
   return (
     <>
       <LinearGradient
-        colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]}
-        style={style.header}>
-        <View style={style.Wrapper}>
-          {showBacKIcon && (
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{ padding: 8, }}
-              onPress={() => {
-                Anaylitics("user_coin", { getBalance })
-                onPrees ? onPrees() : navigation.goBack();
-              }}>
-              <Back color={Colors?.white} />
-            </TouchableOpacity>
-          )}
-          <View style={[style.titleWrapper, titleStyle]}>
-            <Text numberOfLines={1} style={[F50018.main, style.titleText]}>
-              {title}
-            </Text>
-          </View>
-          {showCoin && (
-            <TouchableOpacity
-              style={[style.coinWrapper, showBacKIcon && { marginBottom: showBacKIcon ? 2 : 8 }]}
-              activeOpacity={1}
-              onPress={() => {
-                navigation?.navigate(ROUTES?.VIEWCOIN);
-              }}>
-              <Text style={[F60016.textStyle, style.padding]} numberOfLines={1}>
-                {kFormatter(getBalance)}
-              </Text>
+                colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]}
+                style={style.header}>
+                <View style={style.Wrapper}>
+                  <View   style={{
+                                flex: 1,
+                            }}>
+                  {showBacKIcon && (
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            style={{
+                            padding:8
+                            }}
+                            onPress={() => {
+                                Anaylitics("user_coin", { getBalance })
+                                onPrees ? onPrees() : navigation.goBack();
+                            }}>
+                            <Back color={Colors?.white} />
+                        </TouchableOpacity>
+                    )}
+                  </View>
+                   
 
-              <Lottie style={{
-                height: 40,
-                marginTop: 8,
-                marginLeft: 10,
-                marginBottom: Platform?.OS == 'ios' ? 5 : 0
+                    <View style={[style.titleWrapper]}>
+                        <Text numberOfLines={1} style={[F50018.main, style.titleText]}>
+                            {title}
+                        </Text>
+                    </View>
+                    <View style={[style.coinWrapper,]}>
+                        {showCoin && (
+                            <TouchableOpacity
+                                style={[style.coinWrapper,]}
+                                activeOpacity={1}
+                                onPress={() => {
+                                    navigation?.navigate(ROUTES?.VIEWCOIN);
+                                }}>
+                                <Text style={[F60016.textStyle]} numberOfLines={1}>
+                                    {kFormatter(getBalance)}
+                                </Text>
 
-              }}
-                source={require('../assets/flipCoin.json')}
-                autoPlay loop
-              />
+                                <Lottie style={{
+                                    height: 35,
+                                    width: 30,
+                                    alignSelf: 'center',
+                                    top: -3,
+                                    marginLeft: -3
+                                }}
+                                    source={require('../assets/flipCoin.json')}
+                                    autoPlay loop
+                                />
 
-            </TouchableOpacity>
-          )}
-        </View>
-      </LinearGradient>
-    </>
-  );
+                            </TouchableOpacity>
+                        )}
+                    </View>
+
+                </View>
+            </LinearGradient>
+        </>
+    );
 };
 const style = StyleSheet.create({
-  header: {
-    backgroundColor: Colors?.pink,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 6
-  },
-  titleText: {
-    textAlign: 'center',
-    //paddingRight:25
-  },
+    header: {
+        backgroundColor: Colors?.pink,
+        justifyContent: 'center',
+    },
+    titleText: {
+        textAlign: 'center',
+        alignItems: "center",
+    },
+    Wrapper: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        height: 60,
+        alignItems: 'center',
+        paddingHorizontal: 16
+    },
+    coinWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
+    titleWrapper: {
+        alignSelf: 'center',
+        flex: 3,
+    },
 
-  Wrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  coinWrapper: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    right: 1,
-    bottom: 2,
-    top: 0,
-  },
-
-  titleWrapper: {
-    flex: 1,
-    paddingRight: 10,
-    alignContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    justifyContent: 'center',
-  },
-  padding: {
-    marginRight: Platform?.OS == 'ios' ? -40 : -35
-  }
 });
