@@ -212,8 +212,7 @@ export const ViewLanding = () => {
       }
     }
   }
-console.log("videoData?.[nextVideo + 1]?.require_duration",videoData?.[nextVideo + 1]?.require_duration)
-console.log("timertimer",timer)
+
   const onPreesNext = (time: number) => {
     let intialSetTime: number | any;
     clearTimeout(intialSetTime)

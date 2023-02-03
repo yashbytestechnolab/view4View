@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import React, { useContext, } from 'react';
 import { Colors, F50018, F60016 } from '../Theme';
 import { useNavigation } from '@react-navigation/native';
@@ -12,47 +12,47 @@ import { kFormatter } from '../services/CoinValueFormat';
 import { Anaylitics } from '../constants/analytics';
 
 interface IheaderProps {
-  title?: string;
-  showBacKIcon?: boolean;
-  showCoin?: boolean;
-  coin?: number | string;
-  onPrees?: () => void;
+    title?: string;
+    showBacKIcon?: boolean;
+    showCoin?: boolean;
+    coin?: number | string;
+    onPrees?: () => void;
 
 }
 export const Header = (props: IheaderProps) => {
-  const {
-    storeCreator: {
-      coinBalance: { getBalance },
-    },
+    const {
+        storeCreator: {
+            coinBalance: { getBalance },
+        },
 
-  }: any = useContext(InputContextProvide);
+    }: any = useContext(InputContextProvide);
 
-  const { title, showBacKIcon, showCoin = true, onPrees } = props;
-  const navigation = useNavigation();
-  return (
-    <>
-      <LinearGradient
+    const { title, showBacKIcon, showCoin = true, onPrees } = props;
+    const navigation = useNavigation();
+    return (
+        <>
+            <LinearGradient
                 colors={[Colors?.gradient1, Colors?.gradient2, Colors?.gradient3]}
                 style={style.header}>
                 <View style={style.Wrapper}>
-                  <View   style={{
-                                flex: 1,
-                            }}>
-                  {showBacKIcon && (
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            style={{
-                            padding:8
-                            }}
-                            onPress={() => {
-                                Anaylitics("user_coin", { getBalance })
-                                onPrees ? onPrees() : navigation.goBack();
-                            }}>
-                            <Back color={Colors?.white} />
-                        </TouchableOpacity>
-                    )}
-                  </View>
-                   
+                    <View style={{
+                        flex: 1,
+                    }}>
+                        {showBacKIcon && (
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                style={{
+                                    padding: 8
+                                }}
+                                onPress={() => {
+                                    Anaylitics("user_coin", { getBalance })
+                                    onPrees ? onPrees() : navigation.goBack();
+                                }}>
+                                <Back color={Colors?.white} />
+                            </TouchableOpacity>
+                        )}
+                    </View>
+
 
                     <View style={[style.titleWrapper]}>
                         <Text numberOfLines={1} style={[F50018.main, style.titleText]}>
@@ -62,21 +62,19 @@ export const Header = (props: IheaderProps) => {
                     <View style={[style.coinWrapper,]}>
                         {showCoin && (
                             <TouchableOpacity
-                                style={[style.coinWrapper,]}
+                                style={[style.coinWrapper, { flexDirection: 'row', alignSelf: 'flex-end' }]}
                                 activeOpacity={1}
                                 onPress={() => {
                                     navigation?.navigate(ROUTES?.VIEWCOIN);
                                 }}>
-                                <Text style={[F60016.textStyle]} numberOfLines={1}>
+                                <Text style={[F60016.textStyle, { textAlign: 'right', alignItems: 'flex-end', marginRight: -10 }]} numberOfLines={1}>
                                     {kFormatter(getBalance)}
                                 </Text>
 
                                 <Lottie style={{
-                                    height: 35,
-                                    width: 30,
-                                    alignSelf: 'center',
-                                    top: -3,
-                                    marginLeft: -3
+                                    height: 40,
+                                    width: 40,
+                                    top: Platform.OS === 'ios' ? -1 : -2
                                 }}
                                     source={require('../assets/flipCoin.json')}
                                     autoPlay loop
@@ -108,10 +106,10 @@ const style = StyleSheet.create({
         paddingHorizontal: 16
     },
     coinWrapper: {
-        flexDirection: 'row',
+        //flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
-        justifyContent: 'flex-end',
+        //justifyContent: 'flex-end',
     },
     titleWrapper: {
         alignSelf: 'center',
@@ -119,3 +117,4 @@ const style = StyleSheet.create({
     },
 
 });
+

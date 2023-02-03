@@ -5,8 +5,8 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import * as RNIap from 'react-native-iap';
 
 const itemSkus: any = Platform.select({
-    ios: ["1KCoins", "2.5KCoins", "5KCoins"],
-    android: ["1kcoins", "2.5kcoins", "5kcoins"]
+    ios: ["1KCoins", "3.3KCoins", "6KCoins"],
+    android: ["1kcoins", "3.3kcoins", "6kcoins"]
 });
 
 
@@ -46,7 +46,7 @@ export const initilizeIAPConnection = async () => {
 
 export const getItems = async () => {
     try {
-        const Products = await RNIap.getProducts({ skus: itemSkus });        
+        const Products = await RNIap.getProducts({ skus: itemSkus });
         if (Products?.length !== 0) {
             return Products
         }
@@ -65,13 +65,13 @@ export const onGetCoinAmount = async (rewardId: any) => {
             return 1000
         case '1KCoins':
             return 1000
-        case '2.5kcoins':
-            return 2800
-        case '2.5KCoins':
-            return 2800
-        case '5KCoins':
+        case '3.3KCoins':
+            return 3300
+        case '3.3kcoins':
+            return 3300
+        case '6kcoins':
             return 6000
-        case '5kcoins':
+        case '6KCoins':
             return 6000
         default:
             return 0
@@ -84,7 +84,7 @@ export const onPurchase = async (sku: string) => {
         RNIap.requestPurchase({
             sku,
             andDangerouslyFinishTransactionAutomaticallyIOS: false,
-            
+
         })
     } catch (err: any) {
         console.warn(err.code, err.message);

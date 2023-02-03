@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator, Platform } from 'react-native';
 import React, { useContext, useState } from 'react';
 import { Header } from '../../components';
 import { ROUTES, String } from '../../constants';
@@ -30,7 +30,7 @@ export const EarnCoinLanding = () => {
     crashlyticslog(`user watch video ${ROUTES.EARNCOINS_LANDING}`)
     Anaylitics("show_add", { getBalance });
     setLoading(true)
-    const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
+    const rewardAd = RewardedAd.createForAdRequest(__DEV__ ? TestIds.REWARDED : Platform.OS === 'android' ? 'ca-app-pub-4027493771242043/3200937894' : 'ca-app-pub-4027493771242043/4402338926');
     rewardAd.onAdEvent((type, error) => {
       if (type === RewardedAdEventType.LOADED) {
         rewardAd.show();
@@ -65,7 +65,7 @@ export const EarnCoinLanding = () => {
           {EarnCoinData.length > 0 && EarnCoinData?.map((item: any, index) => {
             return (
               <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card,
-              lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme ?0:8 }]} activeOpacity={1}
+              lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme ? 0 : 8 }]} activeOpacity={1}
                 onPress={() => {
                   item?.onPress == "SHOWADDS" ? showRewardAd() :
                     navigation.navigate(item?.onPress)
