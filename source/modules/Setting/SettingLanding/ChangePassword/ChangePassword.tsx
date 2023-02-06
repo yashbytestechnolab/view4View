@@ -10,6 +10,7 @@ import { handleFirebaseError } from '../../../../services';
 import { style } from './style';
 import { darkBackGround } from '../../../../Theme';
 import { HeaderTest } from '../../../../components/HeaderTest';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const ChangePassword = () => {
     const navigation = useNavigation();
@@ -132,8 +133,13 @@ export const ChangePassword = () => {
                     }}
 
                 />
-                <View style={[{ paddingTop: 24, }, darkBackGround(darkModeTheme)]}>
-
+                <KeyboardAwareScrollView
+                    alwaysBounceVertical={false}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps={String.commonString.handled}
+                    style={[style.scroll, darkBackGround(darkModeTheme)]}
+                    scrollEnabled={true}
+                    contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
                     <InputComponent
                         placeholder={String.commonString.enterOldPwd}
                         inputTitle={String.commonString.oldPassword}
@@ -214,8 +220,7 @@ export const ChangePassword = () => {
                         }}
                         buttonTitle={String.commonString.submit}
                     />
-
-                </View>
+                </KeyboardAwareScrollView>
             </View>
         </>
     );
