@@ -16,6 +16,8 @@ import * as LocalStorage from '../../services/LocalStorage';
 import { Anaylitics } from '../../constants/analytics';
 import { crashlyticslog } from '../../services/crashlyticslog';
 import { Rating } from '../../services/Rating';
+import ViewShot, { captureRef } from "react-native-view-shot";
+
 
 export const ViewLanding = () => {
   const { storeCreator: { isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
@@ -27,6 +29,7 @@ export const ViewLanding = () => {
   const [isAnimation, setIsAnimantion] = useState(false)
   const animationProgress = useRef(new Animated.Value(0))
   const [onLoadStop, setOnLoadStop] = useState(false)
+  const abc = useRef()
 
   const GetCoins = async (params: string) => {
     // @ signin screen name in crash console  
@@ -38,6 +41,17 @@ export const ViewLanding = () => {
     });
   };
 
+  const test = async ()=>{
+    console.log("!21212");
+    
+   await captureRef(abc, {
+  format: "jpg",
+  quality: 0.8,
+}).then(
+  (uri) => console.log("Image saved to", uri),
+  (error) => console.error("Oops, snapshot failed", error)
+);
+  }
   
   const getNotificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
@@ -275,7 +289,13 @@ export const ViewLanding = () => {
               </View>
               <ButtonComponent
                 loading={videoLoading}
-                onPrees={() => { Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce() }}
+                onPrees={() => {
+                  console.log("asas");
+                  
+                  // Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce() }
+                
+                    test()}
+                }
                 wrapperStyle={styles.marginTop}
                 buttonTitle={String?.viewTab?.nextVideo} />
             </>
