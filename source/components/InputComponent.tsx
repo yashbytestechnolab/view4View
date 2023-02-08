@@ -15,10 +15,11 @@ interface props {
     errorMessage?: string
     keyboardType?: string
     editable?: boolean
+    onChange?:(value: string | number | any) => void,
 }
 
 export const InputComponent = (props: props) => {
-    const { errorMessage, inputTitle, viewStyle, onChangeText, value, placeholder, isSecureIcon, isSecureEntry, onPrees, keyboardType, editable } = props
+    const { errorMessage, inputTitle, viewStyle, onChangeText, onChange,value, placeholder, isSecureIcon, isSecureEntry, onPrees, keyboardType, editable } = props
     const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
     return (
@@ -29,7 +30,7 @@ export const InputComponent = (props: props) => {
                 secureTextEntry={isSecureEntry}
                 onChangeText={onChangeText}
                 value={value}
-                
+                onChange={onChange}
                 editable={editable}
                 keyboardType={keyboardType}
                 placeholder={placeholder}

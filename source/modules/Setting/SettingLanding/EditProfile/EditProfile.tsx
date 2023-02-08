@@ -1,16 +1,15 @@
-import { View, Text, SafeAreaView, Image, StyleSheet, Alert, TouchableOpacity, ActivityIndicator, Platform, BackHandler, } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, ActivityIndicator, BackHandler, } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
-import {  Header, InputComponent } from '../../../../components'
+import { Header, InputComponent } from '../../../../components'
 import { Colors, darkBackGround, F50018 } from '../../../../Theme'
 import { updateProfile } from '../../../../services/FireStoreServices'
 import { InputContextProvide } from '../../../../context/CommonContext'
 import { type } from '../../../../constants/types'
-import { launchImageLibrary } from 'react-native-image-picker';
 import { EditProfileIcon } from '../../../../assets/icons'
 import { ROUTES, String } from '../../../../constants'
 import { useNavigation } from '@react-navigation/native'
-import { default as CreateCustomer } from 'react-native-compressor';
-import { HeaderTest } from '../../../../components/HeaderTest'
+import ImagePicker from 'react-native-image-crop-picker';
+import { style } from './style'
 
 export const EditProfile = () => {
     const navigation = useNavigation()
@@ -18,15 +17,15 @@ export const EditProfile = () => {
     const [profilePic, setProfilePic]: any = useState(null);
     const [onPhotoLoad, setPhotoLoad] = useState(false)
 
-    const iosBase64Compress = async (response: any) => {
-        const result = await CreateCustomer.Image.compress(response?.assets[0]?.uri, {
-            maxWidth: 1000,
-            quality: 0.5,
-            compressionMethod: "auto",
-            returnableOutputType: "base64"
-        });
-        setProfilePic({ ...response?.assets[0], base64: result });
-    }
+    // const iosBase64Compress = async (response: any) => {
+    //     const result = await CreateCustomer.Image.compress(response?.assets[0]?.uri, {
+    //         maxWidth: 1000,
+    //         quality: 0.5,
+    //         compressionMethod: "auto",
+    //         returnableOutputType: "base64"
+    //     });
+    //     setProfilePic({ ...response?.assets[0], base64: result });
+    // }
 
     const getUserData = () => {
         dispatch({ type: type.FULL_NAME, payload: data?.firstname + " " + data?.lastname });
@@ -52,36 +51,48 @@ export const EditProfile = () => {
         fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, String.commonString.fullnameErrorMsg));
         !isNotValidForm && updateProfileData()
     }
-
-    const openGallery = async () => {
-        setPhotoLoad(true)
-        let options: any = {
-            mediaType: 'photo',
-            quality: 0.2,
-            selectionLimit: 1,
-            includeBase64: true
-        };
-        await launchImageLibrary(options, async (response: any) => {
-            if (response?.didCancel) {
-                return;
-            }
-            if (
-                response?.assets?.[0]?.uri?.length > 1 &&
-                response?.assets[0]?.fileSize <= 5242880
-            ) {
-                Platform.OS == "ios" ? await iosBase64Compress(response) : setProfilePic(response?.assets[0])
-            } else {
-                Alert.alert(String?.commonString?.imageSize);
-            }
-            setPhotoLoad(false)
-        }).catch(err => setPhotoLoad(false)).finally(() => setPhotoLoad(false))
+    const OpenGallery = () => {
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true,
+            includeBase64: true,
+            freeStyleCropEnabled: true,
+        }).then(image => {
+            setProfilePic(image);
+        });
     };
+
+    // const openGallery = async () => {
+    //     setPhotoLoad(true)
+    //     let options: any = {
+    //         mediaType: 'photo',
+    //         quality: 0.2,
+    //         selectionLimit: 1,
+    //         includeBase64: true
+    //     };
+    //     await launchImageLibrary(options, async (response: any) => {
+    //         if (response?.didCancel) {
+    //             return;
+    //         }
+    //         if (
+    //             response?.assets?.[0]?.uri?.length > 1 &&
+    //             response?.assets[0]?.fileSize <= 5242880
+    //         ) {String
+    //             Platform.OS == "ios" ? await iosBase64Compress(response) : setProfilePic(response?.assets[0])
+    //         } else {
+    //             Alert.alert(String?.commonString?.imageSize);
+    //         }
+    //         setPhotoLoad(false)
+    //     }).catch(err => setPhotoLoad(false)).finally(() => setPhotoLoad(false))
+    // };
 
     const updateProfileData = () => {
         dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
-        updateProfile(userInput?.fullName, (profilePic?.base64 || data?.image)).then((resp: any) => {
+        // updateProfile(userInput?.fullName, (profilePic?.base64 || data?.image)).then((resp: any) => {
+        updateProfile(userInput?.fullName, (profilePic?.data || data?.image)).then((resp: any) => {
             let obj = {
-                firstname: resp?.firstName, email: userInput?.email, image: (profilePic?.base64 || data?.image), lastname: resp?.lastname
+                firstname: resp?.firstName, email: userInput?.email, image: (profilePic?.data || data?.image), lastname: resp?.lastname
             }
             dispatchuserDetail({ type: type.USER_INFO_DATA, payload: obj })
             navigation.navigate(ROUTES?.SETTING_LANDING)
@@ -94,14 +105,13 @@ export const EditProfile = () => {
         navigation.goBack();
         dispatchError({ type: type.EMPTY_STATE })
         return true;
-      }
+    }
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
         return () => {
-            BackHandler.removeEventListener('hardwareBackPress',handleBackButtonClick);
+            BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
         };
     }, []);
-
     return (
         <>
             <SafeAreaView style={style.safeArea} />
@@ -113,8 +123,13 @@ export const EditProfile = () => {
                     <View style={style.nameWrapper} >
                         {onPhotoLoad ? <ActivityIndicator size={"small"} color={Colors.lightPink} /> :
                             <>
-                                <Image source={{ uri: profilePic != null ? profilePic?.uri : `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
-                                <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { openGallery() }}
+                                {
+                                    data?.image !== null || profilePic?.path?.length !== undefined ?
+                                        <Image source={{ uri: profilePic != null ? profilePic?.path : `data:image/png;base64,${data?.image}` }}
+                                            style={style.imageWrapper} /> :
+                                        <View style={[style.imageWrapper, { backgroundColor: Colors?.shadowPink }]} />
+                                }
+                                <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { OpenGallery() }}
                                     style={style.editIconWrapper}>
                                     <EditProfileIcon />
                                 </TouchableOpacity>
@@ -143,25 +158,7 @@ export const EditProfile = () => {
 
                 </View>
             </View>
+
         </>
     )
 }
-const style = StyleSheet.create({
-    text: { margin: 10, fontSize: 30, color: Colors?.green, textAlign: 'center' },
-    safeArea: {
-        backgroundColor: Colors.gradient1
-    },
-    saveTextWrapper: { position: 'absolute', right: 12, top: 13, padding: 5, textAlign: 'center' },
-    imageWrapper: { height: 60, width: 60, borderRadius: 30, backgroundColor: Colors?.shadowPink, },
-    nameWrapper: { justifyContent: "center", alignItems: "center", marginHorizontal: 16, },
-    mainWrapper: { backgroundColor: Colors.white, flex: 1 },
-    scrollWrapper: { backgroundColor: Colors?.white },
-    containWrapper: { backgroundColor: Colors?.white, flexGrow: 1, },
-    marginTop33: { marginTop: 25 },
-    editIconWrapper: {
-        position: "relative", left: 20, bottom: 25,
-        justifyContent: "center", alignItems: "center",
-        height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13
-    },
-    paddingTop: { paddingTop: 24 }
-})

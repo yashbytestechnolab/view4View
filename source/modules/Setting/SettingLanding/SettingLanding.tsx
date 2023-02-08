@@ -32,7 +32,11 @@ export const SettingLanding = () => {
 
   const getUserData = async () => {
     dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
-    userDeatil().then((userInfo: any) => dispatchuserDetail({ type: type.USER_INFO_DATA, payload: userInfo })).
+    userDeatil().then((userInfo: any) => {
+      dispatchuserDetail({ type: type.USER_INFO_DATA, payload: userInfo })
+
+
+    }).
       catch((error: any) => dispatchuserDetail({ type: type.USER_INFO_DATA, payload: error.message })).
       finally(() => dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: false }))
   }

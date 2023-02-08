@@ -8,7 +8,6 @@ import { InputContextProvide } from '../../../context/CommonContext'
 import { useNavigation } from '@react-navigation/native'
 import { Anaylitics } from '../../../constants/analytics'
 import { crashlyticslog } from '../../../services/crashlyticslog'
-import { HeaderTest } from '../../../components/HeaderTest'
 
 export const AddVideo = () => {
     const navigation = useNavigation()
@@ -26,7 +25,6 @@ export const AddVideo = () => {
                 !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), crashlyticslog(`add campaign @${ROUTES.ADDVIDEO}`), Anaylitics("add_video", { addVideoUrl })) :
                     (Alert.alert(String?.commonString?.CampaignAlert)))
     }
-
     return (
         <>
             <SafeAreaView style={styles.safeArea} />
@@ -38,13 +36,15 @@ export const AddVideo = () => {
                     <View style={styles.link}>
                         <InputComponent
                             value={addVideoUrl}
-                            onChangeText={(value: string | number | any) => setVideoUrl(value)}
+                            onChangeText={(value) => { 
+                                setVideoUrl(value) }}
                             viewStyle={styles.inputStyle}
                             placeholder={commonString?.pasteyourvideolinkhere}
                         />
                     </View>
                     <View style={styles.button}>
                         <ButtonComponent
+                        disable={(addVideoUrl?.length >0)?false:true}
                             wrapperStyle={styles.buttonWrap}
                             buttonTitle={commonString.Addnow}
                             onPrees={() => { onAddVideo() }}

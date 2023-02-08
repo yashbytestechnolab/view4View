@@ -11,10 +11,12 @@ import { style } from './style';
 import { darkBackGround } from '../../../../Theme';
 import { HeaderTest } from '../../../../components/HeaderTest';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { userInfo } from '../../../../constants/analytics';
 
 export const ChangePassword = () => {
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false)
+    const [isDisable, setIsDisable] = useState(true)
     /**
      * Context to give userinput data and error message
      */
@@ -33,8 +35,10 @@ export const ChangePassword = () => {
      * This Function trigger create user account in firebase request
      */
     const HandleChangePassword = () => {
+
         dispatchError({ type: type.EMPTY_STATE })
         let isNotValidForm: boolean = false;
+
         const { oldPassword, newPassword, confirmPassword }: any = userInput;
         (oldPassword?.length <= 0 || oldPassword?.length < 6) &&
             ((isNotValidForm = true),
@@ -73,8 +77,6 @@ export const ChangePassword = () => {
         setLoading(true)
         Reauthenticate(currentPassword)
             .then((res: any) => {
-                console.log("res1", res);
-
                 setLoading(false)
                 let user: any = firebase.auth().currentUser;
                 user.updatePassword(newPassword)
@@ -110,13 +112,12 @@ export const ChangePassword = () => {
         return true;
     }
     useEffect(() => {
+        //handleDisableButton()
         BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
         return () => {
             BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
         };
-    }, []);
-
-
+    }, [isDisable]);
 
     return (
         <>
@@ -146,7 +147,9 @@ export const ChangePassword = () => {
                         value={userInput?.oldPassword}
                         onChangeText={value => {
                             dispatch({ type: type.OLDPASSWORD, payload: value });
-
+                            if (userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) {
+                                setIsDisable(false)
+                            }
                             if (value?.length > 5 && value == userInput?.oldPassword) {
                                 dispatchError({ type: type.OLD_PASSWORD_ERROR, payload: '' });
                             }
@@ -168,6 +171,9 @@ export const ChangePassword = () => {
                         inputTitle={String.commonString.newPassword}
                         value={userInput?.newPassword}
                         onChangeText={value => {
+                            if (userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) {
+                                setIsDisable(false)
+                            }
                             dispatch({ type: type.NEWPASSWORD, payload: value });
                             if (value?.length > 5 && value == userInput?.newPassword) {
                                 dispatchError({ type: type.NEW_PASSWORD_ERROR, payload: '' });
@@ -190,6 +196,9 @@ export const ChangePassword = () => {
                         inputTitle={String.commonString.ConfirmPassword}
                         value={userInput?.confirmPassword}
                         onChangeText={value => {
+                            if (userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) {
+                                setIsDisable(false)
+                            }
                             dispatch({ type: type.CONFIRM_PASSWORD, payload: value });
                             if (value?.length > 5 && value == userInput?.oldPassword) {
                                 dispatchError({
@@ -216,8 +225,9 @@ export const ChangePassword = () => {
                         loading={loading}
                         wrapperStyle={{ marginTop: 30 }}
                         onPrees={() => {
-                            HandleChangePassword();
+                            HandleChangePassword()
                         }}
+                        disable={(userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) ? false : true}
                         buttonTitle={String.commonString.submit}
                     />
                 </KeyboardAwareScrollView>

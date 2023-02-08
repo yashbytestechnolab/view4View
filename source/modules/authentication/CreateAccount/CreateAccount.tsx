@@ -105,6 +105,11 @@ export const CreateAccount = () => {
     }
 
     useEffect(() => {
+        if (userInput?.fullName?.length == 0 && userInput?.email?.length == 0 && userInput?.password?.length == 0 && userInput?.confirmPassword?.length == 0) {
+            dispatchError({ type: type.EMPTY_STATE })
+
+
+        }
         BackHandler.addEventListener('hardwareBackPress', clearStateValue);
         return () => {
             BackHandler.removeEventListener('hardwareBackPress', clearStateValue);
@@ -207,6 +212,8 @@ export const CreateAccount = () => {
                                 <View style={style.signIn}>
                                     <ButtonComponent
                                         // loading={loading}
+                                        disable={(userInput?.fullName?.length > 0 && userInput?.email?.length > 0 && userInput?.password?.length > 0 && userInput?.confirmPassword?.length > 0) ? false : true}
+
                                         onPrees={() => handleCreateAccountFlow()}
                                         buttonTitle={String.commonString.SignUp} />
                                 </View>

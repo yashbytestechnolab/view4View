@@ -24,11 +24,11 @@ export const MyCampaignLanding = () => {
       />
       <Stack.Screen name={ROUTES.ADDVIDEO} component={AddVideo} />
       <Stack.Screen name={ROUTES.CREATE_CAMPAIGN} component={CreateCampaign} />
-      {/* <Stack.Screen
+      <Stack.Screen
         name={ROUTES.EARNCOINS_LANDING}
         component={EarnCoinLanding}
-      /> */}
-      {/* <Stack.Screen
+      />
+      <Stack.Screen
         name={ROUTES.INVITEFRIEND}
         component={InviteFriend}
       />
@@ -39,7 +39,7 @@ export const MyCampaignLanding = () => {
        <Stack.Screen
         name={ROUTES.SHOWADDS}
         component={ShowAdds}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

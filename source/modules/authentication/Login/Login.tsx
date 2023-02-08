@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, StatusBar } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { colorBackGround, Colors, darkBackGround, F40014, } from '../../../Theme';
 import { useNavigation } from '@react-navigation/native';
 import { getNotificationToken, LocalStorageKeys, ROUTES, String } from '../../../constants';
@@ -28,7 +28,6 @@ export const Login = () => {
    * Context to give userinput data and error message
    */
   const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError, setLoading } }: any = useContext(InputContextProvide)
-
   const navigation = useNavigation();
 
   /**
@@ -82,11 +81,11 @@ export const Login = () => {
     }
   }
 
+
   const clearStateValue = () => {
     dispatch({ type: type.EMPTY_STATE });
     dispatchError({ type: type.EMPTY_STATE })
   }
-
 
   return (
     <>
@@ -96,6 +95,15 @@ export const Login = () => {
         <KeyboardAwareScrollView
           alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
+          // const handleButtonDisable = () => {
+          //   if (userInput?.email?.length > 0 && userInput?.password?.length > 0) {
+          //     setIsDisable(false)
+          //   }
+          //   setIsDisable(true)
+        
+          //   // dispatch({ type: type.EMPTY_STATE });
+        
+          // }
           keyboardShouldPersistTaps={String.commonString.handled}
           style={[style.scroll, darkBackGround(darkModeTheme)]}
           scrollEnabled={true}
@@ -118,10 +126,11 @@ export const Login = () => {
                   value={userInput?.email}
                   onChangeText={(value) => {
                     dispatch({ type: type.EMAIL, payload: value });
-                    if (value?.length > 0 && emailPattern.test(value)) {
+                    if (emailPattern.test(value)) {
                       dispatchError({ type: type.EMAIL_ERROR, payload: "" })
                     }
                   }}
+
                   errorMessage={userInputError?.emailError}
                   viewStyle={style.top33}
                 />
@@ -136,6 +145,7 @@ export const Login = () => {
                       dispatchError({ type: type.PASSWORD_ERROR, payload: "" })
                     }
                   }}
+
                   isSecureIcon={true}
                   isSecureEntry={userInput?.showPassword}
                   onPrees={() => dispatch({ type: type.SHOW_PASSWORD, payload: !userInput?.showPassword })}
@@ -156,7 +166,10 @@ export const Login = () => {
 
                 <View style={style.signIn}>
                   <ButtonComponent
-                    onPrees={() => handleLoginFlow()} buttonTitle={String.commonString.SignIn} />
+                    buttonTitle={String.commonString.SignIn}
+                    onPrees={() => handleLoginFlow()}
+                    disable={(userInput?.email?.length > 0 && userInput?.password?.length > 0) ? false : true
+                    } />
                 </View>
                 <ORtitle />
                 {
@@ -175,7 +188,8 @@ export const Login = () => {
                         buttonTitle={String.commonString.Google}
                         onPress={() => { clearStateValue(); googleLogin(navigation, setLoading) }}
                       />
-                      <SocialMediaButton
+                      <SocialMediaButton                    // handleButtonDisable()
+
                         colorBackGround={colorBackGround(darkModeTheme)}
                         socialMediaIcon={<Apple gery={darkModeTheme} />}
                         buttonTitle={String.commonString.Apple}

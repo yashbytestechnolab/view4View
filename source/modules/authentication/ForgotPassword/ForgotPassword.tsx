@@ -90,7 +90,9 @@ export const ForgotPassword = () => {
                 placeholder={String.commonString.Enteryouremail}
               />
               <View style={style.signIn}>
-                <ButtonComponent wrapperStyle={style.wrapperStyle} onPrees={() => { handlePasswordReset() }} buttonTitle={String.commonString?.submit} />
+                <ButtonComponent wrapperStyle={style.wrapperStyle} 
+                disable={(userInput?.email?.length > 0) ?false:true}
+                onPrees={() => { handlePasswordReset() }} buttonTitle={String.commonString?.submit} />
               </View>
               <View style={style.backToLoginTextWrapper}>
                 <Text style={[F40014.main, colorBackGround(darkModeTheme)]}>{String.commonString?.backTo}</Text>
