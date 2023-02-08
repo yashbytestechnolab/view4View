@@ -77,20 +77,20 @@ export const MyCampaignLandingScreen = () => {
   /**
    * Render flatlist function to diplay list of video uploaded 
    */
-  const renderCampaignList = ({ item }: any) => {
+  const renderCampaignList = ({ item ,index}: any) => {
     let fillValue = item?.consumed_view * 100 / item?.expected_view
     return (
       <>
         {
           item?.stickeyHeader?.length > 0 ?
-            (<View style={[styles.stickeyHeaderView,
+            (<View key={index?.toString()} style={[styles.stickeyHeaderView,
             { backgroundColor: darkModeTheme ? Colors.drakStickey : Colors.shadowPink }]}>
               <Text style={[styles.stickeyText, colorBackGround(darkModeTheme)]}>
                 {item?.stickeyHeader}
               </Text>
             </View>)
             :
-            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow, elevation: darkModeTheme ? 0 : 8 }]}>
+            <View  key={index?.toString()} style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow, elevation: darkModeTheme ? 0 : 8 }]}>
               <Image
                 style={styles.thumbNilImage}
                 source={{ uri: item?.thumbnail_url }} />
@@ -147,6 +147,7 @@ export const MyCampaignLandingScreen = () => {
         {loding ? (<View style={styles.loader}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
           (<>
             <FlatList
+              keyExtractor={(item) => item?.toString()}
               showsVerticalScrollIndicator={false}
               scrollEnabled
               style={[styles.flatList, darkBackGround(darkModeTheme)]}

@@ -10,6 +10,7 @@ import appleAuth, {
 import { Platform } from "react-native";
 import { Anaylitics } from "../constants/analytics";
 import { crashlyticslog } from "./crashlyticslog";
+import { person } from "../modules/View/increment";
 
 GoogleSignin.configure({
     webClientId: config?.googlewebClientId,
@@ -34,7 +35,8 @@ const onUserInfo = async (userInfo: any) => {
     let videoUrl: any = '';
     let image: string = ''
     let watch_videos: any = []
-    let device_token: string = await getNotificationToken();
+    let getDeviceToken: string | any = person?.devicesPermission ? await getNotificationToken() : "";
+    let device_token = (getDeviceToken == null || getDeviceToken == undefined) ? "" : getDeviceToken
     let device_type: string = Platform.OS
 
 
@@ -58,6 +60,7 @@ const onUserInfo = async (userInfo: any) => {
 }
 
 export const googleLogin = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
+    let loginType = "google"
     setLoading(true)
     crashlyticslog("google login")
     try {
@@ -67,6 +70,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
             idToken,
             accessToken,
         );
+        Anaylitics("google_login_click", { token: credential?.token })
         await auth()
             .signInWithCredential(credential)
             .then(async (res: any) => {
@@ -78,13 +82,14 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
                 await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
                 await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
-                Anaylitics("google_login", { user_id: userDetail?.uid, socialLogin: true })
+                Anaylitics("google_login", { user_id: userDetail?.uid, })
                 navigation.reset({
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],
                 });
+                Anaylitics("google_login_sucess", { loginType, email: userDetail?.email })
                 setLoading(false)
-            }).catch((error: any) => console.log("error", error)).finally(() => setLoading(false))
+            }).catch((error: any) => { Anaylitics("google_login_error", { loginType, error: error?.message }), console.log("error", error) }).finally(() => setLoading(false))
     } catch (error) {
         setLoading(false)
         console.log("error>>>>>>>>>>", error);
@@ -93,6 +98,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
 
 export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     // create login request for apple
+    let loginType = "apple"
     crashlyticslog("apple login")
     const appleAuthRequestResponse: any = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
@@ -105,14 +111,13 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
     setLoading(true)
     if (identityToken) {
         const appleCredential = await auth.AppleAuthProvider.credential(identityToken, nonce);
+        Anaylitics("apple_login_click", { token: appleCredential?.token })
         await auth()
             .signInWithCredential(appleCredential)
             .then(async (res: any) => {
                 let userDetail = await onUserInfo(res?.user?._user)
                 if (res?.additionalUserInfo?.isNewUser) {
-                    userLogin(userDetail).then(() => {
-                        Anaylitics("apple_login", { user_id: userDetail?.uid, socialLogin: true })
-                    })
+                    userLogin(userDetail)
                 }
                 await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
@@ -121,7 +126,8 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],
                 });
+                Anaylitics("apple_login_sucess", { loginType, email: userDetail?.email })
                 setLoading(false)
-            }).catch(() => setLoading(false)).finally(() => setLoading(false))
+            }).catch((error: any) => { Anaylitics("apple_login_error", { loginType, error: error?.message }), setLoading(false) }).finally(() => setLoading(false))
     }
 };

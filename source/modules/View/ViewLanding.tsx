@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
-import { LocalStorageKeys, ROUTES, String } from '../../constants';
+import { getNotificationToken, LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { addWatchUrl, bytesVideoListData, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
@@ -41,28 +41,28 @@ export const ViewLanding = () => {
     });
   };
 
-  const test = async ()=>{
-    console.log("!21212");
-    
-   await captureRef(abc, {
-  format: "jpg",
-  quality: 0.8,
-}).then(
-  (uri) => console.log("Image saved to", uri),
-  (error) => console.error("Oops, snapshot failed", error)
-);
-  }
-  
-  const getNotificationToken = async () => {
+  const notificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
-    setToken(Ntoken)
+    if (Ntoken == null || Ntoken == undefined) {
+      let notificationTokenData: any = await getNotificationToken()
+      setToken(notificationTokenData)
+    } else {
+      setToken(Ntoken)
+    }
+
+  }
+  const openRatingPopup = async () => {
     await Rating()
   }
-
   useEffect(() => {
     GetCoins("isInitialRenderUpdate");
-    getNotificationToken()
+    notificationToken()
   }, []);
+
+  useEffect(() => {
+    let unmountPopup = setTimeout(() => openRatingPopup(), 1000)
+    return () => { unmountPopup }
+  }, [])
 
 
   useEffect(() => {
@@ -249,7 +249,7 @@ export const ViewLanding = () => {
       <View style={[styles.container, darkBackGround(darkModeTheme)]}>
         <Header coin={getBalance} title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
-          <View style={styles.videoWrapper}>
+          <View style={styles.videoWrapper} key={nextVideo?.toString()}>
             {isInternetBack &&
               <YoutubePlayer
                 height={270}
@@ -290,12 +290,8 @@ export const ViewLanding = () => {
               <ButtonComponent
                 loading={videoLoading}
                 onPrees={() => {
-                  console.log("asas");
-                  
-                  // Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce() }
-                
-                    test()}
-                }
+                  Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce()
+                }}
                 wrapperStyle={styles.marginTop}
                 buttonTitle={String?.viewTab?.nextVideo} />
             </>

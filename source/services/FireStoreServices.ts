@@ -106,7 +106,7 @@ export const EarnCoin = async (...payload: Array<number | any>) => {
 };
 
 export const deleteRemainingVideo = async (payload: any) => {
-  (payload?.device_token?.length > 0 && person?.devicesPermission) && (await notificationSend(payload?.device_token, campaignCompleted(payload?.video_title), completed))
+  (payload?.device_token?.length > 0) && (await notificationSend(payload?.device_token, campaignCompleted(payload?.video_title), completed))
   return await historyCampaign?.add(payload)
 }
 
@@ -190,7 +190,7 @@ export const referralEarning = async (params: string, referReward: number) => {
         let { coin, userId, device_token } = foo?._docs[0]?._data
         await userTableLogin.doc(userId).update({ coin: coin + referReward || 300 })
         // This function Will Push notification for user he recvied 300 coin end other
-        person?.devicesPermission && (await notificationSend(device_token, `${congratulations} ${referReward || 300} ${coins}`, `${Reward}`))
+        device_token?.length > 0 && (await notificationSend(device_token, `${congratulations} ${referReward || 300} ${coins}`, `${Reward}`))
       }
     }).catch((err: any) => console.log("error", err))
 }
