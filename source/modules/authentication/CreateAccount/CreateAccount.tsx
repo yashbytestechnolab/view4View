@@ -17,7 +17,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as LocalStorage from '../../../services/LocalStorage';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
-import { string } from 'prop-types';
+import { person } from '../../View/increment';
 
 export const CreateAccount = () => {
     const navigation = useNavigation()
@@ -41,7 +41,8 @@ export const CreateAccount = () => {
 
     const { fullnameErrorMsg, PleaseProvideValidEmailMsg, PasswordErrorMsg, ConfirmPasswordErrorMsg } = String.commonString
     const onUserInfo = async (userInfo: any) => {
-        let device_token: string = await getNotificationToken();
+        let getDeviceToken: string | any = person?.devicesPermission ? await getNotificationToken() : "";
+        let device_token = (getDeviceToken == null || getDeviceToken == undefined) ? "" : getDeviceToken
         let fullname = userInput?.fullName;
         let space: number | string;
         let firstname: any = "";

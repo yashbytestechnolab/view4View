@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
-import { LocalStorageKeys, ROUTES, String } from '../../constants';
+import { getNotificationToken, LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { addWatchUrl, bytesVideoListData, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
@@ -53,15 +53,19 @@ export const ViewLanding = () => {
 );
   }
   
-  const getNotificationToken = async () => {
+  const notificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
-    setToken(Ntoken)
-    await Rating()
-  }
+    if (Ntoken == null || Ntoken == undefined) {
+      let notificationTokenData: any = await getNotificationToken()
+      setToken(notificationTokenData)
+    } else {
+      setToken(Ntoken)
+    }
 
+  }
   useEffect(() => {
     GetCoins("isInitialRenderUpdate");
-    getNotificationToken()
+    notificationToken()
   }, []);
 
 

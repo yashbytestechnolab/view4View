@@ -10,6 +10,7 @@ import appleAuth, {
 import { Platform } from "react-native";
 import { Anaylitics } from "../constants/analytics";
 import { crashlyticslog } from "./crashlyticslog";
+import { person } from "../modules/View/increment";
 
 GoogleSignin.configure({
     webClientId: config?.googlewebClientId,
@@ -34,7 +35,8 @@ const onUserInfo = async (userInfo: any) => {
     let videoUrl: any = '';
     let image: string = ''
     let watch_videos: any = []
-    let device_token: string = await getNotificationToken();
+    let getDeviceToken: string | any = person?.devicesPermission ? await getNotificationToken() : "";
+    let device_token = (getDeviceToken == null || getDeviceToken == undefined) ? "" : getDeviceToken
     let device_type: string = Platform.OS
 
 
