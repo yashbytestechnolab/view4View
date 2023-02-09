@@ -13,7 +13,7 @@ export function lightBackGround(params: any) {
 }
 
 export function colorBackGround(params: any) {
-    return { color: params ? Colors.gray : Colors.darkModeColor }
+    return { color: params ? Colors.GrayLightC2C9D1 : Colors.darkModeColor }
 }
 
 

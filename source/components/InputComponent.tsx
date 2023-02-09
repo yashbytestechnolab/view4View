@@ -1,4 +1,4 @@
-import {  Platform, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Platform, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React, { useContext } from 'react'
 import { colorBackGround, Colors, F50012 } from '../Theme'
 import { InputContextProvide } from '../context/CommonContext'
@@ -15,18 +15,18 @@ interface props {
     errorMessage?: string
     keyboardType?: string
     editable?: boolean
-    onChange?:(value: string | number | any) => void,
+    onChange?: (value: string | number | any) => void,
 }
 
 export const InputComponent = (props: props) => {
-    const { errorMessage, inputTitle, viewStyle, onChangeText, onChange,value, placeholder, isSecureIcon, isSecureEntry, onPrees, keyboardType, editable } = props
+    const { errorMessage, inputTitle, viewStyle, onChangeText, onChange, value, placeholder, isSecureIcon, isSecureEntry, onPrees, keyboardType, editable } = props
     const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
     return (
         <View style={[innerStyles.main, viewStyle]}>
             {inputTitle && <Text style={[F50012.main, colorBackGround(darkModeTheme)]}>{inputTitle}</Text>}
             <TextInput
-                placeholderTextColor={Colors.GrayLightC2C9D1}
+                placeholderTextColor={darkModeTheme ? Colors?.gray : Colors.GrayLightC2C9D1}
                 secureTextEntry={isSecureEntry}
                 onChangeText={onChangeText}
                 value={value}
@@ -42,7 +42,7 @@ export const InputComponent = (props: props) => {
                     activeOpacity={0.7}
                     onPress={onPrees}
                     style={innerStyles.eye}>
-                    {isSecureEntry ? <HidePassword color={darkModeTheme&&Colors.GrayLightC2C9D1 }/> : <ShowPassword color={darkModeTheme&&Colors?.GrayLightC2C9D1}/>}
+                    {isSecureEntry ? <HidePassword color={darkModeTheme && Colors.GrayLightC2C9D1} /> : <ShowPassword color={darkModeTheme && Colors?.GrayLightC2C9D1} />}
                 </TouchableOpacity>
             }
             {
@@ -79,7 +79,7 @@ const innerStyles = StyleSheet.create({
     eye: {
         position: "absolute",
         right: 11,
-        padding:2,
+        padding: 2,
         top: Platform.OS === "ios" ? 34.5 : 36
     },
     hidePass: {

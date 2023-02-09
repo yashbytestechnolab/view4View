@@ -18,8 +18,10 @@ import * as LocalStorage from '../../../services/LocalStorage';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
 import { string } from 'prop-types';
+import { person } from '../../View/increment';
 
 export const CreateAccount = () => {
+
     const navigation = useNavigation()
     /**
    * Context to give userinput data and error message
@@ -41,7 +43,8 @@ export const CreateAccount = () => {
 
     const { fullnameErrorMsg, PleaseProvideValidEmailMsg, PasswordErrorMsg, ConfirmPasswordErrorMsg } = String.commonString
     const onUserInfo = async (userInfo: any) => {
-        let device_token: string = await getNotificationToken();
+        let getDeviceToken: string | any = person?.devicesPermission ? await getNotificationToken() : "";
+        let device_token = (getDeviceToken == null || getDeviceToken == undefined) ? "" : getDeviceToken
         let fullname = userInput?.fullName;
         let space: number | string;
         let firstname: any = "";
@@ -61,6 +64,9 @@ export const CreateAccount = () => {
         return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     }
     const handleCreateUserRequest = async () => {
+        let { email } = userInput
+        let loginType = "normal"
+        Anaylitics("createAccount_click", { email })
         dispatchError({ type: type.EMPTY_STATE })
         setLoading(true)
         crashlyticslog("create account")
@@ -78,11 +84,10 @@ export const CreateAccount = () => {
                         routes: [{ name: ROUTES.TABLIST }],
                     });
                     dispatch({ type: type.EMPTY_STATE })
-                    Anaylitics("create_account", { user_id: userDetail?.uid, socialLogin: false, })
+                    Anaylitics("createAccount_sucess", { email, loginType })
                 }).catch((err) => console.log(">>>err", err))
-
             }).
-            catch((userError) => handleFirebaseError(userError?.code)).
+            catch((userError) => { Anaylitics("createAccount_error", { email, loginType, error: userError?.code }), handleFirebaseError(userError?.code) }).
             finally(() => setLoading(false))
     }
 
@@ -105,11 +110,6 @@ export const CreateAccount = () => {
     }
 
     useEffect(() => {
-        if (userInput?.fullName?.length == 0 && userInput?.email?.length == 0 && userInput?.password?.length == 0 && userInput?.confirmPassword?.length == 0) {
-            dispatchError({ type: type.EMPTY_STATE })
-
-
-        }
         BackHandler.addEventListener('hardwareBackPress', clearStateValue);
         return () => {
             BackHandler.removeEventListener('hardwareBackPress', clearStateValue);

@@ -9,14 +9,11 @@ import { firebase } from '@react-native-firebase/firestore';
 import { handleFirebaseError } from '../../../../services';
 import { style } from './style';
 import { darkBackGround } from '../../../../Theme';
-import { HeaderTest } from '../../../../components/HeaderTest';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { userInfo } from '../../../../constants/analytics';
 
 export const ChangePassword = () => {
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false)
-    const [isDisable, setIsDisable] = useState(true)
     /**
      * Context to give userinput data and error message
      */
@@ -117,7 +114,7 @@ export const ChangePassword = () => {
         return () => {
             BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
         };
-    }, [isDisable]);
+    }, []);
 
     return (
         <>
@@ -148,7 +145,6 @@ export const ChangePassword = () => {
                         onChangeText={value => {
                             dispatch({ type: type.OLDPASSWORD, payload: value });
                             if (userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) {
-                                setIsDisable(false)
                             }
                             if (value?.length > 5 && value == userInput?.oldPassword) {
                                 dispatchError({ type: type.OLD_PASSWORD_ERROR, payload: '' });
@@ -172,7 +168,6 @@ export const ChangePassword = () => {
                         value={userInput?.newPassword}
                         onChangeText={value => {
                             if (userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) {
-                                setIsDisable(false)
                             }
                             dispatch({ type: type.NEWPASSWORD, payload: value });
                             if (value?.length > 5 && value == userInput?.newPassword) {
@@ -197,7 +192,6 @@ export const ChangePassword = () => {
                         value={userInput?.confirmPassword}
                         onChangeText={value => {
                             if (userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) {
-                                setIsDisable(false)
                             }
                             dispatch({ type: type.CONFIRM_PASSWORD, payload: value });
                             if (value?.length > 5 && value == userInput?.oldPassword) {

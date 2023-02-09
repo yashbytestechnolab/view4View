@@ -36,15 +36,16 @@ export const AddVideo = () => {
                     <View style={styles.link}>
                         <InputComponent
                             value={addVideoUrl}
-                            onChangeText={(value) => { 
-                                setVideoUrl(value) }}
+                            onChangeText={(value) => {
+                                setVideoUrl(value)
+                            }}
                             viewStyle={styles.inputStyle}
                             placeholder={commonString?.pasteyourvideolinkhere}
                         />
                     </View>
                     <View style={styles.button}>
                         <ButtonComponent
-                        disable={(addVideoUrl?.length >0)?false:true}
+                            disable={(addVideoUrl?.length > 0) ? false : true}
                             wrapperStyle={styles.buttonWrap}
                             buttonTitle={commonString.Addnow}
                             onPrees={() => { onAddVideo() }}
