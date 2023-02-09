@@ -6,7 +6,7 @@ import AppLoader from './source/components/AppLoader';
 import { UpdateBuildVersion } from './source/services/UpdateBuildVersion';
 import { InviteFriend } from './source/modules/EarnCoin';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { rewardConfig } from './source/services';
+import { rewardCoinsDefaultValue, rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
@@ -16,7 +16,7 @@ import { NoInternetConnect } from './source/services/NoInternetConnect';
 import { LocalStorageKeys } from './source/constants';
 import * as LocalStorage from './source/services/LocalStorage';
 import { Colors } from './source/Theme';
-interface reward {
+interface reward {.
   adsRewarAmt: number | string,
   referRewardAmt: number | string
 }
@@ -29,9 +29,9 @@ export default function App() {
   const getReward = async () => {
     UpdateBuildVersion(setUpdateAlert)
     let remo = await rewardConfig()
-    setReward(remo)
+    remo == undefined ? setReward(rewardCoinsDefaultValue) :
+      setReward(remo)
   }
-
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -46,6 +46,7 @@ export default function App() {
   }
 
   const getDarkModeUI = async () => {
+
     const colorScheme = Appearance.getColorScheme();
     let appearance: any = await LocalStorage.getValue(LocalStorageKeys.DarkMode)
     if (appearance != null) {
@@ -59,13 +60,13 @@ export default function App() {
       colorScheme == "light" ? setDarkModeTheme(false) : setDarkModeTheme(true)
     }
   }
-  
+
   useEffect(() => {
     getDarkModeUI()
     getReward()
     Platform.OS === "ios" && PushNotificationIOS.removeAllDeliveredNotifications();
     requestUserPermission()
-    crashlytics().log("config file")
+    crashlytics().log(" getReward config file @@")
   }, [updateAlert])
 
   const MyTheme = {

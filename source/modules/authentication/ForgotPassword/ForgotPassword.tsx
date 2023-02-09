@@ -35,7 +35,7 @@ export const ForgotPassword = () => {
     if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
       handleFirebaseError("WrongEmail")
     } else {
-      crashlyticslog("Forgot password")
+      crashlyticslog("Forgot password @@")
       return await firebase.auth().sendPasswordResetEmail(userInput?.email).then((response) => {
         clearState()
         handleFirebaseError("ForgotSucess")

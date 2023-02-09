@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import { Colors } from "../../../../Theme";
 
 export const style = StyleSheet.create({
     text: { margin: 10, fontSize: 30, color: Colors?.green, textAlign: 'center' },

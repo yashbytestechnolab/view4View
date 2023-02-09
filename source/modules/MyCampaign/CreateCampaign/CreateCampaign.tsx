@@ -33,14 +33,21 @@ export const CreateCampaign = () => {
   /**
    * configValue for dropdown set
    */
+  const defaultCampaignDropdownValue = {
+    expectedView: 100,
+    timeRequire: 1000
+  }
   const confingFnc = useCallback(async () => {
     let value: any = await dropdownConfigValue();
-    setConfigValue(value)
-  }, [])
+    {
+      value == undefined ? setConfigValue(defaultCampaignDropdownValue) : setConfigValue(value)
 
+    }
+  }, [])
+  console.log("get config value @", configValue)
   useEffect(() => {
     confingFnc()
-    crashlyticslog(`get config value @ ${ROUTES.CREATE_CAMPAIGN}`)
+    crashlyticslog(`dropdown get config value @ ${ROUTES.CREATE_CAMPAIGN}`)
   }, [dropdownConfigValue])
 
   // config value
@@ -96,7 +103,7 @@ export const CreateCampaign = () => {
       }
     }).catch((err: any) => Alert.alert("Entered video url looks invalid. Please make sure you've entered correct video url"))
   }
-  
+
   function debounce(time: number) {
     let getTimeId: any | number
     clearTimeout(getTimeId)
@@ -114,7 +121,7 @@ export const CreateCampaign = () => {
     <>
       <SafeAreaView style={{ backgroundColor: Colors.linear_gradient }} />
       <View style={[styles.main, darkBackGround(darkModeTheme)]}>
-      <Header
+        <Header
           showBacKIcon={true}
           title={headerTitle?.createCampaign} />
         <ScrollView

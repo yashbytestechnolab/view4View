@@ -21,7 +21,7 @@ export const RootNavigation = () => {
 
   useEffect(() => {
     authFlow()
-    crashlytics().log("config file")
+    crashlytics().log("Root config file @@")
   }, [userId]);
 
   return (

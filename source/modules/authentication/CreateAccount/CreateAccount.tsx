@@ -17,7 +17,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as LocalStorage from '../../../services/LocalStorage';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
-import { string } from 'prop-types';
 import { person } from '../../View/increment';
 
 export const CreateAccount = () => {
@@ -69,7 +68,7 @@ export const CreateAccount = () => {
         Anaylitics("createAccount_click", { email })
         dispatchError({ type: type.EMPTY_STATE })
         setLoading(true)
-        crashlyticslog("create account")
+        crashlyticslog("create account @@")
         auth().
             createUserWithEmailAndPassword(userInput?.email, userInput?.password).
             then(async (userResponse: any) => {

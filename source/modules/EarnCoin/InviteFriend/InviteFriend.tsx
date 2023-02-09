@@ -29,12 +29,22 @@ import { getBuildVersionData } from '../../../services/BuildVesrionCheck';
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
     const { storeCreator: { darkModeTheme, getReferralCode } }: any = useContext(InputContextProvide)
-    const [buildData, setBuildData] = useState("")
-
+    const [buildData, setBuildData] = useState();
+    const confingDefaultValue: any = {
+        build_version: "1.0",
+        title: "Update the app",
+        subTtile: "Please update to continue using the app",
+        Upadte: {
+            android: " https://play.google.com/store/apps/details?id=com.bytes.uview",
+            ios: "https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805"
+        }
+    }
     const getUpdateBuildData = async () => {
         const IAPData = await getBuildVersionData();
-        setBuildData(IAPData)
-
+        {
+            IAPData == undefined ?
+                setBuildData(confingDefaultValue) : setBuildData(IAPData)
+        }
     }
     const ReferEarn = `${String?.inviteFrd?.linkText} \n\nDownload now:  \n\niOS App: ${buildData?.Upadte?.ios} \n\nAndroid App: ${buildData?.Upadte?.android}
     \n\nReferral code: ${getReferralCode}`;
@@ -64,7 +74,6 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
     useEffect(() => {
         getUpdateBuildData()
     }, [])
-
     return (
         <>
             <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
@@ -74,13 +83,13 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
 
             />
             {!notifyUpdate && (
-                 <Header
-                 title={String?.inviteFrd?.headerTitle}
-                 showCoin={false}
-                 showBacKIcon={true}
-               
+                <Header
+                    title={String?.inviteFrd?.headerTitle}
+                    showCoin={false}
+                    showBacKIcon={true}
 
-             />
+
+                />
             )}
             <ScrollView
                 style={[style.main, darkBackGround(darkModeTheme)]}
@@ -102,7 +111,6 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                     <InviteFrdSvg />
                 </View>
 
-                {/* {!loading ? */}
                 {!notifyUpdate && (
                     <TouchableOpacity
                         activeOpacity={1}

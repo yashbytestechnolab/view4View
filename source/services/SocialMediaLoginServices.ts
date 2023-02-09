@@ -60,6 +60,8 @@ const onUserInfo = async (userInfo: any) => {
 export const googleLogin = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     setLoading(true)
     crashlyticslog("google login")
+    console.log("google - login",crashlyticslog("google login")
+    );
     try {
         await GoogleSignin.hasPlayServices();
         const { accessToken, idToken }: any = await GoogleSignin.signIn();
@@ -94,6 +96,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
 export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     // create login request for apple
     crashlyticslog("apple login")
+    
     const appleAuthRequestResponse: any = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],

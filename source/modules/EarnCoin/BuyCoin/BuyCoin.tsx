@@ -5,14 +5,13 @@ import { colorBackGround, Colors, F40014, lightBackGround, } from '../../../Them
 import { EarnCoin } from '../../../services';
 import { ButtonComponent, Header, Loader } from '../../../components';
 import { InputContextProvide } from '../../../context/CommonContext';
-import { getItems, getPurchaseData, initilizeIAPConnection, onGetCoinAmount, onGetProdutId, onPurchase } from '../../../services/InAppPurchaseServices';
+import { getInAppPurchasetaticData, getItems, getPurchaseData, initilizeIAPConnection, onGetCoinAmount, onGetProdutId, onPurchase } from '../../../services/InAppPurchaseServices';
 import { showMessage } from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { type as keys } from '../../../constants/types';
 import * as RNIap from 'react-native-iap';
 import { BuyCoinIcon } from '../../../assets/icons';
 import { style } from './style';
-import { HeaderTest } from '../../../components/HeaderTest';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
@@ -32,7 +31,9 @@ export const BuyCoin = () => {
             setloading(true)
             const getIAPData = async () => {
                 let IAPData = await getPurchaseData();
-                setParseData(IAPData)
+                {
+                    IAPData == undefined ? setParseData(getInAppPurchasetaticData) : setParseData(IAPData)
+                }
                 let storeProducts = getItems()
                 setProducts(storeProducts)
                 setloading(false)
@@ -40,7 +41,6 @@ export const BuyCoin = () => {
             getIAPData()
         }
     }, []);
-
 
     useEffect(() => {
         purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(

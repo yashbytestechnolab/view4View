@@ -127,7 +127,7 @@ export const EditProfile = () => {
                                     data?.image !== null || profilePic?.path?.length !== undefined ?
                                         <Image source={{ uri: profilePic != null ? profilePic?.path : `data:image/png;base64,${data?.image}` }}
                                             style={style.imageWrapper} /> :
-                                        <View style={[style.imageWrapper, { backgroundColor: Colors?.shadowPink }]} />
+                                        <View style={[style.imageWrapper]} />
                                 }
                                 <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { OpenGallery() }}
                                     style={style.editIconWrapper}>

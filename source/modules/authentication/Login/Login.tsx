@@ -42,7 +42,7 @@ export const Login = () => {
   }
   const handleUserLoginRequest = () => {
     setLoading(true)
-    crashlyticslog("login account")
+    crashlyticslog("login account @@")
     auth().signInWithEmailAndPassword(userInput?.email, userInput?.password).
       then(async (userResponse: any) => {
         let userDetail = userResponse?.user?._user
@@ -172,7 +172,7 @@ export const Login = () => {
                     />) :
                     (<View style={style.socialMedia}>
                       <SocialMediaButton
-                        colorBackGround={colorBackGround(darkModeTheme)}
+                        colorBackGround={colorBackGroundlogin(darkModeTheme)}
                         socialMediaIcon={<Google />}
                         buttonTitle={String.commonString.Google}
                         onPress={() => { clearStateValue(); googleLogin(navigation, setLoading) }}

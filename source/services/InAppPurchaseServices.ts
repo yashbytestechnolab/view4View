@@ -21,6 +21,30 @@ export const getPurchaseData = async () => {
     return JSON.parse(data?._value);
 }
 
+export const getInAppPurchasetaticData:any =
+    [
+        {
+            name: "1000 Coins",
+            subInfo: "MOST POPULAR",
+            price: "89 ₹",
+            androidId: "1kcoins",
+            iosId: "1KCoins"
+        },
+        {
+            name: "3300 Coins",
+            subInfo: "SAVE 10%",
+            price: "269 ₹",
+            androidId: "3.3kcoins",
+            "iosId": "3.3KCoins"
+        },
+        {
+            name: "6000 Coins",
+            subInfo: "SAVE 20%",
+            price: " 450 ₹",
+            androidId: "6kcoins",
+            iosId: "6KCoins"
+        }
+    ]
 
 export const initilizeIAPConnection = async () => {
     await RNIap.initConnection()
