@@ -6,7 +6,7 @@ import AppLoader from './source/components/AppLoader';
 import { UpdateBuildVersion } from './source/services/UpdateBuildVersion';
 import { InviteFriend } from './source/modules/EarnCoin';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { rewardConfig } from './source/services';
+import { rewardCoinsDefaultValue, rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
@@ -23,13 +23,14 @@ interface reward {
 export default function App() {
   const [updateAlert, setUpdateAlert] = useState(false)
   const [reward, setReward] = useState<reward>({ adsRewarAmt: 0, referRewardAmt: 0 })
-  const [darkModeTheme, setDarkModeTheme] = useState(false)
   const [isInternetBack, setIsInternetBack] = useState(true)
+  const [darkModeTheme, setDarkModeTheme] = useState(false)
 
   const getReward = async () => {
     UpdateBuildVersion(setUpdateAlert)
     let remo = await rewardConfig()
-    setReward(remo)
+    remo == undefined ? setReward(rewardCoinsDefaultValue) :
+      setReward(remo)
   }
 
   const requestUserPermission = async () => {
@@ -59,7 +60,7 @@ export default function App() {
       colorScheme == "light" ? setDarkModeTheme(false) : setDarkModeTheme(true)
     }
   }
-  
+
   useEffect(() => {
     getDarkModeUI()
     getReward()

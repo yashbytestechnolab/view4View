@@ -16,8 +16,6 @@ import * as LocalStorage from '../../services/LocalStorage';
 import { Anaylitics } from '../../constants/analytics';
 import { crashlyticslog } from '../../services/crashlyticslog';
 import { Rating } from '../../services/Rating';
-import ViewShot, { captureRef } from "react-native-view-shot";
-
 
 export const ViewLanding = () => {
   const { storeCreator: { isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
@@ -47,9 +45,8 @@ export const ViewLanding = () => {
       let notificationTokenData: any = await getNotificationToken()
       setToken(notificationTokenData)
     } else {
-      setToken(Ntoken)
+      setToken(Ntoken || "")
     }
-
   }
   const openRatingPopup = async () => {
     await Rating()
@@ -60,8 +57,8 @@ export const ViewLanding = () => {
   }, []);
 
   useEffect(() => {
-    let unmountPopup = setTimeout(() => openRatingPopup(), 1000)
-    return () => { unmountPopup }
+    // let unmountPopup = setTimeout(() => openRatingPopup(), 2000)
+    // return () => { unmountPopup }
   }, [])
 
 
@@ -290,7 +287,15 @@ export const ViewLanding = () => {
               <ButtonComponent
                 loading={videoLoading}
                 onPrees={() => {
-                  Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce()
+                  Anaylitics("next_video_click", {
+                    user_balance: getBalance,
+                    video_id: videoData?.[nextVideo]?.video_Id[0],
+                    video_duration: timer,
+                    earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
+                    expected_view: videoData?.[nextVideo]?.expected_view,
+                    remaining_view: videoData?.[nextVideo]?.remaining_view
+                  });
+                  debounce()
                 }}
                 wrapperStyle={styles.marginTop}
                 buttonTitle={String?.viewTab?.nextVideo} />

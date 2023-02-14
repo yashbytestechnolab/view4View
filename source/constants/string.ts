@@ -160,6 +160,7 @@ export const String: any = {
     },
     settingScreen: {
         EditProfile: 'Edit Profile',
+        DeleteAccount:"Delete Account",
         AccountInformation: 'ACCOUNT INFORMATION',
         ChangePassword: 'Change Password',
         More: 'MORE',

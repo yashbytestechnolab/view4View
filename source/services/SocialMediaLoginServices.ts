@@ -7,7 +7,7 @@ import { getNotificationToken, LocalStorageKeys, ROUTES } from "../constants";
 import { config } from "../config";
 import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 import { Anaylitics } from "../constants/analytics";
 import { crashlyticslog } from "./crashlyticslog";
 import { person } from "../modules/View/increment";
@@ -108,8 +108,8 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
         identityToken,
         nonce
     } = appleAuthRequestResponse;
-    setLoading(true)
     if (identityToken) {
+        setLoading(true)
         const appleCredential = await auth.AppleAuthProvider.credential(identityToken, nonce);
         Anaylitics("apple_login_click", { token: appleCredential?.token })
         await auth()
@@ -129,5 +129,8 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
                 Anaylitics("apple_login_sucess", { loginType, email: userDetail?.email })
                 setLoading(false)
             }).catch((error: any) => { Anaylitics("apple_login_error", { loginType, error: error?.message }), setLoading(false) }).finally(() => setLoading(false))
+    } else {
+        Anaylitics("apple_login_sucess", { loginType, error: "Auth token not found" })
+        Alert.alert("Unable to login with apple. Please try with other login method")
     }
 };

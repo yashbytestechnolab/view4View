@@ -12,6 +12,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { lastSeen } from '../../services';
 import { useState } from 'react';
 import { crashlyticslog } from '../../services/crashlyticslog';
+import { Anaylitics } from '../../constants/analytics';
 export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
   const navigation = useNavigation()
@@ -77,7 +78,7 @@ export const MyCampaignLandingScreen = () => {
   /**
    * Render flatlist function to diplay list of video uploaded 
    */
-  const renderCampaignList = ({ item ,index}: any) => {
+  const renderCampaignList = ({ item, index }: any) => {
     let fillValue = item?.consumed_view * 100 / item?.expected_view
     return (
       <>
@@ -90,7 +91,7 @@ export const MyCampaignLandingScreen = () => {
               </Text>
             </View>)
             :
-            <View  key={index?.toString()} style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow, elevation: darkModeTheme ? 0 : 8 }]}>
+            <View key={index?.toString()} style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow, elevation: darkModeTheme ? 0 : 8 }]}>
               <Image
                 style={styles.thumbNilImage}
                 source={{ uri: item?.thumbnail_url }} />
@@ -170,7 +171,8 @@ export const MyCampaignLandingScreen = () => {
             />
             <TouchableOpacity
               onPress={() => {
-                setVideoUrl("")
+                setVideoUrl("");
+                Anaylitics("add_video_click");
                 crashlyticslog(`add campaign video @ ${ROUTES.MYCAMPAIGN_LANDING}`);
                 navigation.navigate(ROUTES.ADDVIDEO)
               }}

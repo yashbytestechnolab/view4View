@@ -1,40 +1,26 @@
 import VersionInfo from 'react-native-version-info';
 import remoteConfig from '@react-native-firebase/remote-config';
+import crashlytics from '@react-native-firebase/crashlytics';
+
 const appVersion: any = VersionInfo.appVersion;
-const defaultValue = {
-    build_version: appVersion,
-    title: "Update the app",
-    subTtile: "Please update to continue using the app",
-    Update: "https://play.google.com/store/apps/details?id=com.bytes.photolia"
-}
+
 export const UpdateBuildVersion = async (updateAlert: any) => {
-    
+    crashlytics().log(" UpdateDescription config file")
 
-    await remoteConfig().setConfigSettings({
-        minimumFetchIntervalMillis: 30000,
-    });
-
-    await remoteConfig()
-        .setDefaults(defaultValue)
-        .then(() => remoteConfig().fetchAndActivate())
-        .then(() => {
-            const getConfigValue: any = remoteConfig().getValue("UpdateDescription").asString()
-            const data: any = JSON?.parse(getConfigValue)
-            try {
-                if (data?.build_version != appVersion) {
-                    updateAlert(true);
-                } else {
-                    updateAlert(false);
-                }
-            } catch (error: any) {
-                console.log('err', error);
+    await remoteConfig().fetch(3000).then(async (res: any) => {
+        let UpdateDescription = await remoteConfig().getValue("UpdateDescription").asString()
+        const data: any = JSON?.parse(UpdateDescription)
+        const buildVersion = data == undefined ? '1.0' : data?.build_version
+        try {
+            if (buildVersion != appVersion) {
+                updateAlert(true);
+            } else {
+                updateAlert(false);
             }
-        }).catch((error) => {
-            console.log("error", error?.message);
-
-        }).catch((error) => {
-            console.log("error22", error?.message);
-
-        })
+        } catch (error: any) {
+            console.log('err', error);
+        }
+    })
 }
 
+//  yarn run ios --device

@@ -2,6 +2,7 @@ import auth from '@react-native-firebase/auth';
 import { Platform } from "react-native";
 import analytics from '@react-native-firebase/analytics';
 import VersionInfo from 'react-native-version-info';
+import { ENV, person } from '../modules/View/increment'
 
 export const userInfo = () => {
     const app_Version: any = VersionInfo.appVersion;
@@ -20,6 +21,7 @@ export const Anaylitics = (eventName: string, params?: object | any | null | und
     }
     else {
         body = { ...body, ...params }
-    }
-    analytics().logEvent(eventName, body)
+    }    
+    person?.environment() == ENV.production ? analytics().logEvent(eventName, body) : console.log("Event Data:", eventName,body);
+
 }

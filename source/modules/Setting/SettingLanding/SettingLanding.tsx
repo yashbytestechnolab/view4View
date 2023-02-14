@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, ActivityIndicator, Platform, Linking, } from 'react-native'
+import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, ActivityIndicator, Platform, Linking, Alert, } from 'react-native'
 import React, { useContext, useEffect, useMemo } from 'react'
 import * as LocalStorage from '../../../services/LocalStorage';
 import ToggleSwitch from 'toggle-switch-react-native'
@@ -8,18 +8,19 @@ import auth from '@react-native-firebase/auth';
 import { colorBackGround, Colors, darkBackGround, F40014, F50012, F60012, F60012Bold, F60016, lightBackGround } from '../../../Theme';
 import { ButtonComponent, Header } from '../../../components';
 import { NextIcon } from '../../../assets/icons';
-import { userDeatil } from '../../../services/FireStoreServices';
+import { deleteAccoutCampaign, firebaseAccountDelete, getCampaign, userDeatil } from '../../../services/FireStoreServices';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { style } from './style';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
 import { getSocialLoginValue, settingProfileArr } from '../../../constants/settingProfileArr';
-import { person } from '../../View/increment';
+import { ENV, person } from '../../View/increment';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
+import VersionInfo from 'react-native-version-info';
 
 export const SettingLanding = () => {
-  const { storeCreator: { darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
+  const { storeCreator: { loading, setLoading, darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
 
   const configUrl = () => {
@@ -42,8 +43,12 @@ export const SettingLanding = () => {
     getUserData()
     configUrl()
   }, [])
+  const { appVersion, buildVersion }: any = VersionInfo;
+
 
   const logoutHandle = async () => {
+    crashlyticslog(`logout_sucess`);
+    Anaylitics("logout_click")
     await navigation.reset({
       index: 0,
       routes: [{ name: ROUTES?.LOGIN }]
@@ -52,7 +57,9 @@ export const SettingLanding = () => {
     auth().signOut().then(() => { })
     dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: false })
     dispatchuserDetail({ type: type.USER_INFO_DELETE })
-    crashlyticslog(`Logout_Press`);
+    crashlyticslog(`logout_sucess`);
+    Anaylitics("logout_sucess")
+    setLoading(false)
   }
 
   const handleDarkMode = () => {
@@ -60,6 +67,27 @@ export const SettingLanding = () => {
     Anaylitics("dark_mode", { darkModeTheme })
     LocalStorage.setValue(LocalStorageKeys.DarkMode, { isDarkMode: !darkModeTheme })
   }
+
+  const handleDeletAccount = async () => {
+    setLoading(true)
+    Anaylitics("delete_account_click")
+    let deleteCampaign: any = await getCampaign()
+    for (let i = 0; i < deleteCampaign?._docs?.length; i++) {
+      Anaylitics("delete_account_campaign", { delete_campaign_id: deleteCampaign?._docs[i]?._data?.id })
+      await deleteAccoutCampaign(deleteCampaign?._docs[i]?._data?.id)
+    }
+    await firebaseAccountDelete()
+    await auth()?.currentUser?.delete()
+    Anaylitics("delete_account_sucess")
+    logoutHandle()
+  }
+
+  const onPessDeleteAccount = () =>
+    Alert.alert('Delete Account', 'Are you sure you want to delete your account? if you delete your account all data and earn coin will be permanently deleted and cannot be retrieved.', [
+      { text: 'Yes, Delete My Account', onPress: () => handleDeletAccount() },
+      { text: 'Cancel', onPress: () => { }, },
+    ]);
+
 
   const settingProfile = useMemo(() => {
     return (
@@ -73,15 +101,16 @@ export const SettingLanding = () => {
                   <Text key={index?.toString()} style={[F60012Bold.textStyle, F60012.colorAccount, style.paddingLeft, colorBackGround(darkModeTheme)]}>
                     {item?.name}
                   </Text>
-                </View> :
+                </View>
+                :
                 <>
                   {
                     !item?.isShowChangePass() &&
                     <TouchableOpacity
                       key={index.toString()}
                       onPress={() => {
-                        (index == 6 || index == 4) ? actionLinking(index) : index == 7 ? handleDarkMode()
-                          : navigation.navigate(item?.action)
+                        (index == 7 || index == 5) ? actionLinking(index) : index == 8 ? handleDarkMode()
+                          : (index == 3) ? onPessDeleteAccount() : navigation.navigate(item?.action)
                       }}
                       activeOpacity={1} style={style.tabWrapper}>
                       <Text key={item?.name} style={[F40014?.main, { fontSize: 15 }, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
@@ -108,7 +137,6 @@ export const SettingLanding = () => {
     const { android, ios }: any = person?.configvalue;
     index == 4 ? (Platform?.OS == 'android' ? Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview') : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805')) : (Linking.openURL('https://view4view-dcb01.web.app/'))
   };
-
 
   return (
     <>
@@ -140,10 +168,14 @@ export const SettingLanding = () => {
               buttonTitle={String?.settingScreen?.logout}
             />
           </View>
+          <View style={{ flex: 1, marginHorizontal: 16, marginTop: 40, alignItems: "center" }}>
+            <Text style={[{ fontSize: 12, color: Colors.gray }]}>
+              {`Version: ${appVersion}(${buildVersion}) - ${person?.environment() == ENV?.dev ? 'Development' : 'Production'}`}
+            </Text>
+          </View>
         </ScrollView>
       </View >
     </>
-
   )
 }
 

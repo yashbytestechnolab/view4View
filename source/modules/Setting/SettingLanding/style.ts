@@ -21,6 +21,6 @@ export const style = StyleSheet.create({
   tabWrapper: { flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 16, marginTop: 18 },
   mainWrapper: { backgroundColor: Colors.white, flex: 1 },
   scrollWrapper: { paddingTop: 24, backgroundColor: Colors?.white },
-  containWrapper: { backgroundColor: Colors?.white, flexGrow: 1, paddingBottom: 130 },
+  containWrapper: { backgroundColor: Colors?.white, flexGrow: 1, paddingBottom: 90 },
   paddingLeft: { paddingLeft: 8,fontSize:15 }
 })

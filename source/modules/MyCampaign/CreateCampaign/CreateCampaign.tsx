@@ -33,11 +33,17 @@ export const CreateCampaign = () => {
   /**
    * configValue for dropdown set
    */
+  const defaultCampaignDropdownValue = {
+    expectedView: 100,
+    timeRequire: 1000
+  }
   const confingFnc = useCallback(async () => {
     let value: any = await dropdownConfigValue();
-    setConfigValue(value)
-  }, [])
+    {
+      value == undefined ? setConfigValue(defaultCampaignDropdownValue) : setConfigValue(value)
 
+    }
+  }, [])
   useEffect(() => {
     confingFnc()
     crashlyticslog(`get config value @ ${ROUTES.CREATE_CAMPAIGN}`)
@@ -69,6 +75,21 @@ export const CreateCampaign = () => {
     setVideoUrl("")
   }
 
+  const analyticsLog = (updateWallet: number | any, userAddUrl: string | any, videoTitle: string | any, error?: string | any | object) => {
+    Anaylitics("create_campaign_sucess", {
+      befor_upload_balance: getBalance,
+      after_upload_balance: updateWallet,
+      cost_of_video: totalCost,
+      video_url: userAddUrl,
+      videoId: splitUrl[0],
+      title: videoTitle?.title,
+      notification_token: token,
+      expected_view: views,
+      duration: timeSecond,
+      ...error
+    })
+  }
+
   /**
    * Add Campaign list in campaign table  
    */
@@ -84,7 +105,7 @@ export const CreateCampaign = () => {
         Alert.alert("Selected duration is greater than video duration. Please Select proper video duration.")
       }
       else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
-        setLoading(true)
+        // setLoading(true)
         const updateWallet = getBalance - totalCost
         Anaylitics("add_campaign", { getBalance, updateWallet, totalCost, views })
         const userAddUrl: string = route?.params?.url
@@ -92,11 +113,15 @@ export const CreateCampaign = () => {
          * Create Campaign api call & decrement wallet amount
          */
         createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
-          .then((res: any) => updateCoinBalance(updateWallet)).catch((err: any) => setLoading(false))
+          .then((res: any) => {
+            analyticsLog(updateWallet, userAddUrl, videoTitle), updateCoinBalance(updateWallet)
+          }).catch((err: any) => {
+            analyticsLog(updateWallet, userAddUrl, videoTitle, { error: err?.message }), setLoading(false)
+          })
       }
     }).catch((err: any) => Alert.alert("Entered video url looks invalid. Please make sure you've entered correct video url"))
   }
-  
+
   function debounce(time: number) {
     let getTimeId: any | number
     clearTimeout(getTimeId)
@@ -114,7 +139,7 @@ export const CreateCampaign = () => {
     <>
       <SafeAreaView style={{ backgroundColor: Colors.linear_gradient }} />
       <View style={[styles.main, darkBackGround(darkModeTheme)]}>
-      <Header
+        <Header
           showBacKIcon={true}
           title={headerTitle?.createCampaign} />
         <ScrollView

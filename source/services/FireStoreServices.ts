@@ -5,6 +5,7 @@ import { referral_coupon_genrator } from './refeeral_coupon_genrate';
 import { notificationSend } from './notificationSend';
 import { person } from '../modules/View/increment';
 import { String } from '../constants';
+import { Anaylitics } from '../constants/analytics';
 const { congratulations, coins, Reward, completed, campaignCompleted } = String.Notification
 
 export function getUserID() {
@@ -193,4 +194,20 @@ export const referralEarning = async (params: string, referReward: number) => {
         device_token?.length > 0 && (await notificationSend(device_token, `${congratulations} ${referReward || 300} ${coins}`, `${Reward}`))
       }
     }).catch((err: any) => console.log("error", err))
+}
+
+
+export const getCampaign = async () => {
+  let userID = getUserID()
+  return await WatchVideoList?.where("upload_by", "==", userID).get()
+}
+
+export const deleteAccoutCampaign = async (deleteId: number | string | any) => {
+  await WatchVideoList.doc(deleteId).delete()
+}
+
+export const firebaseAccountDelete = async () => {
+  let userID = getUserID()
+  Anaylitics("delete_account_user", { delete_id: userID })
+  await userTable.doc(userID).delete()
 }

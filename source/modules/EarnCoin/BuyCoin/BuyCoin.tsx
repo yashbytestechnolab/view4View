@@ -5,7 +5,7 @@ import { colorBackGround, Colors, F40014, lightBackGround, } from '../../../Them
 import { EarnCoin } from '../../../services';
 import { ButtonComponent, Header, Loader } from '../../../components';
 import { InputContextProvide } from '../../../context/CommonContext';
-import { getItems, getPurchaseData, initilizeIAPConnection, onGetCoinAmount, onGetProdutId, onPurchase } from '../../../services/InAppPurchaseServices';
+import { getInAppPurchasetaticData, getItems, getPurchaseData, initilizeIAPConnection, onGetCoinAmount, onGetProdutId, onPurchase } from '../../../services/InAppPurchaseServices';
 import { showMessage } from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { type as keys } from '../../../constants/types';
@@ -32,7 +32,9 @@ export const BuyCoin = () => {
             setloading(true)
             const getIAPData = async () => {
                 let IAPData = await getPurchaseData();
-                setParseData(IAPData)
+                {
+                    IAPData == undefined ? setParseData(getInAppPurchasetaticData) : setParseData(IAPData)
+                }
                 let storeProducts = getItems()
                 setProducts(storeProducts)
                 setloading(false)
