@@ -1,7 +1,8 @@
-import { Linking, Platform } from "react-native";
+import { Alert, Linking, Platform } from "react-native";
 import * as LocalStorage from '../../source/services/LocalStorage';
 import { LocalStorageKeys } from "../constants";
 import Rate, { AndroidMarket } from "react-native-rate";
+import { crashlyticslog } from "./crashlyticslog";
 // import VersionInfo from 'react-native-version-info';
 
 export const Rating = async () => {
@@ -16,19 +17,24 @@ export const Rating = async () => {
             preferInApp: true,
             openAppStoreIfInAppFails: false,
         };
-        Rate.rate(options, async (success, error) => {
-            if (success) {
-                return
-            }
-            if (error) {
-                if (Platform.OS === 'android') {
-                    Linking.openURL(
-                        'https://play.google.com/store/apps/details?id=com.bytes.uview',
-                    );
+        try {
+            Rate.rate(options, async (success, error) => {
+                if (success) {
+                    return
                 }
-                console.error(error);
-            }
-        });
+                if (error) {
+                    if (Platform.OS === 'android') {
+                        Linking.openURL(
+                            'https://play.google.com/store/apps/details?id=com.bytes.uview',
+                        );
+                    }
+                    console.error(error);
+                }
+            });
+        } catch (error:any) {
+            crashlyticslog("Rating_popup")
+            Alert.alert(error?.message);
+        }
     }
     // let previousBuildVersion = await LocalStorage?.getValue(LocalStorageKeys?.previousBuildVersion)
     if (count % 3 == 0 || count == 3) {
