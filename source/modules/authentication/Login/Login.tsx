@@ -172,7 +172,7 @@ export const Login = () => {
                     />) :
                     (<View style={style.socialMedia}>
                       <SocialMediaButton
-                        colorBackGround={colorBackGroundlogin(darkModeTheme)}
+                        colorBackGround={colorBackGround(darkModeTheme)}
                         socialMediaIcon={<Google />}
                         buttonTitle={String.commonString.Google}
                         onPress={() => { clearStateValue(); googleLogin(navigation, setLoading) }}
