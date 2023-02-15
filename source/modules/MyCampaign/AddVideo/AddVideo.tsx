@@ -23,7 +23,7 @@ export const AddVideo = () => {
                 getCampaignData?.map((res: { video_url: string | undefined; remaining_view: number | any }) => {
                     (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
                 }),
-                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), crashlyticslog(`add campaign @${ROUTES.ADDVIDEO}`), Anaylitics("add_video_click", { video_url: addVideoUrl, user_balance: getBalance })) :
+                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), crashlyticslog(`add campaign @${ROUTES.ADDVIDEO}`), Anaylitics("add_video_click_url", { video_url: addVideoUrl, user_balance: getBalance })) :
                     (Alert.alert(String?.commonString?.CampaignAlert)))
     }
 

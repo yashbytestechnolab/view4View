@@ -66,7 +66,7 @@ export const CreateAccount = () => {
     const handleCreateUserRequest = async () => {
         let { email } = userInput
         let loginType = "normal"
-        Anaylitics("createAccount_click", { email })
+        Anaylitics("createaccount_click", { email })
         dispatchError({ type: type.EMPTY_STATE })
         setLoading(true)
         crashlyticslog("create account")
@@ -84,10 +84,10 @@ export const CreateAccount = () => {
                         routes: [{ name: ROUTES.TABLIST }],
                     });
                     dispatch({ type: type.EMPTY_STATE })
-                    Anaylitics("createAccount_sucess", { email, loginType })
+                    Anaylitics("createaccount_success", { email, loginType })
                 }).catch((err) => console.log(">>>err", err))
             }).
-            catch((userError) => { Anaylitics("createAccount_error", { email, loginType, error: userError?.code }), handleFirebaseError(userError?.code) }).
+            catch((userError) => { Anaylitics("createaccount_failed", { email, loginType, error: userError?.code }), handleFirebaseError(userError?.code) }).
             finally(() => setLoading(false))
     }
 

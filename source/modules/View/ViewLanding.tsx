@@ -27,7 +27,6 @@ export const ViewLanding = () => {
   const [isAnimation, setIsAnimantion] = useState(false)
   const animationProgress = useRef(new Animated.Value(0))
   const [onLoadStop, setOnLoadStop] = useState(false)
-  const abc = useRef()
 
   const GetCoins = async (params: string) => {
     // @ signin screen name in crash console  
@@ -57,8 +56,8 @@ export const ViewLanding = () => {
   }, []);
 
   useEffect(() => {
-    // let unmountPopup = setTimeout(() => openRatingPopup(), 2000)
-    // return () => { unmountPopup }
+    let unmountPopup = setTimeout(() => openRatingPopup(), 2000)
+    return () => { unmountPopup }
   }, [])
 
 
@@ -167,7 +166,6 @@ export const ViewLanding = () => {
     crashlyticslog(`get campaign list @ ${ROUTES.VIEW_LANDING}`)
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
-
     getPlayVideoList(docOS)
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())

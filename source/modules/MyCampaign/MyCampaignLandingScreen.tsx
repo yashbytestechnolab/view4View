@@ -5,7 +5,7 @@ import { ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { colorBackGround, Colors, darkBackGround, F40010, F40012, F40014, F50013, lightBackGround } from '../../Theme';
 import { InputContextProvide } from '../../context/CommonContext';
-import { GetVideoCampaign, campaignHistory } from '../../services/FireStoreServices';
+import { GetVideoCampaign, campaignHistory, get_coins } from '../../services/FireStoreServices';
 import { type } from '../../constants/types';
 import { PlusIcon } from '../../assets/icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -19,7 +19,7 @@ export const MyCampaignLandingScreen = () => {
   let route: object | any = useRoute()
 
   /**context data coin and campaign data */
-  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex },coinBalance: { getBalance }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
   /**
  * 
@@ -69,6 +69,16 @@ export const MyCampaignLandingScreen = () => {
       getVideoUrl("")
     }
   }, [dispatchcampaign, isInternetBack])
+
+  const getUserBalance = async () => {
+    await get_coins().then(async (res: any) => {
+      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
+    })
+  }
+
+  useEffect(() => {
+    getUserBalance();
+  }, [])
 
   /** convert last seen by uploaded video  */
   const getUploadedTime = useCallback((item: any) => {

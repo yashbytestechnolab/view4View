@@ -8,11 +8,12 @@ import { SvgProps } from 'react-native-svg';
 import { ActiveTabText, Colors, F50010 } from '../Theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { InputContextProvide } from '../context/CommonContext';
+import VersionInfo from 'react-native-version-info';
 
-export const TabNavigation = () => {  
+export const TabNavigation = () => {
+  const appVersion: any = VersionInfo.appVersion;
   const Tab = createBottomTabNavigator();
-  const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
-
+  const { storeCreator: { darkModeTheme, reviewVersionIos } }: any = useContext(InputContextProvide)
   const { darkModeColor, white } = Colors
 
   const getRouteIcon = (
@@ -48,19 +49,21 @@ export const TabNavigation = () => {
             const Icon = getRouteIcon(route.name);
             return <Icon color={focused ? Colors?.primaryRed : Colors?.GrayLightC2C9D1} />;
           },
-
         })}>
-        <Tab.Screen
-          name={ROUTES?.VIEW}
-          component={ViewStack}
-          options={{
-            tabBarLabel: ({ focused }) => (
-              <Text style={[focused ? ActiveTabText.main : F50010.main]}>
-                {String?.headerTitle?.view}
-              </Text>
-            ),
-          }}
-        />
+        {
+          (Platform.OS === "ios" && appVersion == reviewVersionIos) ||
+          <Tab.Screen
+            name={ROUTES?.VIEW}
+            component={ViewStack}
+            options={{
+              tabBarLabel: ({ focused }) => (
+                <Text style={[focused ? ActiveTabText.main : F50010.main]}>
+                  {String?.headerTitle?.view}
+                </Text>
+              ),
+            }}
+          />
+        }
         <Tab.Screen
           name={ROUTES?.MYCAMPAIGN}
           component={MyCampaignLanding}

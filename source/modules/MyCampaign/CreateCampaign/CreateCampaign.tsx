@@ -75,13 +75,13 @@ export const CreateCampaign = () => {
     setVideoUrl("")
   }
 
-  const analyticsLog = (updateWallet: number | any, userAddUrl: string | any, videoTitle: string | any, error?: string | any | object) => {
-    Anaylitics("create_campaign_sucess", {
+  const analyticsLog = (key:string,updateWallet: number | any, userAddUrl: string | any, videoTitle: string | any, error?: string | any | object) => {
+    Anaylitics(key, {
       befor_upload_balance: getBalance,
       after_upload_balance: updateWallet,
       cost_of_video: totalCost,
       video_url: userAddUrl,
-      videoId: splitUrl[0],
+      video_id: splitUrl[0],
       title: videoTitle?.title,
       notification_token: token,
       expected_view: views,
@@ -114,9 +114,9 @@ export const CreateCampaign = () => {
          */
         createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
           .then((res: any) => {
-            analyticsLog(updateWallet, userAddUrl, videoTitle), updateCoinBalance(updateWallet)
+            analyticsLog("create_campaign_sucess",updateWallet, userAddUrl, videoTitle), updateCoinBalance(updateWallet)
           }).catch((err: any) => {
-            analyticsLog(updateWallet, userAddUrl, videoTitle, { error: err?.message }), setLoading(false)
+            analyticsLog("create_campaign_error",updateWallet, userAddUrl, videoTitle, { error: err?.message }), setLoading(false)
           })
       }
     }).catch((err: any) => Alert.alert("Entered video url looks invalid. Please make sure you've entered correct video url"))
