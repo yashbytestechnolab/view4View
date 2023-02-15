@@ -47,6 +47,7 @@ export const F40012 = StyleSheet.create({
         color: Colors.greyD8D8D8,
         fontSize: 12,
         fontWeight: "400",
+        
     },
     color: {
         color: Colors.primaryRed,

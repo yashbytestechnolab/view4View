@@ -110,6 +110,8 @@ export const SettingLanding = () => {
 
   const actionLinking = (index: number) => {
     const { android, ios }: any = person?.configvalue;
+    console.log("android", android === 'https://play.google.com/store/apps/details?id=com.bytes.uview');
+
     index == 4 ? (Platform?.OS == 'android' ? Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview') : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805')) : (Linking.openURL('https://view4view-dcb01.web.app/'))
   };
 

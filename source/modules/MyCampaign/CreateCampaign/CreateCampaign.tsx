@@ -1,6 +1,6 @@
-import { View, Text, ScrollView, SafeAreaView, Alert } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, Alert, TouchableOpacity } from 'react-native';
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { ButtonComponent, CommonDropDown, Header } from '../../../components';
+import { ButtonComponent, Header } from '../../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import YoutubePlayer, { getYoutubeMeta, } from 'react-native-youtube-iframe';
 import { ROUTES, String } from '../../../constants';
@@ -10,10 +10,12 @@ import { Expected, dropdownConfigValue } from '../../../services';
 import { createCampaign, updateUserWallet } from '../../../services/FireStoreServices';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
-import { YT, campaign } from './interface';
+import { campaign } from './interface';
 import GiftModel from '../../../components/GiftModel';
 import { Anaylitics } from '../../../constants/analytics';
 import { crashlyticslog } from '../../../services/crashlyticslog';
+import { CamptionConformationModel } from '../../../components/CamptionConformationModel';
+import { DropDownModel } from '../../../components/DropDownModel';
 
 export const CreateCampaign = () => {
 
@@ -23,19 +25,25 @@ export const CreateCampaign = () => {
     params: any; key: string; name: string; path?: string | undefined;
   }>();
   const [isVisible, setIsVisible] = useState(false)
-  const [expectedValue, setExpectedValue] = useState<YT>({ views: 10, timeSecond: 30 })
+  const [isVisibleModel, setIsVisibleModel] = useState(false)
   const [totalCost, setTotalCost] = useState(300)
-  const { views, timeSecond } = expectedValue
   const { commonString, headerTitle } = String
   const [configValue, setConfigValue] = useState<campaign>({})
   const splitUrl = route?.params?.url.split('/').slice(3)
-  const youTubeRef = useRef()
+  const youTubeRef: any = useRef()
+  const [showExpectedValue, setShowExpectedValue] = useState(false)
+  const [showDropDown, setShowDropDown] = useState(false)
+  const [timeSecond, setTimeSecond]: any = useState(30)
+  const [views, setViews]: any = useState(10)
+
   /**
    * configValue for dropdown set
    */
   const defaultCampaignDropdownValue = {
     expectedView: 100,
-    timeRequire: 1000
+    // timeRequire: 1000
+
+    timeRequire: 150
   }
   const confingFnc = useCallback(async () => {
     let value: any = await dropdownConfigValue();
@@ -44,13 +52,13 @@ export const CreateCampaign = () => {
 
     }
   }, [])
-  console.log("get config value @", configValue)
   useEffect(() => {
     confingFnc()
     crashlyticslog(`dropdown get config value @ ${ROUTES.CREATE_CAMPAIGN}`)
   }, [dropdownConfigValue])
 
   // config value
+
   const expectedView = useMemo(() => Expected(10, configValue?.expectedView, 10), [configValue])
   const expectedTime = useMemo(() => Expected(30, configValue?.timeRequire, 30), [configValue])
 
@@ -58,11 +66,6 @@ export const CreateCampaign = () => {
  * Costing value of dropdown final cost
  * @param item 
  */
-  const onUpdateCostValue = (key1: any, item: string) => {
-    setExpectedValue({ ...expectedValue, [key1]: item });
-    const costing: number | any = key1 === "timeSecond" ? views : timeSecond
-    costing && setTotalCost(parseInt(item * (costing || 1) / 1))
-  }
 
   /**
    * After add Campaign decrement wallet amount
@@ -82,15 +85,9 @@ export const CreateCampaign = () => {
   const handleAddCampaign = async () => {
     const randomeId = Math.floor(Math.random() * 9999)
     splitUrl.push(randomeId.toString())
-    let duration = await youTubeRef?.current?.getDuration()
     getYoutubeMeta(splitUrl).then((videoTitle: any) => {
-      if (!(getBalance >= totalCost)) {
-        setIsVisible(true)
-      }
-      else if (duration <= timeSecond) {
-        Alert.alert("Selected duration is greater than video duration. Please Select proper video duration.")
-      }
-      else if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
+
+      if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
         setLoading(true)
         const updateWallet = getBalance - totalCost
         Anaylitics("add_campaign", { getBalance, updateWallet, totalCost, views })
@@ -99,7 +96,10 @@ export const CreateCampaign = () => {
          * Create Campaign api call & decrement wallet amount
          */
         createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
-          .then((res: any) => updateCoinBalance(updateWallet)).catch((err: any) => setLoading(false))
+          .then((res: any) => {
+            updateCoinBalance(updateWallet)
+          })
+          .catch((err: any) => setLoading(false))
       }
     }).catch((err: any) => Alert.alert("Entered video url looks invalid. Please make sure you've entered correct video url"))
   }
@@ -116,6 +116,12 @@ export const CreateCampaign = () => {
   }
 
   const addCampaignDebounce = debounce(300)
+  const HandleAddCampaignButton = async () => {
+    let duration: any = await youTubeRef?.current?.getDuration()
+    duration <= timeSecond ? Alert.alert("Selected duration is greater than video duration. Please Select proper video duration.")
+      : !(getBalance >= totalCost) ? setIsVisible(true) : setIsVisibleModel(true)
+  }
+
 
   return (
     <>
@@ -141,32 +147,23 @@ export const CreateCampaign = () => {
               <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
                 {commonString.Expectedviews}
               </Text>
-              <View style={styles.expectedView}>
-                <View style={styles.dropDown}>
-                  <CommonDropDown
-                    data={expectedView}
-                    value={views}
-                    onChange={(item) => onUpdateCostValue("views", item?.value)}
-                  />
-                </View>
-              </View>
+              <TouchableOpacity style={styles.expectedView} activeOpacity={1} onPress={() => { setShowExpectedValue(true) }}>
+
+                <Text style={{ textAlign: 'center', alignSelf: 'center' }}>{views}</Text>
+
+              </TouchableOpacity>
             </View>
 
             <View style={[styles.settingWrapper, styles.marginTop16]}>
               <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
                 {commonString.requiredTime}
               </Text>
-              <View style={styles.expectedView}>
-                <View style={styles.dropDown}>
-                  <CommonDropDown
-                    data={expectedTime}
-                    value={timeSecond}
-                    onChange={(item) => { onUpdateCostValue("timeSecond", item?.value) }}
-                  />
-                </View>
-              </View>
-            </View>
+              <TouchableOpacity style={styles.expectedView} activeOpacity={1} onPress={() => { setShowDropDown(true) }}>
 
+                <Text style={{ textAlign: 'center', alignSelf: 'center' }}>{timeSecond}</Text>
+
+              </TouchableOpacity>
+            </View>
             <View style={[styles.settingWrapper, styles.marginTop16,]}>
               <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
                 {commonString.Totalcost}
@@ -182,7 +179,9 @@ export const CreateCampaign = () => {
               disable={loading}
               buttonTitle={commonString.AddCampaign}
               wrapperStyle={styles.buttonAddCamp}
-              onPrees={() => addCampaignDebounce()}
+              onPrees={() =>
+                HandleAddCampaignButton()}
+
             />
 
             <View style={styles.warnWrapper}>
@@ -204,6 +203,39 @@ export const CreateCampaign = () => {
           setIsVisible={setIsVisible}
           onPress={() => { navigation.navigate(ROUTES.EARNCOINS_LANDING), setIsVisible(false) }}
         />}
+      {
+        isVisibleModel &&
+        <CamptionConformationModel
+          isVisible={isVisibleModel}
+          setIsVisible={setIsVisibleModel}
+          onPress={() => {
+            addCampaignDebounce(), setIsVisibleModel(false)
+          }
+          }
+        />
+      }
+      {
+        showDropDown && <DropDownModel
+
+          selectedValue={timeSecond}
+          setSelectValue={setTimeSecond}
+          data={expectedTime}
+          getOtherCoast={views}
+          setTotalCost={setTotalCost}
+          isVisible={showDropDown}
+          setIsVisible={setShowDropDown} title={'Time Required'} subTitle={'Select minimum time other have to watch your video.'} />
+      }
+      {
+        showExpectedValue && <DropDownModel
+          selectedValue={views}
+          setSelectValue={setViews}
+          data={expectedView}
+          getOtherCoast={timeSecond}
+          setTotalCost={setTotalCost}
+          isVisible={showExpectedValue}
+          setIsVisible={setShowExpectedValue} title={'Expected Views'} subTitle={'Select number of views that you want to have.'} />
+      }
+
     </>
-  );
+  )
 }

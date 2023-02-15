@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity, ActivityIndicator, BackHandler, } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, ActivityIndicator, BackHandler, Alert, PermissionsAndroid, Platform, } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Header, InputComponent } from '../../../../components'
 import { Colors, darkBackGround, F50018 } from '../../../../Theme'
@@ -10,23 +10,13 @@ import { ROUTES, String } from '../../../../constants'
 import { useNavigation } from '@react-navigation/native'
 import ImagePicker from 'react-native-image-crop-picker';
 import { style } from './style'
+import { err } from 'react-native-svg/lib/typescript/xml'
 
 export const EditProfile = () => {
     const navigation = useNavigation()
     const { storeCreator: { darkModeTheme, userDetail: { data, infoLoading }, userInput, dispatch, userInputError, dispatchError, dispatchuserDetail } }: any = useContext(InputContextProvide)
     const [profilePic, setProfilePic]: any = useState(null);
     const [onPhotoLoad, setPhotoLoad] = useState(false)
-
-    // const iosBase64Compress = async (response: any) => {
-    //     const result = await CreateCustomer.Image.compress(response?.assets[0]?.uri, {
-    //         maxWidth: 1000,
-    //         quality: 0.5,
-    //         compressionMethod: "auto",
-    //         returnableOutputType: "base64"
-    //     });
-    //     setProfilePic({ ...response?.assets[0], base64: result });
-    // }
-
     const getUserData = () => {
         dispatch({ type: type.FULL_NAME, payload: data?.firstname + " " + data?.lastname });
         dispatch({ type: type.EMAIL, payload: data?.email });
@@ -51,6 +41,37 @@ export const EditProfile = () => {
         fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, String.commonString.fullnameErrorMsg));
         !isNotValidForm && updateProfileData()
     }
+
+    const requestCameraPermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title: 'UView App Camera Permission',
+                        message:
+                            'UView App needs access to your camera ' +
+                            'so you can take awesome pictures.',
+                        buttonNeutral: 'Ask Me Later',
+                        buttonNegative: 'Cancel',
+                        buttonPositive: 'OK',
+                    },
+                );
+
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    OpenGallery();
+                    // req === 'camera' ? openCamera() : openGallery();
+                } else {
+                    Alert.alert('Please grant camera permission');
+                }
+            } catch (err) {
+                console.warn('wee', err);
+                Alert.alert('Something went wrong..');
+            }
+        } else {
+            OpenGallery();
+        }
+    };
     const OpenGallery = () => {
         ImagePicker.openPicker({
             width: 300,
@@ -60,36 +81,12 @@ export const EditProfile = () => {
             freeStyleCropEnabled: true,
         }).then(image => {
             setProfilePic(image);
-        });
+        }).catch((error) => {
+            console.log("error", error)
+        })
     };
-
-    // const openGallery = async () => {
-    //     setPhotoLoad(true)
-    //     let options: any = {
-    //         mediaType: 'photo',
-    //         quality: 0.2,
-    //         selectionLimit: 1,
-    //         includeBase64: true
-    //     };
-    //     await launchImageLibrary(options, async (response: any) => {
-    //         if (response?.didCancel) {
-    //             return;
-    //         }
-    //         if (
-    //             response?.assets?.[0]?.uri?.length > 1 &&
-    //             response?.assets[0]?.fileSize <= 5242880
-    //         ) {String
-    //             Platform.OS == "ios" ? await iosBase64Compress(response) : setProfilePic(response?.assets[0])
-    //         } else {
-    //             Alert.alert(String?.commonString?.imageSize);
-    //         }
-    //         setPhotoLoad(false)
-    //     }).catch(err => setPhotoLoad(false)).finally(() => setPhotoLoad(false))
-    // };
-
     const updateProfileData = () => {
         dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
-        // updateProfile(userInput?.fullName, (profilePic?.base64 || data?.image)).then((resp: any) => {
         updateProfile(userInput?.fullName, (profilePic?.data || data?.image)).then((resp: any) => {
             let obj = {
                 firstname: resp?.firstName, email: userInput?.email, image: (profilePic?.data || data?.image), lastname: resp?.lastname
@@ -129,7 +126,7 @@ export const EditProfile = () => {
                                             style={style.imageWrapper} /> :
                                         <View style={[style.imageWrapper]} />
                                 }
-                                <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { OpenGallery() }}
+                                <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { requestCameraPermission() }}
                                     style={style.editIconWrapper}>
                                     <EditProfileIcon />
                                 </TouchableOpacity>

@@ -53,6 +53,7 @@
     "react-native-linear-gradient": "^2.6.2",
     "react-native-modal": "^13.0.1",
     "react-native-onboarding-swiper": "^1.2.0",
+    "react-native-picker-module": "^2.0.7",
     "react-native-progress": "^5.0.0",
     "react-native-rate": "^1.2.12",
     "react-native-raw-bottom-sheet": "^2.2.0",

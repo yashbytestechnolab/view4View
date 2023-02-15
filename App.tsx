@@ -16,7 +16,7 @@ import { NoInternetConnect } from './source/services/NoInternetConnect';
 import { LocalStorageKeys } from './source/constants';
 import * as LocalStorage from './source/services/LocalStorage';
 import { Colors } from './source/Theme';
-interface reward {.
+interface reward {
   adsRewarAmt: number | string,
   referRewardAmt: number | string
 }

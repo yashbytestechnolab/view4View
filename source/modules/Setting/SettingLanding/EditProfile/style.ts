@@ -16,6 +16,7 @@ export const style = StyleSheet.create({
     editIconWrapper: {
         position: "relative", left: 20, bottom: 25,
         justifyContent: "center", alignItems: "center",
+        padding: 5,
         height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13
     },
     paddingTop: { paddingTop: 24 }

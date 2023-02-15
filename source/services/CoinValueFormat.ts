@@ -1,5 +1,5 @@
-export const kFormatter = (num: number | any) => {
-  const number = num.toFixed()
+export const kFormatter = (number: number | any) => {
+  // const number = num.toFixed()
   const lookup = [
     { value: 1, symbol: "" },
     { value: 1e3, symbol: "k" },

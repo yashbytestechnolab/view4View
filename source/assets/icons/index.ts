@@ -32,6 +32,8 @@ export * from './EditProfileIcon'
 export  * from './ShowPassword'
 export  * from './HidePassword'
 export * from './BuyCoinIcon'
+export * from './Close'
+
 
 
 

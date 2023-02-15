@@ -5,6 +5,7 @@ import { referral_coupon_genrator } from './refeeral_coupon_genrate';
 import { notificationSend } from './notificationSend';
 import { person } from '../modules/View/increment';
 import { String } from '../constants';
+import { Anaylitics } from '../constants/analytics';
 const { congratulations, coins, Reward, completed, campaignCompleted } = String.Notification
 
 export function getUserID() {
@@ -187,7 +188,9 @@ export const referralEarning = async (params: string, referReward: number) => {
   await userTableLogin.where("referral_code", "==", params).get().
     then(async (foo: any) => {
       if (foo?._docs?.length > 0) {
-        let { coin, userId, device_token } = foo?._docs[0]?._data
+        let { coin, userId, device_token }: any = foo?._docs[0]?._data
+        Anaylitics("WatchVideoEarn coin", { foo });
+
         await userTableLogin.doc(userId).update({ coin: coin + referReward || 300 })
         // This function Will Push notification for user he recvied 300 coin end other
         person?.devicesPermission && (await notificationSend(device_token, `${congratulations} ${referReward || 300} ${coins}`, `${Reward}`))

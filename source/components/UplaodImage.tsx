@@ -46,7 +46,8 @@ export const UplaodImage = (props: props) => {
                     },
                 );
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    req === 'camera' ? openCamera() : openGallery();
+                    openGallery();
+                    // req === 'camera' ? openCamera() : openGallery();
                 } else {
                     Alert.alert('Please grant camera permission');
                 }
@@ -55,7 +56,8 @@ export const UplaodImage = (props: props) => {
                 Alert.alert('Something went wrong..');
             }
         } else {
-            req === 'camera' ? openCamera() : openGallery();
+            openGallery();
+            // req === 'camera' ? openCamera() : openGallery();
         }
     };
 

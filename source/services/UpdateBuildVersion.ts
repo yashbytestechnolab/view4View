@@ -7,7 +7,6 @@ export const UpdateBuildVersion = async (updateAlert: any) => {
         let UpdateDescription = await remoteConfig().getValue("UpdateDescription").asString()
         const data: any = JSON?.parse(UpdateDescription)
         const buildVersion = data == undefined ? '1.0' : data?.build_version
-        console.log(" data?.build_version", data?.build_version)
         try {
             if (buildVersion != appVersion) {
                 updateAlert(true);

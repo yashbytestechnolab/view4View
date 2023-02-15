@@ -29,7 +29,7 @@ export const EarnCoinLanding = () => {
     setLoading(true)
     crashlyticslog(`user watch video ${ROUTES.EARNCOINS_LANDING}`)
     Anaylitics("show_add", { getBalance });
-    setLoading(true)
+    Anaylitics("Coin added @ watching add", { getBalance })
     const rewardAd = RewardedAd.createForAdRequest(__DEV__ ? TestIds.REWARDED : Platform.OS === 'android' ? 'ca-app-pub-4027493771242043/3200937894' : 'ca-app-pub-4027493771242043/4402338926');
     rewardAd.onAdEvent((type, error) => {
       if (type === RewardedAdEventType.LOADED) {

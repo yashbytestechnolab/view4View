@@ -12,6 +12,7 @@ import { type as keys } from '../../../constants/types';
 import * as RNIap from 'react-native-iap';
 import { BuyCoinIcon } from '../../../assets/icons';
 import { style } from './style';
+import { Anaylitics } from '../../../constants/analytics';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
@@ -126,6 +127,8 @@ export const BuyCoin = () => {
                 setTimeout(() => {
                     navigation.goBack()
                 }, 2000);
+                Anaylitics("Coin added @buyCoin", { getBalance })
+
 
             }).catch((err: any) => {
                 setloading(false)

@@ -92,6 +92,9 @@ export const ViewLanding = () => {
       setTimer(0);
       clearInterval(controlRef?.current);
       const totalAmount = getBalance + (coin / expected_view);
+      Anaylitics("WatchVideoEarn coin", { totalAmount});    
+      Anaylitics("Coin added @watching video", { totalAmount,getBalance })
+
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
       await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
       await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
