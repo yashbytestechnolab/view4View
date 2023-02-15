@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator, Platform } from 'react-native';
 import React, { useContext, useState } from 'react';
-import { Header } from '../../components';
 import { ROUTES, String } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
+import { Header } from '../../components';
 import { colorBackGround, Colors, darkBackGround, F40012, F60016, lightBackGround } from '../../Theme';
 import { NextIcon } from '../../assets/icons';
 import { CellType, EarnCoinData } from '../../services/jsonfile';
@@ -13,6 +13,7 @@ import { EarnCoin, } from '../../services';
 import { type as keys, } from '../../constants/types';
 import { Anaylitics } from '../../constants/analytics';
 import { crashlyticslog } from '../../services/crashlyticslog';
+import { ENV, person } from '../View/increment';
 
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
@@ -30,7 +31,8 @@ export const EarnCoinLanding = () => {
     crashlyticslog(`user watch video ${ROUTES.EARNCOINS_LANDING}`)
     Anaylitics("show_add", { getBalance });
     Anaylitics("Coin added @ watching add", { getBalance })
-    const rewardAd = RewardedAd.createForAdRequest(__DEV__ ? TestIds.REWARDED : Platform.OS === 'android' ? 'ca-app-pub-4027493771242043/3200937894' : 'ca-app-pub-4027493771242043/4402338926');
+    setLoading(true)
+    const rewardAd = RewardedAd.createForAdRequest(person?.environment() == ENV.dev ? TestIds.REWARDED : Platform.OS === 'android' ? 'ca-app-pub-4027493771242043/3200937894' : 'ca-app-pub-4027493771242043/4402338926');
     rewardAd.onAdEvent((type, error) => {
       if (type === RewardedAdEventType.LOADED) {
         rewardAd.show();

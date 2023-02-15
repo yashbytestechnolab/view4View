@@ -20,7 +20,6 @@ export const getPurchaseData = async () => {
     let data: any = remoteConfig().getValue("in_app_purchase_data");
     return JSON.parse(data?._value);
 }
-
 export const getInAppPurchasetaticData:any =
     [
         {

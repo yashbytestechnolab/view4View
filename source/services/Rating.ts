@@ -8,7 +8,7 @@ export const Rating = async () => {
     const countStartApp = await LocalStorage?.getValue(LocalStorageKeys?.AppActiveStatus)
     const count = countStartApp ? parseInt(countStartApp) : 1;
     // const appVersion: any = VersionInfo.appVersion;
-    const RateMessageBox = async () => {
+    const RateMessageBox = () => {
         let options = {
             AppleAppID: "1658265805",
             GooglePackageName: "com.bytes.uview",
@@ -31,8 +31,8 @@ export const Rating = async () => {
         });
     }
     // let previousBuildVersion = await LocalStorage?.getValue(LocalStorageKeys?.previousBuildVersion)
-    if (count % 3 == 0) {
-        await RateMessageBox()
+    if (count % 3 == 0 || count == 3) {
+        RateMessageBox()
     }
     await LocalStorage?.setValue(LocalStorageKeys?.AppActiveStatus, (count || 0) + 1)
 }

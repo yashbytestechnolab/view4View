@@ -107,7 +107,7 @@ export const EarnCoin = async (...payload: Array<number | any>) => {
 };
 
 export const deleteRemainingVideo = async (payload: any) => {
-  (payload?.device_token?.length > 0 && person?.devicesPermission) && (await notificationSend(payload?.device_token, campaignCompleted(payload?.video_title), completed))
+  (payload?.device_token?.length > 0) && (await notificationSend(payload?.device_token, campaignCompleted(payload?.video_title), completed))
   return await historyCampaign?.add(payload)
 }
 
@@ -193,7 +193,23 @@ export const referralEarning = async (params: string, referReward: number) => {
 
         await userTableLogin.doc(userId).update({ coin: coin + referReward || 300 })
         // This function Will Push notification for user he recvied 300 coin end other
-        person?.devicesPermission && (await notificationSend(device_token, `${congratulations} ${referReward || 300} ${coins}`, `${Reward}`))
+        device_token?.length > 0 && (await notificationSend(device_token, `${congratulations} ${referReward || 300} ${coins}`, `${Reward}`))
       }
     }).catch((err: any) => console.log("error", err))
+}
+
+
+export const getCampaign = async () => {
+  let userID = getUserID()
+  return await WatchVideoList?.where("upload_by", "==", userID).get()
+}
+
+export const deleteAccoutCampaign = async (deleteId: number | string | any) => {
+  await WatchVideoList.doc(deleteId).delete()
+}
+
+export const firebaseAccountDelete = async () => {
+  let userID = getUserID()
+  Anaylitics("delete_account_user", { delete_id: userID })
+  await userTable.doc(userID).delete()
 }

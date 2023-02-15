@@ -35,7 +35,7 @@ export const ViewCoin = () => {
                     <Text style={[F60024?.textStyle, style.textAlign, colorBackGround(darkModeTheme)]}> {String?.viewCoinScreen?.yourCoins}</Text>
                     <View style={style.coinTextWrapper}>
                         <BuyCoinIcon height={40} width={32} />
-                        <Text style={[F70032.textStyle, style.paddingLeft,]}>{getBalance}</Text>
+                        <Text style={[F70032.textStyle, style.paddingLeft,]}>{getBalance || 0}</Text>
                     </View>
                     <Text style={[F60016?.textStyle, { color: Colors?.black }, colorBackGround(darkModeTheme)]}>{String?.viewCoinScreen?.title}</Text>
                     <View style={style.subTextMargin}>

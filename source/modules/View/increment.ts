@@ -1,4 +1,7 @@
 
+export  enum ENV {
+    dev,production
+}
 class increment {
     retryCount: number = 0
     retryDocument: any = {}
@@ -29,6 +32,9 @@ class increment {
     }
     getRouteName(params: string | any) {
         this.routesName = params
+    }
+    environment(){
+        return ENV.dev
     }
 }
 

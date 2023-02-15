@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
-import { LocalStorageKeys, ROUTES, String } from '../../constants';
+import { getNotificationToken, LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { addWatchUrl, bytesVideoListData, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
@@ -38,17 +38,27 @@ export const ViewLanding = () => {
     });
   };
 
-  
-  const getNotificationToken = async () => {
+  const notificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
-    setToken(Ntoken)
+    if (Ntoken == null || Ntoken == undefined) {
+      let notificationTokenData: any = await getNotificationToken()
+      setToken(notificationTokenData)
+    } else {
+      setToken(Ntoken || "")
+    }
+  }
+  const openRatingPopup = async () => {
     await Rating()
   }
-
   useEffect(() => {
     GetCoins("isInitialRenderUpdate");
-    getNotificationToken()
+    notificationToken()
   }, []);
+
+  useEffect(() => {
+    let unmountPopup = setTimeout(() => openRatingPopup(), 2000)
+    return () => { unmountPopup }
+  }, [])
 
 
   useEffect(() => {
@@ -92,13 +102,11 @@ export const ViewLanding = () => {
       setTimer(0);
       clearInterval(controlRef?.current);
       const totalAmount = getBalance + (coin / expected_view);
-      Anaylitics("WatchVideoEarn coin", { totalAmount});    
-      Anaylitics("Coin added @watching video", { totalAmount,getBalance })
-
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
       await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
       await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
+      Anaylitics("watch_video_sucess", { earn_from_video: totalAmount,user_balance: getBalance })
     }
   }
   /**
@@ -159,7 +167,6 @@ export const ViewLanding = () => {
     crashlyticslog(`get campaign list @ ${ROUTES.VIEW_LANDING}`)
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
-
     getPlayVideoList(docOS)
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
@@ -238,7 +245,7 @@ export const ViewLanding = () => {
       <View style={[styles.container, darkBackGround(darkModeTheme)]}>
         <Header coin={getBalance} title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
-          <View style={styles.videoWrapper}>
+          <View style={styles.videoWrapper} key={nextVideo?.toString()}>
             {isInternetBack &&
               <YoutubePlayer
                 height={270}
@@ -278,7 +285,17 @@ export const ViewLanding = () => {
               </View>
               <ButtonComponent
                 loading={videoLoading}
-                onPrees={() => { Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce() }}
+                onPrees={() => {
+                  Anaylitics("next_video_click", {
+                    user_balance: getBalance,
+                    video_id: videoData?.[nextVideo]?.video_Id[0],
+                    video_duration: timer,
+                    earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
+                    expected_view: videoData?.[nextVideo]?.expected_view,
+                    remaining_view: videoData?.[nextVideo]?.remaining_view
+                  });
+                  debounce()
+                }}
                 wrapperStyle={styles.marginTop}
                 buttonTitle={String?.viewTab?.nextVideo} />
             </>

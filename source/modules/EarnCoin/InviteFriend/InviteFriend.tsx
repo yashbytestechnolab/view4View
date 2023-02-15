@@ -30,6 +30,7 @@ import { getBuildVersionData } from '../../../services/BuildVesrionCheck';
 export const InviteFriend = ({ notifyUpdate }: any) => {
     const { storeCreator: { darkModeTheme, getReferralCode } }: any = useContext(InputContextProvide)
     const [buildData, setBuildData] = useState();
+
     const confingDefaultValue: any = {
         build_version: "1.0",
         title: "Update the app",

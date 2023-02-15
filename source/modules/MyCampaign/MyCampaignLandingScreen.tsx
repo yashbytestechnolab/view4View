@@ -5,20 +5,21 @@ import { ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { colorBackGround, Colors, darkBackGround, F40010, F40012, F40014, F50013, lightBackGround } from '../../Theme';
 import { InputContextProvide } from '../../context/CommonContext';
-import { GetVideoCampaign, campaignHistory } from '../../services/FireStoreServices';
+import { GetVideoCampaign, campaignHistory, get_coins } from '../../services/FireStoreServices';
 import { type } from '../../constants/types';
 import { PlusIcon } from '../../assets/icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { lastSeen } from '../../services';
 import { useState } from 'react';
 import { crashlyticslog } from '../../services/crashlyticslog';
+import { Anaylitics } from '../../constants/analytics';
 export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
   const navigation = useNavigation()
   let route: object | any = useRoute()
 
   /**context data coin and campaign data */
-  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex },coinBalance: { getBalance }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
   /**
  * 
@@ -69,6 +70,16 @@ export const MyCampaignLandingScreen = () => {
     }
   }, [dispatchcampaign, isInternetBack])
 
+  const getUserBalance = async () => {
+    await get_coins().then(async (res: any) => {
+      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
+    })
+  }
+
+  useEffect(() => {
+    getUserBalance();
+  }, [])
+
   /** convert last seen by uploaded video  */
   const getUploadedTime = useCallback((item: any) => {
     return lastSeen(item)
@@ -77,20 +88,20 @@ export const MyCampaignLandingScreen = () => {
   /**
    * Render flatlist function to diplay list of video uploaded 
    */
-  const renderCampaignList = ({ item }: any) => {
+  const renderCampaignList = ({ item, index }: any) => {
     let fillValue = item?.consumed_view * 100 / item?.expected_view
     return (
       <>
         {
           item?.stickeyHeader?.length > 0 ?
-            (<View style={[styles.stickeyHeaderView,
+            (<View key={index?.toString()} style={[styles.stickeyHeaderView,
             { backgroundColor: darkModeTheme ? Colors.drakStickey : Colors.shadowPink }]}>
               <Text style={[styles.stickeyText, colorBackGround(darkModeTheme)]}>
                 {item?.stickeyHeader}
               </Text>
             </View>)
             :
-            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow, elevation: darkModeTheme ? 0 : 8 }]}>
+            <View key={index?.toString()} style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow, elevation: darkModeTheme ? 0 : 8 }]}>
               <Image
                 style={styles.thumbNilImage}
                 source={{ uri: item?.thumbnail_url }} />
@@ -147,6 +158,7 @@ export const MyCampaignLandingScreen = () => {
         {loding ? (<View style={styles.loader}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
           (<>
             <FlatList
+              keyExtractor={(item) => item?.toString()}
               showsVerticalScrollIndicator={false}
               scrollEnabled
               style={[styles.flatList, darkBackGround(darkModeTheme)]}
@@ -169,7 +181,8 @@ export const MyCampaignLandingScreen = () => {
             />
             <TouchableOpacity
               onPress={() => {
-                setVideoUrl("")
+                setVideoUrl("");
+                Anaylitics("add_video_click");
                 crashlyticslog(`add campaign video @ ${ROUTES.MYCAMPAIGN_LANDING}`);
                 navigation.navigate(ROUTES.ADDVIDEO)
               }}

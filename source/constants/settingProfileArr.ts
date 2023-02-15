@@ -32,7 +32,6 @@ export const settingProfileArr: any = [
             return false
         }
     },
-
     {
         name: String?.settingScreen?.ChangePassword,
         action: ROUTES?.CHANGEPASSWORD,
@@ -41,6 +40,15 @@ export const settingProfileArr: any = [
         icon: "",
         isShowChangePass: () => {
             return socilaLoginFlag
+        }
+    },
+    {
+        name: String?.settingScreen?.DeleteAccount,
+        isHeaderUi: false,
+        isUiRender: false,
+        icon: "",
+        isShowChangePass: () => {
+            return false
         }
     },
     {
