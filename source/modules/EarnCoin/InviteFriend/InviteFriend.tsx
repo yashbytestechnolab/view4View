@@ -26,10 +26,22 @@ import { InputContextProvide } from '../../../context/CommonContext';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { handleFirebaseError } from '../../../services/AlertMessage';
 import { getBuildVersionData } from '../../../services/BuildVesrionCheck';
+import { userDeatil } from '../../../services';
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
-    const { storeCreator: { darkModeTheme, getReferralCode } }: any = useContext(InputContextProvide)
+    const { storeCreator: { setGetReferralCode, darkModeTheme, getReferralCode } }: any = useContext(InputContextProvide)
     const [buildData, setBuildData] = useState();
+    const getReferal = async () => {
+        await userDeatil().then(async (res: any) => {
+            setGetReferralCode(res?.referral_code)
+        });
+    }
+    useEffect(() => {
+        if (getReferralCode == "" || getReferralCode == undefined) {
+            getReferal()
+        }
+    }, [])
+
     const confingDefaultValue: any = {
         build_version: "1.0",
         title: "Update the app",

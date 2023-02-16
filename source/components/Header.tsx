@@ -45,8 +45,8 @@ export const Header = (props: IheaderProps) => {
                                     padding: 8
                                 }}
                                 onPress={() => {
-                                    Anaylitics("user_coin", { getBalance })
                                     onPrees ? onPrees() : navigation.goBack();
+                                    Anaylitics("back_press_user_coin", {user_balance: getBalance })
                                 }}>
                                 <Back color={Colors?.white} />
                             </TouchableOpacity>

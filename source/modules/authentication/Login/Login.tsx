@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, StatusBar } from 'react-native';
 import React, { useContext } from 'react';
 import { colorBackGround, Colors, darkBackGround, F40014, } from '../../../Theme';
 import { useNavigation } from '@react-navigation/native';
-import { getNotificationToken, LocalStorageKeys, ROUTES, String } from '../../../constants';
+import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { style } from './style';
 import { InputComponent } from '../../../components/InputComponent';
 import { InputContextProvide } from '../../../context/CommonContext';
@@ -21,9 +21,9 @@ import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Platform } from 'react-native';
 import { Anaylitics } from '../../../constants/analytics';
-import { crashlyticslog } from '../../../services/crashlyticslog';
 
 export const Login = () => {
+
   /**
    * Context to give userinput data and error message
    */
@@ -41,24 +41,26 @@ export const Login = () => {
     dispatchError({ type: type, payload: payload })
   }
   const handleUserLoginRequest = () => {
+    console.log("operation1")
+    let { email } = userInput
+    let loginType = "normal";
+    Anaylitics("login_click", { email,loginType })
     setLoading(true)
-    crashlyticslog("login account @@")
     auth().signInWithEmailAndPassword(userInput?.email, userInput?.password).
       then(async (userResponse: any) => {
         let userDetail = userResponse?.user?._user
-        Anaylitics("login", { user_id: userDetail?.uid })
         await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);
         await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
         await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
-        await getNotificationToken()
-        dispatch({ type: type.EMPTY_STATE })
         navigation.reset({
           index: 0,
           routes: [{ name: ROUTES.TABLIST }],
         });
+        Anaylitics("login_sucess", { email, loginType })
+        dispatch({ type: type.EMPTY_STATE })
         setLoading(false)
       }).
-      catch((userError) => handleFirebaseError(userError?.code)).
+      catch((userError) => { Anaylitics("login_error", { email, loginType, error: userError?.code }), handleFirebaseError(userError?.code) }).
       finally(() => setLoading(false))
   }
 

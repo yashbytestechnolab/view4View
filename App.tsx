@@ -6,7 +6,7 @@ import AppLoader from './source/components/AppLoader';
 import { UpdateBuildVersion } from './source/services/UpdateBuildVersion';
 import { InviteFriend } from './source/modules/EarnCoin';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { rewardCoinsDefaultValue, rewardConfig } from './source/services';
+import { ReviewVersionIos, rewardCoinsDefaultValue, rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
@@ -23,10 +23,13 @@ interface reward {
 export default function App() {
   const [updateAlert, setUpdateAlert] = useState(false)
   const [reward, setReward] = useState<reward>({ adsRewarAmt: 0, referRewardAmt: 0 })
-  const [darkModeTheme, setDarkModeTheme] = useState(false)
   const [isInternetBack, setIsInternetBack] = useState(true)
+  const [darkModeTheme, setDarkModeTheme] = useState(false)
+  const [reviewVersionIos, setReviewVersionIos] = useState("")
 
   const getReward = async () => {
+    let reviewVersionIos = await ReviewVersionIos()
+    setReviewVersionIos(reviewVersionIos || 0)
     UpdateBuildVersion(setUpdateAlert)
     let remo = await rewardConfig()
     remo == undefined ? setReward(rewardCoinsDefaultValue) :
@@ -80,6 +83,8 @@ export default function App() {
   return (
     <>
       <CommonContext
+        reviewVersionIos={reviewVersionIos}
+        setReviewVersionIos={setReviewVersionIos}
         reward={reward}
         isInternetBack={isInternetBack}
         setIsInternetBack={setIsInternetBack}

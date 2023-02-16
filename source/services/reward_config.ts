@@ -1,5 +1,8 @@
 import remoteConfig from '@react-native-firebase/remote-config';
+import crashlytics from '@react-native-firebase/crashlytics';
+
 export async function rewardConfig() {
+    crashlytics().log(" reward_coins config file")
     return remoteConfig().fetch(3000).then(async (res: any) => {
         let rewardCoinAmt = await remoteConfig().getValue("reward_coins").asString()
         return JSON.parse(rewardCoinAmt)

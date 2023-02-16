@@ -739,8 +739,6 @@ PODS:
     - React-Core
   - react-native-version-info (1.1.1):
     - React-Core
-  - react-native-view-shot (3.5.0):
-    - React-Core
   - react-native-webview (11.26.1):
     - React-Core
   - React-perflogger (0.70.6)
@@ -858,6 +856,15 @@ PODS:
     - React-Core
   - RNIap (11.0.7):
     - React-Core
+  - RNImageCropPicker (0.39.0):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.39.0)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.39.0):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNRate (1.2.12):
     - React-Core
   - RNScreens (3.19.0):
@@ -870,6 +877,7 @@ PODS:
   - RNSVG (13.7.0):
     - React-Core
   - SocketRocket (0.6.0)
+  - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -937,7 +945,6 @@ DEPENDENCIES:
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-version-info (from `../node_modules/react-native-version-info`)
-  - react-native-view-shot (from `../node_modules/react-native-view-shot`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -967,6 +974,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNIap (from `../node_modules/react-native-iap`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNRate (from `../node_modules/react-native-rate`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../node_modules/react-native-share`)
@@ -1021,6 +1029,7 @@ SPEC REPOS:
     - PersonalizedAdConsent
     - PromisesObjC
     - SocketRocket
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -1080,8 +1089,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-splash-screen"
   react-native-version-info:
     :path: "../node_modules/react-native-version-info"
-  react-native-view-shot:
-    :path: "../node_modules/react-native-view-shot"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-perflogger:
@@ -1140,6 +1147,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-google-signin/google-signin"
   RNIap:
     :path: "../node_modules/react-native-iap"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNRate:
     :path: "../node_modules/react-native-rate"
   RNScreens:
@@ -1226,7 +1235,6 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-version-info: a106f23009ac0db4ee00de39574eb546682579b9
-  react-native-view-shot: 792829857bbb23a9c8acdad9a640554bdee397a3
   react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
@@ -1256,12 +1264,14 @@ SPEC CHECKSUMS:
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNGoogleSignin: 22e468a9474dbcb8618d8847205ad4f0b2575d13
   RNIap: b699b537ca34fa1cd15b78f4ec383ab502d01f6c
+  RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
   RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
   RNScreens: ea4cd3a853063cda19a4e3c28d2e52180c80f4eb
   RNShare: 48b3113cd089a2be8ff0515c3ae7a46a4db8a76b
   RNStoreReview: 18cf6adbd193eadb049d2f6c37ef2ab3d5a28706
   RNSVG: d787d64ca06b9158e763ad2638a8c4edce00782a
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

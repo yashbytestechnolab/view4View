@@ -5,20 +5,21 @@ import { ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { colorBackGround, Colors, darkBackGround, F40010, F40012, F40014, F50013, lightBackGround } from '../../Theme';
 import { InputContextProvide } from '../../context/CommonContext';
-import { GetVideoCampaign, campaignHistory } from '../../services/FireStoreServices';
+import { GetVideoCampaign, campaignHistory, get_coins } from '../../services/FireStoreServices';
 import { type } from '../../constants/types';
 import { PlusIcon } from '../../assets/icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { lastSeen } from '../../services';
 import { useState } from 'react';
-import { crashlyticslog } from '../../services/crashlyticslog';
+import { Anaylitics } from '../../constants/analytics';
+
 export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
   const navigation = useNavigation()
   let route: object | any = useRoute()
 
   /**context data coin and campaign data */
-  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, coinBalance: { getBalance }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
   /**
  * 
@@ -29,7 +30,7 @@ export const MyCampaignLandingScreen = () => {
   const getHistoryData = async (params: Array<object> | any) => {
     let historyList = await campaignHistory()
     if (params?.length > 0 && historyList?.length > 0) {
-      crashlyticslog(`get user uploaded complete campaign list @ ${ROUTES.MYCAMPAIGN_LANDING}`)
+      Anaylitics("history_campaign_get")
       dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [...params, { stickeyHeader: "Past Campaign" }, ...historyList], index: [0, params.length] } })
     }
     else if (params?.length <= 0 && historyList?.length > 0) {
@@ -45,7 +46,6 @@ export const MyCampaignLandingScreen = () => {
   *
   **/
   const getVideoUrl = async (params: string) => {
-    crashlyticslog(`get user upload campaign list @ ${ROUTES.MYCAMPAIGN_LANDING}`)
     params ? setLoading(true) : dispatchcampaign({ types: type.CAMPAIGN_LOADING, payload: true })
     await GetVideoCampaign().then((res: any) => {
       const getVideoUrl: any = []
@@ -69,6 +69,16 @@ export const MyCampaignLandingScreen = () => {
     }
   }, [dispatchcampaign, isInternetBack])
 
+  const getUserBalance = async () => {
+    await get_coins().then(async (res: any) => {
+      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
+    })
+  }
+
+  useEffect(() => {
+    getUserBalance();
+  }, [])
+
   /** convert last seen by uploaded video  */
   const getUploadedTime = useCallback((item: any) => {
     return lastSeen(item)
@@ -77,20 +87,20 @@ export const MyCampaignLandingScreen = () => {
   /**
    * Render flatlist function to diplay list of video uploaded 
    */
-  const renderCampaignList = ({ item }: any) => {
+  const renderCampaignList = ({ item, index }: any) => {
     let fillValue = item?.consumed_view * 100 / item?.expected_view
     return (
       <>
         {
           item?.stickeyHeader?.length > 0 ?
-            (<View style={[styles.stickeyHeaderView,
+            (<View key={index?.toString()} style={[styles.stickeyHeaderView,
             { backgroundColor: darkModeTheme ? Colors.drakStickey : Colors.shadowPink }]}>
               <Text style={[styles.stickeyText, colorBackGround(darkModeTheme)]}>
                 {item?.stickeyHeader}
               </Text>
             </View>)
             :
-            <View style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow, elevation: darkModeTheme ? 0 : 8 }]}>
+            <View key={index?.toString()} style={[styles.container, lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.darkModeColor1 : Colors.whiteShadow, elevation: darkModeTheme ? 0 : 8 }]}>
               <Image
                 style={styles.thumbNilImage}
                 source={{ uri: item?.thumbnail_url }} />
@@ -147,6 +157,7 @@ export const MyCampaignLandingScreen = () => {
         {loding ? (<View style={styles.loader}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
           (<>
             <FlatList
+              keyExtractor={(item) => item?.toString()}
               showsVerticalScrollIndicator={false}
               scrollEnabled
               style={[styles.flatList, darkBackGround(darkModeTheme)]}
@@ -156,7 +167,7 @@ export const MyCampaignLandingScreen = () => {
                 <RefreshControl
                   refreshing={loading}
                   onRefresh={() => {
-                    crashlyticslog(`on referesh campaign list @ ${ROUTES.MYCAMPAIGN_LANDING}`);
+                    Anaylitics("campaign_pull_to_referesh");
                     getVideoUrl("loading")
                   }}
                   colors={[Colors.gray]}
@@ -169,8 +180,8 @@ export const MyCampaignLandingScreen = () => {
             />
             <TouchableOpacity
               onPress={() => {
-                setVideoUrl("")
-                crashlyticslog(`add campaign video @ ${ROUTES.MYCAMPAIGN_LANDING}`);
+                setVideoUrl("");
+                Anaylitics("add_video_click");
                 navigation.navigate(ROUTES.ADDVIDEO)
               }}
               activeOpacity={0.8}

@@ -1,58 +1,49 @@
-import { View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import React, { useContext, useState } from 'react';
-import { Header } from '../../components';
-import { ROUTES, String } from '../../constants';
+import { String } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
+import { Header } from '../../components';
 import { colorBackGround, Colors, darkBackGround, F40012, F60016, lightBackGround } from '../../Theme';
 import { NextIcon } from '../../assets/icons';
-import { CellType, EarnCoinData } from '../../services/jsonfile';
+import { EarnCoinData } from '../../services/jsonfile';
 import { style } from './style';
 import { InputContextProvide } from '../../context/CommonContext';
-import { TestIds, RewardedAd, RewardedAdEventType } from '@react-native-firebase/admob';
 import { EarnCoin, } from '../../services';
 import { type as keys, } from '../../constants/types';
+import { AdsClass } from '../../services/AdsLoad';
+import { CamptionConformationModel } from '../../components/CamptionConformationModel';
 import { Anaylitics } from '../../constants/analytics';
-import { crashlyticslog } from '../../services/crashlyticslog';
 
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
+  const [isAdsAlertDisplay, setIsAlertDisplay] = useState(false);
   /**
    * InputContextProvide is get current coin and darktheame flag 
    */
   const { storeCreator: { reward, coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
-  const [loading, setLoading] = useState(false)
 
   /***
    * showRewardAd is load the ad and show ad
    */
+
+  const rewardCoin = () => {
+    EarnCoin(getBalance, 100)?.then((res) => {
+      dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
+      Anaylitics("earn_coin_show_ads_completed", {
+        current_user_balance: getBalance + (reward?.adsReward || 100)
+      })
+    }).catch((err) => {
+      navigation.goBack()
+    })
+  }
+
   const showRewardAd = () => {
-    setLoading(true)
-    crashlyticslog(`user watch video ${ROUTES.EARNCOINS_LANDING}`)
-    Anaylitics("show_add", { getBalance });
-    Anaylitics("Coin added @ watching add", { getBalance })
-    const rewardAd = RewardedAd.createForAdRequest(__DEV__ ? TestIds.REWARDED : Platform.OS === 'android' ? 'ca-app-pub-4027493771242043/3200937894' : 'ca-app-pub-4027493771242043/4402338926');
-    rewardAd.onAdEvent((type, error) => {
-      if (type === RewardedAdEventType.LOADED) {
-        rewardAd.show();
-        setLoading(false)
-      } if (error?.name?.length > 0) {
-        setLoading(false)
-      }
-
-      if (type === RewardedAdEventType.EARNED_REWARD) {
-        EarnCoin(getBalance, 100)?.then((res) => {
-          dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
-          setLoading(false)
-        }).catch((err) => {
-          navigation.goBack()
-        })
-      }
-
-      if (type === "closed") {
-        setLoading(false)
-      }
-    });
-    rewardAd.load();
+    Anaylitics("earn_coin_show_ads", {
+      current_user_balance: getBalance
+    })
+    AdsClass.showAds(() => {
+      setIsAlertDisplay(true);
+    }, rewardCoin);
   }
 
   return (
@@ -64,7 +55,7 @@ export const EarnCoinLanding = () => {
         <View style={style.wrapperView}>
           {EarnCoinData.length > 0 && EarnCoinData?.map((item: any, index) => {
             return (
-              <TouchableOpacity disabled={loading} key={index.toString()} style={[style.card,
+              <TouchableOpacity key={index.toString()} style={[style.card,
               lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme ? 0 : 8 }]} activeOpacity={1}
                 onPress={() => {
                   item?.onPress == "SHOWADDS" ? showRewardAd() :
@@ -78,13 +69,27 @@ export const EarnCoinLanding = () => {
                   </View>
                 </View>
                 <View>
-                  {(loading && item?.type == CellType.ads) ? <ActivityIndicator color={Colors?.primaryRed} /> : <NextIcon />}
+                  <NextIcon />
                 </View>
               </TouchableOpacity>
             )
           })}
         </View>
       </View>
+      {isAdsAlertDisplay &&
+        <CamptionConformationModel
+          titleText={'Warning!!'}
+          descriptionText={`We don't have any rewards ads to display. Please try again!!`}
+          isVisible={isAdsAlertDisplay}
+          descriptionStyle={{ paddingHorizontal: 20 }}
+          setIsVisible={setIsAlertDisplay}
+          actionTitle={"Close"}
+          onPress={() => {
+            setIsAlertDisplay(false)
+          }
+          }
+        />
+      }
 
     </>
   );

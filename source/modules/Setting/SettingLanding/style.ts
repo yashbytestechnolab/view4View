@@ -31,6 +31,7 @@ export const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 60, width: 60, borderRadius: 30,
-    backgroundColor: Colors?.dropdownOffWhite, marginBottom: 12
+    backgroundColor: Colors?.dropdownOffWhite,
+    marginBottom: 12
   }
 })

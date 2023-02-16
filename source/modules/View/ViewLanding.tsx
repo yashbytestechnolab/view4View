@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
-import { LocalStorageKeys, ROUTES, String } from '../../constants';
+import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
-import { addWatchUrl, bytesVideoListData, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, } from '../../services/FireStoreServices';
+import { addWatchUrl, bytesVideoListData, EarnCoin, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -14,11 +14,13 @@ import { person } from './increment';
 import Lottie from 'lottie-react-native';
 import * as LocalStorage from '../../services/LocalStorage';
 import { Anaylitics } from '../../constants/analytics';
-import { crashlyticslog } from '../../services/crashlyticslog';
 import { Rating } from '../../services/Rating';
+import { AdsClass } from '../../services/AdsLoad';
+import { CamptionConformationModel } from '../../components/CamptionConformationModel';
+import { type as keys, } from '../../constants/types';
 
 export const ViewLanding = () => {
-  const { storeCreator: { isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
+  const { storeCreator: { reward, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -27,28 +29,47 @@ export const ViewLanding = () => {
   const [isAnimation, setIsAnimantion] = useState(false)
   const animationProgress = useRef(new Animated.Value(0))
   const [onLoadStop, setOnLoadStop] = useState(false)
+  const [isAdsAlertDisplay, setIsAlertDisplay] = useState(false);
 
   const GetCoins = async (params: string) => {
     // @ signin screen name in crash console  
-    crashlyticslog(`get user coin @ ${ROUTES.VIEW_LANDING}`)
     await get_coins().then(async (res: any) => {
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: res?._data?.watch_videos })
       GetLiveVideoList(params, res?._data?.watch_videos)
+      Anaylitics("get_user_detail", { current_balance: res?._data?.coin })
     });
   };
 
-  
-  const getNotificationToken = async () => {
+  const notificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
-    setToken(Ntoken)
+    if (Ntoken == null || Ntoken == undefined) {
+      let notificationTokenData: any = await getNotificationToken()
+      setToken(notificationTokenData)
+    } else {
+      setToken(Ntoken || "")
+    }
+  }
+  const openRatingPopup = async () => {
     await Rating()
   }
+  
+  const GetReferralCode = async () => {
+    await userDeatil().then(async (res: any) => {
+      setGetReferralCode(res?.referral_code)
+    });
+  };
 
   useEffect(() => {
     GetCoins("isInitialRenderUpdate");
-    getNotificationToken()
+    notificationToken()
+    GetReferralCode()
   }, []);
+
+  useEffect(() => {
+    let unmountPopup = setTimeout(() => openRatingPopup(), 2000)
+    return () => { unmountPopup }
+  }, [])
 
 
   useEffect(() => {
@@ -92,23 +113,17 @@ export const ViewLanding = () => {
       setTimer(0);
       clearInterval(controlRef?.current);
       const totalAmount = getBalance + (coin / expected_view);
-      Anaylitics("WatchVideoEarn coin", { totalAmount});    
-      Anaylitics("Coin added @watching video", { totalAmount,getBalance })
-
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
       await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
       await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
+      Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
     }
   }
   /**
    * user get referral code and set in csetGetReferralCode context 
    */
-  const GetReferralCode = async () => {
-    await userDeatil().then(async (res: any) => {
-      setGetReferralCode(res?.referral_code)
-    });
-  };
+
 
   useEffect(() => {
     if (timer === 0) {
@@ -116,7 +131,6 @@ export const ViewLanding = () => {
       animationProgress?.current.setValue(0)
       showAnimation()
     }
-    GetReferralCode()
   }, [timer]);
 
   const onStateChange = async (state: string) => {
@@ -143,7 +157,6 @@ export const ViewLanding = () => {
   };
 
   const getBytesVideoList = async (params: string) => {
-    crashlyticslog(`get bytes campaign list @ ${ROUTES.VIEW_LANDING}`)
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let data = await bytesVideoListData(bytesDocData)
     let bytesVideo = data?.map((item: any) => item?._data)
@@ -156,10 +169,8 @@ export const ViewLanding = () => {
 
   let add_Video_Url: Array<any> | any = []
   async function GetLiveVideoList(params: string, watchVideoList: any) {
-    crashlyticslog(`get campaign list @ ${ROUTES.VIEW_LANDING}`)
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
-
     getPlayVideoList(docOS)
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
@@ -197,7 +208,6 @@ export const ViewLanding = () => {
   }
 
   const NextVideoList = () => {
-    crashlyticslog(`next campaign list @ ${ROUTES.VIEW_LANDING}`)
     if (nextVideo <= videoData?.length - 1) {
       if (nextVideo === videoData?.length - 1 && !onLoadStop) {
         if (!isBytesVideoLoading) {
@@ -229,6 +239,20 @@ export const ViewLanding = () => {
 
   let debounce = onPreesNext(100)
 
+
+  const rewardCoin = () => {
+    EarnCoin(getBalance, (reward?.adsReward || 100))?.then((res) => {
+      dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
+      Anaylitics("earn_coin_show_ads_completed", {
+        current_user_balance: getBalance + (reward?.adsReward || 100)
+      })
+    })
+    setTimeout(() => {
+      showAnimation()
+    }, 3000);
+  }
+
+
   return (
     <>
       <SafeAreaView style={styles.safearea} /><StatusBar
@@ -238,7 +262,7 @@ export const ViewLanding = () => {
       <View style={[styles.container, darkBackGround(darkModeTheme)]}>
         <Header coin={getBalance} title={String?.headerTitle?.view4view} />
         <ScrollView style={styles.main}>
-          <View style={styles.videoWrapper}>
+          <View style={styles.videoWrapper} key={nextVideo?.toString()}>
             {isInternetBack &&
               <YoutubePlayer
                 height={270}
@@ -278,13 +302,49 @@ export const ViewLanding = () => {
               </View>
               <ButtonComponent
                 loading={videoLoading}
-                onPrees={() => { Anaylitics("next_video", { getBalance, remaining_view: videoData?.[nextVideo]?.remaining_view }); debounce() }}
+                onPrees={() => {
+                  Anaylitics("next_video_click", {
+                    user_balance: getBalance,
+                    video_id: videoData?.[nextVideo]?.video_Id[0],
+                    video_duration: timer,
+                    earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
+                    expected_view: videoData?.[nextVideo]?.expected_view,
+                    remaining_view: videoData?.[nextVideo]?.remaining_view
+                  });
+                  debounce()
+                }}
                 wrapperStyle={styles.marginTop}
                 buttonTitle={String?.viewTab?.nextVideo} />
+              {person?.home_ads && <ButtonComponent
+                onPrees={() => {
+                  Anaylitics("earn_coin_show_ads", {
+                    current_user_balance: getBalance
+                  })
+                  AdsClass.showAds(() => {
+                    setIsAlertDisplay(true);
+                  }, rewardCoin);
+                }}
+                wrapperStyle={styles.marginTop}
+                buttonTitle={String?.viewTab?.watchAdd(reward?.adsReward)} />}
             </>
           }
+
         </ScrollView>
       </View>
+      {isAdsAlertDisplay &&
+        <CamptionConformationModel
+          titleText={'Warning!!'}
+          descriptionText={`We don't have any rewards ads to display. Please try again!!`}
+          isVisible={isAdsAlertDisplay}
+          descriptionStyle={{ paddingHorizontal: 20 }}
+          setIsVisible={setIsAlertDisplay}
+          actionTitle={"Close"}
+          onPress={() => {
+            setIsAlertDisplay(false)
+          }
+          }
+        />
+      }
       {isAnimation &&
         <Lottie style={styles.animation}
           source={require('../../assets/animation.json')} progress={animationProgress.current} />}

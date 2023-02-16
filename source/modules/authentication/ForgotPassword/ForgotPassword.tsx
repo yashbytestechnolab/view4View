@@ -12,8 +12,8 @@ import { firebase } from '@react-native-firebase/auth'
 import { ORtitle } from '../Authcomponents'
 import { appleLoginIos, googleLogin, handleFirebaseError } from '../../../services'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { crashlyticslog } from '../../../services/crashlyticslog'
 import { emailPattern } from '../../../regex/Regex'
+import { Anaylitics } from '../../../constants/analytics'
 
 export const ForgotPassword = () => {
   /**
@@ -35,11 +35,12 @@ export const ForgotPassword = () => {
     if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
       handleFirebaseError("WrongEmail")
     } else {
-      crashlyticslog("Forgot password @@")
       return await firebase.auth().sendPasswordResetEmail(userInput?.email).then((response) => {
         clearState()
         handleFirebaseError("ForgotSucess")
+        Anaylitics("forgot_password_click", { email: userInput?.email })
       }).catch((forgotError) => {
+        Anaylitics("forgot_password_error", { email: userInput?.email,error:forgotError?.code })
         handleFirebaseError(forgotError.code)
       })
     }
@@ -90,9 +91,9 @@ export const ForgotPassword = () => {
                 placeholder={String.commonString.Enteryouremail}
               />
               <View style={style.signIn}>
-                <ButtonComponent wrapperStyle={style.wrapperStyle} 
-                disable={(userInput?.email?.length > 0) ?false:true}
-                onPrees={() => { handlePasswordReset() }} buttonTitle={String.commonString?.submit} />
+                <ButtonComponent wrapperStyle={style.wrapperStyle}
+                  disable={(userInput?.email?.length > 0) ? false : true}
+                  onPrees={() => { handlePasswordReset() }} buttonTitle={String.commonString?.submit} />
               </View>
               <View style={style.backToLoginTextWrapper}>
                 <Text style={[F40014.main, colorBackGround(darkModeTheme)]}>{String.commonString?.backTo}</Text>

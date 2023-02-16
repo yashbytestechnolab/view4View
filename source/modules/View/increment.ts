@@ -1,4 +1,7 @@
 
+export enum ENV {
+    dev, production
+}
 class increment {
     retryCount: number = 0
     retryDocument: any = {}
@@ -6,6 +9,7 @@ class increment {
     configvalue = ""
     devicesPermission = false
     routesName: "" | undefined | string
+    home_ads: boolean = false
     getInc() {
         this.retryCount += 1
     }
@@ -29,6 +33,12 @@ class increment {
     }
     getRouteName(params: string | any) {
         this.routesName = params
+    }
+    environment() {
+        return ENV.dev
+    }
+    getHomeConfigData(params: boolean | any) {
+        return this.home_ads = params
     }
 }
 
