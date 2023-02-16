@@ -5,7 +5,7 @@ import ToggleSwitch from 'toggle-switch-react-native'
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
-import { colorBackGround, Colors, darkBackGround, F40014, F50012, F60012, F60012Bold, F60016, lightBackGround } from '../../../Theme';
+import { colorBackGround, Colors, darkBackGround, F40014, F50012, F50030, F60012, F60012Bold, F60016, F70018, F70032, lightBackGround } from '../../../Theme';
 import { ButtonComponent, Header } from '../../../components';
 import { NextIcon } from '../../../assets/icons';
 import { userDeatil } from '../../../services/FireStoreServices';
@@ -64,7 +64,6 @@ export const SettingLanding = () => {
     Anaylitics("dark_mode", { darkModeTheme })
     LocalStorage.setValue(LocalStorageKeys.DarkMode, { isDarkMode: !darkModeTheme })
   }
-
   const settingProfile = useMemo(() => {
     return (
       settingProfileArr?.map((item: any, index: number) => {
@@ -115,7 +114,13 @@ export const SettingLanding = () => {
     index == 4 ? (Platform?.OS == 'android' ? Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview') : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805')) : (Linking.openURL('https://view4view-dcb01.web.app/'))
   };
 
-
+  const generateColor = () => {
+    const CHHAPOLA = Math.floor(Math.random() * 16777215)
+      .toString(16)
+      .padStart(6, '0');
+    return `#${CHHAPOLA}`;
+  };
+  
   return (
     <>
       <SafeAreaView style={style.safeArea} />
@@ -127,7 +132,15 @@ export const SettingLanding = () => {
             {
               infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
                 <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => { navigation?.navigate(ROUTES?.EDITPROFILE) }}>
-                  <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={style.imageWrapper} />
+                  {
+                    data?.image?.length == 0 ?
+                      <View style={[style.profileNameWrapper, ]}>
+                        <Text style={[F50030?.textStyle, { textAlign: 'center', textTransform: 'uppercase' }]} >{data?.firstname?.charAt(0) + data?.lastname?.charAt(0)}</Text>
+                      </View>
+                      : <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={[style.imageWrapper, ]} />
+
+                  }
+
                   <Text numberOfLines={1} style={[F60016.textStyle, F60016.semiBolt, { fontSize: 16 }, colorBackGround(darkModeTheme)]}>
                     {data?.firstname + " " + data?.lastname}
                   </Text>

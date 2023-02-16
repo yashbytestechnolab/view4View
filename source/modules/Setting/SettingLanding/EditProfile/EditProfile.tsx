@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, Image, TouchableOpacity, ActivityIndicator, BackHandler, Alert, PermissionsAndroid, Platform, } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Header, InputComponent } from '../../../../components'
-import { Colors, darkBackGround, F50018 } from '../../../../Theme'
+import { Colors, darkBackGround, F50018, F50030 } from '../../../../Theme'
 import { updateProfile } from '../../../../services/FireStoreServices'
 import { InputContextProvide } from '../../../../context/CommonContext'
 import { type } from '../../../../constants/types'
@@ -10,7 +10,6 @@ import { ROUTES, String } from '../../../../constants'
 import { useNavigation } from '@react-navigation/native'
 import ImagePicker from 'react-native-image-crop-picker';
 import { style } from './style'
-import { err } from 'react-native-svg/lib/typescript/xml'
 
 export const EditProfile = () => {
     const navigation = useNavigation()
@@ -121,11 +120,12 @@ export const EditProfile = () => {
                         {onPhotoLoad ? <ActivityIndicator size={"small"} color={Colors.lightPink} /> :
                             <>
                                 {
-                                    data?.image !== null || profilePic?.path?.length !== undefined ?
+                                    data?.image?.length !== 0 || profilePic?.path?.length !== undefined ?
                                         <Image source={{ uri: profilePic != null ? profilePic?.path : `data:image/png;base64,${data?.image}` }}
                                             style={style.imageWrapper} /> :
-                                        <View style={[style.imageWrapper]} />
-                                }
+                                        <View style={[style.profileNameWrapper]}>
+                                            <Text style={[F50030?.textStyle, { textAlign: 'center', textTransform: 'uppercase', }]} >{data?.firstname?.charAt(0) + data?.lastname?.charAt(0)}</Text>
+                                        </View>}
                                 <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { requestCameraPermission() }}
                                     style={style.editIconWrapper}>
                                     <EditProfileIcon />

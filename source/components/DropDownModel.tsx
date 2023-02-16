@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     StatusBar,
 } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Modal from 'react-native-modal';
 import {
     colorBackGround,
@@ -33,6 +33,7 @@ interface dropDownItem {
     getOtherCoast?: number;
     modelWrapper?: object
     DropDownTextStyle?: object
+    getpreviousIndex?: number
 }
 export const DropDownModel = (props: dropDownItem) => {
     const {
@@ -46,13 +47,21 @@ export const DropDownModel = (props: dropDownItem) => {
         setTotalCost,
         getOtherCoast,
         modelWrapper,
-        DropDownTextStyle
-
+        DropDownTextStyle,
+        getpreviousIndex
     } = props;
     const {
         storeCreator: { darkModeTheme },
     }: any = useContext(InputContextProvide);
- 
+    const [selectIndex, setSelectIndex] = useState();
+
+    const refContainer = useRef();
+    useEffect(() => {
+        if (refContainer.current) {
+            refContainer.current.scrollToIndex({ animated: true, index: 0 })
+        }
+    }, [selectIndex])
+
 
     const Item = ({ item, onPress, backgroundColor, textColor }: any) => {
         return (
@@ -66,7 +75,7 @@ export const DropDownModel = (props: dropDownItem) => {
             </TouchableOpacity>
         );
     }
-    const renderItems = ({ item }: any) => {
+    const renderItems = ({ item, index }: any) => {
         const backgroundColor =
             item?.value === selectedValue
                 ? Colors?.primaryRed
@@ -81,10 +90,12 @@ export const DropDownModel = (props: dropDownItem) => {
             <Item
                 item={item}
                 onPress={() => {
+                    setSelectIndex(index)
                     setSelectValue(item?.value);
                     setTotalCost(parseInt((item?.value * (getOtherCoast || 1)) / 1));
                     setIsVisible(false);
                 }}
+                getpreviousIndex={index}
                 backgroundColor={backgroundColor}
                 textColor={TextColor}
             />
@@ -126,8 +137,8 @@ export const DropDownModel = (props: dropDownItem) => {
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     extraData={selectedValue}
-                    keyExtractor={(index) => index.toString()}
-                />
+                    keyExtractor={(index) => index.toString()} />
+
             </View>
         </Modal>
     );
@@ -138,7 +149,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     modelView: {
         width: '75%',
@@ -180,3 +190,5 @@ const styles = StyleSheet.create({
         fontWeight: '400',
     },
 });
+
+

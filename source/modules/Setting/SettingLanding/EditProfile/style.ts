@@ -19,5 +19,12 @@ export const style = StyleSheet.create({
         padding: 5,
         height: 26, width: 26, backgroundColor: Colors?.white, borderRadius: 13
     },
-    paddingTop: { paddingTop: 24 }
+    paddingTop: { paddingTop: 24 },
+    profileNameWrapper: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 60, width: 60, borderRadius: 30,
+        backgroundColor: Colors?.dropdownOffWhite,
+    }
+
 })

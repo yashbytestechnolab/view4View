@@ -212,6 +212,12 @@ export const CreateCampaign = () => {
             addCampaignDebounce(), setIsVisibleModel(false)
           }
           }
+          descriptionStyle={{
+            paddingHorizontal: 35
+          }}
+          actionTitle={"Create Campaign"}
+          titleText={'Create Campaign'}
+          descriptionText={`This campaign will deduct your ${totalCost} coins from your account. Are you sure you want to create campaign?`}
         />
       }
       {
@@ -226,13 +232,14 @@ export const CreateCampaign = () => {
       }
       {
         showExpectedValue && <DropDownModel
-          modelWrapper={{ height: '35%'}}
+          modelWrapper={{ height: '35%' }}
           selectedValue={views}
           setSelectValue={setViews}
           data={expectedView}
           getOtherCoast={timeSecond}
           setTotalCost={setTotalCost}
           isVisible={showExpectedValue}
+
           setIsVisible={setShowExpectedValue} title={'Expected Views'} subTitle={'Select number of views that you want to have.'} />
       }
 

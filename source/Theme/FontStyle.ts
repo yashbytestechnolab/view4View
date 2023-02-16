@@ -213,4 +213,13 @@ export const F70032 = StyleSheet.create({
         fontFamily: Fonts?.InterBold
     },
 })
-
+export const F50030 = StyleSheet.create({
+    textStyle: {
+        color:Colors?.black,
+        fontSize: 30,
+        // textAlign:'center',
+        fontWeight: "500",
+        // alignSelf:'center',
+        fontFamily: Fonts?.InterLight
+    },
+})
