@@ -261,7 +261,7 @@ export const ViewLanding = () => {
       />
       <View style={[styles.container, darkBackGround(darkModeTheme)]}>
         <Header coin={getBalance} title={String?.headerTitle?.view4view} />
-        <ScrollView style={styles.main}>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.main} contentContainerStyle={{paddingBottom:120}}>
           <View style={styles.videoWrapper} key={nextVideo?.toString()}>
             {isInternetBack &&
               <YoutubePlayer
