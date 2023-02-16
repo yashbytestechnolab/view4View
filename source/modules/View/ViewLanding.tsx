@@ -53,7 +53,7 @@ export const ViewLanding = () => {
   const openRatingPopup = async () => {
     await Rating()
   }
-  
+
   const GetReferralCode = async () => {
     await userDeatil().then(async (res: any) => {
       setGetReferralCode(res?.referral_code)
@@ -261,9 +261,9 @@ export const ViewLanding = () => {
       />
       <View style={[styles.container, darkBackGround(darkModeTheme)]}>
         <Header coin={getBalance} title={String?.headerTitle?.view4view} />
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.main} contentContainerStyle={{paddingBottom:120}}>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.main} contentContainerStyle={{ paddingBottom: 120 }}>
           <View style={styles.videoWrapper} key={nextVideo?.toString()}>
-            {isInternetBack &&
+            {isInternetBack && videoData?.[nextVideo]?.video_Id?.[0]?.length > 0 &&
               <YoutubePlayer
                 height={270}
                 videoId={videoData?.[nextVideo]?.video_Id[0]}
