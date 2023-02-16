@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import Modal from "react-native-modal";
 
 import { InputContextProvide } from '../context/CommonContext';
@@ -15,14 +15,13 @@ interface model {
 export const CamptionConformationModel = (props: model) => {
     const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
     const { onPress, isVisible, setIsVisible } = props
+   
     return (
         <Modal
             onBackdropPress={() => setIsVisible(false)}
             transparent={true}
-            backdropOpacity={0.70}
+            backdropOpacity={0.7}
             style={styles.model}
-            coverScreen={true}
-            backdropColor={Colors.transparent}
             isVisible={isVisible}>
             <View style={[styles.modelView, darkBackGround(darkModeTheme)]}>
 
@@ -52,8 +51,13 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         paddingBottom: 40,
         borderRadius: 16,
-        backgroundColor: "white",
+        backgroundColor: Colors?.white,
         alignItems: "center",
+        shadowColor: Colors?.whiteShadow,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 4,
+        shadowRadius: 4,
+
     },
     won: { marginTop: 24 },
     button: { marginTop: 33, width: '60%' },

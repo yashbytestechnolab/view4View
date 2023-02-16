@@ -22,9 +22,11 @@ export const style = StyleSheet.create({
     main: { flex: 1, backgroundColor: Colors?.lightWhite, height: Height },
     card: {
         shadowColor: Colors?.whiteShadow,
-        width: '100%',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 4,
+        shadowRadius: 4,
+
+        width: '100%',
         backgroundColor: Colors?.white,
         padding: 16,
         justifyContent: 'space-between',
@@ -32,7 +34,6 @@ export const style = StyleSheet.create({
         marginTop: 30,
         alignItems: 'center',
         borderRadius: 8,
-        shadowRadius: 4,
         //elevation: 8,
     },
     subTextWrapper: {

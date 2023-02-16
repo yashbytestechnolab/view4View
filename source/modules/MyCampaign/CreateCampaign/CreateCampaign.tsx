@@ -149,7 +149,7 @@ export const CreateCampaign = () => {
               </Text>
               <TouchableOpacity style={styles.expectedView} activeOpacity={1} onPress={() => { setShowExpectedValue(true) }}>
 
-                <Text style={{ textAlign: 'center', alignSelf: 'center' }}>{views}</Text>
+                <Text style={[F40014?.main, { textAlign: 'center', alignSelf: 'center' }]}>{views}</Text>
 
               </TouchableOpacity>
             </View>
@@ -160,7 +160,7 @@ export const CreateCampaign = () => {
               </Text>
               <TouchableOpacity style={styles.expectedView} activeOpacity={1} onPress={() => { setShowDropDown(true) }}>
 
-                <Text style={{ textAlign: 'center', alignSelf: 'center' }}>{timeSecond}</Text>
+                <Text style={[F40014?.main, { textAlign: 'center', alignSelf: 'center' }]}>{timeSecond}</Text>
 
               </TouchableOpacity>
             </View>
@@ -216,7 +216,6 @@ export const CreateCampaign = () => {
       }
       {
         showDropDown && <DropDownModel
-
           selectedValue={timeSecond}
           setSelectValue={setTimeSecond}
           data={expectedTime}
@@ -227,6 +226,7 @@ export const CreateCampaign = () => {
       }
       {
         showExpectedValue && <DropDownModel
+          modelWrapper={{ height: '35%'}}
           selectedValue={views}
           setSelectValue={setViews}
           data={expectedView}
