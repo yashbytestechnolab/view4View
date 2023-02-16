@@ -16,7 +16,6 @@ import { GradientHeader, ButtonComponent, InputComponent, SocialMediaButton } fr
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as LocalStorage from '../../../services/LocalStorage';
 import { Anaylitics } from '../../../constants/analytics';
-import { crashlyticslog } from '../../../services/crashlyticslog';
 import { string } from 'prop-types';
 import { person } from '../../View/increment';
 

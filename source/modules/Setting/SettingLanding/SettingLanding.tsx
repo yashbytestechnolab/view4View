@@ -16,7 +16,6 @@ import { type } from '../../../constants/types';
 import { getSocialLoginValue, settingProfileArr } from '../../../constants/settingProfileArr';
 import { ENV, person } from '../../View/increment';
 import { Anaylitics } from '../../../constants/analytics';
-import { crashlyticslog } from '../../../services/crashlyticslog';
 import VersionInfo from 'react-native-version-info';
 
 export const SettingLanding = () => {
@@ -51,17 +50,15 @@ export const SettingLanding = () => {
 
 
   const logoutHandle = async () => {
-    crashlyticslog(`logout_sucess`);
     Anaylitics("logout_click")
     await navigation.reset({
       index: 0,
-      routes: [{ name: ROUTES?.LOGIN }]
+      routes: [{ name: ROUTES.LOGIN }]
     })
-    await LocalStorage.setValue(LocalStorageKeys.UserId, "")
     auth().signOut().then(() => { })
+    await LocalStorage.setValue(LocalStorageKeys.UserId, "")
     dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: false })
     dispatchuserDetail({ type: type.USER_INFO_DELETE })
-    crashlyticslog(`logout_sucess`);
     Anaylitics("logout_sucess")
     setLoading(false)
   }
@@ -139,9 +136,8 @@ export const SettingLanding = () => {
 
   const actionLinking = (index: number) => {
     const { android, ios }: any = person?.configvalue;
-    console.log("android", android === 'https://play.google.com/store/apps/details?id=com.bytes.uview');
-
-    index == 4 ? (Platform?.OS == 'android' ? Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview') : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805')) : (Linking.openURL('https://view4view-dcb01.web.app/'))
+    console.log(index);
+    index == 5 ? (Anaylitics("rate_us_click"), Platform?.OS == 'android' ? Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview') : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805')) : (Linking.openURL('https://view4view-dcb01.web.app/'))
   };
 
   return (

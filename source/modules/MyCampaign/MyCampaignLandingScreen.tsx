@@ -11,15 +11,15 @@ import { PlusIcon } from '../../assets/icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { lastSeen } from '../../services';
 import { useState } from 'react';
-import { crashlyticslog } from '../../services/crashlyticslog';
 import { Anaylitics } from '../../constants/analytics';
+
 export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
   const navigation = useNavigation()
   let route: object | any = useRoute()
 
   /**context data coin and campaign data */
-  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex },coinBalance: { getBalance }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, coinBalance: { getBalance }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
   /**
  * 
@@ -30,7 +30,7 @@ export const MyCampaignLandingScreen = () => {
   const getHistoryData = async (params: Array<object> | any) => {
     let historyList = await campaignHistory()
     if (params?.length > 0 && historyList?.length > 0) {
-      crashlyticslog(`get user uploaded complete campaign list @ ${ROUTES.MYCAMPAIGN_LANDING}`)
+      Anaylitics("history_campaign_get")
       dispatchcampaign({ types: type.CAMPAIGN_DATA, payload: { data: [...params, { stickeyHeader: "Past Campaign" }, ...historyList], index: [0, params.length] } })
     }
     else if (params?.length <= 0 && historyList?.length > 0) {
@@ -46,7 +46,6 @@ export const MyCampaignLandingScreen = () => {
   *
   **/
   const getVideoUrl = async (params: string) => {
-    crashlyticslog(`get user upload campaign list @ ${ROUTES.MYCAMPAIGN_LANDING}`)
     params ? setLoading(true) : dispatchcampaign({ types: type.CAMPAIGN_LOADING, payload: true })
     await GetVideoCampaign().then((res: any) => {
       const getVideoUrl: any = []
@@ -168,7 +167,7 @@ export const MyCampaignLandingScreen = () => {
                 <RefreshControl
                   refreshing={loading}
                   onRefresh={() => {
-                    crashlyticslog(`on referesh campaign list @ ${ROUTES.MYCAMPAIGN_LANDING}`);
+                    Anaylitics("campaign_pull_to_referesh");
                     getVideoUrl("loading")
                   }}
                   colors={[Colors.gray]}
@@ -183,7 +182,6 @@ export const MyCampaignLandingScreen = () => {
               onPress={() => {
                 setVideoUrl("");
                 Anaylitics("add_video_click");
-                crashlyticslog(`add campaign video @ ${ROUTES.MYCAMPAIGN_LANDING}`);
                 navigation.navigate(ROUTES.ADDVIDEO)
               }}
               activeOpacity={0.8}

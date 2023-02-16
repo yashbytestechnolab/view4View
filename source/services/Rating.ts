@@ -2,7 +2,7 @@ import { Alert, Linking, Platform } from "react-native";
 import * as LocalStorage from '../../source/services/LocalStorage';
 import { LocalStorageKeys } from "../constants";
 import Rate, { AndroidMarket } from "react-native-rate";
-import { crashlyticslog } from "./crashlyticslog";
+import { Anaylitics } from "../constants/analytics";
 // import VersionInfo from 'react-native-version-info';
 
 export const Rating = async () => {
@@ -31,12 +31,10 @@ export const Rating = async () => {
                     console.error(error);
                 }
             });
-        } catch (error:any) {
-            crashlyticslog("Rating_popup")
-            Alert.alert(error?.message);
+        } catch (error: any) {
+            Anaylitics("rating_popup_error", { error: error?.message })
         }
     }
-    // let previousBuildVersion = await LocalStorage?.getValue(LocalStorageKeys?.previousBuildVersion)
     if (count % 3 == 0 || count == 3) {
         RateMessageBox()
     }

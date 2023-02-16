@@ -189,9 +189,8 @@ export const referralEarning = async (params: string, referReward: number) => {
     then(async (foo: any) => {
       if (foo?._docs?.length > 0) {
         let { coin, userId, device_token }: any = foo?._docs[0]?._data
-        Anaylitics("WatchVideoEarn coin", { foo });
-
         await userTableLogin.doc(userId).update({ coin: coin + referReward || 300 })
+        Anaylitics("referral earn", { user_id: userId, current_user_coin: coin, earnreferral_coin: coin + referReward });
         // This function Will Push notification for user he recvied 300 coin end other
         device_token?.length > 0 && (await notificationSend(device_token, `${congratulations} ${referReward || 300} ${coins}`, `${Reward}`))
       }

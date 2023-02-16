@@ -9,7 +9,6 @@ import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
 import { Alert, Platform } from "react-native";
 import { Anaylitics } from "../constants/analytics";
-import { crashlyticslog } from "./crashlyticslog";
 import { person } from "../modules/View/increment";
 
 GoogleSignin.configure({
@@ -62,9 +61,6 @@ const onUserInfo = async (userInfo: any) => {
 export const googleLogin = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     let loginType = "google"
     setLoading(true)
-    crashlyticslog("google login")
-    console.log("google - login",crashlyticslog("google login")
-    );
     try {
         await GoogleSignin.hasPlayServices();
         const { accessToken, idToken }: any = await GoogleSignin.signIn();
@@ -101,8 +97,6 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
 export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     // create login request for apple
     let loginType = "apple"
-    crashlyticslog("apple login")
-    
     const appleAuthRequestResponse: any = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],

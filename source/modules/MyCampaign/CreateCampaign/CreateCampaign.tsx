@@ -13,7 +13,6 @@ import { type } from '../../../constants/types';
 import { campaign } from './interface';
 import GiftModel from '../../../components/GiftModel';
 import { Anaylitics } from '../../../constants/analytics';
-import { crashlyticslog } from '../../../services/crashlyticslog';
 import { CamptionConformationModel } from '../../../components/CamptionConformationModel';
 import { DropDownModel } from '../../../components/DropDownModel';
 
@@ -26,6 +25,7 @@ export const CreateCampaign = () => {
   }>();
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleModel, setIsVisibleModel] = useState(false)
+  const [isVisibleDurationModal, setIsVisibleDurationModel] = useState(false)
   const [totalCost, setTotalCost] = useState(300)
   const { commonString, headerTitle } = String
   const [configValue, setConfigValue] = useState<campaign>({})
@@ -54,7 +54,6 @@ export const CreateCampaign = () => {
   }, [])
   useEffect(() => {
     confingFnc()
-    crashlyticslog(`dropdown get config value @ ${ROUTES.CREATE_CAMPAIGN}`)
   }, [dropdownConfigValue])
 
   // config value
@@ -134,7 +133,8 @@ export const CreateCampaign = () => {
   const addCampaignDebounce = debounce(300)
   const HandleAddCampaignButton = async () => {
     let duration: any = await youTubeRef?.current?.getDuration()
-    duration <= timeSecond ? Alert.alert("Selected duration is greater than video duration. Please Select proper video duration.")
+    duration <= timeSecond ? 
+      setIsVisibleDurationModel(true)
       : !(getBalance >= totalCost) ? setIsVisible(true) : setIsVisibleModel(true)
   }
 
@@ -222,7 +222,11 @@ export const CreateCampaign = () => {
       {
         isVisibleModel &&
         <CamptionConformationModel
+          titleText={'Create Campaign'}
+          descriptionText={`Your Campaign will be create.you can see \n the camaign in list.Are you sure you \n create campaign?`}
+          descriptionStyle={{paddingHorizontal: 30}}
           isVisible={isVisibleModel}
+          actionTitle={"Create Campigan"}
           setIsVisible={setIsVisibleModel}
           onPress={() => {
             addCampaignDebounce(), setIsVisibleModel(false)
@@ -251,7 +255,19 @@ export const CreateCampaign = () => {
           isVisible={showExpectedValue}
           setIsVisible={setShowExpectedValue} title={'Expected Views'} subTitle={'Select number of views that you want to have.'} />
       }
-
+      {isVisibleDurationModal &&
+        <CamptionConformationModel
+          titleText={'Warning!!'}
+          descriptionText={`Selected duration is greater than video duration. Please select proper video duration.`}
+          isVisible={isVisibleDurationModal}
+          setIsVisible={setIsVisibleDurationModel}
+          actionTitle={"Close"}
+          onPress={() => {
+            setIsVisibleDurationModel(false)
+          }
+          }
+        />
+      }
     </>
   )
 }
