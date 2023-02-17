@@ -26,6 +26,9 @@ interface IRoutes {
     BUYCOIN: string;
     CHANGEPASSWORD: string;
     SHOWADDS: string;
+    TIPS: string;
+    TIPSSTACK:string;
+    TIPSDESCRIPTION:string
 };
 export const ROUTES: IRoutes = {
     HOME: "HOME",
@@ -54,5 +57,8 @@ export const ROUTES: IRoutes = {
     EDITPROFILE: "EDITPROFILE",
     BUYCOIN: "BUYCOIN",
     CHANGEPASSWORD: "CHANGEPASSWORD",
-    SHOWADDS: "SHOWADDS"
+    SHOWADDS: "SHOWADDS",
+    TIPS: "TIPS" ,
+    TIPSDESCRIPTION:"TIPSDESCRIPTION",
+    TIPSSTACK:"TIPSSTACK"
 }

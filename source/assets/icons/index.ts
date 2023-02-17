@@ -33,6 +33,7 @@ export  * from './ShowPassword'
 export  * from './HidePassword'
 export * from './BuyCoinIcon'
 export * from './Close'
+export * from './Tips'
 
 
 

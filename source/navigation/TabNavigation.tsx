@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { String, ROUTES } from '../constants';
 import { ViewStack, EarnCoinStack, SettingStack, MyCampaignLanding } from '.';
-import { Home, MyCampaign, Setting, TabEarnCoin } from '../assets/icons';
+import { Home, MyCampaign, Setting, TabEarnCoin, Tips } from '../assets/icons';
 import { SvgProps } from 'react-native-svg';
 import { ActiveTabText, Colors, F50010 } from '../Theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,6 +12,8 @@ import VersionInfo from 'react-native-version-info';
 import { AdsClass } from '../services/AdsLoad';
 import { person } from '../modules/View/increment';
 import { HomeAdsEnable } from '../services/HomeAdsEnable';
+import { TipsView } from '../modules/Tips/TipsView';
+import { TipsStack } from './TipsStack';
 
 export const TabNavigation = () => {
   const appVersion: any = VersionInfo.appVersion;
@@ -50,10 +52,12 @@ export const TabNavigation = () => {
       case ROUTES.SETTING:
         Icon = Setting;
         break;
+      case ROUTES.TIPSSTACK:
+        Icon = Tips;
+        break;
     }
     return Icon;
   };
-  // console.log("me"||"ji");
 
   return (
     <>
@@ -77,6 +81,20 @@ export const TabNavigation = () => {
               tabBarLabel: ({ focused }) => (
                 <Text style={[focused ? ActiveTabText.main : F50010.main]}>
                   {String?.headerTitle?.view}
+                </Text>
+              ),
+            }}
+          />
+        }
+        {
+          (appVersion == reviewVersionIos) &&
+          <Tab.Screen
+            name={ROUTES.TIPSSTACK}
+            component={TipsStack}
+            options={{
+              tabBarLabel: ({ focused }) => (
+                <Text style={[focused ? ActiveTabText.main : F50010.main]}>
+                  {String?.headerTitle?.Tips}
                 </Text>
               ),
             }}

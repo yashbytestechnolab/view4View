@@ -1,6 +1,7 @@
 import React, { createContext, useReducer, useState } from 'react'
 import { type } from '../constants/types'
 import { ValidationFnc, getCurrentCoinBalance, getUserCampaign, userInfoFnc, videoLanding } from '.';
+import { TipsData } from './TipsData';
 
 export const InputContextProvide: any = createContext({ data: "mehandi" })
 interface reward {
@@ -61,6 +62,7 @@ const CommonContext = ({ children, reward, reviewVersionIos, setReviewVersionIos
     const { coinBalance, dispatchCoin } = getCurrentCoinBalance()
     const { videoLandingData, dispatchVideoLandingData } = videoLanding()
     const { userDetail, dispatchuserDetail } = userInfoFnc()
+    const { tips, dispatchTips } = TipsData()
     const [addVideoUrl, setVideoUrl] = useState()
     const [loading, setLoading] = useState(false)
     const [token, setToken] = useState("")
@@ -94,7 +96,8 @@ const CommonContext = ({ children, reward, reviewVersionIos, setReviewVersionIos
         isInternetBack,
         setIsInternetBack,
         reviewVersionIos,
-        setReviewVersionIos
+        setReviewVersionIos,
+        tips, dispatchTips
     }
 
     return (

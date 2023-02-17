@@ -25,7 +25,9 @@ export const String: any = {
         AddYourVideo: "Add Your Video",
         buyCoin: 'Buy Coin',
         editProfile: 'Edit Profile',
-        changePassword: 'Change Password'
+        changePassword: 'Change Password',
+        Tips:"Tips",
+        TipsDescription:"Description",
     },
     homeTab: {
         plus: '+',
@@ -136,15 +138,6 @@ export const String: any = {
     StatusBar: {
         darkContent: 'dark-content',
         lightContent: 'light-content'
-    },
-    Notification: {
-        congratulations: 'Congratulations you received',
-        coins: 'coins',
-        Reward: "Reward",
-        campaignCompleted: function (params: string) {
-            return `Your campaign ${`"${params}"`} has been completed.`
-        },
-        completed: "Campaign Completed"
     },
     viewCoinScreen: {
         yourCoins: 'Your Coins!',
