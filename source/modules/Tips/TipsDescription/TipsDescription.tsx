@@ -23,16 +23,15 @@ export const TipsDescription = () => {
 
     return (
         <>
-            <SafeAreaView style={[{ backgroundColor: Colors.gradient1 }]} />
-            <View style={{ flex: 1, ...darkBackGround(darkModeTheme), }}>
+            <SafeAreaView style={styles.safeAreaView} />
+            <View style={[styles.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header title={String?.headerTitle?.TipsDescription} showCoin={false} showBacKIcon />
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 80 }} style={{ marginHorizontal: 16, marginTop: 20, flex: 1, ...darkBackGround(darkModeTheme) }}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.containStyle} style={[styles.scrollView, darkBackGround(darkModeTheme)]}>
                     <Text style={[F50018.main, F50018.color, colorBackGround(darkModeTheme)]}>
                         {number + ". " + routeData?.tips_format?.tips_title}
                     </Text>
-                    <View style={{ marginTop: 20 }}>
+                    <View style={styles.html}>
                         <RenderHtml
-                            baseStyle={{ fontSize: 12, color: Colors.darkRed }}
                             contentWidth={width}
                             source={source}
                             tagsStyles={textStyle}
@@ -44,4 +43,12 @@ export const TipsDescription = () => {
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    safeAreaView: {
+        backgroundColor: Colors.gradient1
+    },
+    mainWrapper: { flex: 1, },
+    containStyle: { paddingBottom: 80 },
+    html: { marginTop: 20 },
+    scrollView: { marginHorizontal: 16, marginTop: 20, flex: 1 }
+})
