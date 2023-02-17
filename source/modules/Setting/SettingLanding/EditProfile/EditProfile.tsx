@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity, ActivityIndicator, BackHandler, Alert, PermissionsAndroid, Platform, } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, ActivityIndicator, BackHandler } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { Header, InputComponent } from '../../../../components'
 import { Colors, darkBackGround, F50018, F50030 } from '../../../../Theme'
@@ -15,7 +15,6 @@ export const EditProfile = () => {
     const navigation = useNavigation()
     const { storeCreator: { darkModeTheme, userDetail: { data, infoLoading }, userInput, dispatch, userInputError, dispatchError, dispatchuserDetail } }: any = useContext(InputContextProvide)
     const [profilePic, setProfilePic]: any = useState(null);
-    const [onPhotoLoad, setPhotoLoad] = useState(false)
     const getUserData = () => {
         dispatch({ type: type.FULL_NAME, payload: data?.firstname + " " + data?.lastname });
         dispatch({ type: type.EMAIL, payload: data?.email });
@@ -40,37 +39,6 @@ export const EditProfile = () => {
         fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, String.commonString.fullnameErrorMsg));
         !isNotValidForm && updateProfileData()
     }
-
-    const requestCameraPermission = async () => {
-        if (Platform.OS === 'android') {
-            try {
-                const granted = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.CAMERA,
-                    {
-                        title: 'UView App Camera Permission',
-                        message:
-                            'UView App needs access to your camera ' +
-                            'so you can take awesome pictures.',
-                        buttonNeutral: 'Ask Me Later',
-                        buttonNegative: 'Cancel',
-                        buttonPositive: 'OK',
-                    },
-                );
-
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    OpenGallery();
-                    // req === 'camera' ? openCamera() : openGallery();
-                } else {
-                    Alert.alert('Please grant camera permission');
-                }
-            } catch (err) {
-                console.warn('wee', err);
-                Alert.alert('Something went wrong..');
-            }
-        } else {
-            OpenGallery();
-        }
-    };
     const OpenGallery = () => {
         ImagePicker.openPicker({
             width: 300,
@@ -117,21 +85,20 @@ export const EditProfile = () => {
 
                 <View style={style.paddingTop}>
                     <View style={style.nameWrapper} >
-                        {onPhotoLoad ? <ActivityIndicator size={"small"} color={Colors.lightPink} /> :
-                            <>
-                                {
-                                    data?.image?.length !== 0 || profilePic?.path?.length !== undefined ?
-                                        <Image source={{ uri: profilePic != null ? profilePic?.path : `data:image/png;base64,${data?.image}` }}
-                                            style={style.imageWrapper} /> :
-                                        <View style={[style.profileNameWrapper]}>
-                                            <Text style={[F50030?.textStyle, { textAlign: 'center', textTransform: 'uppercase', }]} >{data?.firstname?.charAt(0) + data?.lastname?.charAt(0)}</Text>
-                                        </View>}
-                                <TouchableOpacity activeOpacity={1} disabled={onPhotoLoad} onPress={() => { requestCameraPermission() }}
-                                    style={style.editIconWrapper}>
-                                    <EditProfileIcon />
-                                </TouchableOpacity>
-                            </>
-                        }
+                        <>
+                            {
+                                data?.image?.length !== 0 || profilePic?.path?.length !== undefined ?
+                                    <Image source={{ uri: profilePic != null ? profilePic?.path : `data:image/png;base64,${data?.image}` }}
+                                        style={style.imageWrapper} /> :
+                                    <View style={[style.profileNameWrapper]}>
+                                        <Text style={[F50030?.textStyle, { textAlign: 'center', textTransform: 'uppercase', }]} >{data?.firstname?.charAt(0) + data?.lastname?.charAt(0)}</Text>
+                                    </View>}
+                            <TouchableOpacity activeOpacity={1} onPress={() => { OpenGallery() }}
+                                style={style.editIconWrapper}>
+                                <EditProfileIcon />
+                            </TouchableOpacity>
+                        </>
+
                     </View>
 
                     <View style={[style.scrollWrapper, darkBackGround(darkModeTheme)]}>

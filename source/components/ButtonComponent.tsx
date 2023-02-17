@@ -19,7 +19,7 @@ export const ButtonComponent = (props: buttonProps) => {
             disabled={disable}
             activeOpacity={0.8}
             onPress={!loading ? onPrees : null}
-            style={[innerStyles.main, wrapperStyle, { backgroundColor: disable ? Colors?.DisbaleButton : Colors?.primaryRed }]}>
+            style={[innerStyles.main, { backgroundColor: disable ? Colors?.DisbaleButton : Colors?.primaryRed }, wrapperStyle,]}>
             {
                 loading ? (
                     <ActivityIndicator color={spinnerColor || Colors.white} />
@@ -30,7 +30,7 @@ export const ButtonComponent = (props: buttonProps) => {
                             <EarnCoin />
                         </View>
                     }
-                    < Text style={[F60016.textStyle]} numberOfLines={1} >
+                    < Text style={[F60016.textStyle, { color: disable ? Colors?.DisbaleButtonText : Colors?.white }]} numberOfLines={1} >
                         {buttonTitle}
                     </Text></>
             }
@@ -42,7 +42,6 @@ export const ButtonComponent = (props: buttonProps) => {
 const innerStyles = StyleSheet.create({
     main: {
         padding: 16,
-        backgroundColor: Colors.primaryRed,
         borderRadius: 8,
         marginHorizontal: 10,
         paddingHorizontal: 12, justifyContent: "center",

@@ -68,7 +68,7 @@ export const DropDownModel = (props: dropDownItem) => {
 
             <TouchableOpacity
                 onPress={() => { onPress() }}
-                style={[styles.item, darkBackGround(darkModeTheme), { backgroundColor }, DropDownTextStyle]}>
+                style={[styles.item, darkBackGround(darkModeTheme), { backgroundColor }, DropDownTextStyle, {borderRadius:8}]}>
                 <Text style={[styles.title2, colorBackGround(darkModeTheme), { color: textColor }]}>
                     {item.value}
                 </Text>
@@ -110,20 +110,23 @@ export const DropDownModel = (props: dropDownItem) => {
             style={[styles.model,]}
 
             isVisible={isVisible}>
-            <View style={[modelWrapper, styles.modelView, darkBackGround(darkModeTheme), { elevation: darkModeTheme ? 0 : 8 }]}>
-                <TouchableOpacity
-                    style={styles.close}
-                    activeOpacity={1}
-                    onPress={() => {
-                        setIsVisible(false);
-                    }}>
-                    <Close height={25} width={25} color={Colors?.primaryRed} />
-                </TouchableOpacity>
-                <Text
-                    style={[F60016?.bold, styles.title]}>
-                    {title}
-                </Text>
-                <Text style={[F40014?.main, colorBackGround(darkModeTheme), { paddingBottom: 8 }]}>
+            <View style={[styles.modelView,modelWrapper, darkBackGround(darkModeTheme), { elevation: darkModeTheme ? 0 : 8 }]}>
+                
+                <View style={{flexDirection:'row', alignItems:'center', marginVertical:15}}>
+                    <Text
+                        style={[F60016?.bold, styles.title, { flex: 1 }]}>
+                        {title}
+                    </Text>
+                    <TouchableOpacity
+                        style={styles.close}
+                        activeOpacity={1}
+                        onPress={() => {
+                            setIsVisible(false);
+                        }}>
+                        <Close height={25} width={25} color={Colors?.primaryRed} />
+                    </TouchableOpacity>
+                </View>
+                <Text style={[F40014?.main, colorBackGround(darkModeTheme), { paddingBottom: 8, paddingHorizontal:20 }]}>
                     {subTitle}
                 </Text>
 
@@ -154,7 +157,6 @@ const styles = StyleSheet.create({
         width: '75%',
         justifyContent: 'center',
         paddingBottom: 10,
-        paddingHorizontal: 10,
         borderRadius: 16,
         backgroundColor: 'white',
         shadowColor: Colors?.whiteShadow,
@@ -164,14 +166,16 @@ const styles = StyleSheet.create({
     },
     flatListWrapper: {
         alignSelf: 'center',
+        width:'100%',
+        paddingHorizontal:20
     },
-    close: { alignSelf: 'flex-end', padding: 3, marginTop: 5 },
+    close: { position:'absolute', right:20 },
     container: {
         flex: 1,
         marginTop: StatusBar.currentHeight || 0,
     },
     item: {
-        width: 200,
+        width: '100%',
         paddingVertical: 5,
     },
     title: {
@@ -179,7 +183,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 16,
         fontWeight: '400',
-        fontFamily: Fonts?.InterRegular,
+        fontFamily: Fonts?.InterBold,
         color: Colors?.primaryRed,
         paddingBottom: 4
     },
@@ -190,5 +194,4 @@ const styles = StyleSheet.create({
         fontWeight: '400',
     },
 });
-
 

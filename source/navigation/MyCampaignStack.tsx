@@ -17,7 +17,7 @@ export const MyCampaignLanding = () => {
         headerShown: false,
         gestureEnabled: true,
       }}>
-      <Stack.Screen name={ROUTES.HOME_LANDING} component={MyCampaignLandingScreen} />
+      <Stack.Screen name={ROUTES.CAMPAIGNLANDING} component={MyCampaignLandingScreen} />
       <Stack.Screen
         name={ROUTES.VIEWCOIN}
         component={ViewCoin}

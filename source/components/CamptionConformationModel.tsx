@@ -50,12 +50,13 @@ export const CamptionConformationModel = (props: model) => {
 }
 
 const styles = StyleSheet.create({
-    model: { backgroundColor: 'transparent', flex: 1 },
+    model: { backgroundColor: 'transparent', flex: 1, },
     modelView: {
         paddingTop: 40,
         paddingBottom: 40,
         borderRadius: 16,
         backgroundColor: "white",
+        paddingHorizontal: 30,
         alignItems: "center",
     },
     won: { marginTop: 24 },

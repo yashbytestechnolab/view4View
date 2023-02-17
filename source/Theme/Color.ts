@@ -32,8 +32,10 @@ export const Colors = {
     blackOpcity: "#FFF5G8",
     drakStickey: "#fFFFFF20",
     black001:"#000",
-    DisbaleButton:"rgba(255, 83, 113, 0.35)",
+    DisbaleButton:"#ddd",
+    DisbaleButtonText:"#aaa",
     transparent: 'rgba(0,0,0,0.1)',
+
 
 
 }

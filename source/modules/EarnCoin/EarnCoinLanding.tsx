@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import React, { useContext, useState } from 'react';
 import { String } from '../../constants';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Header } from '../../components';
 import { colorBackGround, Colors, darkBackGround, F40012, F60016, lightBackGround } from '../../Theme';
 import { NextIcon } from '../../assets/icons';
@@ -17,6 +17,7 @@ import { Anaylitics } from '../../constants/analytics';
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
   const [isAdsAlertDisplay, setIsAlertDisplay] = useState(false);
+  const route = useRoute()
   /**
    * InputContextProvide is get current coin and darktheame flag 
    */
@@ -50,7 +51,7 @@ export const EarnCoinLanding = () => {
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
       <View style={[style.main, darkModeTheme && darkBackGround(darkModeTheme)]}>
-        <Header title={String?.headerTitle?.earnCoin}
+        <Header title={String?.headerTitle?.earnCoin} showBacKIcon={route?.params?.outOfCoin == true ? true : false}
         />
         <View style={style.wrapperView}>
           {EarnCoinData.length > 0 && EarnCoinData?.map((item: any, index) => {

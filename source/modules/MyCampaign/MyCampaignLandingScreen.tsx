@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, RefreshControl, ActivityIndicator, } from 'react-native';
+import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, RefreshControl, ActivityIndicator, Linking, Platform, BackHandler, } from 'react-native';
 import { Header } from '../../components';
-import { ROUTES, String } from '../../constants';
+import { LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
 import { colorBackGround, Colors, darkBackGround, F40010, F40012, F40014, F50013, lightBackGround } from '../../Theme';
 import { InputContextProvide } from '../../context/CommonContext';
@@ -12,15 +12,20 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { lastSeen } from '../../services';
 import { useState } from 'react';
 import { Anaylitics } from '../../constants/analytics';
+import GiftModel from '../../components/GiftModel';
+import remoteConfig from '@react-native-firebase/remote-config';
+import * as LocalStorage from '../../services/LocalStorage';
 
 export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
   const navigation = useNavigation()
   let route: object | any = useRoute()
-
+  const [showRateUsModel, setshowRateUsModel] = useState(false)
   /**context data coin and campaign data */
   const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, coinBalance: { getBalance }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
+  const [getConfigData, setGetConfingData] = useState()
+
   /**
  * 
  * @param params list of current campaign data list
@@ -74,16 +79,25 @@ export const MyCampaignLandingScreen = () => {
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
     })
   }
+  const getValue = async () => {
+    await LocalStorage.getValue(LocalStorageKeys?.getRating).then((res) => {
+      console.log("res", res)
+    }).catch((err) => {
+      console.log("err", err);
 
+    })
+  }
   useEffect(() => {
     getUserBalance();
+    configUrl()
+    getValue()
+    setshowRateUsModel(route?.params?.addCampaign)
   }, [])
 
   /** convert last seen by uploaded video  */
   const getUploadedTime = useCallback((item: any) => {
     return lastSeen(item)
   }, [getCampaignData])
-
   /**
    * Render flatlist function to diplay list of video uploaded 
    */
@@ -147,6 +161,23 @@ export const MyCampaignLandingScreen = () => {
       </>
     )
   }
+  const configUrl = () => {
+    remoteConfig().fetchAndActivate().then(() => {
+      const getConfigValue: any = remoteConfig().getValue("share_link").asString()
+      const details = JSON?.parse(getConfigValue)
+      setGetConfingData(details)
+    })
+  }
+  console.log("showRateUsModel", showRateUsModel)
+
+  const actionLinking = async () => {
+    const { android, ios }: any = getConfigData;
+    (Anaylitics("give rating by create-campaign"),
+      Platform?.OS == 'android' ? Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview')
+        : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805'))
+    await LocalStorage.setValue(LocalStorageKeys.getRating, false)
+    setshowRateUsModel(false)
+  };
 
   return (
     <>
@@ -192,6 +223,16 @@ export const MyCampaignLandingScreen = () => {
           )
         }
       </View>
+      {
+        showRateUsModel && <GiftModel isVisible={showRateUsModel} setIsVisible={setshowRateUsModel}
+          saveButtonTitle={'MAYBE LATER 🙁'}
+          cancleButtonTitle={'RATE US 😍'}
+          subTitle={`Your opinion matters to us!. Do you have a moment to rate our app?`}
+          title2={'Enjoying UView?'}
+          showRating={true}
+          CancleOnPress={() => { actionLinking() }}
+          onPress={() => { setshowRateUsModel(false) }} />
+      }
     </>
   );
 };

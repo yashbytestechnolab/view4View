@@ -261,21 +261,22 @@ export const ViewLanding = () => {
       />
       <View style={[styles.container, darkBackGround(darkModeTheme)]}>
         <Header coin={getBalance} title={String?.headerTitle?.view4view} />
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.main} contentContainerStyle={{ paddingBottom: 120 }}>
-          <View style={styles.videoWrapper} key={nextVideo?.toString()}>
-            {isInternetBack && videoData?.[nextVideo]?.video_Id?.[0]?.length > 0 &&
-              <YoutubePlayer
-                height={270}
-                videoId={videoData?.[nextVideo]?.video_Id[0]}
-                play={playing}
-                onChangeState={onStateChange}
-                onError={(err) => console.log("wrr", err)} />}
-          </View>
-          {videoLoading || !isInternetBack ?
-            <View style={styles.loader}>
-              <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
-            </View> :
-            <>
+        {videoLoading || !isInternetBack ?
+          <View style={styles.loader}>
+            <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
+          </View> :
+          <>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.main} contentContainerStyle={{ paddingBottom: 120 }}>
+              <View style={styles.videoWrapper} key={nextVideo?.toString()}>
+                {isInternetBack && videoData?.[nextVideo]?.video_Id?.[0]?.length > 0 && !videoLoading &&
+                  <YoutubePlayer
+                    height={270}
+                    videoId={videoData?.[nextVideo]?.video_Id[0]}
+                    play={playing}
+                    onChangeState={onStateChange}
+                    onError={(err) => console.log("wrr", err)} />}
+              </View>
+
               <View style={styles.iconRow}>
                 <View style={styles.iconWrapper}>
                   <SecondsIcon />
@@ -326,10 +327,10 @@ export const ViewLanding = () => {
                 }}
                 wrapperStyle={styles.marginTop}
                 buttonTitle={String?.viewTab?.watchAdd(reward?.adsReward)} />}
-            </>
-          }
+            </ScrollView>
+          </>
+        }
 
-        </ScrollView>
       </View>
       {isAdsAlertDisplay &&
         <CamptionConformationModel

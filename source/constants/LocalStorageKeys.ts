@@ -5,5 +5,6 @@ export enum LocalStorageKeys {
     isSocialLogin = "isSocialLogin",
     notificationToken = "notificationToken",
     AppActiveStatus='AppActiveStatus',
-    previousBuildVersion="previousBuildVersion"
+    previousBuildVersion="previousBuildVersion",
+    getRating="getRating",
 }

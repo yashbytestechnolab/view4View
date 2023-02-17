@@ -2,20 +2,28 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 import { F40014, F60016, F60032, colorBackGround, darkBackGround } from '../Theme';
 import { ButtonComponent } from './ButtonComponent';
-import { String } from '../constants';
 import YouWon from '../assets/icons/YouWon';
 import Modal from "react-native-modal";
 import { InputContextProvide } from '../context/CommonContext';
+import AnimatedLottieView from 'lottie-react-native';
 interface model {
     isVisible: boolean;
     setIsVisible: any;
     onPress?: any;
     fromAdds?: any;
+    title?: string;
+    title2?: string
+    subTitle?: string;
+    cancleButtonTitle?: string;
+    saveButtonTitle?: string;
+    CancleOnPress?: any
+    showCancleButton?: boolean
+    showRating?: boolean
 }
 
 const GiftModel = (props: model) => {
     const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
-    const { onPress, isVisible, setIsVisible, fromAdds } = props
+    const { onPress, isVisible, setIsVisible, title, subTitle, cancleButtonTitle, saveButtonTitle, title2, showCancleButton = true, showRating = false, CancleOnPress } = props
     return (
         <Modal
             onBackdropPress={() => setIsVisible(false)}
@@ -24,27 +32,33 @@ const GiftModel = (props: model) => {
             style={styles.model}
             isVisible={isVisible}>
             <View style={[styles.modelView, darkBackGround(darkModeTheme)]}>
-                <YouWon />
+
+                {showRating ?
+                    <AnimatedLottieView style={styles.rating}
+                        source={require('../assets/ratingStar.json')} autoPlay loop /> : <YouWon />
+                }
                 <Text style={[F60016.textStyle, F60016.semiBolt, colorBackGround(darkModeTheme)]}>
-                    {fromAdds ? "You Won" : ""}
+                    {title}
                 </Text>
                 <Text style={[styles.points, F60032.textStyle]}>
-                    {fromAdds ? " 100 points!" : "Out of coins.."}
+                    {title2}
                 </Text>
                 <Text style={[styles.description, F40014.main, colorBackGround(darkModeTheme)]}>
-                    {fromAdds ? "Hurry, you are rewarded" : "Sorry, You don't have enough coins to create the campaign. Would you like to earn more coins?"}
+                    {subTitle}
                 </Text>
                 <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
                     <ButtonComponent
                         wrapperStyle={styles.button}
-                        buttonTitle={fromAdds ? "Close" : "Earn Coins Now"}
+                        buttonTitle={saveButtonTitle}
                         onPrees={() => { onPress() }}
                     />
-                    <ButtonComponent
-                        wrapperStyle={styles.button}
-                        buttonTitle={fromAdds ? "Close" : "No"}
-                        onPrees={() => setIsVisible(false)}
-                    />
+                    {
+                        showCancleButton && <ButtonComponent
+                            wrapperStyle={styles.button}
+                            buttonTitle={cancleButtonTitle}
+                            onPrees={() => { CancleOnPress ? CancleOnPress() : setIsVisible(false) }}
+                        />
+                    }
                 </View>
             </View>
         </Modal>
@@ -63,7 +77,11 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     won: { marginTop: 24 },
-    button: { width: "40%", marginTop: 33 },
+    button: { flex: 1, marginTop: 33 },
     points: { marginTop: 12 },
+    rating: {
+        alignItems: 'center',
+        width: '50%'
+    },
     description: { marginTop: 12, textAlign: "center", opacity: 0.6 }
 })

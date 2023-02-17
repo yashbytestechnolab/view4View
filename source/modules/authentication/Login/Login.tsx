@@ -44,7 +44,7 @@ export const Login = () => {
     console.log("operation1")
     let { email } = userInput
     let loginType = "normal";
-    Anaylitics("login_click", { email,loginType })
+    Anaylitics("login_click", { email, loginType })
     setLoading(true)
     auth().signInWithEmailAndPassword(userInput?.email, userInput?.password).
       then(async (userResponse: any) => {
@@ -159,8 +159,8 @@ export const Login = () => {
                 <View style={style.signIn}>
                   <ButtonComponent
                     disable={(userInput?.email?.length > 0 && userInput?.password?.length > 0) ? false : true}
-
-                    onPrees={() => handleLoginFlow()} buttonTitle={String.commonString.SignIn} />
+                    onPrees={() => handleLoginFlow()}
+                    buttonTitle={String.commonString.SignIn} />
                 </View>
                 <ORtitle />
                 {

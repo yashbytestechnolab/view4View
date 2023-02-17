@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 import { ButtonComponent, Header } from '../../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import YoutubePlayer, { getYoutubeMeta, } from 'react-native-youtube-iframe';
-import { ROUTES, String } from '../../../constants';
+import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { styles } from './style';
 import { colorBackGround, Colors, darkBackGround, F40014, F60012, F60016 } from '../../../Theme';
 import { Expected, dropdownConfigValue } from '../../../services';
@@ -15,6 +15,7 @@ import GiftModel from '../../../components/GiftModel';
 import { Anaylitics } from '../../../constants/analytics';
 import { CamptionConformationModel } from '../../../components/CamptionConformationModel';
 import { DropDownModel } from '../../../components/DropDownModel';
+import * as LocalStorage from '../../../services/LocalStorage';
 
 export const CreateCampaign = () => {
 
@@ -74,10 +75,20 @@ export const CreateCampaign = () => {
     let coinBalance = await updateUserWallet(updateWallet)
     setLoading(false)
     dispatchCoin({ types: type.GET_CURRENT_COIN, payload: coinBalance })
-    navigation.replace(ROUTES.HOME_LANDING)
+
+    await LocalStorage.getValue(LocalStorageKeys?.getRating)?.then((response) => {
+      console.log("resresresres",response)
+      let isRatingFlag: boolean
+      const checkRatingFlag = response == null || false ? isRatingFlag = true : isRatingFlag = false
+      navigation.replace(ROUTES.CAMPAIGNLANDING, {
+        addCampaign: checkRatingFlag,
+
+      })
+
+    }).catch((err) => { console.log("get rating error", err) })
+
     setVideoUrl("")
   }
-
   const analyticsLog = (key: string, updateWallet: number | any, userAddUrl: string | any, videoTitle: string | any, error?: string | any | object) => {
     Anaylitics(key, {
       befor_upload_balance: getBalance,
@@ -137,7 +148,6 @@ export const CreateCampaign = () => {
       setIsVisibleDurationModel(true)
       : !(getBalance >= totalCost) ? setIsVisible(true) : setIsVisibleModel(true)
   }
-
 
   return (
     <>
@@ -214,28 +224,26 @@ export const CreateCampaign = () => {
         </ScrollView>
       </View>
       {isVisible &&
+
         <GiftModel
+          saveButtonTitle={'Earn Coins Now'}
+          cancleButtonTitle={'No'}
+          subTitle={`Sorry, You don't have enough coins to create the campaign. Would you like to earn more coins?`}
+          title2={'Out of coins'}
           isVisible={isVisible}
           setIsVisible={setIsVisible}
-          onPress={() => { navigation.navigate(ROUTES.EARNCOINS_LANDING), setIsVisible(false) }}
-        />}
+          onPress={() => { navigation.navigate(ROUTES.EARNCOINS_LANDING, { outOfCoin: true }), setIsVisible(false) }}
+        />
+      }
       {
         isVisibleModel &&
         <CamptionConformationModel
-          titleText={'Create Campaign'}
-          descriptionText={`Your Campaign will be create.you can see \n the camaign in list.Are you sure you \n create campaign?`}
-          descriptionStyle={{ paddingHorizontal: 30 }}
           isVisible={isVisibleModel}
           actionTitle={"Create Campigan"}
           setIsVisible={setIsVisibleModel}
           onPress={() => {
             addCampaignDebounce(), setIsVisibleModel(false)
-          }
-          }
-          descriptionStyle={{
-            paddingHorizontal: 35
           }}
-          actionTitle={"Create Campaign"}
           titleText={'Create Campaign'}
           descriptionText={`This campaign will deduct your ${totalCost} coins from your account. Are you sure you want to create campaign?`}
         />
@@ -269,8 +277,6 @@ export const CreateCampaign = () => {
           isVisible={isVisibleDurationModal}
           setIsVisible={setIsVisibleDurationModel}
           actionTitle={"Close"}
-          descriptionStyle={{ paddingHorizontal: 30 }}
-
           onPress={() => {
             setIsVisibleDurationModel(false)
           }
