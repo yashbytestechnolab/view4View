@@ -18,6 +18,7 @@ import { Rating } from '../../services/Rating';
 import { AdsClass } from '../../services/AdsLoad';
 import { CamptionConformationModel } from '../../components/CamptionConformationModel';
 import { type as keys, } from '../../constants/types';
+import { getSocialLoginValue } from '../../constants/settingProfileArr';
 
 export const ViewLanding = () => {
   const { storeCreator: { reward, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
@@ -64,6 +65,8 @@ export const ViewLanding = () => {
     GetCoins("isInitialRenderUpdate");
     notificationToken()
     GetReferralCode()
+    getSocialLoginValue()
+
   }, []);
 
   useEffect(() => {
@@ -92,6 +95,7 @@ export const ViewLanding = () => {
   useEffect(() => {
     if (!isInternetBack) setStart(false)
     else if (playing) setStart(true)
+
   }, [isInternetBack])
 
   const showAnimation = () => {

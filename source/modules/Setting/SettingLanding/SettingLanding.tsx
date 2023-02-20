@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, ActivityIndicator, Platform, Linking, Alert, } from 'react-native'
-import React, { useContext, useEffect, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import * as LocalStorage from '../../../services/LocalStorage';
 import ToggleSwitch from 'toggle-switch-react-native'
 import { LocalStorageKeys, ROUTES, String } from '../../../constants';
@@ -21,6 +21,8 @@ import VersionInfo from 'react-native-version-info';
 export const SettingLanding = () => {
   const { storeCreator: { loading, setLoading, darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
   const navigation: any = useNavigation()
+  const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
+  const { appVersion, buildVersion }: any = VersionInfo;
 
   const configUrl = () => {
     remoteConfig().fetchAndActivate().then(() => {
@@ -46,7 +48,6 @@ export const SettingLanding = () => {
     getUserData()
     configUrl()
   }, [])
-  const { appVersion, buildVersion }: any = VersionInfo;
 
 
   const logoutHandle = async () => {
@@ -137,9 +138,11 @@ export const SettingLanding = () => {
   const actionLinking = (index: number) => {
     const { android, ios }: any = person?.configvalue;
     console.log(index);
-    index == 5 ? (Anaylitics("rate_us_click"), Platform?.OS == 'android' ? Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview') : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805')) : (Linking.openURL('https://view4view-dcb01.web.app/'))
+    index == 5 ? (Anaylitics("rate_us_click"), Platform?.OS == 'android' ? Linking.openURL(android || 
+      'https://play.google.com/store/apps/details?id=com.bytes.uview')
+     : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805')) : (Linking.openURL('https://view4view-dcb01.web.app/'))
   };
-
+  https://play.google.com/store/apps/details?id=com.bytes.uview
 
   return (
     <>
@@ -150,14 +153,16 @@ export const SettingLanding = () => {
           scrollEnabled={true} contentContainerStyle={[style.containWrapper, darkBackGround(darkModeTheme)]}>
           <View style={[style.flex, darkBackGround(darkModeTheme)]}>
             {
-              infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} /> :
-                <TouchableOpacity style={style.nameWrapper} activeOpacity={1} onPress={() => { navigation?.navigate(ROUTES?.EDITPROFILE) }}>
+              infoLoading ? <ActivityIndicator size={"large"} color={Colors.lightPink} style={{ height: 115 }} /> :
+                <TouchableOpacity style={[style.nameWrapper, { height: 115 }]} activeOpacity={1} onPress={() => {
+                  navigation?.navigate(ROUTES?.EDITPROFILE)
+                }}>
                   {
                     data?.image?.length == 0 ?
                       <View style={[style.profileNameWrapper,]}>
                         <Text style={[F50030?.textStyle, { textAlign: 'center', textTransform: 'uppercase' }]} >{data?.firstname?.charAt(0) + data?.lastname?.charAt(0)}</Text>
                       </View>
-                      : <Image source={{ uri: `data:image/png;base64,${data?.image}` }} style={[style.imageWrapper,]} />
+                      : <Image source={{ uri: regex.test(data?.image) == true ? data?.image : `data:image/png;base64,${data?.image}` }} style={[style.imageWrapper,]} />
 
                   }
 

@@ -25,7 +25,6 @@ export const MyCampaignLandingScreen = () => {
   const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, coinBalance: { getBalance }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
   const [getConfigData, setGetConfingData] = useState()
-
   /**
  * 
  * @param params list of current campaign data list
@@ -168,13 +167,14 @@ export const MyCampaignLandingScreen = () => {
       setGetConfingData(details)
     })
   }
-  console.log("showRateUsModel", showRateUsModel)
 
   const actionLinking = async () => {
     const { android, ios }: any = getConfigData;
     (Anaylitics("give rating by create-campaign"),
-      Platform?.OS == 'android' ? Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview')
+      Platform?.OS == 'android' ?
+        Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview')
         : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805'))
+
     await LocalStorage.setValue(LocalStorageKeys.getRating, false)
     setshowRateUsModel(false)
   };
@@ -185,8 +185,13 @@ export const MyCampaignLandingScreen = () => {
       <View style={[styles.mainContainer, darkBackGround(darkModeTheme)]}>
         <Header
           title={headerTitle?.myCampaign} />
-        {loding ? (<View style={styles.loader}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
+        {loding ? (
+          <View style={styles.loader}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
           (<>
+            <View style={{ backgroundColor: '#fdeee6', paddingHorizontal: 14, alignItems: 'center', paddingVertical: 8 }}>
+              <Text style={[F40012?.main, { color: Colors?.black, lineHeight: 18 }]}>YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app.</Text>
+
+            </View>
             <FlatList
               keyExtractor={(item) => item?.toString()}
               showsVerticalScrollIndicator={false}

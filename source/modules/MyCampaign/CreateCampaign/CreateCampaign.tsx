@@ -227,6 +227,7 @@ export const CreateCampaign = () => {
 
         <GiftModel
           saveButtonTitle={'Earn Coins Now'}
+          
           cancleButtonTitle={'No'}
           subTitle={`Sorry, You don't have enough coins to create the campaign. Would you like to earn more coins?`}
           title2={'Out of coins'}

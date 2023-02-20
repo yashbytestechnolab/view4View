@@ -15,6 +15,8 @@ export const EditProfile = () => {
     const navigation = useNavigation()
     const { storeCreator: { darkModeTheme, userDetail: { data, infoLoading }, userInput, dispatch, userInputError, dispatchError, dispatchuserDetail } }: any = useContext(InputContextProvide)
     const [profilePic, setProfilePic]: any = useState(null);
+    const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
+
     const getUserData = () => {
         dispatch({ type: type.FULL_NAME, payload: data?.firstname + " " + data?.lastname });
         dispatch({ type: type.EMAIL, payload: data?.email });
@@ -88,7 +90,7 @@ export const EditProfile = () => {
                         <>
                             {
                                 data?.image?.length !== 0 || profilePic?.path?.length !== undefined ?
-                                    <Image source={{ uri: profilePic != null ? profilePic?.path : `data:image/png;base64,${data?.image}` }}
+                                    <Image source={{ uri: profilePic != null ? profilePic?.path : regex.test(data?.image) == true ? data?.image : `data:image/png;base64,${data?.image}` }}
                                         style={style.imageWrapper} /> :
                                     <View style={[style.profileNameWrapper]}>
                                         <Text style={[F50030?.textStyle, { textAlign: 'center', textTransform: 'uppercase', }]} >{data?.firstname?.charAt(0) + data?.lastname?.charAt(0)}</Text>

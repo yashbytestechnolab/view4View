@@ -19,7 +19,7 @@ export const style = StyleSheet.create({
   imageWrapper: {
     height: 60, width: 60, borderRadius: 30,
     marginBottom: 12,
-    backgroundColor: Colors?.shadowPink
+    //backgroundColor: Colors?.shadowPink
   },
   nameWrapper: { justifyContent: "center", alignItems: "center", marginHorizontal: 16, },
   tabWrapper: { flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 16, marginTop: 18 },
