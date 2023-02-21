@@ -159,10 +159,6 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         borderRadius: 16,
         backgroundColor: 'white',
-        shadowColor: Colors?.whiteShadow,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 4,
-        shadowRadius: 4,
     },
     flatListWrapper: {
         alignSelf: 'center',
