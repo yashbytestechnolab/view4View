@@ -225,11 +225,13 @@ export const MyCampaignLandingScreen = () => {
       </View>
       {
         showRateUsModel && <GiftModel isVisible={showRateUsModel} setIsVisible={setshowRateUsModel}
-          saveButtonTitle={'MAYBE LATER 🙁'}
+          saveButtonTitle={'LATER 🙁'}
           cancleButtonTitle={'RATE US 😍'}
           subTitle={`Your opinion matters to us!. Do you have a moment to rate our app?`}
           title2={'Enjoying UView?'}
           showRating={true}
+          negativeActionTextStyle={{color: Colors.primaryRed}}
+          negativeActionStyle={{backgroundColor:'transparent', borderWidth:1, borderColor: Colors.primaryRed}}
           CancleOnPress={() => { actionLinking() }}
           onPress={() => { setshowRateUsModel(false) }} />
       }

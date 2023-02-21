@@ -17,6 +17,7 @@ import { getSocialLoginValue, settingProfileArr } from '../../../constants/setti
 import { ENV, person } from '../../View/increment';
 import { Anaylitics } from '../../../constants/analytics';
 import VersionInfo from 'react-native-version-info';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export const SettingLanding = () => {
   const { storeCreator: { loading, setLoading, darkModeTheme, setDarkModeTheme, dispatch, userDetail: { infoLoading, data }, dispatchuserDetail, dispatchVideoLandingData } }: any = useContext(InputContextProvide)
@@ -55,7 +56,10 @@ export const SettingLanding = () => {
       index: 0,
       routes: [{ name: ROUTES.LOGIN }]
     })
-    auth().signOut().then(() => { })
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    if (isSignedIn) {
+      await GoogleSignin.signOut();
+    }
     await LocalStorage.setValue(LocalStorageKeys.UserId, "")
     dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: false })
     dispatchuserDetail({ type: type.USER_INFO_DELETE })

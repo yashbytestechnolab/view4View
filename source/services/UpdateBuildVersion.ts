@@ -11,7 +11,7 @@ export const UpdateBuildVersion = async (updateAlert: any) => {
         const data: any = JSON?.parse(UpdateDescription)
         const buildVersion = data == undefined ? '1.0' : data?.build_version
         try {
-            if (buildVersion != appVersion) {
+            if (Number(buildVersion) > Number(appVersion)) {
                 updateAlert(true);
             } else {
                 updateAlert(false);

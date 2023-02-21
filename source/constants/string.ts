@@ -85,7 +85,7 @@ export const String: any = {
         darkcontent: "dark-content",
         signInWithGoogle: 'Sign in with Google',
         Addvideolink: "Add video link",
-        pasteyourvideolinkhere: "https://youtu.be/111111111",
+        pasteyourvideolinkhere: "https://youtu.be/NyismiXwH0A",
         Addnow: "Add Now",
         createContain: "Steps to CREATE & ADD a campaign.",
         OrderSettings: "Order Settings",
