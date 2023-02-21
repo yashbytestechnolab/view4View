@@ -40,15 +40,10 @@ export const String: any = {
         second: 'Seconds',
         nextVideo: 'Next Video',
         watchAdd(reward: any) {
-           return `Watch Ads To Earn ${reward || 100} Coins`
+            return `Watch Ads To Earn ${reward || 100} Coins`
         }
     },
-    // earnCoinTab: {
-    //     googleLogin: 'google login',
-    //     versionNumber: 'versionNumber',
-    //     alreadyUpdated: 'already updated',
-    //     pleaseUpdateYourApp: 'please update your app'
-    // },
+
     earnCoinTab: {
         googleLogin: 'Google login',
         versionNumber: 'VersionNumber',
@@ -109,6 +104,7 @@ export const String: any = {
         imageSize: "Image size must be less than 5MB",
         errorMsg: "Oops, Something went wrong..",
         buy: 'Buy',
+        stickeyText: "Your recently created campaigns will take the next 24-48 Hours to start. You will be notified once a campaign is completed. Thanks for your patience.",
         CampaignAlert: 'Campaign is already running for this video. Please wait until campaign end.',
         buyCoinSubText: 'Contact us if you have some special orders or if you have any problem with in-app-purchase by sending an email to : mobile.apps@bytestechnolab.com'
     },
@@ -146,6 +142,7 @@ export const String: any = {
         },
         completed: "Campaign Completed"
     },
+
     viewCoinScreen: {
         yourCoins: 'Your Coins!',
         title: 'How can you use them?',
@@ -178,15 +175,16 @@ export const String: any = {
         subTitle: 'Make sure you are connected to the internet\nthen try agin',
         buttonTitle: 'Try again'
     },
-    Notification: {
-        congratulations: 'Congratulations you received',
-        coins: 'coins',
-        Reward: "Reward",
-        campaignCompleted: function (params: string) {
-            return `Your campaign ${`"${params}"`} has been completed.`
-        },
-        completed: "Campaign Completed"
-    },
+
+    showRateUsModel: {
+        saveButtonTitle: 'MAYBE LATER 🙁',
+        cancleButtonTitle: 'RATE US 😍',
+        subTitle: 'Your opinion matters to us!. Do you have a moment to rate our app?',
+        title2: 'Enjoying UView?'
+
+
+    }
+
 
 }
 

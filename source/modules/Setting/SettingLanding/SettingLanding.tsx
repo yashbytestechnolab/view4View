@@ -142,7 +142,6 @@ export const SettingLanding = () => {
       'https://play.google.com/store/apps/details?id=com.bytes.uview')
      : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805')) : (Linking.openURL('https://view4view-dcb01.web.app/'))
   };
-  https://play.google.com/store/apps/details?id=com.bytes.uview
 
   return (
     <>

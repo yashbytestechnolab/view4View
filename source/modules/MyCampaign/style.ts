@@ -54,4 +54,5 @@ export const styles = StyleSheet.create({
   textAlign: { textAlign: "center" },
   stickeyHeaderView: { height: 34, justifyContent: "center", paddingLeft: 12 },
   stickeyText: { color: "black", fontSize: 16, fontWeight: "500", fontFamily: Fonts.InterMedium },
+  topStickeyText:{ backgroundColor: '#fdeee6', paddingHorizontal: 14, alignItems: 'center', paddingVertical: 8 }
 });

@@ -15,16 +15,19 @@ import { Anaylitics } from '../../constants/analytics';
 import GiftModel from '../../components/GiftModel';
 import remoteConfig from '@react-native-firebase/remote-config';
 import * as LocalStorage from '../../services/LocalStorage';
+import { StickyTextEnable } from '../../services/StickyTextEnable';
 
 export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
   const navigation = useNavigation()
   let route: object | any = useRoute()
   const [showRateUsModel, setshowRateUsModel] = useState(false)
-  /**context data coin and campaign data */
-  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, coinBalance: { getBalance }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
   const [loading, setLoading] = useState(false)
   const [getConfigData, setGetConfingData] = useState()
+  const [isCurrentCampagin, setIsCurrentCampagin] = useState()
+  /**context data coin and campaign data */
+  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
+
   /**
  * 
  * @param params list of current campaign data list
@@ -71,6 +74,8 @@ export const MyCampaignLandingScreen = () => {
     if (!route?.params?.createCampaign) {
       getVideoUrl("")
     }
+    isConfingCampaignText()
+
   }, [dispatchcampaign, isInternetBack])
 
   const getUserBalance = async () => {
@@ -85,6 +90,10 @@ export const MyCampaignLandingScreen = () => {
       console.log("err", err);
 
     })
+  }
+  const isConfingCampaignText = async () => {
+    let getCampaignData = await StickyTextEnable()
+    setIsCurrentCampagin(getCampaignData)
   }
   useEffect(() => {
     getUserBalance();
@@ -145,7 +154,6 @@ export const MyCampaignLandingScreen = () => {
       </>
     )
   }
-
   const handleEmptyData = () => {
     return (
       <>
@@ -170,13 +178,14 @@ export const MyCampaignLandingScreen = () => {
 
   const actionLinking = async () => {
     const { android, ios }: any = getConfigData;
-    (Anaylitics("give rating by create-campaign"),
-      Platform?.OS == 'android' ?
-        Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview')
-        : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805'))
+
+    Platform?.OS == 'android' ?
+      Linking.openURL(android || 'https://play.google.com/store/apps/details?id=com.bytes.uview')
+      : Linking.openURL(ios || 'https://apps.apple.com/us/app/uview-increase-youtube-views/id1658265805')
 
     await LocalStorage.setValue(LocalStorageKeys.getRating, false)
-    setshowRateUsModel(false)
+    setshowRateUsModel(false);
+    Anaylitics("rating create-campaign");
   };
 
   return (
@@ -188,10 +197,11 @@ export const MyCampaignLandingScreen = () => {
         {loding ? (
           <View style={styles.loader}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
           (<>
-            <View style={{ backgroundColor: '#fdeee6', paddingHorizontal: 14, alignItems: 'center', paddingVertical: 8 }}>
-              <Text style={[F40012?.main, { color: Colors?.black, lineHeight: 18 }]}>YouTube need 72 hours to update views from third party apps. So please wait at least 72 hours to see your views updated on You Tube app.</Text>
+            {isCurrentCampagin && getCampaignData?.[0]?.stickeyHeader == 'Current Campaign' && <View style={styles.topStickeyText}>
+              <Text style={[F40012?.main, { color: Colors?.black, lineHeight: 16 }]}>{String?.commonString?.stickeyText}</Text>
 
-            </View>
+            </View>}
+
             <FlatList
               keyExtractor={(item) => item?.toString()}
               showsVerticalScrollIndicator={false}
@@ -230,10 +240,10 @@ export const MyCampaignLandingScreen = () => {
       </View>
       {
         showRateUsModel && <GiftModel isVisible={showRateUsModel} setIsVisible={setshowRateUsModel}
-          saveButtonTitle={'MAYBE LATER 🙁'}
-          cancleButtonTitle={'RATE US 😍'}
-          subTitle={`Your opinion matters to us!. Do you have a moment to rate our app?`}
-          title2={'Enjoying UView?'}
+          saveButtonTitle={String?.showRateUsModel?.saveButtonTitle}
+          cancleButtonTitle={String?.showRateUsModel?.cancleButtonTitle}
+          subTitle={String?.showRateUsModel?.subTitle}
+          title2={String?.showRateUsModel?.title2}
           showRating={true}
           CancleOnPress={() => { actionLinking() }}
           onPress={() => { setshowRateUsModel(false) }} />
