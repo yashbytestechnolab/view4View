@@ -27,8 +27,12 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { handleFirebaseError } from '../../../services/AlertMessage';
 import { getBuildVersionData } from '../../../services/BuildVesrionCheck';
 import { userDeatil } from '../../../services';
+import SplashScreen from 'react-native-splash-screen';
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
+    useEffect(() => {
+        SplashScreen.hide()
+    }, [])
     const { storeCreator: { setGetReferralCode, darkModeTheme, getReferralCode } }: any = useContext(InputContextProvide)
     const [buildData, setBuildData] = useState();
     const getReferal = async () => {

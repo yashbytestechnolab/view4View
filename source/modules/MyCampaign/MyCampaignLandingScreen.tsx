@@ -245,6 +245,8 @@ export const MyCampaignLandingScreen = () => {
           subTitle={String?.showRateUsModel?.subTitle}
           title2={String?.showRateUsModel?.title2}
           showRating={true}
+          negativeActionTextStyle={{color: Colors.primaryRed}}
+          negativeActionStyle={{backgroundColor:'transparent', borderWidth:1, borderColor: Colors.primaryRed}}
           CancleOnPress={() => { actionLinking() }}
           onPress={() => { setshowRateUsModel(false) }} />
       }

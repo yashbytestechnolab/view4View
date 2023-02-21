@@ -18,12 +18,14 @@ interface model {
     saveButtonTitle?: string;
     CancleOnPress?: any
     showCancleButton?: boolean
-    showRating?: boolean
+    showRating?: boolean,
+    negativeActionStyle?: any,
+    negativeActionTextStyle?:any
 }
 
 const GiftModel = (props: model) => {
     const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
-    const { onPress, isVisible, setIsVisible, title, subTitle, cancleButtonTitle, saveButtonTitle, title2, showCancleButton = true, showRating = false, CancleOnPress } = props
+    const { onPress, isVisible, setIsVisible, title, subTitle, cancleButtonTitle, saveButtonTitle, title2, showCancleButton = true, showRating = false, CancleOnPress, negativeActionStyle, negativeActionTextStyle } = props
     return (
         <Modal
             onBackdropPress={() => setIsVisible(false)}
@@ -48,7 +50,8 @@ const GiftModel = (props: model) => {
                 </Text>
                 <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
                     <ButtonComponent
-                        wrapperStyle={styles.button}
+                        wrapperStyle={[styles.button, negativeActionStyle]}
+                        buttonTextStyle={negativeActionTextStyle}
                         buttonTitle={saveButtonTitle}
                         onPrees={() => { onPress() }}
                     />
@@ -83,5 +86,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '50%'
     },
-    description: { marginTop: 12, textAlign: "center", opacity: 0.6 }
+    description: { marginTop: 12, textAlign: "center", opacity: 0.6, paddingHorizontal:12 }
 })
