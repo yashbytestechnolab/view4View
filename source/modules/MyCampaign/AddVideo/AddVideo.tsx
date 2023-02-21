@@ -8,6 +8,7 @@ import { InputContextProvide } from '../../../context/CommonContext'
 import { useNavigation } from '@react-navigation/native'
 import { Anaylitics } from '../../../constants/analytics'
 import { CamptionConformationModel } from '../../../components/CamptionConformationModel'
+import { getYoutubeMeta, } from 'react-native-youtube-iframe';
 
 export const AddVideo = () => {
     const navigation = useNavigation()
@@ -17,20 +18,48 @@ export const AddVideo = () => {
     const [isDuplicateUrl, setIsDuplicateUrl] = useState(false)
 
 
-    const onAddVideo = () => {
+    const onAddVideo = async () => {
         let youtubeUrl = 'https://youtu.be/'
         let expetedViewNotRepeat = false
-
-        addVideoUrl == "" || !youtubeUrl.includes(addVideoUrl?.slice(0, 16)) ?
+        let regex = /[?&]([^=#]+)=([^&#]*)/g;
+        let params: any = {};
+        let match: any = [];
+        console.log("thisss");
+        while (match = regex.exec(addVideoUrl)) {
+            params[match[1]] = match[2];
+        }
+        if (addVideoUrl == "") {
             setIsVisibleModal(true)
-            :
-            (getCampaignData.length > 0 &&
-                getCampaignData?.map((res: { video_url: string | undefined; remaining_view: number | any }) => {
-                    (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
-                }),
-                !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), Anaylitics("add_video_click_url", { video_url: addVideoUrl, user_balance: getBalance })) :
-                    (
-                        setIsDuplicateUrl(true)))
+        } else {
+            let videoId: string = "";
+            if (params.v) {
+                videoId = params.v;
+            } else {
+                videoId = addVideoUrl?.split('/')[3]
+            }
+            if (videoId || params.v) {
+                try {
+                    let videoDetail = await getYoutubeMeta(videoId);
+                    if (videoDetail.title) {
+                        (getCampaignData.length > 0 &&
+                            getCampaignData?.map((res: { video_url: string | undefined; remaining_view: number | any }) => {
+                                (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
+                            }),
+                            !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), Anaylitics("add_video_click_url", { video_url: addVideoUrl, user_balance: getBalance })) :
+                                (
+                                    setIsDuplicateUrl(true)
+                                )
+                        )
+                    } else {
+                        setIsVisibleModal(true)
+                    }
+                } catch (error) {
+                    setIsVisibleModal(true)
+                }
+            } else {
+                setIsVisibleModal(true)
+            }
+        }
     }
     return (
         <>
