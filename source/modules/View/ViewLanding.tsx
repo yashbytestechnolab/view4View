@@ -4,7 +4,7 @@ import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
-import { addWatchUrl, bytesVideoListData, EarnCoin, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, } from '../../services/FireStoreServices';
+import { addWatchUrl, bytesVideoListData, EarnCoin, GetCurrentPlayCampaign, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -110,20 +110,37 @@ export const ViewLanding = () => {
       }
     })
   };
-
   const GetEarning = async () => {
-    const { id, remaining_view, consumed_view, video_Id, expected_view, coin } = videoData?.[nextVideo]
+    const { id, video_Id, expected_view, coin } = videoData?.[nextVideo]
     if (timer === 0) {
       setTimer(0);
       clearInterval(controlRef?.current);
-      const totalAmount = getBalance + (coin / expected_view);
-      dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
-      await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
-      await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
-      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
-      Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
+      await GetCurrentPlayCampaign(id).then(async (res: any) => {
+        const totalAmount = getBalance + (coin / expected_view);
+        dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
+        await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
+        const { remaining_view, consumed_view } = res?._data;
+        await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading)
+          .catch(() => handleFirebaseError("coin not update"))
+        dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
+        Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
+      })
     }
   }
+
+  // const GetEarning = async () => {
+  //   const { id, remaining_view, consumed_view, video_Id, expected_view, coin } = videoData?.[nextVideo]
+  //   if (timer === 0) {
+  //     setTimer(0);
+  //     clearInterval(controlRef?.current);
+  //     const totalAmount = getBalance + (coin / expected_view);
+  //     dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
+  //     await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
+  //     await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
+  //     dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
+  //     Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
+  //   }
+  // }
   /**
    * user get referral code and set in csetGetReferralCode context 
    */

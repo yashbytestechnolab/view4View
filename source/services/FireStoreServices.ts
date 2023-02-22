@@ -124,6 +124,9 @@ export const bytesVideoListData = async (...params: Array<any>) => {
 export const GetVideoCampaign = async () => {
   return await WatchVideoList?.orderBy("created", "desc")?.where("upload_by", "==", getUserID()?.toString())?.get()
 }
+export const GetCurrentPlayCampaign = async (id:number|string) => {
+  return await WatchVideoList?.doc(id)?.get()
+}
 
 export const deleteRemaining = async (payload: string | number | any) => {
   await WatchVideoList.doc(payload).delete()

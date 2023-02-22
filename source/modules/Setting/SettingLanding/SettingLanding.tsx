@@ -161,7 +161,7 @@ export const SettingLanding = () => {
                   navigation?.navigate(ROUTES?.EDITPROFILE)
                 }}>
                   {
-                    data?.image?.length == 0 ?
+                    data?.image?.length == 0 || data?.image == null || data?.image == undefined ||!data?.image ?
                       <View style={[style.profileNameWrapper,]}>
                         <Text style={[F50030?.textStyle, { textAlign: 'center', textTransform: 'uppercase' }]} >{data?.firstname?.charAt(0) + data?.lastname?.charAt(0)}</Text>
                       </View>
