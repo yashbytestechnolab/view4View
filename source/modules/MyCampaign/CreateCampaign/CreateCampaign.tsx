@@ -30,7 +30,7 @@ export const CreateCampaign = () => {
   const [totalCost, setTotalCost] = useState(300)
   const { commonString, headerTitle } = String
   const [configValue, setConfigValue] = useState<campaign>({})
-  const splitUrl = route?.params?.url.split('/').slice(3)
+  let splitUrl:any = route?.params?.url;
   const youTubeRef: any = useRef()
   const [showExpectedValue, setShowExpectedValue] = useState(false)
   const [showDropDown, setShowDropDown] = useState(false)
@@ -95,7 +95,7 @@ export const CreateCampaign = () => {
       after_upload_balance: updateWallet,
       cost_of_video: totalCost,
       video_url: userAddUrl,
-      video_id: splitUrl[0],
+      video_id: splitUrl,
       title: videoTitle?.title,
       notification_token: token,
       expected_view: views,
@@ -108,10 +108,11 @@ export const CreateCampaign = () => {
    * Add Campaign list in campaign table  
    */
   const handleAddCampaign = async () => {
+    let urlWithRendomId:any = [];
     const randomeId = Math.floor(Math.random() * 9999)
-    splitUrl.push(randomeId.toString())
+    urlWithRendomId.push(randomeId.toString())
+    urlWithRendomId.push(splitUrl);
     getYoutubeMeta(splitUrl).then((videoTitle: any) => {
-
       if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
         setLoading(true)
         const updateWallet = getBalance - totalCost
@@ -120,7 +121,7 @@ export const CreateCampaign = () => {
         /**
          * Create Campaign api call & decrement wallet amount
          */
-        createCampaign(userAddUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
+        createCampaign(userAddUrl, urlWithRendomId, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
           .then((res: any) => {
             analyticsLog("create_campaign_sucess", updateWallet, userAddUrl, videoTitle), updateCoinBalance(updateWallet)
           }).catch((err: any) => {

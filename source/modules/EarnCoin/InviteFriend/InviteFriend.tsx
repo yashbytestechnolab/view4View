@@ -47,7 +47,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
     }, [])
 
     const confingDefaultValue: any = {
-        build_version: "1.0",
+        build_version: "1.1",
         title: "Update the app",
         subTtile: "Please update to continue using the app",
         Upadte: {

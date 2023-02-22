@@ -24,7 +24,6 @@ export const AddVideo = () => {
         let regex = /[?&]([^=#]+)=([^&#]*)/g;
         let params: any = {};
         let match: any = [];
-        console.log("thisss");
         while (match = regex.exec(addVideoUrl)) {
             params[match[1]] = match[2];
         }
@@ -45,7 +44,7 @@ export const AddVideo = () => {
                             getCampaignData?.map((res: { video_url: string | undefined; remaining_view: number | any }) => {
                                 (res?.video_url == addVideoUrl && res?.remaining_view > 0) ? expetedViewNotRepeat = true : false
                             }),
-                            !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: addVideoUrl, }), Anaylitics("add_video_click_url", { video_url: addVideoUrl, user_balance: getBalance })) :
+                            !expetedViewNotRepeat ? (navigation?.navigate(ROUTES?.CREATE_CAMPAIGN, { url: videoId, }), Anaylitics("add_video_click_url", { video_url: addVideoUrl, user_balance: getBalance })) :
                                 (
                                     setIsDuplicateUrl(true)
                                 )
@@ -108,8 +107,8 @@ export const AddVideo = () => {
             </View>
             {isVisibleModal &&
                 <CamptionConformationModel
-                    titleText={'Invalid url'}
-                    descriptionText={`Please enter valid url.`}
+                    titleText={'Whoops!'}
+                    descriptionText={`Entered video url looks invalid. Please make sure you've entered correct video url`}
                     isVisible={isVisibleModal}
                     setIsVisible={setIsVisibleModal}
                     actionTitle={"Close"}
