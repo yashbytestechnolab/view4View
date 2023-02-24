@@ -18,28 +18,7 @@ export const MyCampaignLanding = () => {
         gestureEnabled: true,
       }}>
       <Stack.Screen name={ROUTES.CAMPAIGNLANDING} component={MyCampaignLandingScreen} />
-      <Stack.Screen
-        name={ROUTES.VIEWCOIN}
-        component={ViewCoin}
-      />
-      <Stack.Screen name={ROUTES.ADDVIDEO} component={AddVideo} />
-      <Stack.Screen name={ROUTES.CREATE_CAMPAIGN} component={CreateCampaign} />
-      <Stack.Screen
-        name={ROUTES.EARNCOINS_LANDING}
-        component={EarnCoinLanding}
-      />
-      <Stack.Screen
-        name={ROUTES.INVITEFRIEND}
-        component={InviteFriend}
-      />
-      <Stack.Screen
-        name={ROUTES.BUYCOIN}
-        component={BuyCoin}
-      />
-       <Stack.Screen
-        name={ROUTES.SHOWADDS}
-        component={ShowAdds}
-      />
+     
     </Stack.Navigator>
   );
 };

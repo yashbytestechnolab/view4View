@@ -3,25 +3,21 @@ import { Authentication, Dashboard, } from '.';
 import { LocalStorageKeys, ROUTES } from '../constants';
 import * as LocalStorage from '../services/LocalStorage';
 import { useState, useEffect } from 'react';
-import React from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import crashlytics from '@react-native-firebase/crashlytics';
+
+import React from 'react';
 
 export const RootNavigation = () => {
   const Stack = createStackNavigator();
   const [userId, setUserId] = useState(null);
 
-  /**
-   * This Function Check user id is in localstorage
-   */
-
   const authFlow = async () => {
-    await LocalStorage.getValue(LocalStorageKeys.UserId).then(res => res ? (setTimeout(() => SplashScreen.hide(), 1000), setUserId(res)) : setUserId(""))
+    await LocalStorage.getValue(LocalStorageKeys?.UserId).then(res => res ? setUserId(res) : setUserId(""))
+    SplashScreen.hide()
   }
 
   useEffect(() => {
     authFlow()
-    userId && crashlytics().log("auth_token")
   }, [userId]);
 
   return (

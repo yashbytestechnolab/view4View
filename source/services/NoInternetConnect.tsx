@@ -1,6 +1,5 @@
 import React, { useEffect, useState, } from 'react'
 import { View, Text, Modal, StyleSheet } from 'react-native'
-import AnimatedLottieView from 'lottie-react-native'
 import { F60016, F60024, colorBackGround, darkBackGround } from '../Theme'
 import { ButtonComponent } from '../components';
 import NetInfo from "@react-native-community/netinfo";
@@ -34,9 +33,9 @@ export const NoInternetConnect = ({ darkModeTheme, isInternetBack, setIsInternet
                 animationType="none"
                 supportedOrientations={['portrait', 'landscape']}>
                 <View style={[style.main, darkBackGround(darkModeTheme)]}>
-                    <AnimatedLottieView
+                    {/* <AnimatedLottieView
                         style={style.animation}
-                        source={require('../assets/noInternet.json')} autoPlay />
+                        source={require('../assets/noInternet.json')} autoPlay /> */}
 
                     <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.title}</Text>
                     <Text style={[F60016?.semiBolt, style.subText, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.subTitle}</Text>

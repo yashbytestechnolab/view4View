@@ -1,5 +1,4 @@
 export * from './TabNavigation'
-export * from './HomeStack'
 export * from './ViewStack'
 export * from './EarnCoinStack'
 export * from './Authentication'
