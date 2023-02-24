@@ -1,6 +1,5 @@
 import React, { createContext, useReducer, useState } from 'react'
 import { type } from '../constants/types'
-import { ValidationFnc, getCurrentCoinBalance, getUserCampaign, userInfoFnc, videoLanding } from '.';
 
 export const InputContextProvide: any = createContext({ data: "mehandi" })
 interface reward {
@@ -56,11 +55,7 @@ const reducer: Function | any = (state: any, action: any) => {
 
 const CommonContext = ({ children, reward, reviewVersionIos, setReviewVersionIos, setReward, darkModeTheme, setDarkModeTheme, isInternetBack, setIsInternetBack }: any) => {
     const [userInput, dispatch] = useReducer(reducer, intialState)
-    const { userInputError, dispatchError } = ValidationFnc();
-    const { campaignData, dispatchcampaign } = getUserCampaign()
-    const { coinBalance, dispatchCoin } = getCurrentCoinBalance()
-    const { videoLandingData, dispatchVideoLandingData } = videoLanding()
-    const { userDetail, dispatchuserDetail } = userInfoFnc()
+    
     const [addVideoUrl, setVideoUrl] = useState()
     const [loading, setLoading] = useState(false)
     const [token, setToken] = useState("")
@@ -69,20 +64,12 @@ const CommonContext = ({ children, reward, reviewVersionIos, setReviewVersionIos
     const storeCreator = {
         userInput,
         dispatch,
-        userInputError,
-        dispatchError,
+      
         loading,
         setLoading,
-        campaignData,
-        dispatchcampaign,
-        videoLandingData,
-        dispatchVideoLandingData,
-        coinBalance,
-        dispatchCoin,
+       
         darkModeTheme,
         setDarkModeTheme,
-        userDetail,
-        dispatchuserDetail,
         addVideoUrl,
         setVideoUrl,
         reward,

@@ -10,7 +10,6 @@ interface loder {
 }
 export const Loader = (props: loder) => {
   const { spinnerColor, backGroundColor,wrapperStyle } = props;
-  const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
   return (
     <View
@@ -20,7 +19,6 @@ export const Loader = (props: loder) => {
           backgroundColor: backGroundColor ? backGroundColor : Colors.white,
         },
         wrapperStyle,
-        darkBackGround(darkModeTheme)
       ]}>
       <ActivityIndicator color={spinnerColor || Colors.primaryRed} size={'large'} />
     </View>

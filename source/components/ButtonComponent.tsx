@@ -1,7 +1,6 @@
 import { ActivityIndicator, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import React, { useContext } from 'react'
-import EarnCoin from '../assets/icons/BuyCoinIcon'
-import { Colors, F60016 } from '../Theme'
+import React  from 'react'
+import { Colors } from '../Theme'
 
 interface buttonProps {
     buttonTitle: string,
@@ -25,15 +24,10 @@ export const ButtonComponent = (props: buttonProps) => {
                 loading ? (
                     <ActivityIndicator color={spinnerColor || Colors.white} />
                 ) : <>
-                    {
-                        isRewardIconShow &&
-                        <View style={innerStyles.reward}>
-                            <EarnCoin />
-                        </View>
-                    }
-                    <Text style={[F60016.textStyle, { color: disable ? Colors?.DisbaleButtonText : Colors?.white }, buttonTextStyle]} numberOfLines={1} >
+                   <Text style={[{ color: disable ? Colors?.DisbaleButtonText : Colors?.white }, buttonTextStyle]} numberOfLines={1} >
                         {buttonTitle}
                     </Text></>
+                   
             }
 
         </TouchableOpacity >

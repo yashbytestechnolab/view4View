@@ -1,7 +1,6 @@
 import { Platform, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
-import React, { useContext } from 'react'
-import { colorBackGround, Colors, F50012 } from '../Theme'
-import { InputContextProvide } from '../context/CommonContext'
+import React from 'react'
+import { Colors } from '../Theme'
 import { HidePassword, ShowPassword } from '../assets/icons'
 interface props {
     placeholder: string,
@@ -20,13 +19,12 @@ interface props {
 
 export const InputComponent = (props: props) => {
     const { errorMessage, inputTitle, viewStyle, onChangeText, onChange, value, placeholder, isSecureIcon, isSecureEntry, onPrees, keyboardType, editable } = props
-    const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)
 
     return (
         <View style={[innerStyles.main, viewStyle]}>
-            {inputTitle && <Text style={[F50012.main, colorBackGround(darkModeTheme)]}>{inputTitle}</Text>}
+            {inputTitle && <Text>{inputTitle}</Text>}
             <TextInput
-                placeholderTextColor={darkModeTheme ? Colors?.gray : Colors.GrayLightC2C9D1}
+                placeholderTextColor={Colors.GrayLightC2C9D1}
                 secureTextEntry={isSecureEntry}
                 onChangeText={onChangeText}
                 value={value}
@@ -34,7 +32,7 @@ export const InputComponent = (props: props) => {
                 editable={editable}
                 keyboardType={keyboardType}
                 placeholder={placeholder}
-                style={[innerStyles.textInput, colorBackGround(darkModeTheme), isSecureIcon && innerStyles.paddingExtra]}
+                style={[innerStyles.textInput, isSecureIcon && innerStyles.paddingExtra]}
             />
             {
                 isSecureIcon &&
@@ -42,7 +40,7 @@ export const InputComponent = (props: props) => {
                     activeOpacity={0.7}
                     onPress={onPrees}
                     style={innerStyles.eye}>
-                    {isSecureEntry ? <HidePassword color={darkModeTheme && Colors.GrayLightC2C9D1} /> : <ShowPassword color={darkModeTheme && Colors?.GrayLightC2C9D1} />}
+                    {isSecureEntry ? <HidePassword color={Colors.GrayLightC2C9D1} /> : <ShowPassword color={Colors?.GrayLightC2C9D1} />}
                 </TouchableOpacity>
             }
             {

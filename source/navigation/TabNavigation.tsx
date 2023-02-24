@@ -5,7 +5,7 @@ import { String, ROUTES } from '../constants';
 import { ViewStack, EarnCoinStack, SettingStack, MyCampaignLanding } from '.';
 import { Home, MyCampaign, Setting, TabEarnCoin } from '../assets/icons';
 import { SvgProps } from 'react-native-svg';
-import { ActiveTabText, Colors, F50010 } from '../Theme';
+import { ActiveTabText, Colors, } from '../Theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 export const TabNavigation = () => {
   const Tab = createBottomTabNavigator();
@@ -51,7 +51,7 @@ export const TabNavigation = () => {
             component={ViewStack}
             options={{
               tabBarLabel: ({ focused }) => (
-                <Text style={[focused ? ActiveTabText.main : F50010.main]}>
+                <Text style={[focused ? ActiveTabText.main : {color:'black'}]}>
                   {String?.headerTitle?.view}
                 </Text>
               ),
@@ -63,8 +63,8 @@ export const TabNavigation = () => {
           component={MyCampaignLanding}
           options={{
             tabBarLabel: ({ focused }) => (
-              <Text style={[focused ? ActiveTabText.main : F50010.main]}>
-                {String?.headerTitle?.myCampaign}
+              <Text style={[focused ? ActiveTabText.main : {color:'black'}]}>
+              {String?.headerTitle?.myCampaign}
               </Text>
             ),
           }}
@@ -74,8 +74,8 @@ export const TabNavigation = () => {
           component={EarnCoinStack}
           options={{
             tabBarLabel: ({ focused }) => (
-              <Text style={[focused ? ActiveTabText.main : F50010.main]}>
-                {String?.headerTitle?.earnCoin}
+              <Text style={[focused ? ActiveTabText.main : {color:'black'}]}>
+              {String?.headerTitle?.earnCoin}
               </Text>
             ),
           }}
@@ -85,8 +85,8 @@ export const TabNavigation = () => {
           component={SettingStack}
           options={{
             tabBarLabel: ({ focused }) => (
-              <Text style={[focused ? ActiveTabText.main : F50010.main]}>
-                {String?.headerTitle?.setting}
+              <Text style={[focused ? ActiveTabText.main : {color:'black'}]}>
+              {String?.headerTitle?.setting}
               </Text>
             ),
           }}

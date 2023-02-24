@@ -1,10 +1,9 @@
 import React, { useEffect, useState, } from 'react'
 import { View, Text, Modal, StyleSheet } from 'react-native'
-import { F60016, F60024, colorBackGround, darkBackGround } from '../Theme'
 import { ButtonComponent } from '../components';
 import NetInfo from "@react-native-community/netinfo";
 import { String } from '../constants';
-export const NoInternetConnect = ({ darkModeTheme, isInternetBack, setIsInternetBack }: any) => {
+export const NoInternetConnect = ({ isInternetBack, setIsInternetBack }: any) => {
     const [isConncectLoading, setIsConncectLoading] = useState(false)
 
     useEffect(() => {
@@ -32,13 +31,9 @@ export const NoInternetConnect = ({ darkModeTheme, isInternetBack, setIsInternet
                 visible={!isInternetBack}
                 animationType="none"
                 supportedOrientations={['portrait', 'landscape']}>
-                <View style={[style.main, darkBackGround(darkModeTheme)]}>
-                    {/* <AnimatedLottieView
-                        style={style.animation}
-                        source={require('../assets/noInternet.json')} autoPlay /> */}
-
-                    <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.title}</Text>
-                    <Text style={[F60016?.semiBolt, style.subText, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.subTitle}</Text>
+                <View style={[style.main,]}>
+                    <Text style={[{ marginTop: 10 }]}>{String?.noInterNetScreen?.title}</Text>
+                    <Text style={[style.subText,]}>{String?.noInterNetScreen?.subTitle}</Text>
                     <ButtonComponent loading={isConncectLoading} buttonTitle={String?.noInterNetScreen?.buttonTitle} onPrees={() => { HandleTryAgain() }}
                         wrapperStyle={style.button} />
                 </View>
