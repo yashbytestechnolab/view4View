@@ -44,6 +44,11 @@ export const userLogin = async (...payload: Array<object | string | undefined | 
   })
 }
 
+export const userSession = async () => {
+  const getCurrentUserID = getUserID()
+  await userTable.doc(getCurrentUserID).set({ last_open: firestore.FieldValue.serverTimestamp() }, { merge: true })
+}
+
 export const get_coins = async () => {
   const userId = getUserID()?.toString()
   return await userLogout?.doc(userId)?.get()
@@ -101,9 +106,10 @@ export const payCoin = async (payload: string) => {
 export const EarnCoin = async (...payload: Array<number | any>) => {
   // payload[0]=coin payload[1]=rewardAmt 
   const userId = await getUserID()?.toString()
-  return await userTable?.doc(userId)?.update({
+  return await userTable?.doc(userId)?.set({
     coin: parseInt(payload[0]) + payload[1],
-  })
+    ads_watch: payload[2] + 1
+  }, { merge: true })
 };
 
 export const deleteRemainingVideo = async (payload: any) => {
@@ -124,7 +130,7 @@ export const bytesVideoListData = async (...params: Array<any>) => {
 export const GetVideoCampaign = async () => {
   return await WatchVideoList?.orderBy("created", "desc")?.where("upload_by", "==", getUserID()?.toString())?.get()
 }
-export const GetCurrentPlayCampaign = async (id:number|string) => {
+export const GetCurrentPlayCampaign = async (id: number | string) => {
   return await WatchVideoList?.doc(id)?.get()
 }
 

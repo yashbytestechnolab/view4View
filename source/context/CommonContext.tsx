@@ -65,6 +65,7 @@ const CommonContext = ({ children, reward, reviewVersionIos, setReviewVersionIos
     const [loading, setLoading] = useState(false)
     const [token, setToken] = useState("")
     const [getReferralCode, setGetReferralCode] = useState("")
+    const [adsCount, setAdsCount] = useState(0)
 
     const storeCreator = {
         userInput,
@@ -94,7 +95,9 @@ const CommonContext = ({ children, reward, reviewVersionIos, setReviewVersionIos
         isInternetBack,
         setIsInternetBack,
         reviewVersionIos,
-        setReviewVersionIos
+        setReviewVersionIos,
+        adsCount,
+        setAdsCount
     }
 
     return (

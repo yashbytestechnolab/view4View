@@ -21,14 +21,15 @@ export const EarnCoinLanding = () => {
   /**
    * InputContextProvide is get current coin and darktheame flag 
    */
-  const { storeCreator: { reward, coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
+  const { storeCreator: { reward, adsCount, setAdsCount, coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
 
   /***
    * showRewardAd is load the ad and show ad
    */
 
   const rewardCoin = () => {
-    EarnCoin(getBalance, 100)?.then((res) => {
+    EarnCoin(getBalance, (reward?.adsReward || 100), adsCount)?.then((res) => {
+      setAdsCount(adsCount + 1)
       dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
       Anaylitics("earn_coin_show_ads_completed", {
         current_user_balance: getBalance + (reward?.adsReward || 100)

@@ -69,7 +69,7 @@ export const TabNavigation = () => {
           },
         })}>
         {
-          !(Platform.OS === "ios" && appVersion == reviewVersionIos) &&
+          // !(Platform.OS === "ios" && appVersion == reviewVersionIos) &&
           <Tab.Screen
             name={ROUTES.VIEW}
             component={ViewStack}

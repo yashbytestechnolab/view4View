@@ -2,12 +2,13 @@ import { View, Text, TouchableOpacity, SafeAreaView, StatusBar, Dimensions } fro
 import React, { useContext, useRef, useState } from 'react'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { colorBackGround, Colors, darkBackGround } from '../../../Theme';
-import { ROUTES, String } from '../../../constants';
+import { LocalStorageKeys, ROUTES, String } from '../../../constants';
 import { useNavigation } from '@react-navigation/native';
 import { IntroductionData } from '../../../services/jsonfile';
 import { styles } from './style';
 import { ButtonComponent } from '../../../components';
 import { InputContextProvide } from '../../../context/CommonContext';
+import * as LocalStorage from '../../../services/LocalStorage';
 
 const { height } = Dimensions.get('window');
 
@@ -23,9 +24,11 @@ export const Introduction = () => {
     /**
          * buttonHandle handle swipe data and index
          */
-    const buttonHandler = () => {
+    const buttonHandler = async () => {
         const index: number = pageRef.current?.getCurrentIndex();
-
+        if(getCurrentIndex == 3){
+         await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true)
+        }
         if (index === IntroductionData?.length - 1) {
 
             navigation.reset({

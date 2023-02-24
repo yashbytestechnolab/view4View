@@ -20,7 +20,7 @@ class increment {
         this.retryDocument = params
     }
     increment3() {
-        this.retryCount = 3
+        this.retryCount = 6
     }
     nextPress(params: boolean) {
         this.toggleNextPrees = params

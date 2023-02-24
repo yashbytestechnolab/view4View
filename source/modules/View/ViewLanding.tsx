@@ -4,7 +4,7 @@ import YoutubePlayer from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
-import { addWatchUrl, bytesVideoListData, EarnCoin, GetCurrentPlayCampaign, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, } from '../../services/FireStoreServices';
+import { addWatchUrl, bytesVideoListData, EarnCoin, GetCurrentPlayCampaign, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, userSession, } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -21,7 +21,7 @@ import { type as keys, } from '../../constants/types';
 import { getSocialLoginValue } from '../../constants/settingProfileArr';
 
 export const ViewLanding = () => {
-  const { storeCreator: { reward, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
+  const { storeCreator: { reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const controlRef: any = useRef<boolean>();
@@ -35,6 +35,7 @@ export const ViewLanding = () => {
   const GetCoins = async (params: string) => {
     // @ signin screen name in crash console  
     await get_coins().then(async (res: any) => {
+      setAdsCount(res?._data?.ads_watch || 0)
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
       dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: res?._data?.watch_videos })
       GetLiveVideoList(params, res?._data?.watch_videos)
@@ -66,12 +67,15 @@ export const ViewLanding = () => {
     notificationToken()
     GetReferralCode()
     getSocialLoginValue()
-
   }, []);
 
   useEffect(() => {
     let unmountPopup = setTimeout(() => openRatingPopup(), 2000)
     return () => { unmountPopup }
+  }, [])
+
+  useEffect(() => {
+    userSession()
   }, [])
 
 
@@ -110,21 +114,25 @@ export const ViewLanding = () => {
       }
     })
   };
+
   const GetEarning = async () => {
     const { id, video_Id, expected_view, coin } = videoData?.[nextVideo]
     if (timer === 0) {
+      let timer = Math.floor(Math.random() * (1200 - 500 + 1) + 300)
       setTimer(0);
       clearInterval(controlRef?.current);
-      await GetCurrentPlayCampaign(id).then(async (res: any) => {
-        const totalAmount = getBalance + (coin / expected_view);
-        dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
-        await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
-        const { remaining_view, consumed_view } = res?._data;
-        await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading)
-          .catch(() => handleFirebaseError("coin not update"))
-        dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
-        Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
-      })
+      setTimeout(async () => {
+        await GetCurrentPlayCampaign(id).then(async (res: any) => {
+          const totalAmount = getBalance + (coin / expected_view);
+          dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
+          await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
+          const { remaining_view, consumed_view } = res?._data;
+          await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading)
+            .catch(() => handleFirebaseError("coin not update"))
+          dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
+          Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
+        })
+      }, timer);
     }
   }
 
@@ -177,6 +185,30 @@ export const ViewLanding = () => {
     }
   };
 
+  // Genrate random number video array
+  const result = (add_Video_Url: Array<object> | any) => {
+    let data: any = {}
+    const arr: Array<object> = []
+    function randomNumberGenerator() {
+      let randomNumber: number | any = Math.floor(Math.random() * add_Video_Url.length)
+      if (data[randomNumber]) {
+        randomNumberGenerator()
+      }
+      else {
+        data[randomNumber] = "repeated"
+        arr.push(add_Video_Url[randomNumber])
+      }
+    }
+    function creareVideoArray() {
+      for (let j = 0; j < add_Video_Url?.length; j++) {
+        randomNumberGenerator()
+      }
+    }
+    creareVideoArray()
+    return arr
+  }
+
+
   const getBytesVideoList = async (params: string) => {
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let data = await bytesVideoListData(bytesDocData)
@@ -204,11 +236,14 @@ export const ViewLanding = () => {
         });
 
         if (add_Video_Url?.length > 0) {
+          console.log("add_Video_Url", add_Video_Url);
+
+          let modifiyArry = result(add_Video_Url)
           person?.emptyCount();
           params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
-          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
+          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: modifiyArry, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
         } else {
-          if (person.retryCount >= 3) {
+          if (person.retryCount >= 6) {
             dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })
             !isBytesVideoLoading && getBytesVideoList("")
           }
@@ -227,6 +262,7 @@ export const ViewLanding = () => {
         dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: false })
       });
   }
+
 
   const NextVideoList = () => {
     if (nextVideo <= videoData?.length - 1) {
@@ -262,8 +298,9 @@ export const ViewLanding = () => {
 
 
   const rewardCoin = () => {
-    EarnCoin(getBalance, (reward?.adsReward || 100))?.then((res) => {
+    EarnCoin(getBalance, (reward?.adsReward || 100), adsCount)?.then((res) => {
       dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
+      setAdsCount(adsCount + 1)
       Anaylitics("earn_coin_show_ads_completed", {
         current_user_balance: getBalance + (reward?.adsReward || 100)
       })
@@ -295,7 +332,7 @@ export const ViewLanding = () => {
                     videoId={videoData?.[nextVideo]?.video_Id[0]}
                     play={playing}
                     onChangeState={onStateChange}
-                    onError={(err) => console.log("wrr", err)} />}
+                    onError={(err) => { dispatchVideoLandingData({ types: type.NEXT_VIDEO, payload: nextVideo + 1 }) }} />}
               </View>
 
               <View style={styles.iconRow}>
