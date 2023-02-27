@@ -18,6 +18,12 @@ export const TipsDescription = () => {
     const textStyle = {
         p: {
             ...colorBackGround(darkModeTheme)
+        },
+        ul: {
+            ...colorBackGround(darkModeTheme)
+        },
+        li: {
+            paddingLeft: 12
         }
     }
 

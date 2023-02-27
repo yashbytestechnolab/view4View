@@ -66,6 +66,7 @@ export const MyCampaignLandingScreen = () => {
   useEffect(() => {
     if (!route?.params?.createCampaign) {
       getVideoUrl("")
+      getUserBalance();
     }
   }, [dispatchcampaign, isInternetBack])
 
@@ -75,9 +76,6 @@ export const MyCampaignLandingScreen = () => {
     })
   }
 
-  useEffect(() => {
-    getUserBalance();
-  }, [])
 
   /** convert last seen by uploaded video  */
   const getUploadedTime = useCallback((item: any) => {
@@ -116,7 +114,7 @@ export const MyCampaignLandingScreen = () => {
                   {getUploadedTime(item)}
                 </Text>
                 <View style={styles.fillContainer}>
-                  <View style={[styles.fillView, { width: `${fillValue + "%"}` }]} />
+                  <View style={[styles.fillView, { width: `${fillValue+ "%"}` }]} />
                 </View>
                 <View style={styles.countOfView}>
                   <Text style={[F40014.main, F40014.color,]}>

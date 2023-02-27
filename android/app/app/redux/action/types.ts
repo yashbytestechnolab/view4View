@@ -1,0 +1,18 @@
+export const types = {
+
+    /**
+     * Post Types
+     */
+    POST_FETCH_LOADING: "POST_FETCH_LOADING",
+    POST_FETCH_SUCCESS: "POST_FETCH_SUCCESS",
+    POST_FETCH_ERROR: "POST_FETCH_ERROR",
+
+
+    /**
+     * User Types
+     */
+    USER_FETCH_LOADING: "USER_FETCH_LOADING",
+    USER_FETCH_SUCCESS: "USER_FETCH_SUCCESS",
+    USER_FETCH_ERROR: "USER_FETCH_ERROR",
+
+}

@@ -16,7 +16,8 @@ export const TipsView = () => {
 
     const fetchTipsData = async () => {
         dispatchTips({ types: type.TIPSLOADING, payload: true })
-        let tipsDetail: object | any = await firebase.firestore()?.collection("tips").get()
+        let tipsDetail: object | any = await firebase.firestore()?.collection("tips").get().catch((err: any) => console.log("err", err)
+        )
         let tipsFormat = tipsDetail?._docs?.map((result: any) => result?._data)
         dispatchTips({ types: type.TIPSDATA, payload: tipsFormat })
     }
@@ -42,6 +43,7 @@ export const TipsView = () => {
                                     return (
                                         <>
                                             <TouchableOpacity
+                                                key={index.toString()}
                                                 onPress={() => navigation.navigate(ROUTES.TIPSDESCRIPTION, {
                                                     routeData: item,
                                                     number: index + 1

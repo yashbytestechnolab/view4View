@@ -27,6 +27,7 @@ export const String: any = {
         editProfile: 'Edit Profile',
         changePassword: 'Change Password',
         Tips:"Tips",
+        Trending:"Trending Contain",
         TipsDescription:"Description",
     },
     homeTab: {

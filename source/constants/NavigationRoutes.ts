@@ -28,7 +28,8 @@ interface IRoutes {
     SHOWADDS: string;
     TIPS: string;
     TIPSSTACK:string;
-    TIPSDESCRIPTION:string
+    TIPSDESCRIPTION:string;
+    TRENDINGVIDEO:string;
 };
 export const ROUTES: IRoutes = {
     HOME: "HOME",
@@ -60,5 +61,6 @@ export const ROUTES: IRoutes = {
     SHOWADDS: "SHOWADDS",
     TIPS: "TIPS" ,
     TIPSDESCRIPTION:"TIPSDESCRIPTION",
-    TIPSSTACK:"TIPSSTACK"
+    TIPSSTACK:"TIPSSTACK",
+    TRENDINGVIDEO:"TRENDINGVIDEO"
 }

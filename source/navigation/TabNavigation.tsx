@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { String, ROUTES } from '../constants';
 import { ViewStack, EarnCoinStack, SettingStack, MyCampaignLanding } from '.';
-import { Home, MyCampaign, Setting, TabEarnCoin, Tips } from '../assets/icons';
+import { Home, MyCampaign, Setting, TabEarnCoin, Tips, TrendingIcon } from '../assets/icons';
 import { SvgProps } from 'react-native-svg';
 import { ActiveTabText, Colors, F50010 } from '../Theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +14,7 @@ import { person } from '../modules/View/increment';
 import { HomeAdsEnable } from '../services/HomeAdsEnable';
 import { TipsView } from '../modules/Tips/TipsView';
 import { TipsStack } from './TipsStack';
+import { TrendingList } from '../modules/Trending/TrendingList';
 
 export const TabNavigation = () => {
   const appVersion: any = VersionInfo.appVersion;
@@ -55,6 +56,9 @@ export const TabNavigation = () => {
       case ROUTES.TIPSSTACK:
         Icon = Tips;
         break;
+      case ROUTES.TRENDINGVIDEO:
+        Icon = TrendingIcon;
+        break;
     }
     return Icon;
   };
@@ -73,7 +77,7 @@ export const TabNavigation = () => {
           },
         })}>
         {
-          !(Platform.OS === "ios" && appVersion == reviewVersionIos) &&
+          // !(Platform.OS === "ios" && appVersion == reviewVersionIos) &&
           <Tab.Screen
             name={ROUTES.VIEW}
             component={ViewStack}
@@ -88,24 +92,37 @@ export const TabNavigation = () => {
         }
         {
           (appVersion == reviewVersionIos) &&
-          <Tab.Screen
-            name={ROUTES.TIPSSTACK}
-            component={TipsStack}
-            options={{
-              tabBarLabel: ({ focused }) => (
-                <Text style={[focused ? ActiveTabText.main : F50010.main]}>
-                  {String?.headerTitle?.Tips}
-                </Text>
-              ),
-            }}
-          />
+          <>
+            <Tab.Screen
+              name={ROUTES.TIPSSTACK}
+              component={TipsStack}
+              options={{
+                tabBarLabel: ({ focused }) => (
+                  <Text numberOfLines={1} style={[focused ? ActiveTabText.main : F50010.main]}>
+                    {"Tips Support"}
+                  </Text>
+                ),
+              }}
+            />
+            <Tab.Screen
+              name={ROUTES.TRENDINGVIDEO}
+              component={TrendingList}
+              options={{
+                tabBarLabel: ({ focused }) => (
+                  <Text style={[focused ? ActiveTabText.main : F50010.main]}>
+                    {"Trending"}
+                  </Text>
+                ),
+              }}
+            />
+          </>
         }
         <Tab.Screen
           name={ROUTES.MYCAMPAIGN}
           component={MyCampaignLanding}
           options={{
             tabBarLabel: ({ focused }) => (
-              <Text style={[focused ? ActiveTabText.main : F50010.main]}>
+              <Text numberOfLines={1}  style={[focused ? ActiveTabText.main : F50010.main]}>
                 {String?.headerTitle?.myCampaign}
               </Text>
             ),

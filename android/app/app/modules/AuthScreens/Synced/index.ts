@@ -1,0 +1,1 @@
+export { default as Synced } from './Synced'

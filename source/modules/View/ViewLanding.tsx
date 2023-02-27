@@ -183,6 +183,8 @@ export const ViewLanding = () => {
         });
 
         if (add_Video_Url?.length > 0) {
+          console.log("add_Video_Url",add_Video_Url);
+          
           person?.emptyCount();
           params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
           dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: add_Video_Url, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })

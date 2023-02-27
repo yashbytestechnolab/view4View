@@ -7,7 +7,9 @@ import { Colors } from "./Color";
 export function darkBackGround(params: any) {
     return { backgroundColor: params ? Colors.darkModeColor : Colors.white }
 }
-
+export const topYTlist = (params:boolean)=>{
+    return { backgroundColor: params ? Colors.darkModeColor : Colors.shadowPink }
+}
 export function lightBackGround(params: any) {
     return { backgroundColor: params ? Colors.darkModeColor1 : Colors.white }
 }

@@ -20,6 +20,8 @@ interface reward {
   adsRewarAmt: number | string,
   referRewardAmt: number | string
 }
+import { LogBox } from 'react-native';
+
 export default function App() {
   const [updateAlert, setUpdateAlert] = useState(false)
   const [reward, setReward] = useState<reward>({ adsRewarAmt: 0, referRewardAmt: 0 })
@@ -71,6 +73,7 @@ export default function App() {
     requestUserPermission()
     crashlytics().log(" getReward config file @@")
   }, [updateAlert])
+  LogBox.ignoreAllLogs(true);
 
   const MyTheme = {
     ...DefaultTheme,
