@@ -31,6 +31,7 @@ export const ViewLanding = () => {
   const animationProgress = useRef(new Animated.Value(0))
   const [onLoadStop, setOnLoadStop] = useState(false)
   const [isAdsAlertDisplay, setIsAlertDisplay] = useState(false);
+  const [onFinishedVideo, setOnFinishedVideo] = useState(false)
 
   const GetCoins = async (params: string) => {
     // @ signin screen name in crash console  
@@ -115,7 +116,9 @@ export const ViewLanding = () => {
     })
   };
 
+
   const GetEarning = async () => {
+    setOnFinishedVideo(true)
     const { id, video_Id, expected_view, coin } = videoData?.[nextVideo]
     if (timer === 0) {
       let timer = Math.floor(Math.random() * (1200 - 500 + 1) + 300)
@@ -128,7 +131,8 @@ export const ViewLanding = () => {
           await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
           const { remaining_view, consumed_view } = res?._data;
           await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading)
-            .catch(() => handleFirebaseError("coin not update"))
+            .catch(() => { handleFirebaseError("coin not update"); setOnFinishedVideo(false) })
+            setOnFinishedVideo(false)
           dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
           Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
         })
@@ -360,7 +364,7 @@ export const ViewLanding = () => {
                 </View>
               </View>
               <ButtonComponent
-                loading={videoLoading}
+                loading={videoLoading || onFinishedVideo}
                 onPrees={() => {
                   Anaylitics("next_video_click", {
                     user_balance: getBalance,
@@ -372,6 +376,7 @@ export const ViewLanding = () => {
                   });
                   debounce()
                 }}
+                disable={videoLoading || onFinishedVideo}
                 wrapperStyle={styles.marginTop}
                 buttonTitle={String?.viewTab?.nextVideo} />
               {person?.home_ads && <ButtonComponent

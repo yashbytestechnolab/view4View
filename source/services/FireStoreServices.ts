@@ -108,7 +108,7 @@ export const EarnCoin = async (...payload: Array<number | any>) => {
   const userId = await getUserID()?.toString()
   return await userTable?.doc(userId)?.set({
     coin: parseInt(payload[0]) + payload[1],
-    ads_watch: payload[2] + 1
+    ads_watch: Number(payload[2]) + 1
   }, { merge: true })
 };
 
