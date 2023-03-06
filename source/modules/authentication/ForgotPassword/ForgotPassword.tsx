@@ -99,31 +99,6 @@ export const ForgotPassword = () => {
                 <Text style={[F40014.main, colorBackGround(darkModeTheme)]}>{String.commonString?.backTo}</Text>
                 <Text onPress={() => { navigation.navigate(ROUTES?.LOGIN); clearState() }} style={[F40014.main, F40014?.color]}>{String.commonString?.SignIn}</Text>
               </View>
-              <ORtitle />
-              {
-                Platform?.OS == 'android' ?
-                  (<SocialMediaButton
-                    wrapperStyle={style.googleWrapper}
-                    socialMediaIcon={<Google />}
-                    buttonTitle={String.commonString.signInWithGoogle}
-                    colorBackGround={colorBackGround(darkModeTheme)}
-                    onPress={() => { clearState(), googleLogin(navigation, setLoading) }}
-                  />) :
-                  (<View style={style.socialMedia}>
-                    <SocialMediaButton
-                      colorBackGround={colorBackGround(darkModeTheme)}
-                      socialMediaIcon={<Google />}
-                      buttonTitle={String.commonString.Google}
-                      onPress={() => { clearState(), googleLogin(navigation, setLoading) }}
-                    />
-                    <SocialMediaButton
-                      colorBackGround={colorBackGround(darkModeTheme)}
-                      socialMediaIcon={<Apple gery={darkModeTheme} />}
-                      buttonTitle={String.commonString.Apple}
-                      onPress={() => { clearState(), appleLoginIos(navigation, setLoading) }}
-                    />
-                  </View>)
-              }
             </View>
           </View>
         </View>

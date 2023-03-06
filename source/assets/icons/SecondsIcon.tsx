@@ -4,8 +4,8 @@ import Svg, { Circle, Path } from "react-native-svg"
 export const SecondsIcon = () => {
     return (
         <Svg
-            width={39}
-            height={39}
+            width={30}
+            height={30}
             viewBox="0 0 39 39"
             fill="none"
             xmlns="http://www.w3.org/2000/svg" >

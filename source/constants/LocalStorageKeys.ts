@@ -7,4 +7,5 @@ export enum LocalStorageKeys {
     AppActiveStatus='AppActiveStatus',
     previousBuildVersion="previousBuildVersion",
     getRating="getRating",
+    isAutoPlayEnable="isAutoPlayEnable"
 }

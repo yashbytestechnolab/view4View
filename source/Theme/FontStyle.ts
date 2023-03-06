@@ -31,7 +31,7 @@ export const F40014 = StyleSheet.create({
         color: Colors.placeHolderTextBlack,
         fontSize: 14,
         fontWeight: "400",
-        fontFamily: Fonts?.InterRegular
+        fontFamily: Fonts?.InterRegular,
     },
     color: {
         color: Colors.primaryRed,

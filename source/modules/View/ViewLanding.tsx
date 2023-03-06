@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated } from 'react-native';
-import YoutubePlayer from 'react-native-youtube-iframe';
+import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated, Alert, Platform } from 'react-native';
+import YoutubePlayer,{getYoutubeMeta} from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
-import { addWatchUrl, bytesVideoListData, EarnCoin, GetCurrentPlayCampaign, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, userSession, } from '../../services/FireStoreServices';
+import { addWatchUrl, bytesVideoListData, setAutoPlay, setAutoPlayAndTime,  EarnCoin, GetCurrentPlayCampaign, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, deleteAccoutCampaign} from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -19,22 +19,38 @@ import { AdsClass } from '../../services/AdsLoad';
 import { CamptionConformationModel } from '../../components/CamptionConformationModel';
 import { type as keys, } from '../../constants/types';
 import { getSocialLoginValue } from '../../constants/settingProfileArr';
+import ToggleSwitch from 'toggle-switch-react-native'
+import { useFocusEffect, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
+import Tooltip from 'react-native-walkthrough-tooltip';
+import BottomSheet from '../../components/BottomSheet';
+
+
 
 export const ViewLanding = () => {
-  const { storeCreator: { reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode } }: any = useContext(InputContextProvide)
+  const { storeCreator: { reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode, isTooltipRemaining, setIsTooltipRemaining, } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
+  const [isAutoPlayEnable, setIsAutoPlayEnable] = useState<boolean>(false);
+  const [remainingAutoPlayTime, setRemainingAutoPlayTime]:any = useState(1800);
   const controlRef: any = useRef<boolean>();
+  const autoPlayRef: any = useRef<boolean>();
   const firstStart: any = useRef<boolean>(true);
   const [timer, setTimer] = useState<number>();
   const [isAnimation, setIsAnimantion] = useState(false)
   const animationProgress = useRef(new Animated.Value(0))
   const [onLoadStop, setOnLoadStop] = useState(false)
   const [isAdsAlertDisplay, setIsAlertDisplay] = useState(false);
-  const [onFinishedVideo, setOnFinishedVideo] = useState(false)
+  const [onFinishedVideo, setOnFinishedVideo] = useState(false);
+  const [youtubePlayerTooltip, setYoutubePlayerTooltip]: any = useState(isTooltipRemaining);
+  const [coinTooltip, setCoinTooltip] = useState(false);
+  const [nextButtonTooltip, setNextButtonTooltip] = useState(false);
+  const [autoPlayTooltip, setAutoPlayTooltip] = useState(false);
+  const [lastEarnCoins,setLastEarnCoins] = useState(0);
+  const focus = useIsFocused()
 
   const GetCoins = async (params: string) => {
     // @ signin screen name in crash console  
+    
     await get_coins().then(async (res: any) => {
       setAdsCount(res?._data?.ads_watch || 0)
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
@@ -58,6 +74,15 @@ export const ViewLanding = () => {
   }
 
   const GetReferralCode = async () => {
+    // await userDeatil().then(async (res: any) => {
+    //   setIsAutoPlayEnable(res?.auto_play);
+    //   if(res?.auto_play && Number(res?.remaining_time) > 0){
+    //     setPlaying(true);
+    //   }
+    //   setRemainingAutoPlayTime(res?.remaining_time);
+    //   setGetReferralCode(res?.referral_code)
+    // });
+
     await userDeatil().then(async (res: any) => {
       setGetReferralCode(res?.referral_code)
     });
@@ -70,14 +95,35 @@ export const ViewLanding = () => {
     getSocialLoginValue()
   }, []);
 
-  useEffect(() => {
+  useEffect(() => {   
     let unmountPopup = setTimeout(() => openRatingPopup(), 2000)
     return () => { unmountPopup }
   }, [])
 
+const getAutoPlayVal = async () => {
+  let autoPlayVal: any = await LocalStorage.getValue(LocalStorageKeys?.isAutoPlayEnable)
+  setIsAutoPlayEnable(autoPlayVal || false);
+  if(autoPlayVal == true){
+    autoPlayHandler();
+  }
+  
+}
   useEffect(() => {
+    getAutoPlayVal();
     userSession()
   }, [])
+  {/** Auto Play */}
+  // useEffect(() => {
+  //   userDeatil().then(async (res: any) => {
+  //     if(res?.hasOwnProperty('remaining_time')){
+  //       userSession();
+  //     } else {
+  //       setSessionAndAutoPlay(1800)
+  //       setRemainingAutoPlayTime(1800)
+  //     }
+      
+  //   })
+  // }, [])
 
 
   useEffect(() => {
@@ -86,16 +132,26 @@ export const ViewLanding = () => {
       return;
     }
     if (start) {
-      controlRef.current = setInterval(() => {
+      controlRef.current = setInterval(async () => {
         if (timer > 0) {
           setTimer(timer - 1);
+          if (isAutoPlayEnable && remainingAutoPlayTime == 0) {
+            setRemainingAutoPlayTime(1800);
+            // await setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime);
+            // setPlaying(false);
+            // setIsAutoPlayEnable(false);
+            // Alert.alert("Auto Play off");
+          }
+          if(remainingAutoPlayTime > 0 &&  isAutoPlayEnable){
+            setRemainingAutoPlayTime(remainingAutoPlayTime - 1);
+          }
         }
       }, 1000);
     } else {
       clearInterval(controlRef.current);
     }
     return () => clearInterval(controlRef.current);
-  }, [start, controlRef, timer]);
+  }, [start, controlRef, timer, remainingAutoPlayTime]);
 
   useEffect(() => {
     if (!isInternetBack) setStart(false)
@@ -118,9 +174,14 @@ export const ViewLanding = () => {
 
 
   const GetEarning = async () => {
+   
     setOnFinishedVideo(true)
     const { id, video_Id, expected_view, coin } = videoData?.[nextVideo]
     if (timer === 0) {
+      if (isTooltipRemaining) {
+        setCoinTooltip(true);
+        setLastEarnCoins(videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view);
+      }
       let timer = Math.floor(Math.random() * (1200 - 500 + 1) + 300)
       setTimer(0);
       clearInterval(controlRef?.current);
@@ -135,6 +196,20 @@ export const ViewLanding = () => {
             setOnFinishedVideo(false)
           dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
           Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
+          
+          //add condition
+          if(isAutoPlayEnable){
+            // await setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime)
+            Anaylitics("autoplay_next_video_click", {
+              user_balance: getBalance,
+              video_id: videoData?.[nextVideo]?.video_Id[0],
+              video_duration: timer,
+              earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
+              expected_view: videoData?.[nextVideo]?.expected_view,
+              remaining_view: videoData?.[nextVideo]?.remaining_view
+            });
+            debounce()
+          }
         })
       }, timer);
     }
@@ -231,7 +306,6 @@ export const ViewLanding = () => {
     getPlayVideoList(docOS)
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
-
         res._docs?.filter((res: any) => {
           if (res?._data?.upload_by !== getUserID() && !watchVideoList?.includes(res?._data?.video_Id[1])) {
             add_Video_Url.push(res?._data)
@@ -240,11 +314,9 @@ export const ViewLanding = () => {
         });
 
         if (add_Video_Url?.length > 0) {
-          console.log("add_Video_Url", add_Video_Url);
-
-          let modifiyArry = result(add_Video_Url)
+          let modifiyArry:any = result(add_Video_Url)
           person?.emptyCount();
-          params?.length > 0 && (setTimer(add_Video_Url[0]?.require_duration))
+          params?.length > 0 && (setTimer(modifiyArry[0]?.require_duration))
           dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: modifiyArry, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
         } else {
           if (person.retryCount >= 6) {
@@ -314,7 +386,72 @@ export const ViewLanding = () => {
     }, 3000);
   }
 
+  const autoPlayHandler = async () => {
+    // if(isAutoPlayEnable == false && remainingAutoPlayTime > 0){
+      Anaylitics("autoplay_switch_click", {auto_play_mode: !isAutoPlayEnable})
+      await LocalStorage.setValue(LocalStorageKeys?.isAutoPlayEnable, !isAutoPlayEnable);
+      if(timer == 0){
+        debounce();
+      }
+      if(isAutoPlayEnable == false){
+      // setAutoPlay(!isAutoPlayEnable).then(() => {
+      //   setIsAutoPlayEnable(true);
+      //   //start time;
+      //   // userDeatil().then(async (res: any) => {
+      //   //     setPlaying(true);
+      //   //     setRemainingAutoPlayTime(res?.remaining_time);
+      //   // });
+      //   setRemainingAutoPlayTime(1800);
+      //   setPlaying(true);
+      // })
+      
+      // Anaylitics("autoplay_next_video_click", {
+      //   user_balance: getBalance,
+      //   video_id: videoData?.[nextVideo]?.video_Id[0],
+      //   video_duration: timer,
+      //   earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
+      //   expected_view: videoData?.[nextVideo]?.expected_view,
+      //   remaining_view: videoData?.[nextVideo]?.remaining_view
+      // });
+      // onPreesNext(100);
+      setIsAutoPlayEnable(true);
+      setPlaying(true);
+      setRemainingAutoPlayTime(1800)
+    } else {
+      //stop time;
+      if(remainingAutoPlayTime == 0){
+        setRemainingAutoPlayTime(1800);
+        setPlaying(true);
+       
+        // Alert.alert("Auto Play off");
+      } else {
+        setIsAutoPlayEnable(false);
+        setPlaying(false);
+        // setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime).then(() => {
+        //   setPlaying(false);
+        //   setIsAutoPlayEnable(false);
+        // })
+      }
+    }
+  }
 
+  const displayPlayTime = () => {
+    const totalMinutes = Math.floor(remainingAutoPlayTime / 60);
+    const seconds = (remainingAutoPlayTime % 60) < 10 ? "0" + (remainingAutoPlayTime % 60) : (remainingAutoPlayTime % 60);
+    const hours = (Math.floor(totalMinutes / 60)) < 10 ? "0" + (Math.floor(totalMinutes / 60)) : Math.floor(totalMinutes / 60);
+    const minutes = (totalMinutes % 60) < 10 ? "0" + (totalMinutes % 60) : totalMinutes % 60;
+    return <Text style={[F40014?.main, colorBackGround(darkModeTheme), { marginTop: 10, fontSize: 10, color: Colors.primaryRed }]}>{hours + ":" + minutes + ":" + seconds}</Text>
+  }
+
+  const youtubePlayerErrorHandler = async (err:any, videoId:string, videoData:any) => {
+    try {
+      await getYoutubeMeta(videoId);
+    } catch (error) {
+      deleteAccoutCampaign(videoData?.id).then((res) => {
+        debounce()
+      })
+    }
+  }
   return (
     <>
       <SafeAreaView style={styles.safearea} /><StatusBar
@@ -322,7 +459,14 @@ export const ViewLanding = () => {
         barStyle={String?.StatusBar?.lightContent}
       />
       <View style={[styles.container, darkBackGround(darkModeTheme)]}>
-        <Header coin={getBalance} title={String?.headerTitle?.view4view} />
+        <Header
+          coin={getBalance}
+          tooltip={coinTooltip}
+          title={String?.headerTitle?.view4view}
+          setTooltip={setCoinTooltip}
+          setNextButtonTooltip={setNextButtonTooltip}
+          lastAddedCoins={lastEarnCoins}
+        />
         {videoLoading || !isInternetBack ?
           <View style={styles.loader}>
             <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
@@ -330,39 +474,154 @@ export const ViewLanding = () => {
           <>
             <ScrollView showsVerticalScrollIndicator={false} style={styles.main} contentContainerStyle={{ paddingBottom: 120 }}>
               <View style={styles.videoWrapper} key={nextVideo?.toString()}>
+                
                 {isInternetBack && videoData?.[nextVideo]?.video_Id?.[0]?.length > 0 && !videoLoading &&
-                  <YoutubePlayer
-                    height={270}
-                    videoId={videoData?.[nextVideo]?.video_Id[0]}
-                    play={playing}
-                    onChangeState={onStateChange}
-                    onError={(err) => { dispatchVideoLandingData({ types: type.NEXT_VIDEO, payload: nextVideo + 1 }) }} />}
+                  <>
+                  <Tooltip
+                        isVisible={youtubePlayerTooltip}
+                        // isVisible={youtubePlayerTooltip}
+                        content={
+                          <View>
+                            <Text style={[colorBackGround(darkModeTheme)]}>
+                              Watch videos to earn coins!!
+                            </Text>
+                          </View>
+                        }
+                        contentStyle={[darkBackGround(darkModeTheme)]}
+                        placement="top"
+                        onClose={() => {
+                          setYoutubePlayerTooltip(false);
+                          setAutoPlayTooltip(true);
+                          setPlaying(true);
+                        }}
+                        useInteractionManager={true}
+                       >
+                        <Text></Text>
+                      </Tooltip>
+                      <YoutubePlayer
+                        height={270}
+                        videoId={videoData?.[nextVideo]?.video_Id[0]}
+                        play={playing}
+                        onChangeState={onStateChange}
+                        onError={(err:any) => youtubePlayerErrorHandler(err, videoData?.[nextVideo]?.video_Id[0], videoData?.[nextVideo])} />
+                  </>
+                    }
               </View>
 
               <View style={styles.iconRow}>
                 <View style={styles.iconWrapper}>
-                  <SecondsIcon />
                   <View style={styles.marginLeft}>
-                    <Text
-                      numberOfLines={1}
-                      style={[F60024.textStyle, { color: Colors?.primaryRed },]}>
-                      {timer > 0 ? timer : 0}
-                    </Text>
-                    <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.second}</Text>
+                    <View style={styles.commonActionContainer}>
+                    <View style={styles.iconTextWrapper}>
+                      <View style={styles.secondIcon}>
+                      <SecondsIcon />
+                      </View>
+                      <Text
+                        numberOfLines={1}
+                        style={[F60024.textStyle, { color: Colors?.primaryRed, justifyContent: 'center', alignItems: 'center', marginLeft: 7, flex:1, fontSize:22 }]}>
+                        {timer > 0 ? timer : 0}
+                      </Text>
+                      </View>
+                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{String?.viewTab?.second}</Text>
+                    </View>
+                    {/* <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}> */}
+                    {/* </View> */}
                   </View>
                 </View>
+
                 <View style={styles.iconWrapper}>
-                  <CoinIcon />
                   <View style={styles.marginLeft}>
-                    <Text
-                      numberOfLines={1}
-                      style={[F60024.textStyle, { color: Colors?.primaryRed }]}>
-                      {videoData?.[nextVideo]?.coin > 0 ? (videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view) : 0}
-                    </Text>
-                    <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{String?.viewTab?.coin}</Text>
+                    <View style={styles.commonActionContainer}>
+                      <View style={styles.iconTextWrapper}>
+                      <CoinIcon />
+                      <Text
+                        numberOfLines={1}
+                        style={[F60024.textStyle, { color: Colors?.primaryRed }, { color: Colors?.primaryRed, justifyContent: 'center', alignItems: 'center', marginLeft: 7 }]}>
+                        {videoData?.[nextVideo]?.coin > 0 ? (videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view) : 0}
+                      </Text>
+                      </View>
+                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{String?.viewTab?.coin}</Text>
+                    </View>
+                    {/* <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}> */}
+                    {/* </View> */}
                   </View>
                 </View>
+               
+                <View style={[styles.iconWrapper]}>
+                  <View style={[styles.marginLeft, {marginTop:10}]}> 
+                 {/* {displayPlayTime()} */}
+                 <Tooltip
+                isVisible={autoPlayTooltip}
+                contentStyle={[
+                  {
+                    width: 220,
+                    marginTop: 0,
+                    marginLeft: 0,
+                  },
+                  darkBackGround(darkModeTheme),
+                ]}
+                arrowStyle={{
+                  marginTop: 0,
+                  marginLeft: 0,
+                }}
+                content={
+                  <View>
+                    <Text style={[colorBackGround(darkModeTheme)]}>
+                      Click here to enable "Auto Play"
+                    </Text>
+                  </View>
+                }
+                placement="top"
+                onClose={() => {
+                  setAutoPlayTooltip(false);
+                  autoPlayHandler();
+                }}
+                // contentStyle={[darkBackGround(darkModeTheme)]}
+                useInteractionManager={true}
+                >
+                  <ToggleSwitch
+                  // key={item?.id}
+                  isOn={isAutoPlayEnable}
+                  onColor={Colors?.primaryRed}
+                  offColor={Colors?.toggleBG}
+                  size="small"
+                  onToggle={() => autoPlayHandler()}
+                />
+                </Tooltip>
+                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10, marginTop:10}]}>{String?.viewTab?.autoPlay}</Text>
+                  </View>
+                </View>
+                                
               </View>
+              <Tooltip
+                isVisible={nextButtonTooltip}
+                contentStyle={[
+                  {
+                    width: 230,
+                    marginTop: 25,
+                    marginLeft: 0,
+                  },
+                  darkBackGround(darkModeTheme),
+                ]}
+                arrowStyle={{
+                  marginTop: 25,
+                  marginLeft: 0,
+                }}
+                content={
+                  <View>
+                    <Text style={[colorBackGround(darkModeTheme)]}>
+                      Click on "Next" to explore more videos and Earn more coins!!
+                    </Text>
+                  </View>
+                }
+                placement="top"
+                onClose={() => {
+                  setNextButtonTooltip(false);
+                  setIsTooltipRemaining(false);
+                }}
+                // contentStyle={[darkBackGround(darkModeTheme)]}
+                useInteractionManager={true}
+                >
               <ButtonComponent
                 loading={videoLoading || onFinishedVideo}
                 onPrees={() => {
@@ -379,6 +638,7 @@ export const ViewLanding = () => {
                 disable={videoLoading || onFinishedVideo}
                 wrapperStyle={styles.marginTop}
                 buttonTitle={String?.viewTab?.nextVideo} />
+              </Tooltip>
               {person?.home_ads && <ButtonComponent
                 onPrees={() => {
                   Anaylitics("earn_coin_show_ads", {
@@ -394,7 +654,7 @@ export const ViewLanding = () => {
           </>
         }
 
-      </View>
+      </View> 
       {isAdsAlertDisplay &&
         <CamptionConformationModel
           titleText={'Warning!!'}

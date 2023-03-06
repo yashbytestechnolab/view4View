@@ -57,8 +57,8 @@ const onUserInfo = async (userInfo: any) => {
         return { videoUrl, firstname, lastname, email, uid, image, watch_videos, device_token, device_type }
     }
 }
+export const googleLogin = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any, setIsCreateCampaginRemaining?:any, setIsTooltipRemaining?:any ) => {
 
-export const googleLogin = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
     let loginType = "google"
     setLoading(true)
     try {
@@ -74,6 +74,8 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
             .then(async (res: any) => {
                 let userDetail = await onUserInfo(res?.user?._user)
                 if (res?.additionalUserInfo?.isNewUser) {
+                    setIsTooltipRemaining(true);
+                    setIsCreateCampaginRemaining(true);
                     userLogin(userDetail).then(() => {
                     })
                 }
@@ -81,6 +83,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
                 await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
                 await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
                 Anaylitics("google_login", { user_id: userDetail?.uid, })
+              
                 navigation.reset({
                     index: 0,
                     routes: [{ name: ROUTES.TABLIST }],
@@ -94,7 +97,7 @@ export const googleLogin = async (navigation: NavigationProp<ReactNavigation.Roo
     }
 };
 
-export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any) => {
+export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.RootParamList>, setLoading: any, setIsCreateCampaginRemaining?:any, setIsTooltipRemaining?:any) => {
     // create login request for apple
     let loginType = "apple"
     const appleAuthRequestResponse: any = await appleAuth.performRequest({
@@ -115,6 +118,8 @@ export const appleLoginIos = async (navigation: NavigationProp<ReactNavigation.R
                 let userDetail = await onUserInfo(res?.user?._user)
                 if (res?.additionalUserInfo?.isNewUser) {
                     userLogin(userDetail)
+                    setIsTooltipRemaining(true);
+                    setIsCreateCampaginRemaining(true);
                 }
                 await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, true);
                 await LocalStorage.setValue(LocalStorageKeys.UserId, userDetail?.uid);

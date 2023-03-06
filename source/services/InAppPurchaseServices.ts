@@ -44,6 +44,33 @@ export const getInAppPurchasetaticData:any =
             iosId: "6KCoins"
         }
     ]
+export const getInAppPurchaseAutoPlay: any =
+    [
+        {
+            name: "1:00hrs (60 Min)",
+            detail:"Can earn approx 3600 coins!!",
+            subInfo: "MOST POPULAR",
+            price: "89 ₹",
+            androidId: "1kcoins",
+            iosId: "1KCoins"
+        },
+        // {
+        //     name: "1:30hrs (90 Min)",
+        //     detail:"Can earn approx 5400 coins!!",
+        //     subInfo: "SAVE 10%",
+        //     price: "269 ₹",
+        //     androidId: "3.3kcoins",
+        //     "iosId": "3.3KCoins"
+        // },
+        // {
+        //     name: "3:00hrs (180 Min)",
+        //     detail:"Can earn approx 10800 coins!!",
+        //     subInfo: "SAVE 20%",
+        //     price: " 450 ₹",
+        //     androidId: "6kcoins",
+        //     iosId: "6KCoins"
+        // }
+    ]
 
 export const initilizeIAPConnection = async () => {
     await RNIap.initConnection()

@@ -27,7 +27,7 @@ export const Login = () => {
   /**
    * Context to give userinput data and error message
    */
-  const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError, setLoading } }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme, userInput, dispatch, userInputError, dispatchError, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining } }: any = useContext(InputContextProvide)
 
   const navigation = useNavigation();
 
@@ -170,20 +170,20 @@ export const Login = () => {
                       socialMediaIcon={<Google />}
                       buttonTitle={String.commonString.signInWithGoogle}
                       colorBackGround={colorBackGround(darkModeTheme)}
-                      onPress={() => { clearStateValue(); googleLogin(navigation, setLoading) }}
+                      onPress={() => { clearStateValue(); googleLogin(navigation, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining) }}
                     />) :
                     (<View style={style.socialMedia}>
                       <SocialMediaButton
                         colorBackGround={colorBackGround(darkModeTheme)}
                         socialMediaIcon={<Google />}
                         buttonTitle={String.commonString.Google}
-                        onPress={() => { clearStateValue(); googleLogin(navigation, setLoading) }}
+                        onPress={() => { clearStateValue(); googleLogin(navigation, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining) }}
                       />
                       <SocialMediaButton
                         colorBackGround={colorBackGround(darkModeTheme)}
                         socialMediaIcon={<Apple gery={darkModeTheme} />}
                         buttonTitle={String.commonString.Apple}
-                        onPress={() => { clearStateValue(); appleLoginIos(navigation, setLoading) }}
+                        onPress={() => { clearStateValue(); appleLoginIos(navigation, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining) }}
                       />
                     </View>)
                 }

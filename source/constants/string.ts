@@ -39,6 +39,7 @@ export const String: any = {
         coin: 'Coins',
         second: 'Seconds',
         nextVideo: 'Next Video',
+        autoPlay:"Auto Play",
         watchAdd(reward: any) {
             return `Watch Ads To Earn ${reward || 100} Coins`
         }

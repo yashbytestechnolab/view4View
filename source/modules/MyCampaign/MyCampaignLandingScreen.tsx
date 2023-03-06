@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, RefreshControl, ActivityIndicator, Linking, Platform, BackHandler, } from 'react-native';
+import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, RefreshControl, ActivityIndicator, Linking, Platform, BackHandler, StatusBar, } from 'react-native';
 import { Header } from '../../components';
 import { LocalStorageKeys, ROUTES, String } from '../../constants';
 import { styles } from './style';
@@ -16,6 +16,7 @@ import GiftModel from '../../components/GiftModel';
 import remoteConfig from '@react-native-firebase/remote-config';
 import * as LocalStorage from '../../services/LocalStorage';
 import { StickyTextEnable } from '../../services/StickyTextEnable';
+import Tooltip from 'react-native-walkthrough-tooltip';
 
 export const MyCampaignLandingScreen = () => {
   const { headerTitle, commonString } = String
@@ -26,7 +27,7 @@ export const MyCampaignLandingScreen = () => {
   const [getConfigData, setGetConfingData] = useState()
   const [isCurrentCampagin, setIsCurrentCampagin] = useState()
   /**context data coin and campaign data */
-  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { isInternetBack, campaignData: { loding, getCampaignData, stickeyIndex }, dispatchcampaign, darkModeTheme, dispatchCoin, setVideoUrl, isCreateCampaginRemaining, setIsCreateCampaginRemaining, } }: any = useContext(InputContextProvide)
 
   /**
  * 
@@ -232,6 +233,38 @@ export const MyCampaignLandingScreen = () => {
               }}
               activeOpacity={0.8}
               style={styles.addIcon}>
+                <Tooltip
+                isVisible={isCreateCampaginRemaining}
+                content={
+                  <View>
+                    <Text style={[colorBackGround(darkModeTheme)]}>
+                      Create your campaign and get views on your videos.
+                    </Text>
+                  </View>
+                }
+                contentStyle={[
+                  {
+                    width: 200,
+                    marginTop: 15,
+                    marginLeft: -30,
+                  },
+                  darkBackGround(darkModeTheme),
+                ]}
+                arrowStyle={{
+                  marginTop: 15,
+                  marginLeft: -30,
+                }}
+                placement="left"
+                onClose={() => {
+                  setIsCreateCampaginRemaining(false);
+                }}
+                useInteractionManager={true}
+                // topAdjustment={
+                //   Platform.OS === 'android' ? StatusBar.currentHeight : 0
+                // }
+                >
+                <View style={{height: 1, width: 1}} />
+              </Tooltip>
               <PlusIcon />
             </TouchableOpacity>
           </>
@@ -245,7 +278,7 @@ export const MyCampaignLandingScreen = () => {
           subTitle={String?.showRateUsModel?.subTitle}
           title2={String?.showRateUsModel?.title2}
           showRating={true}
-          negativeActionTextStyle={{color: Colors.primaryRed}}
+          negativeActionTextStyle={{color: Colors.primaryRed, fontSize:14}}
           negativeActionStyle={{backgroundColor:'transparent', borderWidth:1, borderColor: Colors.primaryRed}}
           CancleOnPress={() => { actionLinking() }}
           onPress={() => { setshowRateUsModel(false) }} />

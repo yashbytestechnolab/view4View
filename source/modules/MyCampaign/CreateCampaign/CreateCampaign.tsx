@@ -20,7 +20,7 @@ import * as LocalStorage from '../../../services/LocalStorage';
 export const CreateCampaign = () => {
 
   const navigation: any = useNavigation();
-  const { storeCreator: { token, loading, setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme, setVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { token, loading, setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme, setVideoUrl, addVideoUrl } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
@@ -77,7 +77,7 @@ export const CreateCampaign = () => {
     dispatchCoin({ types: type.GET_CURRENT_COIN, payload: coinBalance })
 
     await LocalStorage.getValue(LocalStorageKeys?.getRating)?.then((response) => {
-      console.log("resresresres",response)
+      console.log("addVideoUrl",addVideoUrl)
       let isRatingFlag: boolean
       const checkRatingFlag = response == null || false ? isRatingFlag = true : isRatingFlag = false
       navigation.replace(ROUTES.CAMPAIGNLANDING, {
@@ -110,8 +110,8 @@ export const CreateCampaign = () => {
   const handleAddCampaign = async () => {
     let urlWithRendomId:any = [];
     const randomeId = Math.floor(Math.random() * 9999)
-    urlWithRendomId.push(randomeId.toString())
     urlWithRendomId.push(splitUrl);
+    urlWithRendomId.push(randomeId.toString())
     getYoutubeMeta(splitUrl).then((videoTitle: any) => {
       if (getBalance >= totalCost && timeSecond != 0 && views != 0) {
         setLoading(true)
@@ -121,7 +121,7 @@ export const CreateCampaign = () => {
         /**
          * Create Campaign api call & decrement wallet amount
          */
-        createCampaign(userAddUrl, urlWithRendomId, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
+        createCampaign(addVideoUrl, urlWithRendomId, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
           .then((res: any) => {
             analyticsLog("create_campaign_sucess", updateWallet, userAddUrl, videoTitle), updateCoinBalance(updateWallet)
           }).catch((err: any) => {

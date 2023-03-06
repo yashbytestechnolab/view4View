@@ -121,6 +121,7 @@ export const SettingLanding = () => {
                       activeOpacity={1} style={style.tabWrapper}>
                       <Text key={item?.name} style={[F40014?.main, { fontSize: 15 }, colorBackGround(darkModeTheme)]}>{item?.name}</Text>
                       {!item?.isUiRender ? (<NextIcon key={item?.name} color={darkModeTheme ? Colors?.white : Colors?.black} />) :
+                      
                         <ToggleSwitch
                           key={item?.id}
                           isOn={darkModeTheme}

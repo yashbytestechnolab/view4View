@@ -31,11 +31,15 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 12, paddingTop: 24,
     },
     iconRow: {
-        marginTop: 40, marginHorizontal: 42, flexDirection: 'row', justifyContent: 'space-between',
+        marginTop: 40, marginHorizontal: 5, flexDirection: 'row', justifyContent: 'space-between',
+        
     },
-    iconWrapper: { flexDirection: 'row', alignItems: 'center' },
+    iconWrapper: {flex:1, flexDirection: 'row',justifyContent:'center', alignItems:'center', marginRight:5, backgroundColor:'rgba(255, 83, 113, 0.05)', padding:10, borderRadius:8, height:100 },
     marginLeft: {
-        marginLeft: 16
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center',
+        // marginLeft: 10
     },
     marginTop: {
         marginTop: 32
@@ -46,5 +50,8 @@ export const styles = StyleSheet.create({
         bottom: -230,
         left: 0, right: 0,
     },
-    loader: { flex: 1, marginTop: "20%", justifyContent: "center", alignItems: "center" }
+    loader: { flex: 1, justifyContent: "center", alignItems: "center" },
+    commonActionContainer: {flex:1, width:'100%', justifyContent: 'center', alignItems: 'center'},
+    iconTextWrapper: {flexDirection:'row'},
+    secondIcon: {flex:1, alignItems:'flex-end'}
 });

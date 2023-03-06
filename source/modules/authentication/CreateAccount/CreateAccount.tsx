@@ -25,7 +25,7 @@ export const CreateAccount = () => {
     /**
    * Context to give userinput data and error message
    */
-    const { storeCreator: { reward: { referReward }, darkModeTheme, userInput, dispatch, userInputError, dispatchError, loading, setLoading } }: any = useContext(InputContextProvide)
+    const { storeCreator: { reward: { referReward }, darkModeTheme, userInput, dispatch, userInputError, dispatchError, loading, setLoading, setIsTooltipRemaining, setIsCreateCampaginRemaining } }: any = useContext(InputContextProvide)
 
     /**
      *  This Function dispatch error message
@@ -76,6 +76,8 @@ export const CreateAccount = () => {
                     userInput?.referralCode?.length > 0 && (await referralEarning(userInput?.referralCode, referReward))
                     await LocalStorage.setValue(LocalStorageKeys?.isSocialLogin, false);
                     await LocalStorage.setValue(LocalStorageKeys?.UserId, userDetail?.uid);
+                    setIsTooltipRemaining(true);
+                    setIsCreateCampaginRemaining(true);
                     await LocalStorage.setValue(LocalStorageKeys?.IsFirstTimeLogin, true);
                     navigation.reset({
                         index: 0,
@@ -225,20 +227,20 @@ export const CreateAccount = () => {
                                             wrapperStyle={{ width: '92%', marginLeft: 16 }}
                                             socialMediaIcon={<Google />}
                                             buttonTitle={String.commonString.signInWithGoogle}
-                                            onPress={() => { googleLogin(navigation, setLoading); clearStateValue() }}
+                                            onPress={() => { googleLogin(navigation, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining); clearStateValue() }}
                                         /> :
                                         <View style={style.socialMedia}>
                                             <SocialMediaButton
                                                 colorBackGround={colorBackGround(darkModeTheme)}
                                                 socialMediaIcon={<Google />}
                                                 buttonTitle={String.commonString.Google}
-                                                onPress={() => { googleLogin(navigation, setLoading); clearStateValue() }}
+                                                onPress={() => { googleLogin(navigation, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining); clearStateValue() }}
                                             />
                                             <SocialMediaButton
                                                 colorBackGround={colorBackGround(darkModeTheme)}
                                                 socialMediaIcon={<Apple gery={darkModeTheme} />}
                                                 buttonTitle={String.commonString.Apple}
-                                                onPress={() => { clearStateValue(); appleLoginIos(navigation, setLoading) }}
+                                                onPress={() => { clearStateValue(); appleLoginIos(navigation, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining) }}
                                             />
                                         </View>
                                 }

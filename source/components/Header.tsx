@@ -1,7 +1,7 @@
 
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import React, { useContext, } from 'react';
-import { Colors, F50018, F60016 } from '../Theme';
+import { colorBackGround, Colors, darkBackGround, F50018, F60016 } from '../Theme';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Back } from '../assets/icons';
@@ -10,6 +10,7 @@ import { ROUTES } from '../constants';
 import Lottie from 'lottie-react-native';
 import { kFormatter } from '../services/CoinValueFormat';
 import { Anaylitics } from '../constants/analytics';
+import Tooltip from 'react-native-walkthrough-tooltip';
 
 interface IheaderProps {
     title?: string;
@@ -17,13 +18,19 @@ interface IheaderProps {
     showCoin?: boolean;
     coin?: number | string;
     onPrees?: () => void;
+    setTooltip?: any;
+    setNextButtonTooltip?: any;
+    tooltip?: boolean,
+    lastAddedCoins?:any
 
 }
 export const Header = (props: IheaderProps) => {
     const {
         storeCreator: {
             coinBalance: { getBalance },
+            darkModeTheme
         },
+        
 
     }: any = useContext(InputContextProvide);
 
@@ -59,6 +66,30 @@ export const Header = (props: IheaderProps) => {
                             {title}
                         </Text>
                     </View>
+                    <Tooltip
+                        isVisible={props.tooltip}
+                        content={
+                            <View>
+                                <Text style={[colorBackGround(darkModeTheme)]}>
+                                    {`You have earn ${props.lastAddedCoins} coins${`\n`}Click here to see more details!!`}
+                                    
+                                </Text>
+                            </View>
+                        }
+                        contentStyle={[
+                            { width: 250, marginTop: 20 },
+                            darkBackGround(darkModeTheme),
+                        ]}
+                        arrowStyle={{ marginTop: 20, marginLeft: 50 }}
+                        placement="bottom"
+                        horizontalAdjustment={100}
+                        onClose={() => {
+                            props.setTooltip(false);
+                            props.setNextButtonTooltip(true);
+                        }}
+                        useInteractionManager={true}>
+                        <View style={{ height: 1, width: 1 }} />
+                    </Tooltip>
                     <View style={[style.coinWrapper,]}>
                         {showCoin && (
                             <TouchableOpacity
