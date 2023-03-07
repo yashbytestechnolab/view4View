@@ -28,7 +28,7 @@ import BottomSheet from '../../components/BottomSheet';
 import { updatCampaignData } from './interface';
 
 export const ViewLanding = () => {
-  const { storeCreator: { reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode, isTooltipRemaining, setIsTooltipRemaining, } }: any = useContext(InputContextProvide)
+  const { storeCreator: { token, reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode, isTooltipRemaining, setIsTooltipRemaining, } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const [isAutoPlayEnable, setIsAutoPlayEnable] = useState<boolean>(false);
@@ -47,11 +47,10 @@ export const ViewLanding = () => {
   const [nextButtonTooltip, setNextButtonTooltip] = useState(false);
   const [autoPlayTooltip, setAutoPlayTooltip] = useState(false);
   const [lastEarnCoins, setLastEarnCoins] = useState(0);
-  const focus = useIsFocused()
 
   const GetCoins = async (params: string) => {
     // @ signin screen name in crash console  
-    
+
     await get_coins().then(async (res: any) => {
       setAdsCount(res?._data?.ads_watch || 0)
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
@@ -65,7 +64,9 @@ export const ViewLanding = () => {
     if (Ntoken == null || Ntoken == undefined) {
       let notificationTokenData: any = await getNotificationToken()
       setToken(notificationTokenData)
+      userSession(notificationTokenData)
     } else {
+      userSession(Ntoken)
       setToken(Ntoken || "")
     }
   }
@@ -95,24 +96,23 @@ export const ViewLanding = () => {
     getSocialLoginValue()
   }, []);
 
-  useEffect(() => {   
+  useEffect(() => {
     let unmountPopup = setTimeout(() => openRatingPopup(), 2000)
     return () => { unmountPopup }
   }, [])
 
-const getAutoPlayVal = async () => {
-  let autoPlayVal: any = await LocalStorage.getValue(LocalStorageKeys?.isAutoPlayEnable)
-  setIsAutoPlayEnable(autoPlayVal || false);
-  if(autoPlayVal == true){
-    autoPlayHandler();
+  const getAutoPlayVal = async () => {
+    let autoPlayVal: any = await LocalStorage.getValue(LocalStorageKeys?.isAutoPlayEnable)
+    setIsAutoPlayEnable(autoPlayVal || false);
+    if (autoPlayVal == true) {
+      autoPlayHandler();
+    }
+
   }
-  
-}
   useEffect(() => {
     getAutoPlayVal();
-    userSession()
   }, [])
-  {/** Auto Play */}
+  {/** Auto Play */ }
   // useEffect(() => {
   //   userDeatil().then(async (res: any) => {
   //     if(res?.hasOwnProperty('remaining_time')){
@@ -121,7 +121,7 @@ const getAutoPlayVal = async () => {
   //       setSessionAndAutoPlay(1800)
   //       setRemainingAutoPlayTime(1800)
   //     }
-      
+
   //   })
   // }, [])
 
@@ -142,7 +142,7 @@ const getAutoPlayVal = async () => {
             // setIsAutoPlayEnable(false);
             // Alert.alert("Auto Play off");
           }
-          if(remainingAutoPlayTime > 0 &&  isAutoPlayEnable){
+          if (remainingAutoPlayTime > 0 && isAutoPlayEnable) {
             setRemainingAutoPlayTime(remainingAutoPlayTime - 1);
           }
         }
@@ -174,7 +174,7 @@ const getAutoPlayVal = async () => {
 
 
   const GetEarning = async () => {
-   
+
     setOnFinishedVideo(true)
     const { id, expected_view, coin } = videoData?.[nextVideo]
     if (timer === 0) {
@@ -190,7 +190,9 @@ const getAutoPlayVal = async () => {
           const totalAmount = getBalance + (coin / expected_view);
           let getAppendUserId: Array<string | any> = res?._data?.user_views == undefined ? [getUserID()] : [...res?._data?.user_views, getUserID()]
           await newAddWatchUrl(totalAmount)
-          const { remaining_view, consumed_view } = res?._data;
+          console.log("res?._data", res?._data);
+
+          const { remaining_view, consumed_view, upload_by } = res?._data;
           let updatCampaignData: updatCampaignData = {
             addFiled: res?._data?.user_views == undefined,
             id,
@@ -198,6 +200,7 @@ const getAutoPlayVal = async () => {
             consumed_view,
             expected_view,
             videoData: videoData?.[nextVideo],
+            upload_by,
             isBytesVideoLoading,
             getAppendUserId,
           }
@@ -206,9 +209,9 @@ const getAutoPlayVal = async () => {
           setOnFinishedVideo(false)
           dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
           Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
-          
+
           //add condition
-          if(isAutoPlayEnable){
+          if (isAutoPlayEnable) {
             // await setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime)
             Anaylitics("autoplay_next_video_click", {
               user_balance: getBalance,
@@ -324,7 +327,7 @@ const getAutoPlayVal = async () => {
         });
 
         if (add_Video_Url?.length > 0) {
-          let modifiyArry:any = result(add_Video_Url)
+          let modifiyArry: any = result(add_Video_Url)
           person?.emptyCount();
           params?.length > 0 && (setTimer(modifiyArry[0]?.require_duration))
           dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: modifiyArry, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
@@ -398,12 +401,12 @@ const getAutoPlayVal = async () => {
 
   const autoPlayHandler = async () => {
     // if(isAutoPlayEnable == false && remainingAutoPlayTime > 0){
-      Anaylitics("autoplay_switch_click", {auto_play_mode: !isAutoPlayEnable})
-      await LocalStorage.setValue(LocalStorageKeys?.isAutoPlayEnable, !isAutoPlayEnable);
-      if(timer == 0){
-        debounce();
-      }
-      if(isAutoPlayEnable == false){
+    Anaylitics("autoplay_switch_click", { auto_play_mode: !isAutoPlayEnable })
+    await LocalStorage.setValue(LocalStorageKeys?.isAutoPlayEnable, !isAutoPlayEnable);
+    if (timer == 0) {
+      debounce();
+    }
+    if (isAutoPlayEnable == false) {
       // setAutoPlay(!isAutoPlayEnable).then(() => {
       //   setIsAutoPlayEnable(true);
       //   //start time;
@@ -414,7 +417,7 @@ const getAutoPlayVal = async () => {
       //   setRemainingAutoPlayTime(1800);
       //   setPlaying(true);
       // })
-      
+
       // Anaylitics("autoplay_next_video_click", {
       //   user_balance: getBalance,
       //   video_id: videoData?.[nextVideo]?.video_Id[0],
@@ -429,10 +432,10 @@ const getAutoPlayVal = async () => {
       setRemainingAutoPlayTime(1800)
     } else {
       //stop time;
-      if(remainingAutoPlayTime == 0){
+      if (remainingAutoPlayTime == 0) {
         setRemainingAutoPlayTime(1800);
         setPlaying(true);
-       
+
         // Alert.alert("Auto Play off");
       } else {
         setIsAutoPlayEnable(false);
@@ -453,7 +456,7 @@ const getAutoPlayVal = async () => {
     return <Text style={[F40014?.main, colorBackGround(darkModeTheme), { marginTop: 10, fontSize: 10, color: Colors.primaryRed }]}>{hours + ":" + minutes + ":" + seconds}</Text>
   }
 
-  const youtubePlayerErrorHandler = async (err:any, videoId:string, videoData:any) => {
+  const youtubePlayerErrorHandler = async (err: any, videoId: string, videoData: any) => {
     try {
       await getYoutubeMeta(videoId);
     } catch (error) {
@@ -484,55 +487,55 @@ const getAutoPlayVal = async () => {
           <>
             <ScrollView showsVerticalScrollIndicator={false} style={styles.main} contentContainerStyle={{ paddingBottom: 120 }}>
               <View style={styles.videoWrapper} key={nextVideo?.toString()}>
-                
+
                 {isInternetBack && (videoData?.[nextVideo]?.youtube_video_id?.length > 0 || videoData?.[nextVideo]?.video_Id?.[0]?.length > 0) && !videoLoading &&
                   <>
-                  <Tooltip
-                        isVisible={youtubePlayerTooltip}
-                        // isVisible={youtubePlayerTooltip}
-                        content={
-                          <View>
-                            <Text style={[colorBackGround(darkModeTheme)]}>
-                              Watch videos to earn coins!!
-                            </Text>
-                          </View>
-                        }
-                        contentStyle={[darkBackGround(darkModeTheme)]}
-                        placement="top"
-                        onClose={() => {
-                          setYoutubePlayerTooltip(false);
-                          setAutoPlayTooltip(true);
-                          setPlaying(true);
-                        }}
-                        useInteractionManager={true}
-                       >
-                        <Text></Text>
-                      </Tooltip>
-                      <YoutubePlayer
-                        height={270}
-                        videoId={videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]}
-                        play={playing}
-                        onChangeState={onStateChange}
-                        onError={(err:any) => youtubePlayerErrorHandler(err, videoData?.[nextVideo]?.video_Id[0], videoData?.[nextVideo])} />
+                    <Tooltip
+                      isVisible={youtubePlayerTooltip}
+                      // isVisible={youtubePlayerTooltip}
+                      content={
+                        <View>
+                          <Text style={[colorBackGround(darkModeTheme)]}>
+                            Watch videos to earn coins!!
+                          </Text>
+                        </View>
+                      }
+                      contentStyle={[darkBackGround(darkModeTheme)]}
+                      placement="top"
+                      onClose={() => {
+                        setYoutubePlayerTooltip(false);
+                        setAutoPlayTooltip(true);
+                        setPlaying(true);
+                      }}
+                      useInteractionManager={true}
+                    >
+                      <Text></Text>
+                    </Tooltip>
+                    <YoutubePlayer
+                      height={270}
+                      videoId={videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]}
+                      play={playing}
+                      onChangeState={onStateChange}
+                      onError={(err: any) => youtubePlayerErrorHandler(err, (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]), videoData?.[nextVideo])} />
                   </>
-                    }
+                }
               </View>
 
               <View style={styles.iconRow}>
                 <View style={styles.iconWrapper}>
                   <View style={styles.marginLeft}>
                     <View style={styles.commonActionContainer}>
-                    <View style={styles.iconTextWrapper}>
-                      <View style={styles.secondIcon}>
-                      <SecondsIcon />
+                      <View style={styles.iconTextWrapper}>
+                        <View style={styles.secondIcon}>
+                          <SecondsIcon />
+                        </View>
+                        <Text
+                          numberOfLines={1}
+                          style={[F60024.textStyle, { color: Colors?.primaryRed, justifyContent: 'center', alignItems: 'center', marginLeft: 7, flex: 1, fontSize: 22 }]}>
+                          {timer > 0 ? timer : 0}
+                        </Text>
                       </View>
-                      <Text
-                        numberOfLines={1}
-                        style={[F60024.textStyle, { color: Colors?.primaryRed, justifyContent: 'center', alignItems: 'center', marginLeft: 7, flex:1, fontSize:22 }]}>
-                        {timer > 0 ? timer : 0}
-                      </Text>
-                      </View>
-                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{String?.viewTab?.second}</Text>
+                      <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{String?.viewTab?.second}</Text>
                     </View>
                     {/* <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}> */}
                     {/* </View> */}
@@ -543,20 +546,20 @@ const getAutoPlayVal = async () => {
                   <View style={styles.marginLeft}>
                     <View style={styles.commonActionContainer}>
                       <View style={styles.iconTextWrapper}>
-                      <CoinIcon />
-                      <Text
-                        numberOfLines={1}
-                        style={[F60024.textStyle, { color: Colors?.primaryRed }, { color: Colors?.primaryRed, justifyContent: 'center', alignItems: 'center', marginLeft: 7 }]}>
-                        {videoData?.[nextVideo]?.coin > 0 ? (videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view) : 0}
-                      </Text>
+                        <CoinIcon />
+                        <Text
+                          numberOfLines={1}
+                          style={[F60024.textStyle, { color: Colors?.primaryRed }, { color: Colors?.primaryRed, justifyContent: 'center', alignItems: 'center', marginLeft: 7 }]}>
+                          {videoData?.[nextVideo]?.coin > 0 ? (videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view) : 0}
+                        </Text>
                       </View>
-                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{String?.viewTab?.coin}</Text>
+                      <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{String?.viewTab?.coin}</Text>
                     </View>
                     {/* <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}> */}
                     {/* </View> */}
                   </View>
                 </View>
-               
+
                 <View style={[styles.iconWrapper]}>
                   <View style={[styles.marginLeft, { marginTop: 10 }]}>
                     {/* {displayPlayTime()} */}
@@ -637,7 +640,7 @@ const getAutoPlayVal = async () => {
                   onPrees={() => {
                     Anaylitics("next_video_click", {
                       user_balance: getBalance,
-                      video_id: videoData?.[nextVideo]?.video_Id[0],
+                      video_id: (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]),
                       video_duration: timer,
                       earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
                       expected_view: videoData?.[nextVideo]?.expected_view,
