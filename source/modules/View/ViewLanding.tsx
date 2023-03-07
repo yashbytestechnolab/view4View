@@ -4,7 +4,7 @@ import YoutubePlayer,{getYoutubeMeta} from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
-import { addWatchUrl, bytesVideoListData, setAutoPlay, setAutoPlayAndTime,  EarnCoin, GetCurrentPlayCampaign, getNewUpdatedViewCount, getPlayVideoList, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, deleteAccoutCampaign} from '../../services/FireStoreServices';
+import { bytesVideoListData, setAutoPlay, setAutoPlayAndTime,  EarnCoin, GetCurrentPlayCampaign, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, deleteAccoutCampaigngetUnkonwnCampaign, newAddWatchUrl, updateCampaignViews, getUnkonwnCampaign, deleteAccoutCampaign, } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -25,6 +25,7 @@ import Tooltip from 'react-native-walkthrough-tooltip';
 import BottomSheet from '../../components/BottomSheet';
 
 
+import { updatCampaignData } from './interface';
 
 export const ViewLanding = () => {
   const { storeCreator: { reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode, isTooltipRemaining, setIsTooltipRemaining, } }: any = useContext(InputContextProvide)
@@ -54,7 +55,6 @@ export const ViewLanding = () => {
     await get_coins().then(async (res: any) => {
       setAdsCount(res?._data?.ads_watch || 0)
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
-      dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: res?._data?.watch_videos })
       GetLiveVideoList(params, res?._data?.watch_videos)
       Anaylitics("get_user_detail", { current_balance: res?._data?.coin })
     });
@@ -176,7 +176,7 @@ const getAutoPlayVal = async () => {
   const GetEarning = async () => {
    
     setOnFinishedVideo(true)
-    const { id, video_Id, expected_view, coin } = videoData?.[nextVideo]
+    const { id, expected_view, coin } = videoData?.[nextVideo]
     if (timer === 0) {
       if (isTooltipRemaining) {
         setCoinTooltip(true);
@@ -186,14 +186,24 @@ const getAutoPlayVal = async () => {
       setTimer(0);
       clearInterval(controlRef?.current);
       setTimeout(async () => {
-        await GetCurrentPlayCampaign(id).then(async (res: any) => {
+        await GetCurrentPlayCampaign(id, isBytesVideoLoading).then(async (res: any) => {
           const totalAmount = getBalance + (coin / expected_view);
-          dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
-          await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
+          let getAppendUserId: Array<string | any> = res?._data?.user_views == undefined ? [getUserID()] : [...res?._data?.user_views, getUserID()]
+          await newAddWatchUrl(totalAmount)
           const { remaining_view, consumed_view } = res?._data;
-          await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading)
+          let updatCampaignData: updatCampaignData = {
+            addFiled: res?._data?.user_views == undefined,
+            id,
+            remaining_view,
+            consumed_view,
+            expected_view,
+            videoData: videoData?.[nextVideo],
+            isBytesVideoLoading,
+            getAppendUserId,
+          }
+          await updateCampaignViews(updatCampaignData)
             .catch(() => { handleFirebaseError("coin not update"); setOnFinishedVideo(false) })
-            setOnFinishedVideo(false)
+          setOnFinishedVideo(false)
           dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
           Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
           
@@ -303,11 +313,11 @@ const getAutoPlayVal = async () => {
   async function GetLiveVideoList(params: string, watchVideoList: any) {
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
-    getPlayVideoList(docOS)
+    getUnkonwnCampaign(docOS)
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
         res._docs?.filter((res: any) => {
-          if (res?._data?.upload_by !== getUserID() && !watchVideoList?.includes(res?._data?.video_Id[1])) {
+          if (!res?._data?.user_views?.includes(getUserID() && res?._data?.upload_by !== getUserID())) {
             add_Video_Url.push(res?._data)
             return res?._data
           }

@@ -6,6 +6,7 @@ import { notificationSend } from './notificationSend';
 import { person } from '../modules/View/increment';
 import { String } from '../constants';
 import { Anaylitics } from '../constants/analytics';
+import { updatCampaignData } from '../modules/View/interface';
 const { congratulations, coins, Reward, completed, campaignCompleted } = String.Notification
 
 export function getUserID() {
@@ -106,10 +107,11 @@ export const createCampaign = async (...payload: Array<object | undefined | stri
     remaining_view: payload[3],
     require_duration: payload[2],
     upload_by: userID,
-    video_Id: payload[1],
+    youtube_video_id: payload[1],
     video_url: payload[0],
     video_title: payload[5],
     thumbnail_url: payload[7],
+    user_view: [getUserID()]
   }
   await WatchVideoList.doc(uniqID).set(updateObj)
   return updateObj
@@ -149,8 +151,10 @@ export const bytesVideoListData = async (...params: Array<any>) => {
 export const GetVideoCampaign = async () => {
   return await WatchVideoList?.orderBy("created", "desc")?.where("upload_by", "==", getUserID()?.toString())?.get()
 }
-export const GetCurrentPlayCampaign = async (id: number | string) => {
-  return await WatchVideoList?.doc(id)?.get()
+
+export const GetCurrentPlayCampaign = async (id: number | string, isBytesVideoLoading: boolean) => {
+  const getVideoDataById = isBytesVideoLoading ? bytesVideoList : WatchVideoList
+  return await getVideoDataById?.doc(id)?.get()
 }
 
 export const deleteRemaining = async (payload: string | number | any) => {
@@ -159,6 +163,13 @@ export const deleteRemaining = async (payload: string | number | any) => {
 
 export const campaignHistory = async () => {
   return await historyCampaign?.orderBy("created", "desc")?.where('upload_by', "==", getUserID()?.toString()).get().then((res: any) => res?._docs?.map((item: any) => item?._data))
+}
+
+export const newAddWatchUrl = async (coin: number | string) => {
+  const userId = getUserID()?.toString()
+  return await userTable?.doc(userId)?.update({
+    coin: coin,
+  })
 }
 
 export const addWatchUrl = async (...payload: Array<any | object>) => {
@@ -185,6 +196,41 @@ export const getPlayVideoList = async (docId: any) => {
   }
 }
 
+export const getUnkonwnCampaign = async (docId: any) => {
+  if (Object.keys(docId)?.length > 0) {
+    return await WatchVideoList?.orderBy("created", "asc").startAfter(docId).limit(5)?.get()
+  }
+  else {
+    return await WatchVideoList?.orderBy("created", "asc")?.limit(5).get()
+  }
+}
+
+export const updateCampaignViews = async (params: updatCampaignData) => {
+  let { addFiled, id, remaining_view, consumed_view, expected_view, videoData, isBytesVideoLoading, getAppendUserId }: any = params
+  let updateTable = isBytesVideoLoading ? bytesVideoList : WatchVideoList;
+  if (remaining_view != 1) {
+    if (addFiled) {
+      return await updateTable
+        .doc(id).set({
+          remaining_view: remaining_view - 1,
+          consumed_view: parseInt(consumed_view) + 1,
+          user_views: getAppendUserId
+        }, { merge: true })
+    } else {
+      return await updateTable
+        .doc(id).update({
+          remaining_view: remaining_view - 1,
+          consumed_view: parseInt(consumed_view) + 1,
+          user_views: getAppendUserId
+        })
+    }
+  }
+  else {
+    const history = { ...videoData, consumed_view: expected_view, remaining_view: 0 }
+    await WatchVideoList.doc(id).delete()
+    await deleteRemainingVideo(history)
+  }
+}
 
 export const getNewUpdatedViewCount = async (...params: Array<string | [] | undefined | object | number | any>) => {
   // prams[0]:id,prams[1] :remaining_view ,prams[2]:consumed_view,prams[3] :expected_view ,prams[4]:videoData:prams[5] :isBytesVideoLoading ,params[6]:token
@@ -193,7 +239,7 @@ export const getNewUpdatedViewCount = async (...params: Array<string | [] | unde
     return await updateTable
       .doc(params[0]).update({
         remaining_view: params[1] - 1,
-        consumed_view: parseInt(params[2]) + 1
+        consumed_view: parseInt(params[2]) + 1,
       })
   }
   else {

@@ -77,7 +77,6 @@ export const CreateCampaign = () => {
     dispatchCoin({ types: type.GET_CURRENT_COIN, payload: coinBalance })
 
     await LocalStorage.getValue(LocalStorageKeys?.getRating)?.then((response) => {
-      console.log("addVideoUrl",addVideoUrl)
       let isRatingFlag: boolean
       const checkRatingFlag = response == null || false ? isRatingFlag = true : isRatingFlag = false
       navigation.replace(ROUTES.CAMPAIGNLANDING, {
