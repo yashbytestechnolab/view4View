@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated, Alert, Platform } from 'react-native';
-import YoutubePlayer,{getYoutubeMeta} from 'react-native-youtube-iframe';
+import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
-import { bytesVideoListData, setAutoPlay, setAutoPlayAndTime,  EarnCoin, GetCurrentPlayCampaign, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, deleteAccoutCampaigngetUnkonwnCampaign, newAddWatchUrl, updateCampaignViews, getUnkonwnCampaign, deleteAccoutCampaign, } from '../../services/FireStoreServices';
+import { bytesVideoListData, setAutoPlay, setAutoPlayAndTime, EarnCoin, GetCurrentPlayCampaign, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, deleteAccoutCampaigngetUnkonwnCampaign, newAddWatchUrl, updateCampaignViews, getUnkonwnCampaign, deleteAccoutCampaign, } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -32,7 +32,7 @@ export const ViewLanding = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const [isAutoPlayEnable, setIsAutoPlayEnable] = useState<boolean>(false);
-  const [remainingAutoPlayTime, setRemainingAutoPlayTime]:any = useState(1800);
+  const [remainingAutoPlayTime, setRemainingAutoPlayTime]: any = useState(1800);
   const controlRef: any = useRef<boolean>();
   const autoPlayRef: any = useRef<boolean>();
   const firstStart: any = useRef<boolean>(true);
@@ -46,7 +46,7 @@ export const ViewLanding = () => {
   const [coinTooltip, setCoinTooltip] = useState(false);
   const [nextButtonTooltip, setNextButtonTooltip] = useState(false);
   const [autoPlayTooltip, setAutoPlayTooltip] = useState(false);
-  const [lastEarnCoins,setLastEarnCoins] = useState(0);
+  const [lastEarnCoins, setLastEarnCoins] = useState(0);
   const focus = useIsFocused()
 
   const GetCoins = async (params: string) => {
@@ -317,7 +317,7 @@ const getAutoPlayVal = async () => {
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
         res._docs?.filter((res: any) => {
-          if (!res?._data?.user_views?.includes(getUserID() && res?._data?.upload_by !== getUserID())) {
+          if (!res?._data?.user_views?.includes(getUserID()) && res?._data?.upload_by !== getUserID()) {
             add_Video_Url.push(res?._data)
             return res?._data
           }
@@ -485,7 +485,7 @@ const getAutoPlayVal = async () => {
             <ScrollView showsVerticalScrollIndicator={false} style={styles.main} contentContainerStyle={{ paddingBottom: 120 }}>
               <View style={styles.videoWrapper} key={nextVideo?.toString()}>
                 
-                {isInternetBack && videoData?.[nextVideo]?.video_Id?.[0]?.length > 0 && !videoLoading &&
+                {isInternetBack && (videoData?.[nextVideo]?.youtube_video_id?.length > 0 || videoData?.[nextVideo]?.video_Id?.[0]?.length > 0) && !videoLoading &&
                   <>
                   <Tooltip
                         isVisible={youtubePlayerTooltip}
@@ -510,7 +510,7 @@ const getAutoPlayVal = async () => {
                       </Tooltip>
                       <YoutubePlayer
                         height={270}
-                        videoId={videoData?.[nextVideo]?.video_Id[0]}
+                        videoId={videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]}
                         play={playing}
                         onChangeState={onStateChange}
                         onError={(err:any) => youtubePlayerErrorHandler(err, videoData?.[nextVideo]?.video_Id[0], videoData?.[nextVideo])} />
@@ -558,50 +558,50 @@ const getAutoPlayVal = async () => {
                 </View>
                
                 <View style={[styles.iconWrapper]}>
-                  <View style={[styles.marginLeft, {marginTop:10}]}> 
-                 {/* {displayPlayTime()} */}
-                 <Tooltip
-                isVisible={autoPlayTooltip}
-                contentStyle={[
-                  {
-                    width: 220,
-                    marginTop: 0,
-                    marginLeft: 0,
-                  },
-                  darkBackGround(darkModeTheme),
-                ]}
-                arrowStyle={{
-                  marginTop: 0,
-                  marginLeft: 0,
-                }}
-                content={
-                  <View>
-                    <Text style={[colorBackGround(darkModeTheme)]}>
-                      Click here to enable "Auto Play"
-                    </Text>
-                  </View>
-                }
-                placement="top"
-                onClose={() => {
-                  setAutoPlayTooltip(false);
-                  autoPlayHandler();
-                }}
-                // contentStyle={[darkBackGround(darkModeTheme)]}
-                useInteractionManager={true}
-                >
-                  <ToggleSwitch
-                  // key={item?.id}
-                  isOn={isAutoPlayEnable}
-                  onColor={Colors?.primaryRed}
-                  offColor={Colors?.toggleBG}
-                  size="small"
-                  onToggle={() => autoPlayHandler()}
-                />
-                </Tooltip>
-                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10, marginTop:10}]}>{String?.viewTab?.autoPlay}</Text>
+                  <View style={[styles.marginLeft, { marginTop: 10 }]}>
+                    {/* {displayPlayTime()} */}
+                    <Tooltip
+                      isVisible={autoPlayTooltip}
+                      contentStyle={[
+                        {
+                          width: 220,
+                          marginTop: 0,
+                          marginLeft: 0,
+                        },
+                        darkBackGround(darkModeTheme),
+                      ]}
+                      arrowStyle={{
+                        marginTop: 0,
+                        marginLeft: 0,
+                      }}
+                      content={
+                        <View>
+                          <Text style={[colorBackGround(darkModeTheme)]}>
+                            Click here to enable "Auto Play"
+                          </Text>
+                        </View>
+                      }
+                      placement="top"
+                      onClose={() => {
+                        setAutoPlayTooltip(false);
+                        autoPlayHandler();
+                      }}
+                      // contentStyle={[darkBackGround(darkModeTheme)]}
+                      useInteractionManager={true}
+                    >
+                      <ToggleSwitch
+                        // key={item?.id}
+                        isOn={isAutoPlayEnable}
+                        onColor={Colors?.primaryRed}
+                        offColor={Colors?.toggleBG}
+                        size="small"
+                        onToggle={() => autoPlayHandler()}
+                      />
+                    </Tooltip>
+                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10, marginTop: 10 }]}>{String?.viewTab?.autoPlay}</Text>
                   </View>
                 </View>
-                                
+
               </View>
               <Tooltip
                 isVisible={nextButtonTooltip}
@@ -631,23 +631,23 @@ const getAutoPlayVal = async () => {
                 }}
                 // contentStyle={[darkBackGround(darkModeTheme)]}
                 useInteractionManager={true}
-                >
-              <ButtonComponent
-                loading={videoLoading || onFinishedVideo}
-                onPrees={() => {
-                  Anaylitics("next_video_click", {
-                    user_balance: getBalance,
-                    video_id: videoData?.[nextVideo]?.video_Id[0],
-                    video_duration: timer,
-                    earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
-                    expected_view: videoData?.[nextVideo]?.expected_view,
-                    remaining_view: videoData?.[nextVideo]?.remaining_view
-                  });
-                  debounce()
-                }}
-                disable={videoLoading || onFinishedVideo}
-                wrapperStyle={styles.marginTop}
-                buttonTitle={String?.viewTab?.nextVideo} />
+              >
+                <ButtonComponent
+                  loading={videoLoading || onFinishedVideo}
+                  onPrees={() => {
+                    Anaylitics("next_video_click", {
+                      user_balance: getBalance,
+                      video_id: videoData?.[nextVideo]?.video_Id[0],
+                      video_duration: timer,
+                      earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
+                      expected_view: videoData?.[nextVideo]?.expected_view,
+                      remaining_view: videoData?.[nextVideo]?.remaining_view
+                    });
+                    debounce()
+                  }}
+                  disable={videoLoading || onFinishedVideo}
+                  wrapperStyle={styles.marginTop}
+                  buttonTitle={String?.viewTab?.nextVideo} />
               </Tooltip>
               {person?.home_ads && <ButtonComponent
                 onPrees={() => {
@@ -664,7 +664,7 @@ const getAutoPlayVal = async () => {
           </>
         }
 
-      </View> 
+      </View>
       {isAdsAlertDisplay &&
         <CamptionConformationModel
           titleText={'Warning!!'}

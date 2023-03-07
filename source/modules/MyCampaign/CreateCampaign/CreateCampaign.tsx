@@ -120,7 +120,7 @@ export const CreateCampaign = () => {
         /**
          * Create Campaign api call & decrement wallet amount
          */
-        createCampaign(addVideoUrl, urlWithRendomId, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
+        createCampaign(addVideoUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
           .then((res: any) => {
             analyticsLog("create_campaign_sucess", updateWallet, userAddUrl, videoTitle), updateCoinBalance(updateWallet)
           }).catch((err: any) => {
