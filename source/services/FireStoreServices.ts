@@ -23,7 +23,7 @@ function getUniqID() {
 export const userTable = firestore()?.collection('users')
 export const userLogout = firestore()?.collection('users')
 export const userTableLogin = firestore()?.collection('users')
-export const WatchVideoList = firestore()?.collection("development_campaign")
+export const WatchVideoList = firestore()?.collection("campaign")
 export const bytesVideoList = firestore()?.collection("bytes_video_list")
 export const historyCampaign = firestore()?.collection("campaign_history")
 
