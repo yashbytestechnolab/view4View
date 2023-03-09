@@ -188,9 +188,8 @@ export const ViewLanding = () => {
       setTimeout(async () => {
         await GetCurrentPlayCampaign(id, isBytesVideoLoading).then(async (res: any) => {
           const totalAmount = getBalance + (coin / expected_view);
-          let getAppendUserId: Array<string | any> = res?._data?.user_views == undefined ? [getUserID()] : [...res?._data?.user_views, getUserID()]
+          let getAppendUserId: Array<string | any> = (res?._data?.user_views == undefined) ? [getUserID()] : [...res?._data?.user_views, getUserID()]
           await newAddWatchUrl(totalAmount)
-          console.log("res?._data", res?._data);
 
           const { remaining_view, consumed_view, upload_by } = res?._data;
           let updatCampaignData: updatCampaignData = {
@@ -387,7 +386,8 @@ export const ViewLanding = () => {
 
 
   const rewardCoin = () => {
-    EarnCoin(getBalance, (reward?.adsReward || 100), adsCount)?.then((res) => {
+    let rewarShare: rewardShare = { reward: (reward?.adsReward || 100), adsCount, getBalance }
+    EarnCoin(rewarShare)?.then((res) => {
       dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
       setAdsCount(adsCount + 1)
       Anaylitics("earn_coin_show_ads_completed", {

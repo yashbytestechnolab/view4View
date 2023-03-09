@@ -113,7 +113,7 @@ export const createCampaign = async (payload: createCampaignRequest) => {
     video_url: addVideoUrl,
     video_title: title,
     thumbnail_url: thumbnail_url,
-    user_view: [userID]
+    user_views: [userID]
   }
   await WatchVideoList.doc(uniqID).set(updateObj)
   return updateObj
