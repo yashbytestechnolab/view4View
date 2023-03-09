@@ -1,7 +1,7 @@
 import React, { useEffect, useState, } from 'react'
 import { View, Text, Modal, StyleSheet } from 'react-native'
 import AnimatedLottieView from 'lottie-react-native'
-import { F60016, F60024, colorBackGround, darkBackGround } from '../Theme'
+import { Colors, F60016, F60024, colorBackGround, darkBackGround } from '../Theme'
 import { ButtonComponent } from '../components';
 import NetInfo from "@react-native-community/netinfo";
 import { String } from '../constants';
@@ -55,6 +55,6 @@ const style = StyleSheet.create({
         height: 100, width: 100
     },
     subText: { textAlign: 'center', marginTop: 20 },
-    button: { width: 312, marginTop: 75, backgroundColor: '#2E8B79' }
+    button: { width: 312, marginTop: 75, backgroundColor: Colors.primaryRed }
 
 })

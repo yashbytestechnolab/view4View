@@ -172,11 +172,12 @@ export const campaignHistory = async () => {
   return await historyCampaign?.orderBy("created", "desc")?.where('upload_by', "==", getUserID()?.toString()).get().then((res: any) => res?._docs?.map((item: any) => item?._data))
 }
 
-export const newAddWatchUrl = async (coin: number | string) => {
+export const newAddWatchUrl = async (coin: number | string, countVideo: number | string) => {
   const userId = getUserID()?.toString()
-  return await userTable?.doc(userId)?.update({
+  return await userTable?.doc(userId)?.set({
     coin: coin,
-  })
+    video_watch_count: Number(countVideo) + 1,
+  }, { mergeFields: ["video_watch_count", "coin"] })
 }
 
 // export const addWatchUrl = async (...payload: Array<any | object>) => {
@@ -214,7 +215,7 @@ export const getUnkonwnCampaign = async (docId: any) => {
 }
 
 export const updateCampaignViews = async (params: updatCampaignData) => {
-  let { addFiled, id, remaining_view, consumed_view, expected_view, videoData, isBytesVideoLoading, getAppendUserId, upload_by }: any = params
+  let { addFiled, id, remaining_view, consumed_view, expected_view, videoData, isBytesVideoLoading, getAppendUserId, upload_by, videoWatchUpdateCount }: any = params
   let updateTable = isBytesVideoLoading ? bytesVideoList : WatchVideoList;
   if (remaining_view != 1) {
     if (addFiled) {
@@ -222,14 +223,14 @@ export const updateCampaignViews = async (params: updatCampaignData) => {
         .doc(id).set({
           remaining_view: remaining_view - 1,
           consumed_view: parseInt(consumed_view) + 1,
-          user_views: getAppendUserId
+          user_views: getAppendUserId,
         }, { merge: true })
     } else {
       return await updateTable
         .doc(id).update({
           remaining_view: remaining_view - 1,
           consumed_view: parseInt(consumed_view) + 1,
-          user_views: getAppendUserId
+          user_views: getAppendUserId,
         })
     }
   }

@@ -7,5 +7,5 @@ export interface updatCampaignData {
     isBytesVideoLoading: boolean,
     getAppendUserId: Array<string> | any,
     addFiled: boolean;
-    upload_by: string | number
+    upload_by: string | number;
 }

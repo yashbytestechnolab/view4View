@@ -47,12 +47,13 @@ export const ViewLanding = () => {
   const [nextButtonTooltip, setNextButtonTooltip] = useState(false);
   const [autoPlayTooltip, setAutoPlayTooltip] = useState(false);
   const [lastEarnCoins, setLastEarnCoins] = useState(0);
-
+  const [videoWatchUpdateCount, setVideoWatchUpdateCount] = useState(0)
   const GetCoins = async (params: string) => {
     // @ signin screen name in crash console  
 
     await get_coins().then(async (res: any) => {
       setAdsCount(res?._data?.ads_watch || 0)
+      setVideoWatchUpdateCount(res?._data?.video_watch_count || 0)
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
       GetLiveVideoList(params, res?._data?.watch_videos)
       Anaylitics("get_user_detail", { current_balance: res?._data?.coin })
@@ -189,8 +190,7 @@ export const ViewLanding = () => {
         await GetCurrentPlayCampaign(id, isBytesVideoLoading).then(async (res: any) => {
           const totalAmount = getBalance + (coin / expected_view);
           let getAppendUserId: Array<string | any> = (res?._data?.user_views == undefined) ? [getUserID()] : [...res?._data?.user_views, getUserID()]
-          await newAddWatchUrl(totalAmount)
-
+          await newAddWatchUrl(totalAmount, videoWatchUpdateCount)
           const { remaining_view, consumed_view, upload_by } = res?._data;
           let updatCampaignData: updatCampaignData = {
             addFiled: res?._data?.user_views == undefined,
@@ -208,7 +208,7 @@ export const ViewLanding = () => {
           setOnFinishedVideo(false)
           dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
           Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
-
+          setVideoWatchUpdateCount(videoWatchUpdateCount + 1)
           //add condition
           if (isAutoPlayEnable) {
             // await setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime)
