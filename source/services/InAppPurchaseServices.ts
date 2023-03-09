@@ -47,7 +47,7 @@ export const getInAppPurchasetaticData:any =
 export const getInAppPurchaseAutoPlay: any =
     [
         {
-            name: "1:00hrs (60 Min)",
+            name: "01:00 Hour (60 Min)",
             detail:"Can earn approx 3600 coins!!",
             seconds:3600,
             price: "89 ₹",

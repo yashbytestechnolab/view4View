@@ -13,7 +13,7 @@ import { person } from './source/modules/View/increment';
 import { Platform, Appearance } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { NoInternetConnect } from './source/services/NoInternetConnect';
-import { LocalStorageKeys } from './source/constants';
+import { LocalStorageKeys, getNotificationToken } from './source/constants';
 import * as LocalStorage from './source/services/LocalStorage';
 import { Colors } from './source/Theme';
 interface reward {

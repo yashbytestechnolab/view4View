@@ -6,6 +6,8 @@ import { notificationSend } from './notificationSend';
 import { person } from '../modules/View/increment';
 import { String } from '../constants';
 import { Anaylitics } from '../constants/analytics';
+import { updatCampaignData } from '../modules/View/interface';
+import { createCampaignRequest } from '../modules/MyCampaign';
 const { congratulations, coins, Reward, completed, campaignCompleted } = String.Notification
 
 export function getUserID() {
@@ -46,9 +48,9 @@ export const userLogin = async (...payload: Array<object | string | undefined | 
   })
 }
 
-export const userSession = async () => {
+export const userSession = async (token: string | number) => {
   const getCurrentUserID = getUserID()
-  await userTable.doc(getCurrentUserID).set({ last_open: firestore.FieldValue.serverTimestamp() }, { merge: true })
+  await userTable.doc(getCurrentUserID).set({ last_open: firestore.FieldValue.serverTimestamp(), device_token: token }, { merge: true })
 }
 
 export const setSessionAndAutoPlay = async (...payload: Array<object | string | undefined | any>) => {
@@ -57,13 +59,16 @@ export const setSessionAndAutoPlay = async (...payload: Array<object | string | 
 }
 
 export const setAutoPlayAndTime = async (...payload: Array<object | string | undefined | any>) => {
-  console.log("payload=>", payload);
   const getCurrentUserID = getUserID()
   await userTable.doc(getCurrentUserID).set({ auto_play: payload[0], remaining_time: payload[1] }, { merge: true })
 }
 
+export const setAutoPlayAndTimeForAds = async (...payload: Array<object | string | undefined | any>) => {
+  const getCurrentUserID = getUserID()
+  await userTable.doc(getCurrentUserID).set({ auto_play: payload[0], remaining_time: payload[1], ads_watch: payload[2]}, { merge: true })
+}
+
 export const setAutoPlay = async (...payload: Array<object | string | undefined | any>) => {
-  console.log("payload=>", payload);
   const getCurrentUserID = getUserID()
   await userTable.doc(getCurrentUserID).set({ auto_play: payload[0] }, { merge: true })
 }
@@ -78,38 +83,42 @@ export const userDeatil = async () => {
   return await (await userTableLogin.doc(userId).get()).data()
 }
 
-export const updateProfile = async (...payload: Array<object | string | undefined | any>) => {
-
-  const space = payload[0].indexOf(" ");
-  const firstName = payload[0].substring(0, space);
-  const lastname = payload[0].substring(space + 1);
+export const updateProfile = async (payload: editProfile) => {
+  const { fullName, image } = payload
+  const space = fullName.indexOf(" ");
+  const firstName = fullName.substring(0, space);
+  const lastname = fullName.substring(space + 1);
   const userId = getUserID()?.toString()
 
   await userTable?.doc(userId).update({
     firstname: firstName,
     lastname: lastname,
-    image: payload[1] != undefined && payload[1]
+    image: image != undefined && image
   })
   return { firstName, lastname }
 }
-export const createCampaign = async (...payload: Array<object | undefined | string | number>) => {
+
+export const createCampaign = async (payload: createCampaignRequest) => {
+  const { addVideoUrl = "", splitUrl = "", timeSecond = 0, views = 0, totalCost = 0, thumbnail_url = "", title = "", token = "" } = payload
+
   let uniqID = getUniqID();
   let userID = getUserID()
 
   let updateObj = {
-    coin: payload[4],
+    coin: totalCost,
     consumed_view: 0,
-    device_token: payload[6],
+    device_token: token,
     created: firestore.FieldValue.serverTimestamp(),
-    expected_view: payload[3],
+    expected_view: views,
     id: uniqID,
-    remaining_view: payload[3],
-    require_duration: payload[2],
+    remaining_view: views,
+    require_duration: timeSecond,
     upload_by: userID,
-    video_Id: payload[1],
-    video_url: payload[0],
-    video_title: payload[5],
-    thumbnail_url: payload[7],
+    youtube_video_id: splitUrl,
+    video_url: addVideoUrl,
+    video_title: title,
+    thumbnail_url: thumbnail_url,
+    user_views: [userID]
   }
   await WatchVideoList.doc(uniqID).set(updateObj)
   return updateObj
@@ -122,24 +131,29 @@ export const payCoin = async (payload: string) => {
     coin: parseInt(payload) - 10,
   })
 };
-export const EarnCoin = async (...payload: Array<number | any>) => {
-  // payload[0]=coin payload[1]=rewardAmt 
-  const userId = await getUserID()?.toString()
+export const EarnCoin = async (payload: rewardShare) => {
+  const { getBalance = 0, adsCount = 0, reward = 0 }: rewardShare = payload
+  const userId = getUserID()?.toString()
   return await userTable?.doc(userId)?.set({
-    coin: parseInt(payload[0]) + payload[1],
-    ads_watch: Number(payload[2]) + 1
+    coin: Number(getBalance) + Number(reward),
+    ads_watch: Number(adsCount) + 1
   }, { merge: true })
 };
 
-export const deleteRemainingVideo = async (payload: any) => {
-  (payload?.device_token?.length > 0) && (await notificationSend(payload?.device_token, campaignCompleted(payload?.video_title), completed))
+export const getUserToken = async (id?: string | any) => {
+  return (await userTableLogin.doc(id).get()).data()
+}
+
+export const deleteRemainingVideo = async (payload: any, id: string | any) => {
+  const userToken = await getUserToken(id);
+  (userToken?.device_token?.length > 0) && (await notificationSend(userToken?.device_token, campaignCompleted(payload?.video_title), completed))
   return await historyCampaign?.add(payload)
 }
 
 
-export const bytesVideoListData = async (...params: Array<any>) => {
-  if (Object.keys(params[0]).length > 0) {
-    return await bytesVideoList.orderBy("created", "desc").startAfter(params[0]).limit(2).get().then((res: any) => res?._docs).catch((err: any) => err)
+export const bytesVideoListData = async (params: Array<any>) => {
+  if (Object.keys(params).length > 0) {
+    return await bytesVideoList.orderBy("created", "desc").startAfter(params).limit(2).get().then((res: any) => res?._docs).catch((err: any) => err)
   }
   else {
     return await bytesVideoList.orderBy("created", "desc").limit(2).get().then((res: any) => res?._docs).catch((err: any) => err)
@@ -149,8 +163,10 @@ export const bytesVideoListData = async (...params: Array<any>) => {
 export const GetVideoCampaign = async () => {
   return await WatchVideoList?.orderBy("created", "desc")?.where("upload_by", "==", getUserID()?.toString())?.get()
 }
-export const GetCurrentPlayCampaign = async (id: number | string) => {
-  return await WatchVideoList?.doc(id)?.get()
+
+export const GetCurrentPlayCampaign = async (id: number | string, isBytesVideoLoading: boolean) => {
+  const getVideoDataById = isBytesVideoLoading ? bytesVideoList : WatchVideoList
+  return await getVideoDataById?.doc(id)?.get()
 }
 
 export const deleteRemaining = async (payload: string | number | any) => {
@@ -161,22 +177,39 @@ export const campaignHistory = async () => {
   return await historyCampaign?.orderBy("created", "desc")?.where('upload_by', "==", getUserID()?.toString()).get().then((res: any) => res?._docs?.map((item: any) => item?._data))
 }
 
-export const addWatchUrl = async (...payload: Array<any | object>) => {
+export const newAddWatchUrl = async (coin: number | string) => {
   const userId = getUserID()?.toString()
-  if (payload[3]) {
-    return await userTable?.doc(userId)?.update({
-      coin: payload[2],
-    })
-  }
-  else {
-    return await userTable?.doc(userId)?.update({
-      coin: payload[2],
-      watch_videos: payload[0]?.length > 0 ? [...payload[0], payload[1]] : [payload[1]]
-    })
-  }
+  return await userTable?.doc(userId)?.update({
+    coin: coin,
+  })
 }
-export const getPlayVideoList = async (docId: any) => {
 
+// export const addWatchUrl = async (...payload: Array<any | object>) => {
+//   const userId = getUserID()?.toString()
+//   if (payload[3]) {
+//     return await userTable?.doc(userId)?.update({
+//       coin: payload[2],
+//     })
+//   }
+//   else {
+//     return await userTable?.doc(userId)?.update({
+//       coin: payload[2],
+//       watch_videos: payload[0]?.length > 0 ? [...payload[0], payload[1]] : [payload[1]]
+//     })
+//   }
+// }
+
+// export const getPlayVideoList = async (docId: any) => {
+
+//   if (Object.keys(docId)?.length > 0) {
+//     return await WatchVideoList?.orderBy("created", "asc").startAfter(docId).limit(5)?.get()
+//   }
+//   else {
+//     return await WatchVideoList?.orderBy("created", "asc")?.limit(5).get()
+//   }
+// }
+
+export const getUnkonwnCampaign = async (docId: any) => {
   if (Object.keys(docId)?.length > 0) {
     return await WatchVideoList?.orderBy("created", "asc").startAfter(docId).limit(5)?.get()
   }
@@ -185,23 +218,49 @@ export const getPlayVideoList = async (docId: any) => {
   }
 }
 
-
-export const getNewUpdatedViewCount = async (...params: Array<string | [] | undefined | object | number | any>) => {
-  // prams[0]:id,prams[1] :remaining_view ,prams[2]:consumed_view,prams[3] :expected_view ,prams[4]:videoData:prams[5] :isBytesVideoLoading ,params[6]:token
-  let updateTable = params[5] ? bytesVideoList : WatchVideoList;
-  if (params[1] != 1) {
-    return await updateTable
-      .doc(params[0]).update({
-        remaining_view: params[1] - 1,
-        consumed_view: parseInt(params[2]) + 1
-      })
+export const updateCampaignViews = async (params: updatCampaignData) => {
+  let { addFiled, id, remaining_view, consumed_view, expected_view, videoData, isBytesVideoLoading, getAppendUserId, upload_by }: any = params
+  let updateTable = isBytesVideoLoading ? bytesVideoList : WatchVideoList;
+  if (remaining_view != 1) {
+    if (addFiled) {
+      return await updateTable
+        .doc(id).set({
+          remaining_view: remaining_view - 1,
+          consumed_view: parseInt(consumed_view) + 1,
+          user_views: getAppendUserId
+        }, { merge: true })
+    } else {
+      return await updateTable
+        .doc(id).update({
+          remaining_view: remaining_view - 1,
+          consumed_view: parseInt(consumed_view) + 1,
+          user_views: getAppendUserId
+        })
+    }
   }
   else {
-    const history = { ...params[4], consumed_view: params[3], remaining_view: 0 }
-    await WatchVideoList.doc(params[0]).delete()
-    await deleteRemainingVideo(history)
+    const history = { ...videoData, consumed_view: expected_view, remaining_view: 0 }
+    await WatchVideoList.doc(id).delete()
+    await deleteRemainingVideo(history, upload_by)
   }
 }
+
+// export const getNewUpdatedViewCount = async (...params: Array<string | [] | undefined | object | number | any>) => {
+//   // prams[0]:id,prams[1] :remaining_view ,prams[2]:consumed_view,prams[3] :expected_view ,prams[4]:videoData:prams[5] :isBytesVideoLoading ,params[6]:token
+//   let updateTable = params[5] ? bytesVideoList : WatchVideoList;
+//   if (params[1] != 1) {
+//     return await updateTable
+//       .doc(params[0]).update({
+//         remaining_view: params[1] - 1,
+//         consumed_view: parseInt(params[2]) + 1,
+//       })
+//   }
+//   else {
+//     const history = { ...params[4], consumed_view: params[3], remaining_view: 0 }
+//     await WatchVideoList.doc(params[0]).delete()
+//     await deleteRemainingVideo(history)
+//   }
+// }
 
 
 export const updateUserWallet = async (payload: number) => {
