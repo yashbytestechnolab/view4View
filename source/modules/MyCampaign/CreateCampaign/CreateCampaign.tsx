@@ -10,7 +10,7 @@ import { Expected, dropdownConfigValue } from '../../../services';
 import { createCampaign, updateUserWallet } from '../../../services/FireStoreServices';
 import { InputContextProvide } from '../../../context/CommonContext';
 import { type } from '../../../constants/types';
-import { campaign } from './interface';
+import { campaign, createCampaignRequest } from './interface';
 import GiftModel from '../../../components/GiftModel';
 import { Anaylitics } from '../../../constants/analytics';
 import { CamptionConformationModel } from '../../../components/CamptionConformationModel';
@@ -30,7 +30,7 @@ export const CreateCampaign = () => {
   const [totalCost, setTotalCost] = useState(300)
   const { commonString, headerTitle } = String
   const [configValue, setConfigValue] = useState<campaign>({})
-  let splitUrl:any = route?.params?.url;
+  let splitUrl: any = route?.params?.url;
   const youTubeRef: any = useRef()
   const [showExpectedValue, setShowExpectedValue] = useState(false)
   const [showDropDown, setShowDropDown] = useState(false)
@@ -107,7 +107,7 @@ export const CreateCampaign = () => {
    * Add Campaign list in campaign table  
    */
   const handleAddCampaign = async () => {
-    let urlWithRendomId:any = [];
+    let urlWithRendomId: any = [];
     const randomeId = Math.floor(Math.random() * 9999)
     urlWithRendomId.push(splitUrl);
     urlWithRendomId.push(randomeId.toString())
@@ -120,7 +120,8 @@ export const CreateCampaign = () => {
         /**
          * Create Campaign api call & decrement wallet amount
          */
-        createCampaign(addVideoUrl, splitUrl, timeSecond, views, totalCost, videoTitle?.title, token, videoTitle?.thumbnail_url)
+        let createCampaignRequest: createCampaignRequest = { addVideoUrl, splitUrl, timeSecond, views, totalCost, thumbnail_url: videoTitle?.thumbnail_url, title: videoTitle?.title, token }
+        createCampaign(createCampaignRequest)
           .then((res: any) => {
             analyticsLog("create_campaign_sucess", updateWallet, userAddUrl, videoTitle), updateCoinBalance(updateWallet)
           }).catch((err: any) => {
@@ -227,7 +228,7 @@ export const CreateCampaign = () => {
 
         <GiftModel
           saveButtonTitle={'Earn Coins Now'}
-          
+
           cancleButtonTitle={'No'}
           subTitle={`Sorry, You don't have enough coins to create the campaign. Would you like to earn more coins?`}
           title2={'Out of coins'}

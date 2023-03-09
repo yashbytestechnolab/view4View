@@ -28,7 +28,8 @@ export const EarnCoinLanding = () => {
    */
 
   const rewardCoin = () => {
-    EarnCoin(getBalance, (reward?.adsReward || 100), adsCount)?.then((res) => {
+    let rewarShare: rewardShare = { reward: (reward?.adsReward || 100), adsCount, getBalance }
+    EarnCoin(rewarShare)?.then((res) => {
       setAdsCount(adsCount + 1)
       dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
       Anaylitics("earn_coin_show_ads_completed", {

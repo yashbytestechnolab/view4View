@@ -56,7 +56,8 @@ export const EditProfile = () => {
     };
     const updateProfileData = () => {
         dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
-        updateProfile(userInput?.fullName, (profilePic?.data || data?.image)).then((resp: any) => {
+        let editProfileUpdate: editProfile = { fullName: userInput?.fullName, image: (profilePic?.data || data?.image) }
+        updateProfile(editProfileUpdate).then((resp: any) => {
             let obj = {
                 firstname: resp?.firstName, email: userInput?.email, image: (profilePic?.data || data?.image), lastname: resp?.lastname
             }
