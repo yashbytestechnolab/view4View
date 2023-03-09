@@ -18,7 +18,7 @@ import { ORtitle } from '../authentication/Authcomponents';
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
 
-export const AutoPlayScreen = () => {
+export const AutoPlayScreen = ({watchAdsHandler, onPressBuyAutoPlay}:any) => {
     const [selectRB, setSelectRB] = useState(0)
     const [parseData, setParseData]: any = useState(undefined)
     const [products, setProducts]: any = useState();
@@ -147,11 +147,6 @@ export const AutoPlayScreen = () => {
         setSelectRB(idx);
     };
 
-    const onPressBuyAutoPlay = async (productData: any) => {
-        setloading(true)
-        let sku = onGetProdutId(productData);
-        sku && await onPurchase(sku)
-    }
     const HandleLoader = () => {
         return (
             <View style={style?.loaderHead}>
@@ -213,7 +208,7 @@ export const AutoPlayScreen = () => {
                         />
                         <ORtitle />
                         <ButtonComponent buttonTitle={"Watch Ads To Earn 5 Mins"}
-                            onPrees={() => onPressBuyAutoPlay(parseData[selectRB])}
+                            onPrees={() => watchAdsHandler()}
                             wrapperStyle={style.buttonWrapperAdsWatch}
                         />
                     </View></>

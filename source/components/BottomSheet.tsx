@@ -5,7 +5,9 @@ import { AutoPlayScreen } from "../modules/AutoPlay/AutoPlayBuy";
 interface bottomSheetProps {
     bottomSheetRef?: any,
     childrens?: any,
-    bottomRef?:any
+    bottomRef?:any,
+    watchAdsHandler?:any,
+    onPressBuyAutoPlay?:any
 }
 
 const BottomSheet = (props: bottomSheetProps) => {
@@ -24,7 +26,10 @@ const BottomSheet = (props: bottomSheetProps) => {
                 }
             }}
         >
-            <AutoPlayScreen />
+            <AutoPlayScreen 
+                watchAdsHandler={props.watchAdsHandler}
+                onPressBuyAutoPlay={(data:any) => props.onPressBuyAutoPlay(data)}
+             />
         </RBSheet>
     )
 }

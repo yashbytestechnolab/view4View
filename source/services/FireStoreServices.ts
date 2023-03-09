@@ -53,7 +53,7 @@ export const userSession = async () => {
 
 export const setSessionAndAutoPlay = async (...payload: Array<object | string | undefined | any>) => {
   const getCurrentUserID = getUserID()
-  await userTable.doc(getCurrentUserID).set({ last_open: firestore.FieldValue.serverTimestamp(), remaining_time: payload[0], auto_play: false}, { merge: true })
+  await userTable.doc(getCurrentUserID).set({ last_open: firestore.FieldValue.serverTimestamp(), remaining_time: payload[0], auto_play: true}, { merge: true })
 }
 
 export const setAutoPlayAndTime = async (...payload: Array<object | string | undefined | any>) => {

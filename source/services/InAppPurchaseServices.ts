@@ -6,7 +6,7 @@ import * as RNIap from 'react-native-iap';
 
 const itemSkus: any = Platform.select({
     ios: ["1KCoins", "3.3KCoins", "6KCoins"],
-    android: ["1kcoins", "3.3kcoins", "6kcoins"]
+    android: ["1kcoins", "3.3kcoins", "6kcoins", "60mautoplay"]
 });
 
 
@@ -49,10 +49,10 @@ export const getInAppPurchaseAutoPlay: any =
         {
             name: "1:00hrs (60 Min)",
             detail:"Can earn approx 3600 coins!!",
-            subInfo: "MOST POPULAR",
+            seconds:3600,
             price: "89 ₹",
-            androidId: "1kcoins",
-            iosId: "1KCoins"
+            androidId: "60mautoplay",
+            iosId: "60mautoplay"
         },
         // {
         //     name: "1:30hrs (90 Min)",
@@ -73,6 +73,18 @@ export const getInAppPurchaseAutoPlay: any =
     ]
 
 export const initilizeIAPConnection = async () => {
+    // try {
+    //     const result = await RNIap.initConnection();
+    //     await RNIap.flushFailedPurchasesCachedAsPendingAndroid();
+    //     if (result === false) {
+    //       Alert.alert("couldn't get in-app-purchase information");
+    //       return;
+    //     }
+    //     return result;
+    //   } catch (err) {
+    //       Alert.alert('fail to get in-app-purchase information');
+    //       return;
+    //   }
     await RNIap.initConnection()
         .then(async (connection) => {
             return connection
