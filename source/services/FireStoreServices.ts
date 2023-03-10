@@ -55,12 +55,17 @@ export const userSession = async (token: string | number) => {
 
 export const setSessionAndAutoPlay = async (...payload: Array<object | string | undefined | any>) => {
   const getCurrentUserID = getUserID()
-  await userTable.doc(getCurrentUserID).set({ last_open: firestore.FieldValue.serverTimestamp(), remaining_time: payload[0], auto_play: false }, { merge: true })
+  await userTable.doc(getCurrentUserID).set({ last_open: firestore.FieldValue.serverTimestamp(), remaining_time: payload[0], auto_play: true}, { merge: true })
 }
 
 export const setAutoPlayAndTime = async (...payload: Array<object | string | undefined | any>) => {
   const getCurrentUserID = getUserID()
   await userTable.doc(getCurrentUserID).set({ auto_play: payload[0], remaining_time: payload[1] }, { merge: true })
+}
+
+export const setAutoPlayAndTimeForAds = async (...payload: Array<object | string | undefined | any>) => {
+  const getCurrentUserID = getUserID()
+  await userTable.doc(getCurrentUserID).set({ auto_play: payload[0], remaining_time: payload[1], ads_watch: payload[2]}, { merge: true })
 }
 
 export const setAutoPlay = async (...payload: Array<object | string | undefined | any>) => {

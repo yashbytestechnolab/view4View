@@ -4,7 +4,7 @@ import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
-import { bytesVideoListData, setAutoPlay, setAutoPlayAndTime, EarnCoin, GetCurrentPlayCampaign, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, deleteAccoutCampaigngetUnkonwnCampaign, newAddWatchUrl, updateCampaignViews, getUnkonwnCampaign, deleteAccoutCampaign, } from '../../services/FireStoreServices';
+import { bytesVideoListData, setAutoPlay, setAutoPlayAndTime, EarnCoin, GetCurrentPlayCampaign, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, newAddWatchUrl, updateCampaignViews, getUnkonwnCampaign, deleteAccoutCampaign, setAutoPlayAndTimeForAds } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -23,16 +23,19 @@ import ToggleSwitch from 'toggle-switch-react-native'
 import { useFocusEffect, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import BottomSheet from '../../components/BottomSheet';
-
-
+import { getInAppPurchaseAutoPlay, getItems, getPurchaseData, initilizeIAPConnection, onGetProdutId, onPurchase } from '../../services/InAppPurchaseServices';
+import { showMessage } from 'react-native-flash-message';
+import * as RNIap from 'react-native-iap';
 import { updatCampaignData } from './interface';
 
+let purchaseUpdateSubscription: any = null;
+let purchaseErrorSubscription: any = null;
 export const ViewLanding = () => {
   const { storeCreator: { token, reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode, isTooltipRemaining, setIsTooltipRemaining, } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const [isAutoPlayEnable, setIsAutoPlayEnable] = useState<boolean>(false);
-  const [remainingAutoPlayTime, setRemainingAutoPlayTime]: any = useState(1800);
+  const [remainingAutoPlayTime, setRemainingAutoPlayTime]:any = useState(0);
   const controlRef: any = useRef<boolean>();
   const autoPlayRef: any = useRef<boolean>();
   const firstStart: any = useRef<boolean>(true);
@@ -46,7 +49,12 @@ export const ViewLanding = () => {
   const [coinTooltip, setCoinTooltip] = useState(false);
   const [nextButtonTooltip, setNextButtonTooltip] = useState(false);
   const [autoPlayTooltip, setAutoPlayTooltip] = useState(false);
-  const [lastEarnCoins, setLastEarnCoins] = useState(0);
+  const [lastEarnCoins,setLastEarnCoins] = useState(0);
+  const [parseData, setParseData]: any = useState(undefined)
+  const [products, setProducts]: any = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  let bottomRef: any = useRef<boolean>();
+  const focus = useIsFocused()
   const [videoWatchUpdateCount, setVideoWatchUpdateCount] = useState(0)
   const GetCoins = async (params: string) => {
     // @ signin screen name in crash console  
@@ -74,18 +82,15 @@ export const ViewLanding = () => {
   const openRatingPopup = async () => {
     await Rating()
   }
+  
 
   const GetReferralCode = async () => {
-    // await userDeatil().then(async (res: any) => {
-    //   setIsAutoPlayEnable(res?.auto_play);
-    //   if(res?.auto_play && Number(res?.remaining_time) > 0){
-    //     setPlaying(true);
-    //   }
-    //   setRemainingAutoPlayTime(res?.remaining_time);
-    //   setGetReferralCode(res?.referral_code)
-    // });
-
     await userDeatil().then(async (res: any) => {
+      // setIsAutoPlayEnable(res?.auto_play);
+      // if(res?.auto_play && Number(res?.remaining_time) > 0){
+      //   setPlaying(true);
+      // }
+      // setRemainingAutoPlayTime(res?.remaining_time);
       setGetReferralCode(res?.referral_code)
     });
   };
@@ -125,6 +130,27 @@ export const ViewLanding = () => {
 
   //   })
   // }, [])
+  {/** Auto Play */}
+  useEffect(() => {
+    userDeatil().then(async (res: any) => {
+      if(res?.hasOwnProperty('remaining_time')){
+        setRemainingAutoPlayTime(res?.remaining_time);
+        setIsAutoPlayEnable(res?.auto_play);
+        res?.auto_play === true && setPlaying(true);
+      } else {
+        setSessionAndAutoPlay(1800);
+        setRemainingAutoPlayTime(1800);
+        setIsAutoPlayEnable(false);
+        setPlaying(true);
+      }
+      
+    })
+  }, [])
+  useEffect(() => {
+    if (isAutoPlayEnable && remainingAutoPlayTime == 0) {
+      bottomRef.open();
+    }
+  }, [remainingAutoPlayTime])
 
 
   useEffect(() => {
@@ -137,11 +163,9 @@ export const ViewLanding = () => {
         if (timer > 0) {
           setTimer(timer - 1);
           if (isAutoPlayEnable && remainingAutoPlayTime == 0) {
-            setRemainingAutoPlayTime(1800);
-            // await setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime);
-            // setPlaying(false);
-            // setIsAutoPlayEnable(false);
-            // Alert.alert("Auto Play off");
+            await setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime);
+            setPlaying(false);
+            setIsAutoPlayEnable(false);
           }
           if (remainingAutoPlayTime > 0 && isAutoPlayEnable) {
             setRemainingAutoPlayTime(remainingAutoPlayTime - 1);
@@ -210,8 +234,8 @@ export const ViewLanding = () => {
           Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
           setVideoWatchUpdateCount(videoWatchUpdateCount + 1)
           //add condition
-          if (isAutoPlayEnable) {
-            // await setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime)
+          if(isAutoPlayEnable){
+            await setAutoPlayAndTime(isAutoPlayEnable, remainingAutoPlayTime)
             Anaylitics("autoplay_next_video_click", {
               user_balance: getBalance,
               video_id: videoData?.[nextVideo]?.video_Id[0],
@@ -400,50 +424,37 @@ export const ViewLanding = () => {
   }
 
   const autoPlayHandler = async () => {
-    // if(isAutoPlayEnable == false && remainingAutoPlayTime > 0){
-    Anaylitics("autoplay_switch_click", { auto_play_mode: !isAutoPlayEnable })
-    await LocalStorage.setValue(LocalStorageKeys?.isAutoPlayEnable, !isAutoPlayEnable);
-    if (timer == 0) {
-      debounce();
-    }
-    if (isAutoPlayEnable == false) {
-      // setAutoPlay(!isAutoPlayEnable).then(() => {
-      //   setIsAutoPlayEnable(true);
-      //   //start time;
-      //   // userDeatil().then(async (res: any) => {
-      //   //     setPlaying(true);
-      //   //     setRemainingAutoPlayTime(res?.remaining_time);
-      //   // });
-      //   setRemainingAutoPlayTime(1800);
-      //   setPlaying(true);
-      // })
-
-      // Anaylitics("autoplay_next_video_click", {
-      //   user_balance: getBalance,
-      //   video_id: videoData?.[nextVideo]?.video_Id[0],
-      //   video_duration: timer,
-      //   earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
-      //   expected_view: videoData?.[nextVideo]?.expected_view,
-      //   remaining_view: videoData?.[nextVideo]?.remaining_view
-      // });
-      // onPreesNext(100);
-      setIsAutoPlayEnable(true);
-      setPlaying(true);
-      setRemainingAutoPlayTime(1800)
+      Anaylitics("autoplay_switch_click", {auto_play_mode: !isAutoPlayEnable})
+      if(timer == 0){
+        debounce();
+      }
+      if(isAutoPlayEnable == false && remainingAutoPlayTime > 0){
+      setAutoPlay(!isAutoPlayEnable).then(() => {
+        setIsAutoPlayEnable(true);
+        userDeatil().then(async (res: any) => {
+            setPlaying(true);
+            setRemainingAutoPlayTime(res?.remaining_time);
+        });
+      })
+      
+      Anaylitics("autoplay_next_video_click", {
+        user_balance: getBalance,
+        video_id: videoData?.[nextVideo]?.video_Id[0],
+        video_duration: timer,
+        earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
+        expected_view: videoData?.[nextVideo]?.expected_view,
+        remaining_view: videoData?.[nextVideo]?.remaining_view
+      });
+      onPreesNext(100);
     } else {
       //stop time;
-      if (remainingAutoPlayTime == 0) {
-        setRemainingAutoPlayTime(1800);
-        setPlaying(true);
-
-        // Alert.alert("Auto Play off");
+      if(remainingAutoPlayTime == 0){
+        bottomRef.open();
       } else {
-        setIsAutoPlayEnable(false);
-        setPlaying(false);
-        // setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime).then(() => {
-        //   setPlaying(false);
-        //   setIsAutoPlayEnable(false);
-        // })
+        setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime).then(() => {
+          setPlaying(false);
+          setIsAutoPlayEnable(false);
+        })
       }
     }
   }
@@ -465,6 +476,154 @@ export const ViewLanding = () => {
       })
     }
   }
+
+  const rewardMin = () => {
+
+    showMessage({
+      message: `5:00 Minutes Cradited to Auto Play video`,
+      type: 'success',
+      duration: 2000
+    })
+    setAutoPlayAndTimeForAds(true, 300, (adsCount + 1));
+    setRemainingAutoPlayTime(300);
+    setAdsCount(adsCount+1);
+    setPlaying(true);
+    setIsAutoPlayEnable(true);
+  }
+
+  const showRewardAd = () => {
+    bottomRef.close();
+    Anaylitics("earn_coin_show_ads", {
+      current_user_balance: getBalance
+    })
+    AdsClass.showAds(() => {
+      setIsAlertDisplay(true);
+    }, rewardMin);
+  }
+
+  const connectInit = async () => {
+    const isConnectedIAP: any = await initilizeIAPConnection();
+    setIsLoading(true)
+    console.log("isConnectedIAP==>", isConnectedIAP);
+    if (isConnectedIAP) {
+        // const getIAPData = async () => {
+            let IAPData = undefined   //await getPurchaseData();
+            // {\\\
+                // IAPData == undefined ? setParseData(getInAppPurchasetaticData) : setParseData(IAPData)
+                IAPData == undefined ? setParseData(getInAppPurchaseAutoPlay) : setParseData(IAPData)
+            // }
+            let storeProducts:any = await getItems()
+            setProducts(storeProducts)
+            setIsLoading(false);
+        // }
+        // getIAPData()
+    } else{
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    connectInit();
+}, []);
+
+useEffect(() => {
+  purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
+      async (purchase: any) => {
+          const receipt = Platform.OS === 'ios' ? purchase?.transactionReceipt : purchase?.purchaseToken;
+          if (receipt) {
+              if (Platform.OS === 'ios') {
+                  await RNIap?.finishTransaction({ purchase: purchase }).then(() => {
+                      // onRewardCoin (purchase?.productId)
+                      setAutoPlayAndTime(true, 3600);
+                      setRemainingAutoPlayTime(3600);
+                      setIsAutoPlayEnable(true);
+                      RNIap.clearTransactionIOS();
+                      setIsLoading(false);
+                  }).catch(err => {
+                      _onError(err.message)
+                  });
+              }
+              if (Platform.OS === 'android') {
+                  RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(() => {
+                      try {
+                        RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then((res:any) => {
+                          setAutoPlayAndTime(true, 3600);
+                        setRemainingAutoPlayTime(3600);
+                        setIsAutoPlayEnable(true);
+                        setPlaying(true);
+                          showMessage({
+                            message: `1:00 Hour Cradited to Auto Play video`,
+                            type: 'success',
+                            duration: 2000
+                        })
+                        })
+                      } catch (error) {
+                        console.log("error:", error);
+                      }
+                  }).catch(err => {
+                    setIsLoading(false);
+                      console.log("err:", JSON.stringify(err));
+                      _onError(err.message)
+                  });
+              }
+          }
+      },
+  );
+
+  purchaseErrorSubscription = RNIap.purchaseErrorListener(
+      (error:any) => {        
+          if (error?.code !== 'E_USER_CANCELLED') {
+              showMessage ({
+                  message: error?.message,
+                  type: 'danger',
+                  duration: 6000
+              });
+          }
+          setIsLoading(false)
+          if (error?.code === 'E_USER_CANCELLED') {
+              return
+          }
+      },
+  );
+  return (() => {
+      if (purchaseUpdateSubscription) {
+          purchaseUpdateSubscription.remove();
+          purchaseUpdateSubscription = null;
+      }
+      if (purchaseErrorSubscription) {
+          purchaseErrorSubscription.remove();
+          purchaseErrorSubscription = null;
+      }
+  });
+}, []);
+
+const _onError = async (message: any) => {
+  if (Platform.OS === 'ios') {
+      await RNIap.clearTransactionIOS();
+      await RNIap.clearProductsIOS()
+  }
+  setIsLoading(false)
+  showMessage({
+      message: message,
+      type: 'danger',
+      duration: 6000
+  })
+  // navigation.goBack()
+}
+
+  const onPressBuyAutoPlay = async (productData: any) => {
+    connectInit();
+    bottomRef.close();
+    setIsLoading(true)
+    let sku = onGetProdutId(productData);
+    try {
+      sku && onPurchase(sku);
+    } catch (error) {
+      setIsLoading(false)
+      console.log("error==>", error);
+    }
+}
+
   return (
     <>
       <SafeAreaView style={styles.safearea} /><StatusBar
@@ -480,7 +639,7 @@ export const ViewLanding = () => {
           setNextButtonTooltip={setNextButtonTooltip}
           lastAddedCoins={lastEarnCoins}
         />
-        {videoLoading || !isInternetBack ?
+        {videoLoading || !isInternetBack || isLoading ?
           <View style={styles.loader}>
             <ActivityIndicator size={"large"} color={Colors.linear_gradient} />
           </View> :
@@ -561,47 +720,47 @@ export const ViewLanding = () => {
                 </View>
 
                 <View style={[styles.iconWrapper]}>
-                  <View style={[styles.marginLeft, { marginTop: 10 }]}>
-                    {/* {displayPlayTime()} */}
-                    <Tooltip
-                      isVisible={autoPlayTooltip}
-                      contentStyle={[
-                        {
-                          width: 220,
-                          marginTop: 0,
-                          marginLeft: 0,
-                        },
-                        darkBackGround(darkModeTheme),
-                      ]}
-                      arrowStyle={{
-                        marginTop: 0,
-                        marginLeft: 0,
-                      }}
-                      content={
-                        <View>
-                          <Text style={[colorBackGround(darkModeTheme)]}>
-                            Click here to enable "Auto Play"
-                          </Text>
-                        </View>
-                      }
-                      placement="top"
-                      onClose={() => {
-                        setAutoPlayTooltip(false);
-                        autoPlayHandler();
-                      }}
-                      // contentStyle={[darkBackGround(darkModeTheme)]}
-                      useInteractionManager={true}
-                    >
-                      <ToggleSwitch
-                        // key={item?.id}
-                        isOn={isAutoPlayEnable}
-                        onColor={Colors?.primaryRed}
-                        offColor={Colors?.toggleBG}
-                        size="small"
-                        onToggle={() => autoPlayHandler()}
-                      />
-                    </Tooltip>
-                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10, marginTop: 10 }]}>{String?.viewTab?.autoPlay}</Text>
+                  <View style={[styles.marginLeft, {marginTop:10}]}> 
+                 {displayPlayTime()}
+                 <Tooltip
+                isVisible={autoPlayTooltip}
+                contentStyle={[
+                  {
+                    width: 220,
+                    marginTop: 0,
+                    marginLeft: 0,
+                  },
+                  darkBackGround(darkModeTheme),
+                ]}
+                arrowStyle={{
+                  marginTop: 0,
+                  marginLeft: 0,
+                }}
+                content={
+                  <View>
+                    <Text style={[colorBackGround(darkModeTheme)]}>
+                      Click here to enable "Auto Play"
+                    </Text>
+                  </View>
+                }
+                placement="top"
+                onClose={() => {
+                  setAutoPlayTooltip(false);
+                  autoPlayHandler();
+                }}
+                // contentStyle={[darkBackGround(darkModeTheme)]}
+                useInteractionManager={true}
+                >
+                  <ToggleSwitch
+                  // key={item?.id}
+                  isOn={isAutoPlayEnable}
+                  onColor={Colors?.primaryRed}
+                  offColor={Colors?.toggleBG}
+                  size="small"
+                  onToggle={() => autoPlayHandler()}
+                />
+                </Tooltip>
+                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10, marginTop:10}]}>{String?.viewTab?.autoPlay}</Text>
                   </View>
                 </View>
 
@@ -666,8 +825,12 @@ export const ViewLanding = () => {
             </ScrollView>
           </>
         }
-
-      </View>
+      <BottomSheet 
+        bottomRef={(ref:any) => bottomRef = ref}
+        watchAdsHandler={() => showRewardAd()}
+        onPressBuyAutoPlay={(data:any) => onPressBuyAutoPlay(data)}
+      />
+      </View> 
       {isAdsAlertDisplay &&
         <CamptionConformationModel
           titleText={'Warning!!'}
