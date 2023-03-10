@@ -136,8 +136,8 @@ export const EarnCoin = async (payload: rewardShare) => {
   const userId = getUserID()?.toString()
   return await userTable?.doc(userId)?.set({
     coin: Number(getBalance) + Number(reward),
-    ads_watch: Number(adsCount) + 1
-  }, { merge: true })
+    ads_watch: Number(adsCount || 0) + 1
+  }, { mergeFields: ["coin", "ads_watch"] })
 };
 
 export const getUserToken = async (id?: string | any) => {

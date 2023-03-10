@@ -12,7 +12,6 @@ import { EarnCoin, } from '../../services';
 import { type as keys, } from '../../constants/types';
 import { AdsClass } from '../../services/AdsLoad';
 import * as LocalStorage from '../../services/LocalStorage';
-
 import { CamptionConformationModel } from '../../components/CamptionConformationModel';
 import { Anaylitics } from '../../constants/analytics';
 import { AdsCount } from '../../services/AdsCount';
@@ -30,7 +29,6 @@ export const EarnCoinLanding = () => {
   useEffect(() => {
     remotValue()
   }, [])
-
 
   /**
    * InputContextProvide is get current coin and darktheame flag 
@@ -61,8 +59,6 @@ export const EarnCoinLanding = () => {
     })
 
   }
-  console.log("adsWatchCount", adsWatchCount,maxAdsShow);
-
 
   const showRewardAd = () => {
     if (adsWatchCount?.adsCount < maxAdsShow) {
