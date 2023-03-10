@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Header } from '../../components';
 import { colorBackGround, Colors, darkBackGround, F40012, F60016, lightBackGround } from '../../Theme';
 import { NextIcon } from '../../assets/icons';
-import { EarnCoinData } from '../../services/jsonfile';
+import { CellType, EarnCoinData } from '../../services/jsonfile';
 import { style } from './style';
 import { InputContextProvide } from '../../context/CommonContext';
 import { EarnCoin, } from '../../services';
@@ -42,7 +42,7 @@ export const EarnCoinLanding = () => {
   const rewardCoin = () => {
     let adsObj = {
       dataTime: new Date().toDateString(),
-      adsCount: adsWatchCount?.adsCount + 1,
+      adsCount: (adsWatchCount?.adsCount || 0) + 1,
     }
     let rewarShare: rewardShare = { reward: (reward?.adsReward || 100), adsCount, getBalance }
 
@@ -91,7 +91,7 @@ export const EarnCoinLanding = () => {
                 <View style={style.leftRow}>
                   <item.svg />
                   <View style={style.textWrapper}>
-                    <Text style={[F60016?.textStyle, style.title]}>{item?.title}</Text>
+                    <Text style={[F60016?.textStyle, style.title]}>{CellType.ads === item?.type ? `${item?.title} (${adsWatchCount?.adsCount}/${maxAdsShow})` : item?.title}</Text>
                     <Text style={[F40012?.main, { color: Colors?.black, opacity: 0.6 }, colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
                   </View>
                 </View>
