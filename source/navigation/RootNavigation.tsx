@@ -5,7 +5,6 @@ import * as LocalStorage from '../services/LocalStorage';
 import { useState, useEffect } from 'react';
 import React from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import crashlytics from '@react-native-firebase/crashlytics';
 
 export const RootNavigation = () => {
   const Stack = createStackNavigator();
@@ -21,7 +20,6 @@ export const RootNavigation = () => {
 
   useEffect(() => {
     authFlow()
-    userId && crashlytics().log("auth_token")
   }, [userId]);
 
   return (

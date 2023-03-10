@@ -3,3 +3,7 @@ interface rewardShare {
     adsCount: number | string;
     getBalance: number | string;
 }
+interface adsWatch {
+    adsWatchCount: string | number,
+    dataTime: string | number,
+}

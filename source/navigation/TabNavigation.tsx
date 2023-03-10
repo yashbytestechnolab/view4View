@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { String, ROUTES } from '../constants';
+import { String, ROUTES, LocalStorageKeys } from '../constants';
 import { ViewStack, EarnCoinStack, SettingStack, MyCampaignLanding } from '.';
 import { Home, MyCampaign, Setting, TabEarnCoin } from '../assets/icons';
 import { SvgProps } from 'react-native-svg';
@@ -12,11 +12,23 @@ import VersionInfo from 'react-native-version-info';
 import { AdsClass } from '../services/AdsLoad';
 import { person } from '../modules/View/increment';
 import { HomeAdsEnable } from '../services/HomeAdsEnable';
+import * as LocalStorage from '../services/LocalStorage';
 
 export const TabNavigation = () => {
   const appVersion: any = VersionInfo.appVersion;
   const Tab = createBottomTabNavigator();
-  const { storeCreator: { darkModeTheme, reviewVersionIos } }: any = useContext(InputContextProvide)
+  const { storeCreator: { darkModeTheme, reviewVersionIos, adsWatchCount, setAdsWatchCount } }: any = useContext(InputContextProvide)
+
+  const adsCheckFnc = async () => {
+    let adsWatchParameter: adsWatch | any = { dataTime: new Date().toDateString(), adsCount: 0 }
+    const adsProvider: adsWatch | any = await LocalStorage.getValue(LocalStorageKeys.adsDetail)
+    if (adsProvider?.dataTime !== new Date().toDateString() || adsProvider == null) {
+      LocalStorage.setValue(LocalStorageKeys.adsDetail, adsWatchParameter)
+      setAdsWatchCount(adsWatchParameter)
+    } else {
+      setAdsWatchCount(adsProvider)
+    }
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -31,6 +43,7 @@ export const TabNavigation = () => {
 
   useEffect(() => {
     onShowAdsHome()
+    adsCheckFnc()
   }, [person?.home_ads])
 
   const getRouteIcon = (
