@@ -9,16 +9,17 @@ import { showMessage } from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { type as keys } from '../../constants/types';
 import * as RNIap from 'react-native-iap';
-import { BuyCoinIcon } from '../../assets/icons';
+import { BuyCoinIcon, SecondsIcon } from '../../assets/icons';
 import { style } from './style';
 import { Anaylitics } from '../../constants/analytics';
 import { String } from '../../constants';
 import { ORtitle } from '../authentication/Authcomponents';
+import { WatchAds } from '../../assets/icons/WatchAds';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
 
-export const AutoPlayScreen = ({watchAdsHandler, onPressBuyAutoPlay}:any) => {
+export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay }: any) => {
     const [selectRB, setSelectRB] = useState(0)
     const [parseData, setParseData]: any = useState(undefined)
     const [products, setProducts]: any = useState();
@@ -114,6 +115,8 @@ export const AutoPlayScreen = ({watchAdsHandler, onPressBuyAutoPlay}:any) => {
         })
         navigation.goBack()
     }
+    console.log("parseData", parseData);
+
 
     const onRewardCoins = async (rewardId: any) => {
         let redeemCoin: any = await onGetCoinAmount(rewardId);
@@ -202,13 +205,19 @@ export const AutoPlayScreen = ({watchAdsHandler, onPressBuyAutoPlay}:any) => {
                                     <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{res?.price}</Text>
                                 </TouchableOpacity>);
                         })}
-                        <ButtonComponent buttonTitle={String?.commonString?.buy + " " + parseData?.[selectRB]?.name}
+
+                        <ButtonComponent
+                            isRewardIconShow
+                            secondIcon={<SecondsIcon props={"white"} />}
+                            buttonTitle={String?.commonString?.buy + " " + (parseData?.[selectRB]?.seconds / 60) + " Mins Autoplay"}
                             onPrees={() => onPressBuyAutoPlay(parseData[selectRB])}
                             wrapperStyle={style.buttonWrapper}
                         />
                         <ORtitle />
-                        <ButtonComponent buttonTitle={"Watch Ads To Earn 5 Mins"}
+                        <ButtonComponent buttonTitle={"Get 5 Mins Free Autoplay"}
                             onPrees={() => watchAdsHandler()}
+                            isRewardIconShow
+                            secondIcon={<WatchAds />}
                             wrapperStyle={style.buttonWrapperAdsWatch}
                         />
                     </View></>

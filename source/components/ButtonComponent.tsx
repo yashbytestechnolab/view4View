@@ -11,10 +11,11 @@ interface buttonProps {
     loading?: boolean,
     disable?: boolean,
     spinnerColor?: boolean,
-    buttonTextStyle?: any
+    buttonTextStyle?: any;
+    secondIcon?: any
 }
 export const ButtonComponent = (props: buttonProps) => {
-    const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading, disable, spinnerColor, buttonTextStyle } = props
+    const { isRewardIconShow, onPrees, buttonTitle = false, wrapperStyle, loading, disable, spinnerColor, buttonTextStyle, secondIcon } = props
     return (
         <TouchableOpacity
             disabled={disable}
@@ -28,7 +29,7 @@ export const ButtonComponent = (props: buttonProps) => {
                     {
                         isRewardIconShow &&
                         <View style={innerStyles.reward}>
-                            <EarnCoin />
+                            {secondIcon || <EarnCoin />}
                         </View>
                     }
                     <Text style={[F60016.textStyle, { color: disable ? Colors?.DisbaleButtonText : Colors?.white }, buttonTextStyle]} numberOfLines={1} >
