@@ -55,6 +55,9 @@ export const EarnCoinLanding = () => {
       LocalStorage.setValue(LocalStorageKeys.adsDetail, adsObj)
       setAdsWatchCount(adsObj)
     }).catch((err) => {
+      Anaylitics("earn_coin_show_ads_error", {
+        current_user_balance: getBalance
+      })
       navigation.goBack()
     })
 
@@ -62,7 +65,7 @@ export const EarnCoinLanding = () => {
 
   const showRewardAd = () => {
     if (adsWatchCount?.adsCount < maxAdsShow) {
-      Anaylitics("earn_coin_show_ads", {
+      Anaylitics("earn_coin_show_ads_press", {
         current_user_balance: getBalance
       })
       AdsClass.showAds(() => {

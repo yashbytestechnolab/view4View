@@ -35,7 +35,7 @@ export const ViewLanding = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const [isAutoPlayEnable, setIsAutoPlayEnable] = useState<boolean>(false);
-  const [remainingAutoPlayTime, setRemainingAutoPlayTime]:any = useState(0);
+  const [remainingAutoPlayTime, setRemainingAutoPlayTime]: any = useState(0);
   const controlRef: any = useRef<boolean>();
   const autoPlayRef: any = useRef<boolean>();
   const firstStart: any = useRef<boolean>(true);
@@ -49,7 +49,7 @@ export const ViewLanding = () => {
   const [coinTooltip, setCoinTooltip] = useState(false);
   const [nextButtonTooltip, setNextButtonTooltip] = useState(false);
   const [autoPlayTooltip, setAutoPlayTooltip] = useState(false);
-  const [lastEarnCoins,setLastEarnCoins] = useState(0);
+  const [lastEarnCoins, setLastEarnCoins] = useState(0);
   const [parseData, setParseData]: any = useState(undefined)
   const [products, setProducts]: any = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +82,7 @@ export const ViewLanding = () => {
   const openRatingPopup = async () => {
     await Rating()
   }
-  
+
 
   const GetReferralCode = async () => {
     await userDeatil().then(async (res: any) => {
@@ -130,10 +130,10 @@ export const ViewLanding = () => {
 
   //   })
   // }, [])
-  {/** Auto Play */}
+  {/** Auto Play */ }
   useEffect(() => {
     userDeatil().then(async (res: any) => {
-      if(res?.hasOwnProperty('remaining_time')){
+      if (res?.hasOwnProperty('remaining_time')) {
         setRemainingAutoPlayTime(res?.remaining_time);
         setIsAutoPlayEnable(res?.auto_play);
         res?.auto_play === true && setPlaying(true);
@@ -143,7 +143,7 @@ export const ViewLanding = () => {
         setIsAutoPlayEnable(false);
         setPlaying(true);
       }
-      
+
     })
   }, [])
   useEffect(() => {
@@ -234,7 +234,7 @@ export const ViewLanding = () => {
           Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
           setVideoWatchUpdateCount(videoWatchUpdateCount + 1)
           //add condition
-          if(isAutoPlayEnable){
+          if (isAutoPlayEnable) {
             await setAutoPlayAndTime(isAutoPlayEnable, remainingAutoPlayTime)
             Anaylitics("autoplay_next_video_click", {
               user_balance: getBalance,
@@ -348,7 +348,6 @@ export const ViewLanding = () => {
             return res?._data
           }
         });
-
         if (add_Video_Url?.length > 0) {
           let modifiyArry: any = result(add_Video_Url)
           person?.emptyCount();
@@ -424,19 +423,19 @@ export const ViewLanding = () => {
   }
 
   const autoPlayHandler = async () => {
-      Anaylitics("autoplay_switch_click", {auto_play_mode: !isAutoPlayEnable})
-      if(timer == 0){
-        debounce();
-      }
-      if(isAutoPlayEnable == false && remainingAutoPlayTime > 0){
+    Anaylitics("autoplay_switch_click", { auto_play_mode: !isAutoPlayEnable })
+    if (timer == 0) {
+      debounce();
+    }
+    if (isAutoPlayEnable == false && remainingAutoPlayTime > 0) {
       setAutoPlay(!isAutoPlayEnable).then(() => {
         setIsAutoPlayEnable(true);
         userDeatil().then(async (res: any) => {
-            setPlaying(true);
-            setRemainingAutoPlayTime(res?.remaining_time);
+          setPlaying(true);
+          setRemainingAutoPlayTime(res?.remaining_time);
         });
       })
-      
+
       Anaylitics("autoplay_next_video_click", {
         user_balance: getBalance,
         video_id: videoData?.[nextVideo]?.video_Id[0],
@@ -448,7 +447,7 @@ export const ViewLanding = () => {
       onPreesNext(100);
     } else {
       //stop time;
-      if(remainingAutoPlayTime == 0){
+      if (remainingAutoPlayTime == 0) {
         bottomRef.open();
       } else {
         setAutoPlayAndTime(!isAutoPlayEnable, remainingAutoPlayTime).then(() => {
@@ -486,7 +485,7 @@ export const ViewLanding = () => {
     })
     setAutoPlayAndTimeForAds(true, 300, (adsCount + 1));
     setRemainingAutoPlayTime(300);
-    setAdsCount(adsCount+1);
+    setAdsCount(adsCount + 1);
     setPlaying(true);
     setIsAutoPlayEnable(true);
   }
@@ -506,110 +505,110 @@ export const ViewLanding = () => {
     setIsLoading(true)
     console.log("isConnectedIAP==>", isConnectedIAP);
     if (isConnectedIAP) {
-        // const getIAPData = async () => {
-            let IAPData = undefined   //await getPurchaseData();
-            // {\\\
-                // IAPData == undefined ? setParseData(getInAppPurchasetaticData) : setParseData(IAPData)
-                IAPData == undefined ? setParseData(getInAppPurchaseAutoPlay) : setParseData(IAPData)
-            // }
-            let storeProducts:any = await getItems()
-            setProducts(storeProducts)
-            setIsLoading(false);
-        // }
-        // getIAPData()
-    } else{
+      // const getIAPData = async () => {
+      let IAPData = undefined   //await getPurchaseData();
+      // {\\\
+      // IAPData == undefined ? setParseData(getInAppPurchasetaticData) : setParseData(IAPData)
+      IAPData == undefined ? setParseData(getInAppPurchaseAutoPlay) : setParseData(IAPData)
+      // }
+      let storeProducts: any = await getItems()
+      setProducts(storeProducts)
+      setIsLoading(false);
+      // }
+      // getIAPData()
+    } else {
       setIsLoading(false);
     }
   }
 
   useEffect(() => {
     connectInit();
-}, []);
+  }, []);
 
-useEffect(() => {
-  purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
+  useEffect(() => {
+    purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
       async (purchase: any) => {
-          const receipt = Platform.OS === 'ios' ? purchase?.transactionReceipt : purchase?.purchaseToken;
-          if (receipt) {
-              if (Platform.OS === 'ios') {
-                  await RNIap?.finishTransaction({ purchase: purchase }).then(() => {
-                      // onRewardCoin (purchase?.productId)
-                      setAutoPlayAndTime(true, 3600);
-                      setRemainingAutoPlayTime(3600);
-                      setIsAutoPlayEnable(true);
-                      RNIap.clearTransactionIOS();
-                      setIsLoading(false);
-                  }).catch(err => {
-                      _onError(err.message)
-                  });
-              }
-              if (Platform.OS === 'android') {
-                  RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(() => {
-                      try {
-                        RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then((res:any) => {
-                          setAutoPlayAndTime(true, 3600);
-                        setRemainingAutoPlayTime(3600);
-                        setIsAutoPlayEnable(true);
-                        setPlaying(true);
-                          showMessage({
-                            message: `1:00 Hour Cradited to Auto Play video`,
-                            type: 'success',
-                            duration: 2000
-                        })
-                        })
-                      } catch (error) {
-                        console.log("error:", error);
-                      }
-                  }).catch(err => {
-                    setIsLoading(false);
-                      console.log("err:", JSON.stringify(err));
-                      _onError(err.message)
-                  });
-              }
+        const receipt = Platform.OS === 'ios' ? purchase?.transactionReceipt : purchase?.purchaseToken;
+        if (receipt) {
+          if (Platform.OS === 'ios') {
+            await RNIap?.finishTransaction({ purchase: purchase }).then(() => {
+              // onRewardCoin (purchase?.productId)
+              setAutoPlayAndTime(true, 3600);
+              setRemainingAutoPlayTime(3600);
+              setIsAutoPlayEnable(true);
+              RNIap.clearTransactionIOS();
+              setIsLoading(false);
+            }).catch(err => {
+              _onError(err.message)
+            });
           }
+          if (Platform.OS === 'android') {
+            RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(() => {
+              try {
+                RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then((res: any) => {
+                  setAutoPlayAndTime(true, 3600);
+                  setRemainingAutoPlayTime(3600);
+                  setIsAutoPlayEnable(true);
+                  setPlaying(true);
+                  showMessage({
+                    message: `1:00 Hour Cradited to Auto Play video`,
+                    type: 'success',
+                    duration: 2000
+                  })
+                })
+              } catch (error) {
+                console.log("error:", error);
+              }
+            }).catch(err => {
+              setIsLoading(false);
+              console.log("err:", JSON.stringify(err));
+              _onError(err.message)
+            });
+          }
+        }
       },
-  );
+    );
 
-  purchaseErrorSubscription = RNIap.purchaseErrorListener(
-      (error:any) => {        
-          if (error?.code !== 'E_USER_CANCELLED') {
-              showMessage ({
-                  message: error?.message,
-                  type: 'danger',
-                  duration: 6000
-              });
-          }
-          setIsLoading(false)
-          if (error?.code === 'E_USER_CANCELLED') {
-              return
-          }
+    purchaseErrorSubscription = RNIap.purchaseErrorListener(
+      (error: any) => {
+        if (error?.code !== 'E_USER_CANCELLED') {
+          showMessage({
+            message: error?.message,
+            type: 'danger',
+            duration: 6000
+          });
+        }
+        setIsLoading(false)
+        if (error?.code === 'E_USER_CANCELLED') {
+          return
+        }
       },
-  );
-  return (() => {
+    );
+    return (() => {
       if (purchaseUpdateSubscription) {
-          purchaseUpdateSubscription.remove();
-          purchaseUpdateSubscription = null;
+        purchaseUpdateSubscription.remove();
+        purchaseUpdateSubscription = null;
       }
       if (purchaseErrorSubscription) {
-          purchaseErrorSubscription.remove();
-          purchaseErrorSubscription = null;
+        purchaseErrorSubscription.remove();
+        purchaseErrorSubscription = null;
       }
-  });
-}, []);
+    });
+  }, []);
 
-const _onError = async (message: any) => {
-  if (Platform.OS === 'ios') {
+  const _onError = async (message: any) => {
+    if (Platform.OS === 'ios') {
       await RNIap.clearTransactionIOS();
       await RNIap.clearProductsIOS()
-  }
-  setIsLoading(false)
-  showMessage({
+    }
+    setIsLoading(false)
+    showMessage({
       message: message,
       type: 'danger',
       duration: 6000
-  })
-  // navigation.goBack()
-}
+    })
+    // navigation.goBack()
+  }
 
   const onPressBuyAutoPlay = async (productData: any) => {
     connectInit();
@@ -622,7 +621,7 @@ const _onError = async (message: any) => {
       setIsLoading(false)
       console.log("error==>", error);
     }
-}
+  }
 
   return (
     <>
@@ -720,47 +719,47 @@ const _onError = async (message: any) => {
                 </View>
 
                 <View style={[styles.iconWrapper]}>
-                  <View style={[styles.marginLeft, {marginTop:10}]}> 
-                 {displayPlayTime()}
-                 <Tooltip
-                isVisible={autoPlayTooltip}
-                contentStyle={[
-                  {
-                    width: 220,
-                    marginTop: 0,
-                    marginLeft: 0,
-                  },
-                  darkBackGround(darkModeTheme),
-                ]}
-                arrowStyle={{
-                  marginTop: 0,
-                  marginLeft: 0,
-                }}
-                content={
-                  <View>
-                    <Text style={[colorBackGround(darkModeTheme)]}>
-                      Click here to enable "Auto Play"
-                    </Text>
-                  </View>
-                }
-                placement="top"
-                onClose={() => {
-                  setAutoPlayTooltip(false);
-                  autoPlayHandler();
-                }}
-                // contentStyle={[darkBackGround(darkModeTheme)]}
-                useInteractionManager={true}
-                >
-                  <ToggleSwitch
-                  // key={item?.id}
-                  isOn={isAutoPlayEnable}
-                  onColor={Colors?.primaryRed}
-                  offColor={Colors?.toggleBG}
-                  size="small"
-                  onToggle={() => autoPlayHandler()}
-                />
-                </Tooltip>
-                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10, marginTop:10}]}>{String?.viewTab?.autoPlay}</Text>
+                  <View style={[styles.marginLeft, { marginTop: 10 }]}>
+                    {displayPlayTime()}
+                    <Tooltip
+                      isVisible={autoPlayTooltip}
+                      contentStyle={[
+                        {
+                          width: 220,
+                          marginTop: 0,
+                          marginLeft: 0,
+                        },
+                        darkBackGround(darkModeTheme),
+                      ]}
+                      arrowStyle={{
+                        marginTop: 0,
+                        marginLeft: 0,
+                      }}
+                      content={
+                        <View>
+                          <Text style={[colorBackGround(darkModeTheme)]}>
+                            Click here to enable "Auto Play"
+                          </Text>
+                        </View>
+                      }
+                      placement="top"
+                      onClose={() => {
+                        setAutoPlayTooltip(false);
+                        autoPlayHandler();
+                      }}
+                      // contentStyle={[darkBackGround(darkModeTheme)]}
+                      useInteractionManager={true}
+                    >
+                      <ToggleSwitch
+                        // key={item?.id}
+                        isOn={isAutoPlayEnable}
+                        onColor={Colors?.primaryRed}
+                        offColor={Colors?.toggleBG}
+                        size="small"
+                        onToggle={() => autoPlayHandler()}
+                      />
+                    </Tooltip>
+                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10, marginTop: 10 }]}>{String?.viewTab?.autoPlay}</Text>
                   </View>
                 </View>
 
@@ -825,12 +824,12 @@ const _onError = async (message: any) => {
             </ScrollView>
           </>
         }
-      <BottomSheet 
-        bottomRef={(ref:any) => bottomRef = ref}
-        watchAdsHandler={() => showRewardAd()}
-        onPressBuyAutoPlay={(data:any) => onPressBuyAutoPlay(data)}
-      />
-      </View> 
+        <BottomSheet
+          bottomRef={(ref: any) => bottomRef = ref}
+          watchAdsHandler={() => showRewardAd()}
+          onPressBuyAutoPlay={(data: any) => onPressBuyAutoPlay(data)}
+        />
+      </View>
       {isAdsAlertDisplay &&
         <CamptionConformationModel
           titleText={'Warning!!'}
