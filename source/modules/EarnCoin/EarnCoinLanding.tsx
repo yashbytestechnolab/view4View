@@ -19,6 +19,7 @@ import { AdsCount } from '../../services/AdsCount';
 export const EarnCoinLanding = () => {
   const navigation = useNavigation()
   const [isAdsAlertDisplay, setIsAlertDisplay] = useState(false);
+  const [maxLimitAds, setMaxLimitAds] = useState(false)
   const [maxAdsShow, setMaxAdsShow] = useState(10)
   const route = useRoute()
 
@@ -72,7 +73,7 @@ export const EarnCoinLanding = () => {
         setIsAlertDisplay(true);
       }, rewardCoin);
     } else {
-      Alert.alert("No More Ads")
+      setMaxLimitAds(true);
     }
   }
 
@@ -106,6 +107,21 @@ export const EarnCoinLanding = () => {
           })}
         </View>
       </View>
+      {
+        maxLimitAds &&
+        <CamptionConformationModel
+          titleText={'Warning!!'}
+          descriptionText={`You have exceeded your daily ads watch limit. Please try tomorrow`}
+          isVisible={maxLimitAds}
+          descriptionStyle={{ paddingHorizontal: 20 }}
+          setIsVisible={setMaxLimitAds}
+          actionTitle={"Close"}
+          onPress={() => {
+            setMaxLimitAds(false)
+          }
+          }
+        />
+      }
       {isAdsAlertDisplay &&
         <CamptionConformationModel
           titleText={'Warning!!'}
@@ -120,7 +136,6 @@ export const EarnCoinLanding = () => {
           }
         />
       }
-
     </>
   );
 };
