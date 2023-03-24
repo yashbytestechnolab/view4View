@@ -228,7 +228,7 @@ export const ViewLanding = () => {
             getAppendUserId,
           }
           await updateCampaignViews(updatCampaignData)
-            .catch(() => { handleFirebaseError("coin not update"); setOnFinishedVideo(false) })
+            .catch(() => { debounce(); handleFirebaseError("coin not update"); setOnFinishedVideo(false) })
           setOnFinishedVideo(false)
           dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
           Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
@@ -246,7 +246,7 @@ export const ViewLanding = () => {
               remaining_view: videoData?.[nextVideo]?.remaining_view
             });
           }
-        })
+        }).catch(() => debounce())
       }, timer);
     }
   }
@@ -340,7 +340,7 @@ export const ViewLanding = () => {
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
     getUnkonwnCampaign(docOS)
-      .then(async (res: any) => {        
+      .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
         res._docs?.filter((res: any) => {
           if (!res?._data?.user_views?.includes(getUserID()) && res?._data?.upload_by !== getUserID()) {
@@ -720,7 +720,7 @@ export const ViewLanding = () => {
 
                 <View style={[styles.iconWrapper]}>
                   <View style={[styles.marginLeft, { marginBottom: 13 }]}>
-                  {displayPlayTime()}
+                    {displayPlayTime()}
                     <Tooltip
                       isVisible={autoPlayTooltip}
                       contentStyle={[
