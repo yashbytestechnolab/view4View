@@ -138,8 +138,8 @@ export const ViewLanding = () => {
         setIsAutoPlayEnable(res?.auto_play);
         res?.auto_play === true && setPlaying(true);
       } else {
-        setSessionAndAutoPlay(1800);
-        setRemainingAutoPlayTime(1800);
+        setSessionAndAutoPlay(600);
+        setRemainingAutoPlayTime(600);
         setIsAutoPlayEnable(false);
         setPlaying(true);
       }
@@ -719,8 +719,8 @@ export const ViewLanding = () => {
                 </View>
 
                 <View style={[styles.iconWrapper]}>
-                  <View style={[styles.marginLeft, { marginTop: 10 }]}>
-                    {displayPlayTime()}
+                  <View style={[styles.marginLeft, { marginBottom: 13 }]}>
+                  {displayPlayTime()}
                     <Tooltip
                       isVisible={autoPlayTooltip}
                       contentStyle={[

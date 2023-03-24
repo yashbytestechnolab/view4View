@@ -43,8 +43,8 @@ export const userLogin = async (...payload: Array<object | string | undefined | 
     referral_code: referralCode,
     device_token: payload[0]?.device_token,
     device_type: payload[0]?.device_type,
-    // auto_play: false,
-    // remaining_time: 1800
+    auto_play: false,
+    remaining_time: 600
   })
 }
 
