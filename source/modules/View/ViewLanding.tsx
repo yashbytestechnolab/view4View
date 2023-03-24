@@ -20,10 +20,10 @@ import { CamptionConformationModel } from '../../components/CamptionConformation
 import { type as keys, } from '../../constants/types';
 import { getSocialLoginValue } from '../../constants/settingProfileArr';
 import ToggleSwitch from 'toggle-switch-react-native'
-import { useFocusEffect, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import BottomSheet from '../../components/BottomSheet';
-import { getInAppPurchaseAutoPlay, getItems, getPurchaseData, initilizeIAPConnection, onGetProdutId, onPurchase } from '../../services/InAppPurchaseServices';
+import { getInAppPurchaseAutoPlay, getItems, initilizeIAPConnection, onGetProdutId, onPurchase } from '../../services/InAppPurchaseServices';
 import { showMessage } from 'react-native-flash-message';
 import * as RNIap from 'react-native-iap';
 import { updatCampaignData } from './interface';
@@ -236,15 +236,15 @@ export const ViewLanding = () => {
           //add condition
           if (isAutoPlayEnable) {
             await setAutoPlayAndTime(isAutoPlayEnable, remainingAutoPlayTime)
+            debounce()
             Anaylitics("autoplay_next_video_click", {
               user_balance: getBalance,
-              video_id: videoData?.[nextVideo]?.video_Id[0],
+              video_id: (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id?.[0]),
               video_duration: timer,
               earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
               expected_view: videoData?.[nextVideo]?.expected_view,
               remaining_view: videoData?.[nextVideo]?.remaining_view
             });
-            debounce()
           }
         })
       }, timer);
@@ -340,7 +340,7 @@ export const ViewLanding = () => {
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
     let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
     getUnkonwnCampaign(docOS)
-      .then(async (res: any) => {
+      .then(async (res: any) => {        
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
         res._docs?.filter((res: any) => {
           if (!res?._data?.user_views?.includes(getUserID()) && res?._data?.upload_by !== getUserID()) {
@@ -438,7 +438,7 @@ export const ViewLanding = () => {
 
       Anaylitics("autoplay_next_video_click", {
         user_balance: getBalance,
-        video_id: videoData?.[nextVideo]?.video_Id[0],
+        video_id: (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id?.[0]),
         video_duration: timer,
         earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
         expected_view: videoData?.[nextVideo]?.expected_view,
@@ -671,7 +671,7 @@ export const ViewLanding = () => {
                     </Tooltip>
                     <YoutubePlayer
                       height={270}
-                      videoId={videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]}
+                      videoId={videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id?.[0]}
                       play={playing}
                       onChangeState={onStateChange}
                       onError={(err: any) => youtubePlayerErrorHandler(err, (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]), videoData?.[nextVideo])} />
@@ -798,7 +798,7 @@ export const ViewLanding = () => {
                   onPrees={() => {
                     Anaylitics("next_video_click", {
                       user_balance: getBalance,
-                      video_id: (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]),
+                      video_id: (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id?.[0]),
                       video_duration: timer,
                       earn_from_video: videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view,
                       expected_view: videoData?.[nextVideo]?.expected_view,
