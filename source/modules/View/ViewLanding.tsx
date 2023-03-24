@@ -246,7 +246,7 @@ export const ViewLanding = () => {
               remaining_view: videoData?.[nextVideo]?.remaining_view
             });
           }
-        }).catch(() => debounce())
+        }).catch(() => { debounce(); setOnFinishedVideo(false) })
       }, timer);
     }
   }
