@@ -1,5 +1,5 @@
 export interface updatCampaignData {
-    id: string | number,
+    id: string | number|undefined,
     remaining_view: string | number,
     consumed_view: string | number,
     expected_view: string | number,

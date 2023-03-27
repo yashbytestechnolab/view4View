@@ -228,14 +228,14 @@ export const updateCampaignViews = async (params: updatCampaignData) => {
         .doc(id).set({
           remaining_view: remaining_view - 1,
           consumed_view: parseInt(consumed_view) + 1,
-          user_views: getAppendUserId,
-        }, { mergeFields: ["remaining_view", "consumed_view", "user_views"] })
+          // user_views: getAppendUserId,
+        }, { mergeFields: ["remaining_view", "consumed_view"] })
     } else {
       return await updateTable
         .doc(id).update({
           remaining_view: remaining_view - 1,
           consumed_view: parseInt(consumed_view) + 1,
-          user_views: getAppendUserId,
+          // user_views: getAppendUserId,
         })
     }
   }

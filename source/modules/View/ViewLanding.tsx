@@ -30,6 +30,7 @@ import { updatCampaignData } from './interface';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
+let setDocs = {}
 export const ViewLanding = () => {
   const { storeCreator: { token, reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode, isTooltipRemaining, setIsTooltipRemaining, } }: any = useContext(InputContextProvide)
   const [playing, setPlaying] = useState<boolean>(false);
@@ -171,7 +172,7 @@ export const ViewLanding = () => {
             setRemainingAutoPlayTime(remainingAutoPlayTime - 1);
           }
         }
-      }, 1000);
+      }, 700);
     } else {
       clearInterval(controlRef.current);
     }
@@ -214,7 +215,7 @@ export const ViewLanding = () => {
         await GetCurrentPlayCampaign(id, isBytesVideoLoading).then(async (res: any) => {
           const totalAmount = getBalance + (coin / expected_view);
           let getAppendUserId: Array<string | any> = (res?._data?.user_views == undefined) ? [getUserID()] : [...res?._data?.user_views, getUserID()]
-          await newAddWatchUrl(totalAmount, videoWatchUpdateCount)
+          // await newAddWatchUrl(totalAmount, videoWatchUpdateCount)
           const { remaining_view, consumed_view, upload_by } = res?._data;
           let updatCampaignData: updatCampaignData = {
             addFiled: res?._data?.user_views == undefined,
@@ -235,7 +236,7 @@ export const ViewLanding = () => {
           setVideoWatchUpdateCount(videoWatchUpdateCount + 1)
           //add condition
           if (isAutoPlayEnable) {
-            await setAutoPlayAndTime(isAutoPlayEnable, remainingAutoPlayTime)
+            // await setAutoPlayAndTime(isAutoPlayEnable, remainingAutoPlayTime)
             Anaylitics("autoplay_next_video_click", {
               user_balance: getBalance,
               video_id: videoData?.[nextVideo]?.video_Id[0],
@@ -246,7 +247,7 @@ export const ViewLanding = () => {
             });
             debounce()
           }
-        })
+        }).catch(() => { debounce(), handleFirebaseError("coin not update"); setOnFinishedVideo(false) })
       }, timer);
     }
   }
@@ -338,7 +339,7 @@ export const ViewLanding = () => {
   let add_Video_Url: Array<any> | any = []
   async function GetLiveVideoList(params: string, watchVideoList: any) {
     dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
-    let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
+    let docOS: any = {}
     getUnkonwnCampaign(docOS)
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
@@ -674,7 +675,7 @@ export const ViewLanding = () => {
                       videoId={videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]}
                       play={playing}
                       onChangeState={onStateChange}
-                      onError={(err: any) => youtubePlayerErrorHandler(err, (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]), videoData?.[nextVideo])} />
+                      onError={(err: any) => { debounce(); youtubePlayerErrorHandler(err, (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]), videoData?.[nextVideo]) }} />
                   </>
                 }
               </View>
