@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated, Alert, Platform } from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator, Animated, Alert, Platform, PixelRatio } from 'react-native';
 import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
@@ -70,7 +70,7 @@ export const ViewLanding = () => {
 
 
   const dateFormat = (date: any, month: string | number) => {
-    return `${(date.getMonth() + month) + "-" + date.getDate() + "-" + date.getFullYear()}`.toString()
+    return `${(date.getFullYear() + "," + date.getMonth() + month) + "," + date.getDate() + ","}`.toString()
   }
 
   const checkMembershipDetail = (second: string | any) => {
@@ -521,7 +521,9 @@ export const ViewLanding = () => {
   }
 
   const connectInit = async () => {
-    const isConnectedIAP: any = await initilizeIAPConnection();
+    const isConnectedIAP: any =await initilizeIAPConnection();
+    console.log("isConnectedIAP", isConnectedIAP);
+
     setIsLoading(true)
     if (isConnectedIAP) {
       // const getIAPData = async () => {
@@ -532,7 +534,7 @@ export const ViewLanding = () => {
       // }
       let storeProducts: any = await getItems()
       setIsLoading(false);
-      // }
+      // }  
       // getIAPData()
     } else {
       setIsLoading(false);
@@ -546,7 +548,9 @@ export const ViewLanding = () => {
   useEffect(() => {
     purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
       async (purchase: any) => {
+        console.log("purchase", purchase);
         const receipt = Platform.OS === 'ios' ? purchase?.transactionReceipt : purchase?.purchaseToken;
+        console.log("purchase", receipt);
         if (receipt) {
           if (Platform.OS === 'ios') {
             await RNIap?.finishTransaction({ purchase: purchase }).then(() => {
@@ -561,22 +565,20 @@ export const ViewLanding = () => {
             });
           }
           if (Platform.OS === 'android') {
-            RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(() => {
-              try {
-                RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then((res: any) => {
-                  setAutoPlayAndTime(true, 3600);
-                  setRemainingAutoPlayTime(3600);
-                  setIsAutoPlayEnable(true);
-                  setPlaying(true);
-                  showMessage({
-                    message: `1:00 Hour Cradited to Auto Play video`,
-                    type: 'success',
-                    duration: 2000
-                  })
+            console.log("android");
+            RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(async () => {
+              console.log("purchase?.purchaseToken", purchase?.purchaseToken);
+              await RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then((res: any) => {
+                setAutoPlayAndTime(true, 3600);
+                setRemainingAutoPlayTime(3600);
+                setIsAutoPlayEnable(true);
+                setPlaying(true);
+                showMessage({
+                  message: `1:00 Hour Cradited to Auto Play video`,
+                  type: 'success',
+                  duration: 2000
                 })
-              } catch (error) {
-                // console.log("error:", error);
-              }
+              })
             }).catch(err => {
               setIsLoading(false);
               // console.log("err:", JSON.stringify(err));
@@ -634,7 +636,6 @@ export const ViewLanding = () => {
     }
     setIsLoading(false)
     console.log("_onError", message);
-
     // showMessage({
     //   message: message,
     //   type: 'danger',
@@ -644,7 +645,7 @@ export const ViewLanding = () => {
   }
 
   const onPressBuyAutoPlay = async (productData: any) => {
-    connectInit();
+     connectInit();
     bottomRef.close();
     setIsLoading(true)
     let sku = onGetProdutId(productData);

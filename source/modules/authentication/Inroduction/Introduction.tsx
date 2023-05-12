@@ -76,7 +76,7 @@ export const Introduction = () => {
         */
     return (
         <SafeAreaView style={[styles.container, darkBackGround(darkModeTheme)]}>
-            <StatusBar barStyle={String?.StatusBar?.darkContent} backgroundColor={Colors?.white} />
+            <StatusBar barStyle={String?.StatusBar?.darkContent} backgroundColor={darkModeTheme ? Colors?.black : Colors?.white} />
             <>
                 <SwiperFlatList
                     ref={pageRef}

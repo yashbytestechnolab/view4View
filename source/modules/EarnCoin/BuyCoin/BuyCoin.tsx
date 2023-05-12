@@ -30,7 +30,11 @@ export const BuyCoin = () => {
 
     useEffect(() => {
         const isConnectedIAP: any = initilizeIAPConnection();
+        console.log("isConnectedIAP",isConnectedIAP);
+        
         if (isConnectedIAP) {
+            console.log("isConnectedIAP after if");
+            
             setloading(true)
             const getIAPData = async () => {
                 let IAPData = await getPurchaseData();
@@ -132,8 +136,6 @@ export const BuyCoin = () => {
         let redeemCoin: any = onGetCoinAmount(rewardId);
         let price = onGetPriceAmount(rewardId)
         if (redeemCoin) {
-            console.log("if call ");
-
             await buyMemberShip(price, redeemCoin)
             await purchaseCoin(getBalance + redeemCoin)?.then((res: any) => {
                 dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + redeemCoin, memberShipPurchase: true })

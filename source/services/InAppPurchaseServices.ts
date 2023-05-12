@@ -20,7 +20,7 @@ export const getPurchaseData = async () => {
     let data: any = remoteConfig().getValue("in_app_purchase_data");
     return JSON.parse(data?._value);
 }
-export const getInAppPurchasetaticData:any =
+export const getInAppPurchasetaticData: any =
     [
         {
             name: "1000 Coins",
@@ -48,8 +48,8 @@ export const getInAppPurchaseAutoPlay: any =
     [
         {
             name: "01:00 Hour (60 Min)",
-            detail:"Can earn approx 3600 coins!!",
-            seconds:3600,
+            detail: "Can earn approx 3600 coins!!",
+            seconds: 3600,
             price: "89 ₹",
             androidId: "60mautoplay",
             iosId: "60mautoplay"
@@ -73,22 +73,9 @@ export const getInAppPurchaseAutoPlay: any =
     ]
 
 export const initilizeIAPConnection = async () => {
-    // try {
-    //     const result = await RNIap.initConnection();
-    //     await RNIap.flushFailedPurchasesCachedAsPendingAndroid();
-    //     if (result === false) {
-    //       Alert.alert("couldn't get in-app-purchase information");
-    //       return;
-    //     }
-    //     return result;
-    //   } catch (err) {
-    //       Alert.alert('fail to get in-app-purchase information');
-    //       return;
-    //   }
     await RNIap.initConnection()
         .then(async (connection) => {
             console.log("connection", connection);
-            
             return connection
         })
         .catch((err) => {
@@ -99,8 +86,9 @@ export const initilizeIAPConnection = async () => {
         });
 
     if (Platform.OS === 'android') {
-        await RNIap.flushFailedPurchasesCachedAsPendingAndroid()
+        return await RNIap.flushFailedPurchasesCachedAsPendingAndroid()
             .then(async (consumed) => {
+                return consumed
                 console.log('consumed all items?', consumed);
             }).catch((err) => {
                 console.warn(`flushFailedPurchasesCachedAsPendingAndroid ERROR ${err.code}`, err.message);

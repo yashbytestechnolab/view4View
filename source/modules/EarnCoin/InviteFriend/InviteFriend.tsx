@@ -36,7 +36,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
         SplashScreen.hide()
     }, [])
     const { storeCreator: { setGetReferralCode, darkModeTheme, getReferralCode } }: any = useContext(InputContextProvide)
-    const [buildData, setBuildData] = useState();
+    const [buildData, setBuildData]: any = useState();
     const getReferal = async () => {
         await userDeatil().then(async (res: any) => {
             setGetReferralCode(res?.referral_code)
@@ -58,10 +58,15 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
         }
     }
     const getUpdateBuildData = async () => {
-        const IAPData = await getBuildVersionData();
-        {
-            IAPData == undefined ?
-                setBuildData(confingDefaultValue) : setBuildData(IAPData)
+        try {
+            const IAPData = await getBuildVersionData();
+            {
+                IAPData == undefined ?
+                    setBuildData(confingDefaultValue) : setBuildData(IAPData)
+            }
+        }
+        catch (error) {
+            setBuildData(confingDefaultValue)
         }
     }
     const ReferEarn = `${t("linkText")} \n\nDownload now:  \n\niOS App: ${buildData?.Upadte?.ios} \n\nAndroid App: ${buildData?.Upadte?.android}
@@ -86,9 +91,11 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                     return err;
                 });
     };
+
     const copyToClipboard = () => {
         Clipboard.setString(getReferralCode?.toString());
     };
+
     useEffect(() => {
         getUpdateBuildData()
     }, [])
@@ -133,7 +140,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                         style={[style?.referralCodeWrapper, darkModeTheme && { backgroundColor: Colors?.blackOpcity }]}
                         onPress={() => {
                             copyToClipboard();
-                            handleFirebaseError('refCode',t);
+                            handleFirebaseError('refCode', t);
                         }}>
                         <Text style={[F60024?.textStyle, style?.refText]} numberOfLines={1}>
                             {getReferralCode}

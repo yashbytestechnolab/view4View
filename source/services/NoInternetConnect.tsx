@@ -1,5 +1,5 @@
 import React, { useEffect, useState, } from 'react'
-import { View, Text, Modal, StyleSheet } from 'react-native'
+import { View, Text, Modal, StyleSheet, StatusBar } from 'react-native'
 import AnimatedLottieView from 'lottie-react-native'
 import { Colors, F60016, F60024, colorBackGround, darkBackGround } from '../Theme'
 import { ButtonComponent } from '../components';
@@ -35,13 +35,14 @@ export const NoInternetConnect = ({ darkModeTheme, isInternetBack, setIsInternet
                 visible={!isInternetBack}
                 animationType="none"
                 supportedOrientations={['portrait', 'landscape']}>
+                    <StatusBar backgroundColor={darkModeTheme ? Colors?.black : Colors?.white} />
                 <View style={[style.main, darkBackGround(darkModeTheme)]}>
                     <AnimatedLottieView
                         style={style.animation}
                         source={require('../assets/noInternet.json')} autoPlay />
 
-                    <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(darkModeTheme)]}>{t("title")}</Text>
-                    <Text style={[F60016?.semiBolt, style.subText, colorBackGround(darkModeTheme)]}>{t("subTitle")}</Text>
+                    <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(darkModeTheme)]}>{t("noInternet")}</Text>
+                    <Text style={[F60016?.semiBolt, style.subText, colorBackGround(darkModeTheme)]}>{t("connectedInternet")}</Text>
                     <ButtonComponent loading={isConncectLoading} buttonTitle={t("buttonTitle")} onPrees={() => { HandleTryAgain() }}
                         wrapperStyle={style.button} />
                 </View>
