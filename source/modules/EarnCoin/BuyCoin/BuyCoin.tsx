@@ -136,7 +136,7 @@ export const BuyCoin = () => {
 
             await buyMemberShip(price, redeemCoin)
             await purchaseCoin(getBalance + redeemCoin)?.then((res: any) => {
-                dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + redeemCoin })
+                dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + redeemCoin, memberShipPurchase: true })
                 showMessage({
                     message: `${redeemCoin} coins credited`,
                     type: 'success',

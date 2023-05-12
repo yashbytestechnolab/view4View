@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     orderView: { marginTop: 16, flex: 1 },
     scrollView: { backgroundColor: Colors.white, marginTop: 12, },
     contain: { paddingHorizontal: 16, flexGrow: 1, paddingBottom: 90 },
-    requireFild: { marginTop: 10, height: 1, backgroundColor: Colors.greyD8D8D8 },
+    requireFild: {height: 1, backgroundColor: Colors.greyD8D8D8 },
     wrapperView: { flex: 1, marginTop: 22 },
     buttonAddCamp: { marginHorizontal: 0, marginTop: 32 },
     warnWrapper: { marginTop: 32, flex: 1 },

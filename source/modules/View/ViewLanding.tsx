@@ -611,20 +611,20 @@ export const ViewLanding = () => {
         purchaseErrorSubscription.remove();
         purchaseErrorSubscription = null;
       }
-  
+
     });
   }, []);
 
   const isFocus = useIsFocused()
 
-  useEffect(()=>{
-    if(!isFocus){
+  useEffect(() => {
+    if (!isFocus) {
       purchaseUpdateSubscription?.remove();
       purchaseUpdateSubscription = null;
       purchaseErrorSubscription?.remove();
       purchaseErrorSubscription = null;
     }
-  },[isFocus])
+  }, [isFocus])
 
 
   const _onError = async (message: any) => {
@@ -633,11 +633,13 @@ export const ViewLanding = () => {
       await RNIap.clearProductsIOS()
     }
     setIsLoading(false)
-    showMessage({
-      message: message,
-      type: 'danger',
-      duration: 6000
-    })
+    console.log("_onError", message);
+
+    // showMessage({
+    //   message: message,
+    //   type: 'danger',
+    //   duration: 6000
+    // })
     // navigation.goBack()
   }
 
