@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import { ENV, person } from '../modules/View/increment';
 
 export class AdsClass {
-    static rewardAd = RewardedAd.createForAdRequest(person?.environment() == ENV.dev ? TestIds.REWARDED : Platform.OS === 'android' ? 'ca-app-pub-4027493771242043/3200937894' : 'ca-app-pub-4027493771242043/4402338926');
+    static rewardAd = RewardedAd.createForAdRequest(person?.environment() == ENV.production ? TestIds.REWARDED : Platform.OS === 'android' ? 'ca-app-pub-4027493771242043/3200937894' : 'ca-app-pub-4027493771242043/4402338926');
     static isLoadead: boolean = false
     static callBack?: any
 

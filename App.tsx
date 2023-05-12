@@ -33,6 +33,11 @@ export default function App() {
   const [darkModeTheme, setDarkModeTheme] = useState(false)
 
   useEffect(() => {
+    remoteAdsValue()
+    getLangauagePreference()
+  }, [])
+  
+  useEffect(() => {
     getDarkModeUI()
     getReward()
     Platform.OS === "ios" && PushNotificationIOS.removeAllDeliveredNotifications();
@@ -41,10 +46,6 @@ export default function App() {
   }, [updateAlert])
 
 
-  useEffect(() => {
-    remoteAdsValue()
-    getLangauagePreference()
-  }, [])
 
   const getLangauagePreference = async () => {
     let language = await LocalStorage.getValue(LocalStorageKeys.language)
@@ -99,8 +100,10 @@ export default function App() {
   };
 
   const remoteAdsValue = async () => {
-    // let interstitial_ads_config = await interstitial_ads()
-    // interstitial_ads_config && showInterstitialAd()
+    let interstitial_ads_config = await interstitial_ads()
+    console.log("interstitial_ads_config", interstitial_ads_config);
+
+    interstitial_ads_config && showInterstitialAd()
   }
 
 
