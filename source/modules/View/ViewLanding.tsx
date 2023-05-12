@@ -645,7 +645,7 @@ export const ViewLanding = () => {
   }
 
   const onPressBuyAutoPlay = async (productData: any) => {
-     connectInit();
+    await connectInit();
     bottomRef.close();
     setIsLoading(true)
     let sku = onGetProdutId(productData);

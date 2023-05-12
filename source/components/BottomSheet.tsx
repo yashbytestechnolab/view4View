@@ -21,7 +21,7 @@ const BottomSheet = (props: bottomSheetProps) => {
             customStyles={{
                 container: {
                     justifyContent: "center",
-                    alignItems: "center",
+                    // alignItems: "center",
                     borderTopRightRadius:16,
                     borderTopLeftRadius:16
                 }

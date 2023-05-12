@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, Platform, TouchableOpacity, ActivityIndicator, } from 'react-native';
-import { colorBackGround, Colors, F40014, lightBackGround, } from '../../Theme';
+import { colorBackGround, Colors, darkBackGround, F40014, F60016, lightBackGround, } from '../../Theme';
 import { purchaseCoin } from '../../services';
 import { ButtonComponent, Loader } from '../../components';
 import { InputContextProvide } from '../../context/CommonContext';
@@ -16,11 +16,12 @@ import { String } from '../../constants';
 import { ORtitle } from '../authentication/Authcomponents';
 import { WatchAds } from '../../assets/icons/WatchAds';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
 
-export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay }: any) => {
+export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay, bottomRef }: any) => {
     const { t } = useTranslation()
     const [selectRB, setSelectRB] = useState(0)
     const [parseData, setParseData]: any = useState(undefined)
@@ -157,16 +158,54 @@ export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay }: any) => 
             </View>
         )
     }
+    {/* <BuyCoinIcon /> */ }
+
     return (
-        <>
+        <View style={{ flex: 1, }}>
+            <View style={[styles.modelView, darkBackGround(darkModeTheme)]}>
+                <Text style={[F60016.textStyle, F60016.semiBolt, { fontSize: 22 }, colorBackGround(darkModeTheme)]}>
+                    {'Oops!!'}
+                </Text>
+                <Text style={[styles.description, F40014.main, { fontSize: 18 }, colorBackGround(darkModeTheme)]}>
+                    {"Sorry you don't have an autoplay minutes, Please click on the 'Watch Ads' to earn 5 Mins of autoplay."}
+                </Text>
+            </View>
+            <View style={{ marginHorizontal: 40 }}>
+                <ButtonComponent buttonTitle={'Watch Ads'}
+                    onPrees={() => watchAdsHandler()}
+                    isRewardIconShow
+                    secondIcon={<WatchAds />}
+                    wrapperStyle={style.buttonWrapperAdsWatch}
+                />
+            </View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    model: { backgroundColor: 'transparent', flex: 1, },
+    modelView: {
+        paddingTop: 40,
+        paddingBottom: 40,
+        borderRadius: 16,
+        paddingHorizontal: 30,
+        // alignItems: "flex-end",
+    },
+    won: { marginTop: 24 },
+    button: { marginTop: 33, width: '60%' },
+    points: { marginTop: 12 },
+    description: { marginTop: 12, opacity: 0.6 }
+})
+
+/**
+ *    <>
             {parseData === undefined ? <Loader /> :
                 <><SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
                     {loading && <HandleLoader />}
 
-                    <View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
+                    <View style={[style.main, {justifyContent:"center", backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
 
                         <View style={{ alignItems: 'center', marginTop: 20 }}>
-                            {/* <BuyCoinIcon /> */}
                             <Text style={[style.titleText, colorBackGround(darkModeTheme)]}>Buy Auto Play Hours</Text>
                         </View>
                         {parseData && parseData?.map((res: {
@@ -198,7 +237,6 @@ export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay }: any) => 
                                         </TouchableOpacity>
                                         <View style={{ paddingLeft: 12 }}>
                                             <Text style={[F40014?.main, colorBackGround(darkModeTheme)]}>{res?.name}</Text>
-                                            {/* <Text style={[F40014?.main, colorBackGround(darkModeTheme), {fontSize:10, color:'#E57E25'}]}>{res?.detail}</Text> */}
                                             <Text style={[F40014.main, { color: Colors?.primaryRed }]}>{res?.detail}</Text>
                                         </View>
                                     </View>
@@ -220,10 +258,8 @@ export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay }: any) => 
                             secondIcon={<WatchAds />}
                             wrapperStyle={style.buttonWrapperAdsWatch}
                         />
-                    </View></>
+                    </View>
+                    </>
             }
         </>
-    );
-};
-
-
+ */

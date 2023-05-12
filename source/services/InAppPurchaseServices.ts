@@ -89,7 +89,6 @@ export const initilizeIAPConnection = async () => {
         return await RNIap.flushFailedPurchasesCachedAsPendingAndroid()
             .then(async (consumed) => {
                 return consumed
-                console.log('consumed all items?', consumed);
             }).catch((err) => {
                 console.warn(`flushFailedPurchasesCachedAsPendingAndroid ERROR ${err.code}`, err.message);
             });
