@@ -27,7 +27,8 @@ interface IRoutes {
     CHANGEPASSWORD: string;
     SHOWADDS: string;
     CAMPAIGNLANDING: string;
-    AUTOPLAYBUY:string;
+    AUTOPLAYBUY: string;
+    LANGUAGE: string
 };
 export const ROUTES: IRoutes = {
     HOME: "HOME",
@@ -58,5 +59,6 @@ export const ROUTES: IRoutes = {
     CHANGEPASSWORD: "CHANGEPASSWORD",
     SHOWADDS: "SHOWADDS",
     CAMPAIGNLANDING: 'CAMPAIGNLANDING',
-    AUTOPLAYBUY: 'AUTOPLAYBUY'
+    AUTOPLAYBUY: 'AUTOPLAYBUY',
+    LANGUAGE: "LANGUAGE"
 }

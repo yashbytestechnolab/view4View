@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 import { ButtonComponent, Header } from '../../../components';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import YoutubePlayer, { getYoutubeMeta, } from 'react-native-youtube-iframe';
-import { LocalStorageKeys, ROUTES, String } from '../../../constants';
+import { LocalStorageKeys, ROUTES } from '../../../constants';
 import { styles } from './style';
 import { colorBackGround, Colors, darkBackGround, F40014, F60012, F60016 } from '../../../Theme';
 import { Expected, dropdownConfigValue } from '../../../services';
@@ -16,11 +16,16 @@ import { Anaylitics } from '../../../constants/analytics';
 import { CamptionConformationModel } from '../../../components/CamptionConformationModel';
 import { DropDownModel } from '../../../components/DropDownModel';
 import * as LocalStorage from '../../../services/LocalStorage';
+import { useTranslation } from 'react-i18next';
+import { po } from '../../../Language/portuguese';
+import i18next from 'i18next';
+import { en } from '../../../Language/english';
 
 export const CreateCampaign = () => {
 
+  const { t } = useTranslation()
   const navigation: any = useNavigation();
-  const { storeCreator: { token, loading, setLoading, coinBalance: { getBalance }, dispatchCoin, darkModeTheme, setVideoUrl, addVideoUrl } }: any = useContext(InputContextProvide)
+  const { storeCreator: { token, loading, setLoading, coinBalance: { getBalance, purchaseCoin }, dispatchCoin, darkModeTheme, setVideoUrl, addVideoUrl } }: any = useContext(InputContextProvide)
   const route = useRoute<{
     params: any; key: string; name: string; path?: string | undefined;
   }>();
@@ -28,7 +33,6 @@ export const CreateCampaign = () => {
   const [isVisibleModel, setIsVisibleModel] = useState(false)
   const [isVisibleDurationModal, setIsVisibleDurationModel] = useState(false)
   const [totalCost, setTotalCost] = useState(300)
-  const { commonString, headerTitle } = String
   const [configValue, setConfigValue] = useState<campaign>({})
   let splitUrl: any = route?.params?.url;
   const youTubeRef: any = useRef()
@@ -120,7 +124,7 @@ export const CreateCampaign = () => {
         /**
          * Create Campaign api call & decrement wallet amount
          */
-        let createCampaignRequest: createCampaignRequest = { addVideoUrl, splitUrl, timeSecond, views, totalCost, thumbnail_url: videoTitle?.thumbnail_url, title: videoTitle?.title, token }
+        let createCampaignRequest: createCampaignRequest = { addVideoUrl, splitUrl, timeSecond, views, totalCost, thumbnail_url: videoTitle?.thumbnail_url, title: videoTitle?.title, token, purchaseCoin }
         createCampaign(createCampaignRequest)
           .then((res: any) => {
             analyticsLog("create_campaign_sucess", updateWallet, userAddUrl, videoTitle), updateCoinBalance(updateWallet)
@@ -150,13 +154,15 @@ export const CreateCampaign = () => {
       : !(getBalance >= totalCost) ? setIsVisible(true) : setIsVisibleModel(true)
   }
 
+
+  let confirmCampaignText = i18next.language.substring(0, 2) == "en" ? en.translation : po.translation
   return (
     <>
       <SafeAreaView style={{ backgroundColor: Colors.linear_gradient }} />
       <View style={[styles.main, darkBackGround(darkModeTheme)]}>
         <Header
           showBacKIcon={true}
-          title={headerTitle?.createCampaign} />
+          title={t("createCampaign")} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           scrollEnabled={true}
@@ -165,14 +171,14 @@ export const CreateCampaign = () => {
           <YoutubePlayer ref={youTubeRef} height={203} videoId={splitUrl?.toString()} />
           <View style={styles.orderView}>
             <Text style={[F60016.textStyle, F60016.campaign, F60016.bold, colorBackGround(darkModeTheme)]}>
-              {commonString.OrderSettings}
+              {t("OrderSettings")}
             </Text>
           </View>
           <View style={styles.requireFild} />
           <View style={styles.wrapperView}>
             <View style={styles.settingWrapper}>
               <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
-                {commonString.Expectedviews}
+                {t("Expectedviews")}
               </Text>
               <TouchableOpacity style={styles.expectedView} activeOpacity={1} onPress={() => { setShowExpectedValue(true) }}>
 
@@ -183,7 +189,7 @@ export const CreateCampaign = () => {
 
             <View style={[styles.settingWrapper, styles.marginTop16]}>
               <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
-                {commonString.requiredTime}
+                {t("requiredTime")}
               </Text>
               <TouchableOpacity style={styles.expectedView} activeOpacity={1} onPress={() => { setShowDropDown(true) }}>
 
@@ -193,7 +199,7 @@ export const CreateCampaign = () => {
             </View>
             <View style={[styles.settingWrapper, styles.marginTop16,]}>
               <Text style={[F40014.main, styles.alignSelef, colorBackGround(darkModeTheme)]}>
-                {commonString.Totalcost}
+                {t("Totalcost")}
               </Text>
               <View style={[styles.expectedView, { backgroundColor: Colors.primaryRed }]}>
                 <Text style={[F40014.main, F40014.whiteColor]}>
@@ -204,34 +210,31 @@ export const CreateCampaign = () => {
 
             <ButtonComponent
               disable={loading}
-              buttonTitle={commonString.AddCampaign}
+              buttonTitle={t("AddCampaign")}
               wrapperStyle={styles.buttonAddCamp}
-              onPrees={() =>
-                HandleAddCampaignButton()}
-
+              onPrees={() => HandleAddCampaignButton()}
             />
 
             <View style={styles.warnWrapper}>
               <Text style={[F60012.textStyle, colorBackGround(darkModeTheme)]}>
-                {commonString?.Warning}
+                {t("Warning")}
               </Text>
               <View style={styles.warningText}>
                 <Text style={[styles.textAlign, F40014.main, colorBackGround(darkModeTheme)]}>
-                  {commonString?.viewUpdateWarning}
+                  {t("viewUpdateWarning")}
                 </Text>
               </View>
             </View>
           </View>
         </ScrollView>
       </View>
-      {isVisible &&
-
+      {
+        isVisible &&
         <GiftModel
-          saveButtonTitle={'Earn Coins Now'}
-
-          cancleButtonTitle={'No'}
-          subTitle={`Sorry, You don't have enough coins to create the campaign. Would you like to earn more coins?`}
-          title2={'Out of coins'}
+          saveButtonTitle={t('Earn Coins Now')}
+          cancleButtonTitle={t("No")}
+          subTitle={t('Enoughcoins')}
+          title2={t("Outofcoins")}
           isVisible={isVisible}
           setIsVisible={setIsVisible}
           onPress={() => { navigation.navigate(ROUTES.EARNCOINS_LANDING, { outOfCoin: true }), setIsVisible(false) }}
@@ -241,13 +244,13 @@ export const CreateCampaign = () => {
         isVisibleModel &&
         <CamptionConformationModel
           isVisible={isVisibleModel}
-          actionTitle={"Create Campigan"}
+          actionTitle={t('CreateCampigan')}
           setIsVisible={setIsVisibleModel}
           onPress={() => {
             addCampaignDebounce(), setIsVisibleModel(false)
           }}
-          titleText={'Create Campaign'}
-          descriptionText={`This campaign will deduct your ${totalCost} coins from your account. Are you sure you want to create campaign?`}
+          titleText={t('CreateCampigan')}
+          descriptionText={t([confirmCampaignText.DesCostText(totalCost)])}
         />
       }
       {
@@ -258,7 +261,9 @@ export const CreateCampaign = () => {
           getOtherCoast={views}
           setTotalCost={setTotalCost}
           isVisible={showDropDown}
-          setIsVisible={setShowDropDown} title={'Time Required'} subTitle={'Select minimum time other have to watch your video.'} />
+          setIsVisible={setShowDropDown}
+          title={t('Required')}
+          subTitle={t('minimum')} />
       }
       {
         showExpectedValue && <DropDownModel
@@ -269,16 +274,17 @@ export const CreateCampaign = () => {
           getOtherCoast={timeSecond}
           setTotalCost={setTotalCost}
           isVisible={showExpectedValue}
-
-          setIsVisible={setShowExpectedValue} title={'Expected Views'} subTitle={'Select number of views that you want to have.'} />
+          setIsVisible={setShowExpectedValue}
+          title={t('Expectedviews')}
+          subTitle={t("NumberViews")} />
       }
       {isVisibleDurationModal &&
         <CamptionConformationModel
-          titleText={'Warning!!'}
-          descriptionText={`Selected duration is greater than video duration. Please select proper video duration.`}
+          titleText={t('Warning')}
+          descriptionText={t('duration')}
           isVisible={isVisibleDurationModal}
           setIsVisible={setIsVisibleDurationModel}
-          actionTitle={"Close"}
+          actionTitle={t("Close")}
           onPress={() => {
             setIsVisibleDurationModel(false)
           }

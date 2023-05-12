@@ -6,25 +6,36 @@ import { updateProfile } from '../../../../services/FireStoreServices'
 import { InputContextProvide } from '../../../../context/CommonContext'
 import { type } from '../../../../constants/types'
 import { EditProfileIcon } from '../../../../assets/icons'
-import { ROUTES, String } from '../../../../constants'
+import { ROUTES } from '../../../../constants'
 import { useNavigation } from '@react-navigation/native'
 import ImagePicker from 'react-native-image-crop-picker';
 import { style } from './style'
+import { useTranslation } from 'react-i18next'
 
 export const EditProfile = () => {
+    const { t } = useTranslation()
     const navigation = useNavigation()
     const { storeCreator: { darkModeTheme, userDetail: { data, infoLoading }, userInput, dispatch, userInputError, dispatchError, dispatchuserDetail } }: any = useContext(InputContextProvide)
     const [profilePic, setProfilePic]: any = useState(null);
     const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
+
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+        };
+    }, []);
+
+    useEffect(() => {
+        getUserData()
+    }, [])
+
 
     const getUserData = () => {
         dispatch({ type: type.FULL_NAME, payload: data?.firstname + " " + data?.lastname });
         dispatch({ type: type.EMAIL, payload: data?.email });
     }
 
-    useEffect(() => {
-        getUserData()
-    }, [])
 
     /**
      *  This Function dispatch error message
@@ -38,9 +49,10 @@ export const EditProfile = () => {
     const handleCreateAccountFlow = () => {
         let isNotValidForm: boolean = false
         const { fullName } = userInput
-        fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, String.commonString.fullnameErrorMsg));
+        fullName?.length <= 0 && (isNotValidForm = true, dispatchHandler(type.FULLNAME_ERROR, t("fullnameErrorMsg")));
         !isNotValidForm && updateProfileData()
     }
+
     const OpenGallery = () => {
         ImagePicker.openPicker({
             width: 300,
@@ -54,6 +66,7 @@ export const EditProfile = () => {
             console.log("error", error)
         })
     };
+
     const updateProfileData = () => {
         dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: true })
         let editProfileUpdate: editProfile = { fullName: userInput?.fullName, image: (profilePic?.data || data?.image) }
@@ -68,24 +81,19 @@ export const EditProfile = () => {
             console.log("err", err);
         }).finally(() => dispatchuserDetail({ type: type.USER_INFO_LOADING, payload: false }))
     }
+
     const handleBackButtonClick = () => {
         navigation.goBack();
         dispatchError({ type: type.EMPTY_STATE })
         return true;
     }
-    useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
-        };
-    }, []);
+
     return (
         <>
             <SafeAreaView style={style.safeArea} />
             <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
-                <Header title={String?.headerTitle?.editProfile} showCoin={false} showBacKIcon={true} />
-                {infoLoading ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>{String?.commonString?.save}</Text>}
-
+                <Header title={t("editProfile")} showCoin={false} showBacKIcon={true} />
+                {infoLoading ? <ActivityIndicator color={Colors.white} size={'small'} style={style.saveTextWrapper} /> : <Text style={[F50018?.main, style.saveTextWrapper]} onPress={() => { handleCreateAccountFlow() }}>{t("save")}</Text>}
                 <View style={style.paddingTop}>
                     <View style={style.nameWrapper} >
                         <>
@@ -101,25 +109,24 @@ export const EditProfile = () => {
                                 <EditProfileIcon />
                             </TouchableOpacity>
                         </>
-
                     </View>
 
                     <View style={[style.scrollWrapper, darkBackGround(darkModeTheme)]}>
                         <InputComponent
-                            inputTitle={String.commonString.Fullname}
+                            inputTitle={t("Fullname")}
                             value={userInput?.fullName}
                             onChangeText={(value) => {
                                 dispatch({ type: type.FULL_NAME, payload: value });
                                 dispatchError({ type: type.FULLNAME_ERROR, payload: "" })
                             }}
-                            placeholder={String.commonString.Enterfullname}
+                            placeholder={t("Enterfullname")}
                             errorMessage={userInputError?.fullNameError}
                             viewStyle={style.marginTop33}
                         />
                         <InputComponent
                             editable={false}
-                            inputTitle={String.commonString.email}
-                            placeholder={String.commonString.Enteryouremail}
+                            inputTitle={t("email")}
+                            placeholder={t("Enteryouremail")}
                             value={userInput?.email} />
                     </View>
 

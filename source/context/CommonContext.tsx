@@ -54,7 +54,7 @@ const reducer: Function | any = (state: any, action: any) => {
     }
 }
 
-const CommonContext = ({ children, reward, reviewVersionIos, setReviewVersionIos, setReward, darkModeTheme, setDarkModeTheme, isInternetBack, setIsInternetBack }: any) => {
+const CommonContext = ({ children, reward, setReward, darkModeTheme, setDarkModeTheme, isInternetBack, setIsInternetBack }: any) => {
     const [userInput, dispatch] = useReducer(reducer, intialState)
     const { userInputError, dispatchError } = ValidationFnc();
     const { campaignData, dispatchcampaign } = getUserCampaign()
@@ -100,8 +100,6 @@ const CommonContext = ({ children, reward, reviewVersionIos, setReviewVersionIos
         setGetReferralCode,
         isInternetBack,
         setIsInternetBack,
-        reviewVersionIos,
-        setReviewVersionIos,
         adsCount,
         setAdsCount,
         isTooltipRemaining,

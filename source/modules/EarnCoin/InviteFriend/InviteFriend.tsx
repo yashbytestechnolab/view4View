@@ -28,8 +28,10 @@ import { handleFirebaseError } from '../../../services/AlertMessage';
 import { getBuildVersionData } from '../../../services/BuildVesrionCheck';
 import { userDeatil } from '../../../services';
 import SplashScreen from 'react-native-splash-screen';
+import { useTranslation } from 'react-i18next';
 
 export const InviteFriend = ({ notifyUpdate }: any) => {
+    const { t } = useTranslation()
     useEffect(() => {
         SplashScreen.hide()
     }, [])
@@ -62,7 +64,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                 setBuildData(confingDefaultValue) : setBuildData(IAPData)
         }
     }
-    const ReferEarn = `${String?.inviteFrd?.linkText} \n\nDownload now:  \n\niOS App: ${buildData?.Upadte?.ios} \n\nAndroid App: ${buildData?.Upadte?.android}
+    const ReferEarn = `${t("linkText")} \n\nDownload now:  \n\niOS App: ${buildData?.Upadte?.ios} \n\nAndroid App: ${buildData?.Upadte?.android}
     \n\nReferral code: ${getReferralCode}`;
 
     const option = {
@@ -100,11 +102,9 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
             />
             {!notifyUpdate && (
                 <Header
-                    title={String?.inviteFrd?.headerTitle}
+                    title={t("headerTitle")}
                     showCoin={false}
                     showBacKIcon={true}
-
-
                 />
             )}
             <ScrollView
@@ -117,11 +117,11 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                     darkBackGround(darkModeTheme),
                 ]}>
                 <Text style={[F60024?.textStyle, style.title]}>
-                    {notifyUpdate ? buildData?.title : String?.inviteFrd?.title}
+                    {notifyUpdate ? buildData?.title : t("title")}
                 </Text>
                 <Text
                     style={[F40014?.main, style.subText, colorBackGround(darkModeTheme)]}>
-                    {notifyUpdate ? buildData?.subTtile : String?.inviteFrd?.subTitle}
+                    {notifyUpdate ? buildData?.subTtile : t("subTitle")}
                 </Text>
                 <View>
                     <InviteFrdSvg />
@@ -133,7 +133,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                         style={[style?.referralCodeWrapper, darkModeTheme && { backgroundColor: Colors?.blackOpcity }]}
                         onPress={() => {
                             copyToClipboard();
-                            handleFirebaseError('refCode');
+                            handleFirebaseError('refCode',t);
                         }}>
                         <Text style={[F60024?.textStyle, style?.refText]} numberOfLines={1}>
                             {getReferralCode}
@@ -141,7 +141,7 @@ export const InviteFriend = ({ notifyUpdate }: any) => {
                     </TouchableOpacity>)}
                 <ButtonComponent
                     wrapperStyle={style.button}
-                    buttonTitle={notifyUpdate ? 'Update' : String?.inviteFrd?.button}
+                    buttonTitle={notifyUpdate ? 'Update' : t("button")}
                     onPrees={() => {
                         handleButton(notifyUpdate);
                     }}

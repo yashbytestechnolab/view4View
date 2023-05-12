@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView, StatusBar, ActivityIndicator } from 'react-native'
 import { Header } from '../../../components';
 import { InputContextProvide } from '../../../context/CommonContext';
-import { EarnCoin } from '../../../services';
+import { purchaseCoin } from '../../../services';
 import { Colors, darkBackGround } from '../../../Theme';
 import { style } from './style';
 import { TestIds, RewardedAd, RewardedAdEventType } from '@react-native-firebase/admob';
@@ -30,7 +30,7 @@ export const ShowAdds = () => {
             }
 
             if (type === RewardedAdEventType.EARNED_REWARD) {
-                EarnCoin(getBalance)?.then((res) => {
+                purchaseCoin( getBalance + 100)?.then((res) => {
                     dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + 100 })
                 }).catch((err) => {
                     console.log("err", err);

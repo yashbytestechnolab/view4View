@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
-import { LocalStorageKeys, String } from '../../constants';
+import { LocalStorageKeys } from '../../constants';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Header } from '../../components';
 import { colorBackGround, Colors, darkBackGround, F40012, F60016, lightBackGround } from '../../Theme';
@@ -15,8 +15,10 @@ import * as LocalStorage from '../../services/LocalStorage';
 import { CamptionConformationModel } from '../../components/CamptionConformationModel';
 import { Anaylitics } from '../../constants/analytics';
 import { AdsCount } from '../../services/AdsCount';
+import { useTranslation } from 'react-i18next';
 
 export const EarnCoinLanding = () => {
+  const { t } = useTranslation()
   const navigation = useNavigation()
   const [isAdsAlertDisplay, setIsAlertDisplay] = useState(false);
   const [maxLimitAds, setMaxLimitAds] = useState(false)
@@ -27,9 +29,10 @@ export const EarnCoinLanding = () => {
     let adsCountValue = await AdsCount()
     setMaxAdsShow(adsCountValue || 10)
   }
+
   useEffect(() => {
     remotValue()
-  }, [])
+  }, [maxAdsShow])
 
   /**
    * InputContextProvide is get current coin and darktheame flag 
@@ -39,7 +42,6 @@ export const EarnCoinLanding = () => {
   /***
    * showRewardAd is load the ad and show ad
    */
-
   const rewardCoin = () => {
     let adsObj = {
       dataTime: new Date().toDateString(),
@@ -81,13 +83,16 @@ export const EarnCoinLanding = () => {
     <>
       <SafeAreaView style={{ backgroundColor: Colors?.gradient1 }} />
       <View style={[style.main, darkModeTheme && darkBackGround(darkModeTheme)]}>
-        <Header title={String?.headerTitle?.earnCoin} showBacKIcon={route?.params?.outOfCoin == true ? true : false}
+        <Header title={t("earnCoin")} showBacKIcon={route?.params?.outOfCoin == true ? true : false}
         />
         <View style={style.wrapperView}>
           {EarnCoinData.length > 0 && EarnCoinData?.map((item: any, index) => {
             return (
-              <TouchableOpacity key={index.toString()} style={[style.card,
-              lightBackGround(darkModeTheme), { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme ? 0 : 8 }]} activeOpacity={1}
+              <TouchableOpacity key={index.toString()} style={[
+                style.card,
+                lightBackGround(darkModeTheme),
+                { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme ? 0 : 8 }]}
+                activeOpacity={1}
                 onPress={() => {
                   item?.onPress == "SHOWADDS" ? showRewardAd() :
                     navigation.navigate(item?.onPress)
@@ -95,8 +100,9 @@ export const EarnCoinLanding = () => {
                 <View style={style.leftRow}>
                   <item.svg />
                   <View style={style.textWrapper}>
-                    <Text style={[F60016?.textStyle, style.title]}>{CellType.ads === item?.type ? `${item?.title} (${adsWatchCount?.adsCount}/${maxAdsShow})` : item?.title}</Text>
-                    <Text style={[F40012?.main, { color: Colors?.black, opacity: 0.6 }, colorBackGround(darkModeTheme)]}>{item?.subTitle}</Text>
+                    <Text numberOfLines={2}
+                      style={[F60016?.textStyle, style.title]}>{CellType.ads === item?.type ? `${t(item?.title)} (${adsWatchCount?.adsCount}/${maxAdsShow})` : t(item?.title)}</Text>
+                    <Text style={[F40012?.main, { color: Colors?.black, opacity: 0.6, width: 220 }, colorBackGround(darkModeTheme)]}>{t(item?.subTitle)}</Text>
                   </View>
                 </View>
                 <View>
@@ -110,12 +116,12 @@ export const EarnCoinLanding = () => {
       {
         maxLimitAds &&
         <CamptionConformationModel
-          titleText={'Warning!!'}
-          descriptionText={`You have exceeded your daily ads watch limit. Please try tomorrow`}
+          titleText={t("WarningTitle")}
+          descriptionText={t("Exceeded")}
           isVisible={maxLimitAds}
           descriptionStyle={{ paddingHorizontal: 20 }}
           setIsVisible={setMaxLimitAds}
-          actionTitle={"Close"}
+          actionTitle={t("Close")}
           onPress={() => {
             setMaxLimitAds(false)
           }
@@ -124,12 +130,12 @@ export const EarnCoinLanding = () => {
       }
       {isAdsAlertDisplay &&
         <CamptionConformationModel
-          titleText={'Warning!!'}
-          descriptionText={`We don't have any rewards ads to display. Please try again!!`}
+          titleText={t("WarningTitle")}
+          descriptionText={t(`RewardsAds`)}
           isVisible={isAdsAlertDisplay}
           descriptionStyle={{ paddingHorizontal: 20 }}
           setIsVisible={setIsAlertDisplay}
-          actionTitle={"Close"}
+          actionTitle={t("Close")}
           onPress={() => {
             setIsAlertDisplay(false)
           }

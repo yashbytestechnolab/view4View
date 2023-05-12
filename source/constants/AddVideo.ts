@@ -4,18 +4,18 @@ interface video {
 
 export const addVideoText: any = [
     {
-        text: "1. Copy the link of your video from YouTube."
+        text: "LinkYoutube"
     },
     {
-        text: "2. Paste it here in the box above, click 'Add Now' and preview."
+        text: "AddNow"
     },
     {
-        text: "3. Select the number of views and watch time, based on which the total cost (coins) will be reflected."
+        text: "Reflected"
     },
     {
-        text: "4. Redeem coins accordingly."
+        text: "RedeemCoins"
     },
     {
-        text: "5. Click ‘Add campaign’ and that’s it."
+        text: "campaignAdd"
     },
 ]

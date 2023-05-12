@@ -4,7 +4,7 @@ import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
-import { bytesVideoListData, setAutoPlay, setAutoPlayAndTime, EarnCoin, GetCurrentPlayCampaign, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, newAddWatchUrl, updateCampaignViews, getUnkonwnCampaign, deleteAccoutCampaign, setAutoPlayAndTimeForAds } from '../../services/FireStoreServices';
+import { bytesVideoListData, setAutoPlay, setAutoPlayAndTime, EarnCoin, GetCurrentPlayCampaign, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, newAddWatchUrl, updateCampaignViews, getUnkonwnCampaign, deleteAccoutCampaign, setAutoPlayAndTimeForAds, purchaseVideoListQuery, expireMemberShip } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -14,34 +14,47 @@ import { person } from './increment';
 import Lottie from 'lottie-react-native';
 import * as LocalStorage from '../../services/LocalStorage';
 import { Anaylitics } from '../../constants/analytics';
-import { Rating } from '../../services/Rating';
 import { AdsClass } from '../../services/AdsLoad';
 import { CamptionConformationModel } from '../../components/CamptionConformationModel';
 import { type as keys, } from '../../constants/types';
 import { getSocialLoginValue } from '../../constants/settingProfileArr';
 import ToggleSwitch from 'toggle-switch-react-native'
-import { useIsFocused } from '@react-navigation/native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import BottomSheet from '../../components/BottomSheet';
-import { getInAppPurchaseAutoPlay, getItems, initilizeIAPConnection, onGetProdutId, onPurchase } from '../../services/InAppPurchaseServices';
+import { getItems, initilizeIAPConnection, onGetProdutId, onPurchase } from '../../services/InAppPurchaseServices';
 import { showMessage } from 'react-native-flash-message';
 import * as RNIap from 'react-native-iap';
 import { updatCampaignData } from './interface';
+import { useTranslation } from 'react-i18next';
+import { po } from '../../Language/portuguese';
+import { en } from '../../Language/english';
+import i18next from 'i18next';
+import firestore from '@react-native-firebase/firestore';
+import { useIsFocused } from '@react-navigation/native';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
+
 export const ViewLanding = () => {
-  const { storeCreator: { token, reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList }, dispatchCoin, videoLandingData: { videoData, videoLoading, docData, bytesDocData, isBytesVideoLoading, nextVideo }, dispatchVideoLandingData, darkModeTheme, setGetReferralCode, isTooltipRemaining, setIsTooltipRemaining, } }: any = useContext(InputContextProvide)
+
+  firestore.FieldValue.serverTimestamp()
+  const { t } = useTranslation()
+
+  const { storeCreator: { reward, adsCount, setAdsCount, isInternetBack, setToken, coinBalance: { getBalance, watchVideoList, purchaseCoin },
+    dispatchCoin,
+    videoLandingData: { videoData, videoLoading, docData, purchaseDocument, purchaseCampaignListFlag, bytesDocData, isBytesVideoLoading, nextVideo },
+    dispatchVideoLandingData, darkModeTheme, setGetReferralCode, isTooltipRemaining, setIsTooltipRemaining, } }: any =
+    useContext(InputContextProvide)
+
   const [playing, setPlaying] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
   const [isAutoPlayEnable, setIsAutoPlayEnable] = useState<boolean>(false);
   const [remainingAutoPlayTime, setRemainingAutoPlayTime]: any = useState(0);
   const controlRef: any = useRef<boolean>();
-  const autoPlayRef: any = useRef<boolean>();
   const firstStart: any = useRef<boolean>(true);
+  const animationProgress = useRef(new Animated.Value(0))
   const [timer, setTimer] = useState<number>();
   const [isAnimation, setIsAnimantion] = useState(false)
-  const animationProgress = useRef(new Animated.Value(0))
   const [onLoadStop, setOnLoadStop] = useState(false)
   const [isAdsAlertDisplay, setIsAlertDisplay] = useState(false);
   const [onFinishedVideo, setOnFinishedVideo] = useState(false);
@@ -50,23 +63,142 @@ export const ViewLanding = () => {
   const [nextButtonTooltip, setNextButtonTooltip] = useState(false);
   const [autoPlayTooltip, setAutoPlayTooltip] = useState(false);
   const [lastEarnCoins, setLastEarnCoins] = useState(0);
-  const [parseData, setParseData]: any = useState(undefined)
-  const [products, setProducts]: any = useState();
   const [isLoading, setIsLoading] = useState(false);
-  let bottomRef: any = useRef<boolean>();
-  const focus = useIsFocused()
   const [videoWatchUpdateCount, setVideoWatchUpdateCount] = useState(0)
-  const GetCoins = async (params: string) => {
-    // @ signin screen name in crash console  
 
+  let bottomRef: any = useRef<boolean>();
+
+
+  const dateFormat = (date: any, month: string | number) => {
+    return `${(date.getMonth() + month) + "-" + date.getDate() + "-" + date.getFullYear()}`.toString()
+  }
+
+  const checkMembershipDetail = (second: string | any) => {
+    let purchaseDate: string | number | Date = new Date(second * 1000);
+    purchaseDate = dateFormat(purchaseDate, 2);
+
+    let currentDate: string | number | Date = new Date().toUTCString()
+    currentDate = new Date(currentDate)
+    currentDate = dateFormat(currentDate, 1)
+
+    if (purchaseDate < currentDate) {
+      expireMemberShip()
+    }
+  }
+
+  const GetCoins = async () => {
+    // @ signin screen name in crash console  
     await get_coins().then(async (res: any) => {
+      (res?._data?.purchaseDetail?.memberShipPurchase && checkMembershipDetail(res?._data?.purchaseDetail?.lastPurchaseDate?._seconds))
+      let memberShipPurchase: boolean | any = res?._data?.purchaseDetail?.memberShipPurchase || false
       setAdsCount(res?._data?.ads_watch || 0)
       setVideoWatchUpdateCount(res?._data?.video_watch_count || 0)
-      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin })
-      GetLiveVideoList(params, res?._data?.watch_videos)
+      dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin, memberShipPurchase })
+      getPurchaseVideoList()
       Anaylitics("get_user_detail", { current_balance: res?._data?.coin })
     });
   };
+
+  const result = (add_Video_Url: Array<object> | any) => {
+    let data: any = {}
+    const arr: Array<object> = []
+    function randomNumberGenerator() {
+      let randomNumber: number | any = Math.floor(Math.random() * add_Video_Url.length)
+      if (data[randomNumber]) {
+        randomNumberGenerator()
+      }
+      else {
+        data[randomNumber] = "repeated"
+        arr.push(add_Video_Url[randomNumber])
+      }
+    }
+    function creareVideoArray() {
+      for (let j = 0; j < add_Video_Url?.length; j++) {
+        randomNumberGenerator()
+      }
+    }
+    creareVideoArray()
+    return arr
+  }
+
+  const dispatchWrap = () => {
+    dispatchVideoLandingData({ types: type.PURCHASE_CAMPAIGN, payload: false });
+    GetLiveVideoList("isRender", [])
+  }
+
+  const getPurchaseVideoList = async () => {
+    let docOS: any = Object.keys(purchaseDocument)?.length > 0 ? purchaseDocument : {}
+    try {
+      let add_Video_Url: Array<any> | any = []
+      let purchaseData = await purchaseVideoListQuery(docOS)
+      purchaseData?.filter((res: any) => {
+        if (!res?._data?.user_views?.includes(getUserID()) && res?._data?.upload_by !== getUserID()) {
+          add_Video_Url.push(res?._data)
+        }
+      });
+      if (add_Video_Url?.length > 0) {
+        let modifiyArry: any = result(add_Video_Url)
+        setTimer(modifiyArry[0]?.require_duration)
+        dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: modifiyArry, _docPurchase: purchaseData[purchaseData?.length - 1], _vID: [], _doc: {} } })
+        dispatchVideoLandingData({ types: type.PURCHASE_CAMPAIGN, payload: true })
+      } else {
+        dispatchWrap()
+      }
+    }
+    catch (error) {
+      dispatchWrap
+    }
+  }
+
+  const getBytesVideoList = async (params: string) => {
+    dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
+    let data = await bytesVideoListData(bytesDocData)
+    let bytesVideo = data?.map((item: any) => item?._data)
+    if ((!isBytesVideoLoading || params?.length > 0) && bytesVideo?.length > 0) (setTimer(bytesVideo[0]?.require_duration))
+    if (bytesVideo?.length > 0) {
+      dispatchVideoLandingData({ types: type.BYTES_VIDEO_DATA, payload: { _vid: bytesVideo, bytes_doc: data[data?.length - 1] } })
+    }
+    else { setOnLoadStop(true); dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: false }) }
+  }
+
+  let add_Video_Url: Array<any> | any = []
+  async function GetLiveVideoList(params: string, watchVideoList: any) {
+    dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
+    let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
+    getUnkonwnCampaign(docOS)
+      .then(async (res: any) => {
+        res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
+        res._docs?.filter((res: any) => {
+          if (!res?._data?.user_views?.includes(getUserID()) && res?._data?.upload_by !== getUserID()) {
+            add_Video_Url.push(res?._data)
+            return res?._data
+          }
+        });
+        if (add_Video_Url?.length > 0) {
+          let modifiyArry: any = result(add_Video_Url)
+          person?.emptyCount();
+          params?.length > 0 && (setTimer(modifiyArry[0]?.require_duration))
+          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: modifiyArry, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList, _docPurchase: {} } })
+        } else {
+          if (person.retryCount >= 6) {
+            dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })
+            !isBytesVideoLoading && getBytesVideoList("")
+          }
+          else {
+            person?.retryDoc(res?._docs[res?._docs?.length - 1])
+            GetLiveVideoList("isRender", watchVideoList);
+          }
+        }
+      })
+      .catch(error => {
+        dispatchVideoLandingData({ types: type.VIDEO_ERROR, payload: error.message })
+        handleFirebaseError(error?.code, t);
+      })
+      .finally(() => {
+        dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: false })
+      });
+  }
+
 
   const notificationToken = async () => {
     let Ntoken: string | null | undefined | any = await LocalStorage.getValue(LocalStorageKeys.notificationToken)
@@ -79,10 +211,6 @@ export const ViewLanding = () => {
       setToken(Ntoken || "")
     }
   }
-  const openRatingPopup = async () => {
-    await Rating()
-  }
-
 
   const GetReferralCode = async () => {
     await userDeatil().then(async (res: any) => {
@@ -96,16 +224,11 @@ export const ViewLanding = () => {
   };
 
   useEffect(() => {
-    GetCoins("isInitialRenderUpdate");
+    GetCoins();
     notificationToken()
     GetReferralCode()
     getSocialLoginValue()
   }, []);
-
-  useEffect(() => {
-    let unmountPopup = setTimeout(() => openRatingPopup(), 2000)
-    return () => { unmountPopup }
-  }, [])
 
   const getAutoPlayVal = async () => {
     let autoPlayVal: any = await LocalStorage.getValue(LocalStorageKeys?.isAutoPlayEnable)
@@ -113,24 +236,12 @@ export const ViewLanding = () => {
     if (autoPlayVal == true) {
       autoPlayHandler();
     }
-
   }
+
   useEffect(() => {
     getAutoPlayVal();
   }, [])
-  {/** Auto Play */ }
-  // useEffect(() => {
-  //   userDeatil().then(async (res: any) => {
-  //     if(res?.hasOwnProperty('remaining_time')){
-  //       userSession();
-  //     } else {
-  //       setSessionAndAutoPlay(1800)
-  //       setRemainingAutoPlayTime(1800)
-  //     }
 
-  //   })
-  // }, [])
-  {/** Auto Play */ }
   useEffect(() => {
     userDeatil().then(async (res: any) => {
       if (res?.hasOwnProperty('remaining_time')) {
@@ -146,6 +257,7 @@ export const ViewLanding = () => {
 
     })
   }, [])
+
   useEffect(() => {
     if (isAutoPlayEnable && remainingAutoPlayTime == 0) {
       bottomRef.open();
@@ -181,7 +293,6 @@ export const ViewLanding = () => {
   useEffect(() => {
     if (!isInternetBack) setStart(false)
     else if (playing) setStart(true)
-
   }, [isInternetBack])
 
   const showAnimation = () => {
@@ -199,7 +310,6 @@ export const ViewLanding = () => {
 
 
   const GetEarning = async () => {
-
     setOnFinishedVideo(true)
     const { id, expected_view, coin } = videoData?.[nextVideo]
     if (timer === 0) {
@@ -228,7 +338,7 @@ export const ViewLanding = () => {
             getAppendUserId,
           }
           await updateCampaignViews(updatCampaignData)
-            .catch(() => { debounce(); handleFirebaseError("coin not update"); setOnFinishedVideo(false) })
+            .catch(() => { debounce(); handleFirebaseError("coin not update", t); setOnFinishedVideo(false) })
           setOnFinishedVideo(false)
           dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
           Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
@@ -250,24 +360,6 @@ export const ViewLanding = () => {
       }, timer);
     }
   }
-
-  // const GetEarning = async () => {
-  //   const { id, remaining_view, consumed_view, video_Id, expected_view, coin } = videoData?.[nextVideo]
-  //   if (timer === 0) {
-  //     setTimer(0);
-  //     clearInterval(controlRef?.current);
-  //     const totalAmount = getBalance + (coin / expected_view);
-  //     dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
-  //     await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
-  //     await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
-  //     dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
-  //     Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
-  //   }
-  // }
-  /**
-   * user get referral code and set in csetGetReferralCode context 
-   */
-
 
   useEffect(() => {
     if (timer === 0) {
@@ -300,88 +392,18 @@ export const ViewLanding = () => {
     }
   };
 
-  // Genrate random number video array
-  const result = (add_Video_Url: Array<object> | any) => {
-    let data: any = {}
-    const arr: Array<object> = []
-    function randomNumberGenerator() {
-      let randomNumber: number | any = Math.floor(Math.random() * add_Video_Url.length)
-      if (data[randomNumber]) {
-        randomNumberGenerator()
-      }
-      else {
-        data[randomNumber] = "repeated"
-        arr.push(add_Video_Url[randomNumber])
-      }
-    }
-    function creareVideoArray() {
-      for (let j = 0; j < add_Video_Url?.length; j++) {
-        randomNumberGenerator()
-      }
-    }
-    creareVideoArray()
-    return arr
-  }
-
-
-  const getBytesVideoList = async (params: string) => {
-    dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
-    let data = await bytesVideoListData(bytesDocData)
-    let bytesVideo = data?.map((item: any) => item?._data)
-    if ((!isBytesVideoLoading || params?.length > 0) && bytesVideo?.length > 0) (setTimer(bytesVideo[0]?.require_duration))
-    if (bytesVideo?.length > 0) {
-      dispatchVideoLandingData({ types: type.BYTES_VIDEO_DATA, payload: { _vid: bytesVideo, bytes_doc: data[data?.length - 1] } })
-    }
-    else { setOnLoadStop(true); dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: false }) }
-  }
-
-  let add_Video_Url: Array<any> | any = []
-  async function GetLiveVideoList(params: string, watchVideoList: any) {
-    dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: true })
-    let docOS: any = Object.keys(docData)?.length > 0 ? docData : person?.retryDocument
-    getUnkonwnCampaign(docOS)
-      .then(async (res: any) => {
-        res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
-        res._docs?.filter((res: any) => {
-          if (!res?._data?.user_views?.includes(getUserID()) && res?._data?.upload_by !== getUserID()) {
-            add_Video_Url.push(res?._data)
-            return res?._data
-          }
-        });
-        if (add_Video_Url?.length > 0) {
-          let modifiyArry: any = result(add_Video_Url)
-          person?.emptyCount();
-          params?.length > 0 && (setTimer(modifiyArry[0]?.require_duration))
-          dispatchVideoLandingData({ types: type.VIDEO_DATA, payload: { _vid: modifiyArry, _doc: res?._docs[res?._docs?.length - 1], _vID: watchVideoList } })
-        } else {
-          if (person.retryCount >= 6) {
-            dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })
-            !isBytesVideoLoading && getBytesVideoList("")
-          }
-          else {
-            person?.retryDoc(res?._docs[res?._docs?.length - 1])
-            GetLiveVideoList("isRender", watchVideoList);
-          }
-        }
-
-      })
-      .catch(error => {
-        dispatchVideoLandingData({ types: type.VIDEO_ERROR, payload: error.message })
-        handleFirebaseError(error?.code);
-      })
-      .finally(() => {
-        dispatchVideoLandingData({ types: type.VIDEO_LOADING, payload: false })
-      });
-  }
-
 
   const NextVideoList = () => {
     if (nextVideo <= videoData?.length - 1) {
       if (nextVideo === videoData?.length - 1 && !onLoadStop) {
-        if (!isBytesVideoLoading) {
-          GetLiveVideoList("onNetUserVideo", watchVideoList)
+        if (purchaseCampaignListFlag) {
+          getPurchaseVideoList()
         } else {
-          getBytesVideoList("onNetBytesVideo")
+          if (!isBytesVideoLoading) {
+            GetLiveVideoList("onNetUserVideo", watchVideoList)
+          } else {
+            getBytesVideoList("onNetBytesVideo")
+          }
         }
       }
       else if (onLoadStop) {
@@ -404,7 +426,6 @@ export const ViewLanding = () => {
       }, time)
     }
   }
-
   let debounce = onPreesNext(100)
 
 
@@ -477,7 +498,6 @@ export const ViewLanding = () => {
   }
 
   const rewardMin = () => {
-
     showMessage({
       message: `5:00 Minutes Cradited to Auto Play video`,
       type: 'success',
@@ -503,16 +523,14 @@ export const ViewLanding = () => {
   const connectInit = async () => {
     const isConnectedIAP: any = await initilizeIAPConnection();
     setIsLoading(true)
-    console.log("isConnectedIAP==>", isConnectedIAP);
     if (isConnectedIAP) {
       // const getIAPData = async () => {
       let IAPData = undefined   //await getPurchaseData();
       // {\\\
       // IAPData == undefined ? setParseData(getInAppPurchasetaticData) : setParseData(IAPData)
-      IAPData == undefined ? setParseData(getInAppPurchaseAutoPlay) : setParseData(IAPData)
+      // IAPData == undefined ? setParseData(getInAppPurchaseAutoPlay) : setParseData(IAPData)
       // }
       let storeProducts: any = await getItems()
-      setProducts(storeProducts)
       setIsLoading(false);
       // }
       // getIAPData()
@@ -557,11 +575,11 @@ export const ViewLanding = () => {
                   })
                 })
               } catch (error) {
-                console.log("error:", error);
+                // console.log("error:", error);
               }
             }).catch(err => {
               setIsLoading(false);
-              console.log("err:", JSON.stringify(err));
+              // console.log("err:", JSON.stringify(err));
               _onError(err.message)
             });
           }
@@ -593,8 +611,21 @@ export const ViewLanding = () => {
         purchaseErrorSubscription.remove();
         purchaseErrorSubscription = null;
       }
+  
     });
   }, []);
+
+  const isFocus = useIsFocused()
+
+  useEffect(()=>{
+    if(!isFocus){
+      purchaseUpdateSubscription?.remove();
+      purchaseUpdateSubscription = null;
+      purchaseErrorSubscription?.remove();
+      purchaseErrorSubscription = null;
+    }
+  },[isFocus])
+
 
   const _onError = async (message: any) => {
     if (Platform.OS === 'ios') {
@@ -619,13 +650,16 @@ export const ViewLanding = () => {
       sku && onPurchase(sku);
     } catch (error) {
       setIsLoading(false)
-      console.log("error==>", error);
+      // console.log("error==>", error);
     }
   }
 
+  let rewardText = i18next.language.substring(0, 2) == "en" ? en.translation.watchAdd : po.translation.watchAdd
+
   return (
     <>
-      <SafeAreaView style={styles.safearea} /><StatusBar
+      <SafeAreaView style={styles.safearea} />
+      <StatusBar
         backgroundColor={Colors?.gradient1}
         barStyle={String?.StatusBar?.lightContent}
       />
@@ -633,7 +667,7 @@ export const ViewLanding = () => {
         <Header
           coin={getBalance}
           tooltip={coinTooltip}
-          title={String?.headerTitle?.view4view}
+          title={t("view4view")}
           setTooltip={setCoinTooltip}
           setNextButtonTooltip={setNextButtonTooltip}
           lastAddedCoins={lastEarnCoins}
@@ -645,16 +679,14 @@ export const ViewLanding = () => {
           <>
             <ScrollView showsVerticalScrollIndicator={false} style={styles.main} contentContainerStyle={{ paddingBottom: 120 }}>
               <View style={styles.videoWrapper} key={nextVideo?.toString()}>
-
                 {isInternetBack && (videoData?.[nextVideo]?.youtube_video_id?.length > 0 || videoData?.[nextVideo]?.video_Id?.[0]?.length > 0) && !videoLoading &&
                   <>
                     <Tooltip
                       isVisible={youtubePlayerTooltip}
-                      // isVisible={youtubePlayerTooltip}
                       content={
                         <View>
                           <Text style={[colorBackGround(darkModeTheme)]}>
-                            Watch videos to earn coins!!
+                            {t("EarnCoin")}
                           </Text>
                         </View>
                       }
@@ -667,14 +699,13 @@ export const ViewLanding = () => {
                       }}
                       useInteractionManager={true}
                     >
-                      <Text></Text>
                     </Tooltip>
                     <YoutubePlayer
                       height={270}
                       videoId={videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id?.[0]}
                       play={playing}
                       onChangeState={onStateChange}
-                      onError={(err: any) => youtubePlayerErrorHandler(err, (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]), videoData?.[nextVideo])} />
+                      onError={(err: any) => { debounce(); youtubePlayerErrorHandler(err, (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id[0]), videoData?.[nextVideo]) }} />
                   </>
                 }
               </View>
@@ -693,10 +724,8 @@ export const ViewLanding = () => {
                           {timer > 0 ? timer : 0}
                         </Text>
                       </View>
-                      <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{String?.viewTab?.second}</Text>
+                      <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{t("second")}</Text>
                     </View>
-                    {/* <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}> */}
-                    {/* </View> */}
                   </View>
                 </View>
 
@@ -711,7 +740,7 @@ export const ViewLanding = () => {
                           {videoData?.[nextVideo]?.coin > 0 ? (videoData?.[nextVideo]?.coin / videoData?.[nextVideo]?.expected_view) : 0}
                         </Text>
                       </View>
-                      <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{String?.viewTab?.coin}</Text>
+                      <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10 }]}>{t("coin")}</Text>
                     </View>
                     {/* <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}> */}
                     {/* </View> */}
@@ -738,7 +767,7 @@ export const ViewLanding = () => {
                       content={
                         <View>
                           <Text style={[colorBackGround(darkModeTheme)]}>
-                            Click here to enable "Auto Play"
+                            {t('Enable')}
                           </Text>
                         </View>
                       }
@@ -747,9 +776,7 @@ export const ViewLanding = () => {
                         setAutoPlayTooltip(false);
                         autoPlayHandler();
                       }}
-                      // contentStyle={[darkBackGround(darkModeTheme)]}
-                      useInteractionManager={true}
-                    >
+                      useInteractionManager={true}>
                       <ToggleSwitch
                         // key={item?.id}
                         isOn={isAutoPlayEnable}
@@ -759,7 +786,7 @@ export const ViewLanding = () => {
                         onToggle={() => autoPlayHandler()}
                       />
                     </Tooltip>
-                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10, marginTop: 10 }]}>{String?.viewTab?.autoPlay}</Text>
+                    <Text style={[F40014?.main, colorBackGround(darkModeTheme), { fontSize: 10, marginTop: 10 }]}>{t("autoPlay")}</Text>
                   </View>
                 </View>
 
@@ -781,7 +808,7 @@ export const ViewLanding = () => {
                 content={
                   <View>
                     <Text style={[colorBackGround(darkModeTheme)]}>
-                      Click on "Next" to explore more videos and Earn more coins!!
+                      {t("Explore")}
                     </Text>
                   </View>
                 }
@@ -790,12 +817,12 @@ export const ViewLanding = () => {
                   setNextButtonTooltip(false);
                   setIsTooltipRemaining(false);
                 }}
-                // contentStyle={[darkBackGround(darkModeTheme)]}
                 useInteractionManager={true}
               >
                 <ButtonComponent
                   loading={videoLoading || onFinishedVideo}
                   onPrees={() => {
+                    debounce()
                     Anaylitics("next_video_click", {
                       user_balance: getBalance,
                       video_id: (videoData?.[nextVideo]?.youtube_video_id || videoData?.[nextVideo]?.video_Id?.[0]),
@@ -804,11 +831,10 @@ export const ViewLanding = () => {
                       expected_view: videoData?.[nextVideo]?.expected_view,
                       remaining_view: videoData?.[nextVideo]?.remaining_view
                     });
-                    debounce()
                   }}
                   disable={videoLoading || onFinishedVideo}
                   wrapperStyle={styles.marginTop}
-                  buttonTitle={String?.viewTab?.nextVideo} />
+                  buttonTitle={t("nextVideo")} />
               </Tooltip>
               {person?.home_ads && <ButtonComponent
                 onPrees={() => {
@@ -820,7 +846,7 @@ export const ViewLanding = () => {
                   }, rewardCoin);
                 }}
                 wrapperStyle={styles.marginTop}
-                buttonTitle={String?.viewTab?.watchAdd(reward?.adsReward)} />}
+                buttonTitle={t(rewardText(reward?.adsReward))} />}
             </ScrollView>
           </>
         }
@@ -832,12 +858,12 @@ export const ViewLanding = () => {
       </View>
       {isAdsAlertDisplay &&
         <CamptionConformationModel
-          titleText={'Warning!!'}
-          descriptionText={`We don't have any rewards ads to display. Please try again!!`}
+          titleText={t('Warning')}
+          descriptionText={t('RewardsAds')}
           isVisible={isAdsAlertDisplay}
           descriptionStyle={{ paddingHorizontal: 20 }}
           setIsVisible={setIsAlertDisplay}
-          actionTitle={"Close"}
+          actionTitle={t("Close")}
           onPress={() => {
             setIsAlertDisplay(false)
           }
@@ -847,8 +873,46 @@ export const ViewLanding = () => {
       {isAnimation &&
         <Lottie style={styles.animation}
           source={require('../../assets/animation.json')} progress={animationProgress.current} />}
+
     </>
   );
 };
 
 
+
+
+{/** Auto Play */ }
+// useEffect(() => {
+//   userDeatil().then(async (res: any) => {
+//     if(res?.hasOwnProperty('remaining_time')){
+//       userSession();
+//     } else {
+//       setSessionAndAutoPlay(1800)
+//       setRemainingAutoPlayTime(1800)
+//     }
+
+//   })
+// }, [])
+{/** Auto Play */ }
+
+
+
+
+
+
+  // const GetEarning = async () => {
+  //   const { id, remaining_view, consumed_view, video_Id, expected_view, coin } = videoData?.[nextVideo]
+  //   if (timer === 0) {
+  //     setTimer(0);
+  //     clearInterval(controlRef?.current);
+  //     const totalAmount = getBalance + (coin / expected_view);
+  //     dispatchCoin({ types: type.USER_WATCH_VIDEO_LIST, payload: watchVideoList?.length > 0 ? [...watchVideoList, video_Id[1]] : [video_Id[1]] })
+  //     await addWatchUrl(watchVideoList, video_Id[1], totalAmount, isBytesVideoLoading)
+  //     await getNewUpdatedViewCount(id, remaining_view, consumed_view, expected_view, videoData?.[nextVideo], isBytesVideoLoading).catch(() => handleFirebaseError("coin not update"))
+  //     dispatchCoin({ types: type.GET_CURRENT_COIN, payload: totalAmount })
+  //     Anaylitics("watch_video_sucess", { earn_from_video: (coin / expected_view), user_total_balance: totalAmount, user_balance: getBalance })
+  //   }
+  // }
+/**
+ * user get referral code and set in csetGetReferralCode context 
+ */

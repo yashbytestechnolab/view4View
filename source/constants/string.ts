@@ -1,4 +1,5 @@
 export const String: any = {
+
     introduction_swipeList: {
         youtubeVideos: 'Boost Views on Youtube',
         yourCampaignsHere: 'Create Video Campaigns',
@@ -13,6 +14,7 @@ export const String: any = {
         next: 'Next'
 
     },
+
     headerTitle: {
         view: 'View',
         earnCoin: 'Earn Coin',
@@ -27,6 +29,7 @@ export const String: any = {
         editProfile: 'Edit Profile',
         changePassword: 'Change Password'
     },
+
     homeTab: {
         plus: '+',
         add: 'Add',
@@ -35,11 +38,12 @@ export const String: any = {
         50: '50'
 
     },
+
     viewTab: {
         coin: 'Coins',
         second: 'Seconds',
         nextVideo: 'Next Video',
-        autoPlay:"Auto Play",
+        autoPlay: "Auto Play",
         watchAdd(reward: any) {
             return `Watch Ads To Earn ${reward || 100} Coins`
         }
@@ -109,6 +113,7 @@ export const String: any = {
         CampaignAlert: 'Campaign is already running for this video. Please wait until campaign end.',
         buyCoinSubText: 'Contact us if you have some special orders or if you have any problem with in-app-purchase by sending an email to : mobile.apps@bytestechnolab.com'
     },
+
     flashMessage: {
         forgotPwdSuccessMsg: "An email message has ben sent containing a link to reset the password",
         success: 'success',
@@ -123,6 +128,7 @@ export const String: any = {
         Default: "default",
         ChangePasswordSuccess: 'Your password has been changed successfully. Please login with your new password and get more views on videos.'
     },
+
     inviteFrd: {
         headerTitle: 'Invite Friends',
         title: "Refer, Invite, and Earn",
@@ -130,10 +136,12 @@ export const String: any = {
         button: "Invite Now",
         linkText: 'UView is very usefull app and you can increase your view and earn coins'
     },
+
     StatusBar: {
         darkContent: 'dark-content',
         lightContent: 'light-content'
     },
+
     Notification: {
         congratulations: 'Congratulations you received',
         coins: 'coins',
@@ -155,9 +163,11 @@ export const String: any = {
         bottomsubLine: 'See enjoy & win rewards coins',
         buttonText: 'Earn points now'
     },
+
     keyboardType: {
         email: 'email-address'
     },
+
     settingScreen: {
         EditProfile: 'Edit Profile',
         DeleteAccount: "Delete Account",
@@ -171,6 +181,7 @@ export const String: any = {
         logout: 'Sign Out'
 
     },
+
     noInterNetScreen: {
         title: 'No Internet Connection',
         subTitle: 'Make sure you are connected to the internet\nthen try agin',
@@ -182,10 +193,6 @@ export const String: any = {
         cancleButtonTitle: 'RATE US 😍',
         subTitle: 'Your opinion matters to us!. Do you have a moment to rate our app?',
         title2: 'Enjoying UView?'
-
-
     }
-
-
 }
 

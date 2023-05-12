@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
-import { String } from '../../../constants';
 import { colorBackGround, F40014, F60024 } from '../../../Theme';
 import { InputContextProvide } from '../../../context/CommonContext';
 

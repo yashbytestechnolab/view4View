@@ -47,7 +47,7 @@ export const F40012 = StyleSheet.create({
         color: Colors.greyD8D8D8,
         fontSize: 12,
         fontWeight: "400",
-        
+
     },
     color: {
         color: Colors.primaryRed,
@@ -116,6 +116,9 @@ export const F50018 = StyleSheet.create({
     color: {
         color: Colors.placeHolderTextBlack,
         left: 2
+    },
+    language: {
+        color: Colors.paginationGray,
     }
 })
 
@@ -215,11 +218,21 @@ export const F70032 = StyleSheet.create({
 })
 export const F50030 = StyleSheet.create({
     textStyle: {
-        color:Colors?.black,
+        color: Colors?.black,
         fontSize: 30,
         // textAlign:'center',
         fontWeight: "500",
         // alignSelf:'center',
         fontFamily: Fonts?.InterLight
+    },
+})
+
+
+
+export const F40018 = StyleSheet.create({
+    main: {
+        fontSize: 14,
+        fontWeight: "300",
+        fontFamily: Fonts?.InterRegular
     },
 })

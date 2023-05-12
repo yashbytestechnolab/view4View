@@ -25,6 +25,7 @@ export const Colors = {
     dropdownOffWhite: "#E9E9E9",
     shadowPink: "#FFF5F5",
     toggleBG: "rgba(120, 120, 128, 0.16)",
+    underline: "rgba(120, 120, 128, 0.20)",
     darkModeColor: "#1A1A1A",
     darkModeColor1: "#fFFFFF20",
     whiteShadow: '#E2E2E2',
@@ -35,7 +36,4 @@ export const Colors = {
     DisbaleButton:"#ddd",
     DisbaleButtonText:"#aaa",
     transparent: 'rgba(0,0,0,0.1)',
-
-
-
 }

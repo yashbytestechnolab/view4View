@@ -6,35 +6,57 @@ import AppLoader from './source/components/AppLoader';
 import { UpdateBuildVersion } from './source/services/UpdateBuildVersion';
 import { InviteFriend } from './source/modules/EarnCoin';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { ReviewVersionIos, rewardCoinsDefaultValue, rewardConfig } from './source/services';
+import { rewardCoinsDefaultValue, rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { person } from './source/modules/View/increment';
 import { Platform, Appearance } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { NoInternetConnect } from './source/services/NoInternetConnect';
-import { LocalStorageKeys, getNotificationToken } from './source/constants';
+import { LocalStorageKeys } from './source/constants';
 import * as LocalStorage from './source/services/LocalStorage';
 import { Colors } from './source/Theme';
+import { AdEventType, InterstitialAd, TestIds } from '@react-native-firebase/admob';
+import { interstitial_ads } from './source/services/interstitial_ads';
+import i18next from 'i18next';
+import { locale } from './source/Language';
+
 interface reward {
   adsRewarAmt: number | string,
   referRewardAmt: number | string
 }
 export default function App() {
+
   const [updateAlert, setUpdateAlert] = useState(false)
   const [reward, setReward] = useState<reward>({ adsRewarAmt: 0, referRewardAmt: 0 })
   const [isInternetBack, setIsInternetBack] = useState(true)
   const [darkModeTheme, setDarkModeTheme] = useState(false)
-  const [reviewVersionIos, setReviewVersionIos] = useState("")
+
+  useEffect(() => {
+    getDarkModeUI()
+    getReward()
+    Platform.OS === "ios" && PushNotificationIOS.removeAllDeliveredNotifications();
+    requestUserPermission()
+    crashlytics().log("getReward config file @@")
+  }, [updateAlert])
+
+
+  useEffect(() => {
+    remoteAdsValue()
+    getLangauagePreference()
+  }, [])
+
+  const getLangauagePreference = async () => {
+    let language = await LocalStorage.getValue(LocalStorageKeys.language)
+    i18next.changeLanguage(language || locale)
+  }
 
   const getReward = async () => {
-    let reviewVersionIos = await ReviewVersionIos()
-    setReviewVersionIos(reviewVersionIos || 0)
     UpdateBuildVersion(setUpdateAlert)
     let remo = await rewardConfig()
-    remo == undefined ? setReward(rewardCoinsDefaultValue) :
-      setReward(remo)
+    remo == undefined ? setReward(rewardCoinsDefaultValue) : setReward(remo)
   }
+
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -49,7 +71,6 @@ export default function App() {
   }
 
   const getDarkModeUI = async () => {
-
     const colorScheme = Appearance.getColorScheme();
     let appearance: any = await LocalStorage.getValue(LocalStorageKeys.DarkMode)
     if (appearance != null) {
@@ -64,13 +85,24 @@ export default function App() {
     }
   }
 
-  useEffect(() => {
-    getDarkModeUI()
-    getReward()
-    Platform.OS === "ios" && PushNotificationIOS.removeAllDeliveredNotifications();
-    requestUserPermission()
-    crashlytics().log(" getReward config file @@")
-  }, [updateAlert])
+
+  const showInterstitialAd = () => {
+    const interstitialAd = InterstitialAd.createForAdRequest(
+      TestIds.INTERSTITIAL,
+    );
+    interstitialAd.load();
+    interstitialAd.onAdEvent((type, error) => {
+      if (type === AdEventType.LOADED) {
+        interstitialAd.show();
+      }
+    });
+  };
+
+  const remoteAdsValue = async () => {
+    // let interstitial_ads_config = await interstitial_ads()
+    // interstitial_ads_config && showInterstitialAd()
+  }
+
 
   const MyTheme = {
     ...DefaultTheme,
@@ -80,11 +112,10 @@ export default function App() {
     },
   };
 
+
   return (
     <>
       <CommonContext
-        reviewVersionIos={reviewVersionIos}
-        setReviewVersionIos={setReviewVersionIos}
         reward={reward}
         isInternetBack={isInternetBack}
         setIsInternetBack={setIsInternetBack}

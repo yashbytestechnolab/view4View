@@ -6,7 +6,7 @@ import { HidePassword, ShowPassword } from '../assets/icons'
 interface props {
     placeholder: string,
     value: string | number | undefined,
-    inputTitle?: string,
+    inputTitle?: string|any,
     onChangeText?: (value: string | number | any) => void,
     viewStyle?: StyleProp<ViewStyle>,
     isSecureIcon?: boolean,

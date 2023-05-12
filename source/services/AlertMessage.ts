@@ -1,7 +1,5 @@
 import { showMessage } from "react-native-flash-message";
-import { colors } from "react-native-swiper-flatlist/src/themes";
 import { String } from "../constants";
-import { Colors } from "../Theme";
 interface alertMessage {
     forgotPwdSuccessMsg: string,
     success: string,
@@ -17,18 +15,18 @@ interface alertMessage {
     ChangePasswordSuccess: string
 }
 
-export const handleFirebaseError = (type: string) => {
-    const { passError, tooManyRequest, danger, userNotFound, emailAlredyInUser, ChangePasswordSuccess, forgotPwdSuccessMsg, success, validEmail, Something, refCode, Default }: alertMessage = String.flashMessage
+export const handleFirebaseError = (type: string, t: void | any) => {
+    const { danger, success, Default }: alertMessage = String.flashMessage
     switch (type) {
-        case "auth/wrong-password": return AlertMessage(passError, danger)
-        case "auth/too-many-requests": return AlertMessage(tooManyRequest, danger)
-        case "auth/user-not-found": return AlertMessage(userNotFound, danger)
-        case "auth/email-already-in-use": return AlertMessage(emailAlredyInUser, danger)
-        case "ForgotSucess": return AlertMessage(forgotPwdSuccessMsg, success)
-        case "WrongEmail": return AlertMessage(validEmail, danger)
-        case "coin not update": return AlertMessage(Something, danger)
-        case "refCode": return AlertMessage(refCode, Default)
-        case "ChangePasswordSuccess": return AlertMessage(ChangePasswordSuccess, success)
+        case "auth/wrong-password": return AlertMessage(t("passError"), danger)
+        case "auth/too-many-requests": return AlertMessage(t("tooManyRequest"), danger)
+        case "auth/user-not-found": return AlertMessage(t("userNotFound"), danger)
+        case "auth/email-already-in-use": return AlertMessage(t("emailAlredyInUser"), danger)
+        case "ForgotSucess": return AlertMessage(t("forgotPwdSuccessMsg"), success)
+        case "WrongEmail": return AlertMessage(t("validEmail"), danger)
+        case "coin not update": return AlertMessage(t("Something"), danger)
+        case "refCode": return AlertMessage(t("refCode"), Default)
+        case "ChangePasswordSuccess": return AlertMessage(t("ChangePasswordSuccess"), success)
         default: return type
     }
 }

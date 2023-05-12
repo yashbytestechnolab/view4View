@@ -1,55 +1,67 @@
+import {
+  AdVideo,
+  BuyCoin,
+  EarnCoins,
+  Invitefriends,
+  SignInNow,
+  YourCampaigns,
+  YoutubeVideos,
+} from '../assets/icons';
+import { ROUTES } from '../constants';
 
-import { AdVideo, BuyCoin, EarnCoins, Invitefriends, SignInNow, YourCampaigns, YoutubeVideos } from "../assets/icons";
-import { ROUTES, String } from "../constants";
-
-export const IntroductionData = [{
+export const IntroductionData = [
+  {
     id: 1,
     svg: YoutubeVideos,
-    title: String?.introduction_swipeList?.youtubeVideos,
-    subTitle: String?.introduction_swipeList?.subTitle1
-}, {
+    title: "youtubeVideos",
+    subTitle: "subTitle1",
+  },
+  {
     id: 2,
     svg: YourCampaigns,
-    title: String?.introduction_swipeList?.yourCampaignsHere,
-    subTitle: String?.introduction_swipeList?.subTitle2
-}, {
+    title: "yourCampaignsHere",
+    subTitle: "subTitle2",
+  },
+  {
     id: 3,
     svg: EarnCoins,
-    title: String?.introduction_swipeList?.EarnCoins,
-    subTitle: String?.introduction_swipeList?.subTitle3
-}, {
+    title: "EarnCoins",
+    subTitle: "subTitle3",
+  },
+  {
     id: 4,
     svg: SignInNow,
-    title: String?.introduction_swipeList?.signInnow,
-    subTitle: String?.introduction_swipeList?.subTitle4
-}]
+    title: "signInnow",
+    subTitle: "subTitle4",
+  },
+];
 
 export enum CellType {
-    invite = "invite",
-    ads = "ads",
-    buyCoin="buyCoin"
+  invite = 'invite',
+  ads = 'ads',
+  buyCoin = 'buyCoin',
 }
+
 export const EarnCoinData = [
-    {
-        svg: BuyCoin,
-        title: 'Buy Coins',
-        subTitle: 'Buy world coins of countries',
-        onPress: ROUTES?.BUYCOIN,
-        type: CellType.buyCoin
-
-    },
-    {
-        svg: Invitefriends,
-        title: 'Invite Friends',
-        subTitle: 'Earn 300 coin for a referral',
-        onPress: ROUTES?.INVITEFRIEND,
-        type: CellType.invite
-    }, {
-        svg: AdVideo,
-        title: 'Watch Ads Video',
-        subTitle: 'Watch ads video and earn coins',
-        onPress: "SHOWADDS",
-        type: CellType.ads
-    }
-
-]
+  {
+    svg: BuyCoin,
+    title: 'BuyCoins',
+    subTitle: 'CountriesCoins',
+    onPress: ROUTES?.BUYCOIN,
+    type: CellType.buyCoin,
+  },
+  {
+    svg: Invitefriends,
+    title: 'InviteFriends',
+    subTitle: 'Coin300',
+    onPress: ROUTES?.INVITEFRIEND,
+    type: CellType.invite,
+  },
+  {
+    svg: AdVideo,
+    title: 'WatchAdsVideo',
+    subTitle: 'Adsvideo',
+    onPress: 'SHOWADDS',
+    type: CellType.ads,
+  },
+];

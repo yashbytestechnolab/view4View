@@ -4,9 +4,10 @@ export enum LocalStorageKeys {
     DarkMode = "DarkMode",
     isSocialLogin = "isSocialLogin",
     notificationToken = "notificationToken",
-    AppActiveStatus='AppActiveStatus',
-    previousBuildVersion="previousBuildVersion",
-    getRating="getRating",
-    isAutoPlayEnable="isAutoPlayEnable",
-    adsDetail = "adsDetail"
+    AppActiveStatus = 'AppActiveStatus',
+    previousBuildVersion = "previousBuildVersion",
+    getRating = "getRating",
+    isAutoPlayEnable = "isAutoPlayEnable",
+    adsDetail = "adsDetail",
+    language = "language"
 }

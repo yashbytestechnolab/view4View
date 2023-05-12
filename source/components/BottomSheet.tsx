@@ -1,5 +1,6 @@
 import RBSheet from "react-native-raw-bottom-sheet";
 import { AutoPlayScreen } from "../modules/AutoPlay/AutoPlayBuy";
+import React from "react";
 
 
 interface bottomSheetProps {

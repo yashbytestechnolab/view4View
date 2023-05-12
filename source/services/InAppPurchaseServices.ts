@@ -87,6 +87,8 @@ export const initilizeIAPConnection = async () => {
     //   }
     await RNIap.initConnection()
         .then(async (connection) => {
+            console.log("connection", connection);
+            
             return connection
         })
         .catch((err) => {
@@ -121,7 +123,7 @@ export const getItems = async () => {
 };
 
 
-export const onGetCoinAmount = async (rewardId: any) => {
+export const onGetCoinAmount = (rewardId: any) => {
     switch (rewardId) {
         case '1kcoins':
             return 1000
@@ -135,6 +137,25 @@ export const onGetCoinAmount = async (rewardId: any) => {
             return 6000
         case '6KCoins':
             return 6000
+        default:
+            return 0
+    }
+}
+
+export const onGetPriceAmount = (rewardId: any) => {
+    switch (rewardId) {
+        case '1kcoins':
+            return 89
+        case '1KCoins':
+            return 89
+        case '3.3KCoins':
+            return 269
+        case '3.3kcoins':
+            return 269
+        case '6kcoins':
+            return 450
+        case '6KCoins':
+            return 450
         default:
             return 0
     }

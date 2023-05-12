@@ -13,7 +13,7 @@ import { Anaylitics } from '../constants/analytics';
 import Tooltip from 'react-native-walkthrough-tooltip';
 
 interface IheaderProps {
-    title?: string;
+    title?: string | any;
     showBacKIcon?: boolean;
     showCoin?: boolean;
     coin?: number | string;
@@ -21,7 +21,7 @@ interface IheaderProps {
     setTooltip?: any;
     setNextButtonTooltip?: any;
     tooltip?: boolean,
-    lastAddedCoins?:any
+    lastAddedCoins?: any
 
 }
 export const Header = (props: IheaderProps) => {
@@ -30,8 +30,6 @@ export const Header = (props: IheaderProps) => {
             coinBalance: { getBalance },
             darkModeTheme
         },
-        
-
     }: any = useContext(InputContextProvide);
 
     const { title, showBacKIcon, showCoin = true, onPrees } = props;
@@ -49,11 +47,11 @@ export const Header = (props: IheaderProps) => {
                             <TouchableOpacity
                                 activeOpacity={1}
                                 style={{
-                                    padding: 8
+                                    padding: 8,
                                 }}
                                 onPress={() => {
                                     onPrees ? onPrees() : navigation.goBack();
-                                    Anaylitics("back_press_user_coin", {user_balance: getBalance })
+                                    Anaylitics("back_press_user_coin", { user_balance: getBalance })
                                 }}>
                                 <Back color={Colors?.white} />
                             </TouchableOpacity>
@@ -72,7 +70,7 @@ export const Header = (props: IheaderProps) => {
                             <View>
                                 <Text style={[colorBackGround(darkModeTheme)]}>
                                     {`You have earn ${props.lastAddedCoins} coins${`\n`}Click here to see more details!!`}
-                                    
+
                                 </Text>
                             </View>
                         }

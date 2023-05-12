@@ -6,8 +6,8 @@ export const style = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors?.white
     },
-    safearea:{  backgroundColor: Colors?.gradient1},
-    scrollWrapper: { paddingHorizontal: 15, paddingTop: 30, flex:1},
+    safearea: { backgroundColor: Colors?.gradient1 },
+    scrollWrapper: { paddingHorizontal: 15, paddingTop: 30, flex: 1 },
     coinTextWrapper: {
         flexDirection: 'row', justifyContent: 'center', marginTop: 19, marginBottom: 30
     },
@@ -24,11 +24,12 @@ export const style = StyleSheet.create({
     subTextMargin: {
         marginTop: 16, marginBottom: 24
     },
-    viewCoinWrapper:{
-        alignItems: 'center', marginBottom: 32 
+    viewCoinWrapper: {
+        alignItems: 'center', marginBottom: 32
     },
-    viewCoinText:{
-        color: Colors?.primaryRed, marginTop: 24 
+    viewCoinText: {
+        textAlign: "center",
+        color: Colors?.primaryRed, marginTop: 24
     },
     scrollContain: {
         flexGrow: 1,

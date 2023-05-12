@@ -1,28 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, Platform, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, } from 'react-native';
+import { View, Text, SafeAreaView, Platform, TouchableOpacity, ActivityIndicator, } from 'react-native';
 import { colorBackGround, Colors, F40014, lightBackGround, } from '../../Theme';
-import { EarnCoin } from '../../services';
-import { ButtonComponent, Header, Loader } from '../../components';
+import { purchaseCoin } from '../../services';
+import { ButtonComponent, Loader } from '../../components';
 import { InputContextProvide } from '../../context/CommonContext';
-import { getInAppPurchaseAutoPlay, getItems, getPurchaseData, initilizeIAPConnection, onGetCoinAmount, onGetProdutId, onPurchase } from '../../services/InAppPurchaseServices';
+import { getInAppPurchaseAutoPlay, getItems, initilizeIAPConnection, onGetCoinAmount, } from '../../services/InAppPurchaseServices';
 import { showMessage } from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { type as keys } from '../../constants/types';
 import * as RNIap from 'react-native-iap';
-import { BuyCoinIcon, SecondsIcon } from '../../assets/icons';
+import { SecondsIcon } from '../../assets/icons';
 import { style } from './style';
 import { Anaylitics } from '../../constants/analytics';
 import { String } from '../../constants';
 import { ORtitle } from '../authentication/Authcomponents';
 import { WatchAds } from '../../assets/icons/WatchAds';
+import { useTranslation } from 'react-i18next';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
 
 export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay }: any) => {
+    const { t } = useTranslation()
     const [selectRB, setSelectRB] = useState(0)
     const [parseData, setParseData]: any = useState(undefined)
     const [products, setProducts]: any = useState();
+
     const navigation = useNavigation();
     const [loading, setloading]: any = useState(false)
 
@@ -115,13 +118,12 @@ export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay }: any) => 
         })
         navigation.goBack()
     }
-    console.log("parseData", parseData);
-
 
     const onRewardCoins = async (rewardId: any) => {
         let redeemCoin: any = await onGetCoinAmount(rewardId);
         if (redeemCoin) {
-            await EarnCoin(getBalance, redeemCoin)?.then((res: any) => {
+
+            await purchaseCoin(getBalance + redeemCoin)?.then(() => {
                 dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + redeemCoin })
                 showMessage({
                     message: `${redeemCoin} coins credited`,
@@ -133,12 +135,10 @@ export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay }: any) => 
                     navigation.goBack()
                 }, 2000);
                 Anaylitics("Coin added @buyCoin", { getBalance })
-
-
             }).catch((err: any) => {
                 setloading(false)
                 showMessage({
-                    message: String?.commonString?.errorMsg,
+                    message: t("errorMsg"),
                     type: 'danger',
                     duration: 2000
                 })
@@ -214,7 +214,7 @@ export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay }: any) => 
                             wrapperStyle={style.buttonWrapper}
                         />
                         <ORtitle />
-                        <ButtonComponent buttonTitle={"Get 5 Mins Free Autoplay"}
+                        <ButtonComponent buttonTitle={t("AutoplayMins")}
                             onPrees={() => watchAdsHandler()}
                             isRewardIconShow
                             secondIcon={<WatchAds />}

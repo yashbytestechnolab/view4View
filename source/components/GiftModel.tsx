@@ -11,11 +11,11 @@ interface model {
     setIsVisible: any;
     onPress?: any;
     fromAdds?: any;
-    title?: string;
-    title2?: string
-    subTitle?: string;
-    cancleButtonTitle?: string;
-    saveButtonTitle?: string;
+    title?: string|any;
+    title2?: string|any
+    subTitle?: string|any;
+    cancleButtonTitle?: string|any;
+    saveButtonTitle?: string|any;
     CancleOnPress?: any
     showCancleButton?: boolean
     showRating?: boolean,

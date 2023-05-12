@@ -15,5 +15,6 @@ export interface createCampaignRequest {
     timeSecond: number | string, views: number | string, totalCost: number | string,
     title: string,
     token: string,
-    thumbnail_url: string
+    thumbnail_url: string,
+    purchaseCoin: boolean | any
 }

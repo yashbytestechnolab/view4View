@@ -21,9 +21,10 @@ import { GradientHeader } from '../../../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Platform } from 'react-native';
 import { Anaylitics } from '../../../constants/analytics';
+import { useTranslation } from 'react-i18next';
 
 export const Login = () => {
-
+  const { t } = useTranslation()
   /**
    * Context to give userinput data and error message
    */
@@ -41,7 +42,6 @@ export const Login = () => {
     dispatchError({ type: type, payload: payload })
   }
   const handleUserLoginRequest = () => {
-    console.log("operation1")
     let { email } = userInput
     let loginType = "normal";
     Anaylitics("login_click", { email, loginType })
@@ -60,7 +60,7 @@ export const Login = () => {
         dispatch({ type: type.EMPTY_STATE })
         setLoading(false)
       }).
-      catch((userError) => { Anaylitics("login_error", { email, loginType, error: userError?.code }), handleFirebaseError(userError?.code) }).
+      catch((userError) => { Anaylitics("login_error", { email, loginType, error: userError?.code }), handleFirebaseError(userError?.code,t) }).
       finally(() => setLoading(false))
   }
 
@@ -72,12 +72,12 @@ export const Login = () => {
     try {
       let isFormValid: boolean = false
       if (userInput?.email?.length <= 0 || !emailPattern.test(userInput?.email)) {
-        dispatchHandler(type.EMAIL_ERROR, String.commonString.PleaseProvideValidEmailMsg)
+        dispatchHandler(type.EMAIL_ERROR, t("PleaseProvideValidEmailMsg"))
         isFormValid = true
       }
       if (userInput?.password?.length <= 0 || userInput?.password?.length < 6) {
         isFormValid = true
-        dispatchHandler(type.PASSWORD_ERROR, String.commonString.PasswordErrorMsg)
+        dispatchHandler(type.PASSWORD_ERROR, t("PasswordErrorMsg"))
       }
       !isFormValid && handleUserLoginRequest()
     } catch (fncError) {
@@ -98,7 +98,7 @@ export const Login = () => {
         <KeyboardAwareScrollView
           alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps={String.commonString.handled}
+          keyboardShouldPersistTaps={"handled"}
           style={[style.scroll, darkBackGround(darkModeTheme)]}
           scrollEnabled={true}
           contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
@@ -107,15 +107,15 @@ export const Login = () => {
             <View style={[style.borderRadius, { backgroundColor: Colors?.white, flex: 1 }, darkBackGround(darkModeTheme)]}>
               <View style={[style.innerContainer, darkBackGround(darkModeTheme)]} >
                 <AuthHeader
-                  mainTitle={String.commonString.WelcomeBack}
-                  miniTitle={String.commonString.Donthaveanaccount}
-                  actionTitle={String.commonString.SignUp}
+                  mainTitle={t("WelcomeBack")}
+                  miniTitle={t("Donthaveanaccount")}
+                  actionTitle={t("SignUp")}
                   onPress={() => { navigation.navigate(ROUTES.CREATEACCOUNT); clearStateValue() }}
                 />
 
                 <InputComponent
-                  inputTitle={String.commonString.email}
-                  placeholder={String.commonString.Enteryouremail}
+                  inputTitle={t("email")}
+                  placeholder={t("Enteryouremail")}
                   keyboardType={String?.keyboardType?.email}
                   value={userInput?.email}
                   onChangeText={(value) => {
@@ -129,8 +129,8 @@ export const Login = () => {
                 />
 
                 <InputComponent
-                  inputTitle={String.commonString.Password}
-                  placeholder={String.commonString.Enteryourpassword}
+                  inputTitle={t("Password")}
+                  placeholder={t("Enteryourpassword")}
                   value={userInput?.password}
                   onChangeText={(value) => {
                     dispatch({ type: type.PASSWORD, payload: value });
@@ -152,7 +152,7 @@ export const Login = () => {
                       dispatchError({ type: type.EMPTY_STATE })
                     }}
                     style={[F40014.main, F40014.color]}>
-                    {String.commonString.ForgotPassword}
+                    {t("ForgotPassword")}
                   </Text>
                 </View>
 
@@ -160,7 +160,7 @@ export const Login = () => {
                   <ButtonComponent
                     disable={(userInput?.email?.length > 0 && userInput?.password?.length > 0) ? false : true}
                     onPrees={() => handleLoginFlow()}
-                    buttonTitle={String.commonString.SignIn} />
+                    buttonTitle={t("SignIn")} />
                 </View>
                 <ORtitle />
                 {
@@ -168,7 +168,7 @@ export const Login = () => {
                     (<SocialMediaButton
                       wrapperStyle={style.socialLogin}
                       socialMediaIcon={<Google />}
-                      buttonTitle={String.commonString.signInWithGoogle}
+                      buttonTitle={t("signInWithGoogle")}
                       colorBackGround={colorBackGround(darkModeTheme)}
                       onPress={() => { clearStateValue(); googleLogin(navigation, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining) }}
                     />) :
@@ -176,13 +176,13 @@ export const Login = () => {
                       <SocialMediaButton
                         colorBackGround={colorBackGround(darkModeTheme)}
                         socialMediaIcon={<Google />}
-                        buttonTitle={String.commonString.Google}
+                        buttonTitle={t("Google")}
                         onPress={() => { clearStateValue(); googleLogin(navigation, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining) }}
                       />
                       <SocialMediaButton
                         colorBackGround={colorBackGround(darkModeTheme)}
                         socialMediaIcon={<Apple gery={darkModeTheme} />}
-                        buttonTitle={String.commonString.Apple}
+                        buttonTitle={t("Apple")}
                         onPress={() => { clearStateValue(); appleLoginIos(navigation, setLoading, setIsCreateCampaginRemaining, setIsTooltipRemaining) }}
                       />
                     </View>)

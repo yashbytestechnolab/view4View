@@ -10,10 +10,10 @@ interface model {
     setIsVisible: any;
     onPress?: any;
     fromAdds?: any;
-    titleText?: string,
-    descriptionText?: string,
-    descriptionStyle?: any,
-    actionTitle?: string
+    titleText?: string | any,
+    descriptionText?: string | any,
+    descriptionStyle?: any | any,
+    actionTitle?: string | any
 }
 export const CamptionConformationModel = (props: model) => {
     const { storeCreator: { darkModeTheme } }: any = useContext(InputContextProvide)

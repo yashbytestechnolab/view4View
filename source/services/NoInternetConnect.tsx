@@ -3,10 +3,12 @@ import { View, Text, Modal, StyleSheet } from 'react-native'
 import AnimatedLottieView from 'lottie-react-native'
 import { Colors, F60016, F60024, colorBackGround, darkBackGround } from '../Theme'
 import { ButtonComponent } from '../components';
-import NetInfo from "@react-native-community/netinfo";
-import { String } from '../constants';
+import NetInfo from "@react-native-community/netinfo"
+import { useTranslation } from 'react-i18next';
+
 export const NoInternetConnect = ({ darkModeTheme, isInternetBack, setIsInternetBack }: any) => {
     const [isConncectLoading, setIsConncectLoading] = useState(false)
+    const { t } = useTranslation()
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
@@ -38,9 +40,9 @@ export const NoInternetConnect = ({ darkModeTheme, isInternetBack, setIsInternet
                         style={style.animation}
                         source={require('../assets/noInternet.json')} autoPlay />
 
-                    <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.title}</Text>
-                    <Text style={[F60016?.semiBolt, style.subText, colorBackGround(darkModeTheme)]}>{String?.noInterNetScreen?.subTitle}</Text>
-                    <ButtonComponent loading={isConncectLoading} buttonTitle={String?.noInterNetScreen?.buttonTitle} onPrees={() => { HandleTryAgain() }}
+                    <Text style={[F60024?.textStyle, { marginTop: 10 }, colorBackGround(darkModeTheme)]}>{t("title")}</Text>
+                    <Text style={[F60016?.semiBolt, style.subText, colorBackGround(darkModeTheme)]}>{t("subTitle")}</Text>
+                    <ButtonComponent loading={isConncectLoading} buttonTitle={t("buttonTitle")} onPrees={() => { HandleTryAgain() }}
                         wrapperStyle={style.button} />
                 </View>
             </Modal>

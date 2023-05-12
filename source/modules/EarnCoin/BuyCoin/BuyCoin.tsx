@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, Platform, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, } from 'react-native';
 import { String } from '../../../constants';
 import { colorBackGround, Colors, F40014, lightBackGround, } from '../../../Theme';
-import { EarnCoin } from '../../../services';
+import { buyMemberShip, purchaseCoin } from '../../../services';
 import { ButtonComponent, Header, Loader } from '../../../components';
 import { InputContextProvide } from '../../../context/CommonContext';
-import { getInAppPurchasetaticData, getItems, getPurchaseData, initilizeIAPConnection, onGetCoinAmount, onGetProdutId, onPurchase } from '../../../services/InAppPurchaseServices';
+import { getInAppPurchasetaticData, getItems, getPurchaseData, initilizeIAPConnection, onGetCoinAmount, onGetPriceAmount, onGetProdutId, onPurchase } from '../../../services/InAppPurchaseServices';
 import { showMessage } from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { type as keys } from '../../../constants/types';
@@ -13,11 +13,13 @@ import * as RNIap from 'react-native-iap';
 import { BuyCoinIcon } from '../../../assets/icons';
 import { style } from './style';
 import { Anaylitics } from '../../../constants/analytics';
+import { useTranslation } from 'react-i18next';
 
 let purchaseUpdateSubscription: any = null;
 let purchaseErrorSubscription: any = null;
 
 export const BuyCoin = () => {
+    const { t } = useTranslation()
     const [selectRB, setSelectRB] = useState(0)
     const [parseData, setParseData]: any = useState(undefined)
     const [products, setProducts]: any = useState();
@@ -43,6 +45,13 @@ export const BuyCoin = () => {
         }
     }, []);
 
+
+    useEffect(() => {
+        if (parseData === undefined) {
+            setParseData(getInAppPurchasetaticData)
+        }
+    }, [])
+
     useEffect(() => {
         purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
             async (purchase: any) => {
@@ -57,14 +66,16 @@ export const BuyCoin = () => {
                         });
                     }
                     if (Platform.OS === 'android') {
-                        await RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(() => {
-                            onRewardCoins(purchase?.productId);
-                            RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then(() => {
+                        console.log(" 'android'", purchase);
+                        RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(async () => {
+                            RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then(async () => {
+                                await onRewardCoins(purchase?.productId);
                             }).catch(err => {
                                 console.log("err", err);
                                 _onError(err.message)
                             });
                         })
+
                     }
                 }
             },
@@ -72,12 +83,16 @@ export const BuyCoin = () => {
 
         purchaseErrorSubscription = RNIap.purchaseErrorListener(
             (error) => {
+
+                console.log("error", error);
+
                 if (error?.code !== 'E_USER_CANCELLED') {
                     showMessage({
                         message: error?.message,
                         type: 'danger',
                         duration: 6000
                     });
+
                 }
                 setloading(false)
 
@@ -114,9 +129,13 @@ export const BuyCoin = () => {
     }
 
     const onRewardCoins = async (rewardId: any) => {
-        let redeemCoin: any = await onGetCoinAmount(rewardId);
+        let redeemCoin: any = onGetCoinAmount(rewardId);
+        let price = onGetPriceAmount(rewardId)
         if (redeemCoin) {
-            await EarnCoin(getBalance, redeemCoin)?.then((res: any) => {
+            console.log("if call ");
+
+            await buyMemberShip(price, redeemCoin)
+            await purchaseCoin(getBalance + redeemCoin)?.then((res: any) => {
                 dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + redeemCoin })
                 showMessage({
                     message: `${redeemCoin} coins credited`,
@@ -124,19 +143,16 @@ export const BuyCoin = () => {
                     duration: 2000
                 })
                 setloading(false)
-                setTimeout(() => {
-                    navigation.goBack()
-                }, 2000);
+                navigation.goBack()
                 Anaylitics("Coin added @buyCoin", { getBalance })
-
-
             }).catch((err: any) => {
+                console.log("purchase Error", err);
                 setloading(false)
-                showMessage({
-                    message: String?.commonString?.errorMsg,
-                    type: 'danger',
-                    duration: 2000
-                })
+                // showMessage({
+                //     message: t("errorMsg"),
+                //     type: 'danger',
+                //     duration: 2000
+                // })
             })
         }
     }
@@ -150,6 +166,7 @@ export const BuyCoin = () => {
         let sku = onGetProdutId(productData);
         sku && await onPurchase(sku)
     }
+
     const HandleLoader = () => {
         return (
             <View style={style?.loaderHead}>
@@ -164,7 +181,7 @@ export const BuyCoin = () => {
                     {loading && <HandleLoader />}
 
                     <View style={[style.main, { backgroundColor: darkModeTheme ? Colors?.darkModeColor : Colors?.lightWhite }]}>
-                        <Header title={String?.headerTitle?.buyCoin} showBacKIcon={true}
+                        <Header title={t("buyCoin")} showBacKIcon={true}
 
                         />
                         <StatusBar barStyle={'light-content'} backgroundColor={Colors?.gradient1} />
@@ -213,12 +230,13 @@ export const BuyCoin = () => {
                                     </TouchableOpacity>);
 
                             })}
-                            <Text style={[style.subTextWrapper, colorBackGround(darkModeTheme)]}>{String?.commonString?.buyCoinSubText}</Text>
-                            <ButtonComponent buttonTitle={String?.commonString?.buy + " " + parseData?.[selectRB]?.name}
-                                onPrees={() => onPressBuyCoins(parseData[selectRB])}
-
+                            <Text style={[style.subTextWrapper, colorBackGround(darkModeTheme)]}>{t("buyCoinSubText")}</Text>
+                            <ButtonComponent buttonTitle={t("buy") + " " + parseData?.[selectRB]?.name}
+                                onPrees={() => {
+                                    console.log("parseData[selectRB]", parseData[selectRB]);
+                                    onPressBuyCoins(parseData[selectRB])
+                                }}
                                 wrapperStyle={style.buttonWrapper} />
-
                         </ScrollView>
                     </View></>
             }

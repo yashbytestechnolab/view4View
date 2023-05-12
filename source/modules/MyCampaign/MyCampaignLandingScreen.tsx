@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, RefreshControl, ActivityIndicator, Linking, Platform, BackHandler, StatusBar, } from 'react-native';
+import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity, RefreshControl, ActivityIndicator, Linking, Platform, } from 'react-native';
 import { Header } from '../../components';
-import { LocalStorageKeys, ROUTES, String } from '../../constants';
+import { LocalStorageKeys, ROUTES } from '../../constants';
 import { styles } from './style';
 import { colorBackGround, Colors, darkBackGround, F40010, F40012, F40014, F50013, lightBackGround } from '../../Theme';
 import { InputContextProvide } from '../../context/CommonContext';
@@ -17,9 +17,11 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import * as LocalStorage from '../../services/LocalStorage';
 import { StickyTextEnable } from '../../services/StickyTextEnable';
 import Tooltip from 'react-native-walkthrough-tooltip';
+import { useTranslation } from 'react-i18next';
 
 export const MyCampaignLandingScreen = () => {
-  const { headerTitle, commonString } = String
+
+  const { t } = useTranslation()
   const navigation = useNavigation()
   let route: object | any = useRoute()
   const [showRateUsModel, setshowRateUsModel] = useState(false)
@@ -146,7 +148,7 @@ export const MyCampaignLandingScreen = () => {
                     {item?.consumed_view + "/" + item?.expected_view}
                   </Text>
                   <Text style={[F40010.main, styles.views]}>
-                    {commonString.viewsofthisvideo}
+                    {t("viewsofthisvideo")}
                   </Text>
                 </View>
               </View>
@@ -162,7 +164,7 @@ export const MyCampaignLandingScreen = () => {
           !loading && getCampaignData?.length <= 0 &&
           <View style={[styles.emptyList, darkBackGround(darkModeTheme)]}>
             <Text style={[F50013.main, styles.textAlign, colorBackGround(darkModeTheme)]}>
-              {commonString?.emptyList}
+              {t("emptyList")}
             </Text>
           </View>
         }
@@ -190,18 +192,19 @@ export const MyCampaignLandingScreen = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <SafeAreaView style={styles.safeArea} />
       <View style={[styles.mainContainer, darkBackGround(darkModeTheme)]}>
         <Header
-          title={headerTitle?.myCampaign} />
+          title={t("myCampaign")} />
         {loding ? (
           <View style={styles.loader}><ActivityIndicator color={Colors.primaryRed} size={'large'} /></View>) :
           (<>
-            {isCurrentCampagin && getCampaignData?.[0]?.stickeyHeader == 'Current Campaign' && <View style={styles.topStickeyText}>
-              <Text style={[F40012?.main, { color: Colors?.black, lineHeight: 16 }]}>{String?.commonString?.stickeyText}</Text>
-
-            </View>}
+            {
+              isCurrentCampagin && getCampaignData?.[0]?.stickeyHeader == 'Current Campaign' && <View style={styles.topStickeyText}>
+                <Text style={[F40012?.main, { color: Colors?.black, lineHeight: 16 }]}>{t("stickeyText")}</Text>
+              </View>
+            }
 
             <FlatList
               keyExtractor={(item) => item?.toString()}
@@ -233,7 +236,7 @@ export const MyCampaignLandingScreen = () => {
               }}
               activeOpacity={0.8}
               style={styles.addIcon}>
-                <Tooltip
+              <Tooltip
                 isVisible={isCreateCampaginRemaining}
                 content={
                   <View>
@@ -259,11 +262,11 @@ export const MyCampaignLandingScreen = () => {
                   setIsCreateCampaginRemaining(false);
                 }}
                 useInteractionManager={true}
-                // topAdjustment={
-                //   Platform.OS === 'android' ? StatusBar.currentHeight : 0
-                // }
-                >
-                <View style={{height: 1, width: 1}} />
+              // topAdjustment={
+              //   Platform.OS === 'android' ? StatusBar.currentHeight : 0
+              // }
+              >
+                <View style={{ height: 1, width: 1 }} />
               </Tooltip>
               <PlusIcon />
             </TouchableOpacity>
@@ -273,16 +276,16 @@ export const MyCampaignLandingScreen = () => {
       </View>
       {
         showRateUsModel && <GiftModel isVisible={showRateUsModel} setIsVisible={setshowRateUsModel}
-          saveButtonTitle={String?.showRateUsModel?.saveButtonTitle}
-          cancleButtonTitle={String?.showRateUsModel?.cancleButtonTitle}
-          subTitle={String?.showRateUsModel?.subTitle}
-          title2={String?.showRateUsModel?.title2}
+          saveButtonTitle={t("saveButtonTitle")}
+          cancleButtonTitle={t("cancleButtonTitle")}
+          subTitle={t("subTitle")}
+          title2={t("title2")}
           showRating={true}
-          negativeActionTextStyle={{color: Colors.primaryRed, fontSize:14}}
-          negativeActionStyle={{backgroundColor:'transparent', borderWidth:1, borderColor: Colors.primaryRed}}
+          negativeActionTextStyle={{ color: Colors.primaryRed, fontSize: 14 }}
+          negativeActionStyle={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: Colors.primaryRed }}
           CancleOnPress={() => { actionLinking() }}
           onPress={() => { setshowRateUsModel(false) }} />
       }
-    </>
+    </React.Fragment>
   );
 };

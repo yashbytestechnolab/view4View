@@ -1,22 +1,23 @@
-import { Alert, SafeAreaView, Text, View } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import { SafeAreaView, Text, View } from 'react-native'
+import React, { useContext, useState } from 'react'
 import { colorBackGround, darkBackGround, F40012, F50012, F60016, } from '../../../Theme'
 import { ButtonComponent, Header, InputComponent } from '../../../components'
-import { ROUTES, String, addVideoText } from '../../../constants'
+import { ROUTES, addVideoText } from '../../../constants'
 import { styles } from './styles'
 import { InputContextProvide } from '../../../context/CommonContext'
 import { useNavigation } from '@react-navigation/native'
 import { Anaylitics } from '../../../constants/analytics'
 import { CamptionConformationModel } from '../../../components/CamptionConformationModel'
 import { getYoutubeMeta, } from 'react-native-youtube-iframe';
+import { useTranslation } from 'react-i18next'
 
 export const AddVideo = () => {
+
+    const { t } = useTranslation()
     const navigation = useNavigation()
-    const { headerTitle, commonString } = String
     const { storeCreator: { coinBalance: { getBalance }, campaignData: { getCampaignData }, darkModeTheme, addVideoUrl, setVideoUrl } }: any = useContext(InputContextProvide)
     const [isVisibleModal, setIsVisibleModal] = useState(false)
     const [isDuplicateUrl, setIsDuplicateUrl] = useState(false)
-
 
     const onAddVideo = async () => {
         let youtubeUrl = 'https://youtu.be/'
@@ -65,9 +66,9 @@ export const AddVideo = () => {
             <SafeAreaView style={styles.safeArea} />
             <View style={[styles.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header showBacKIcon={true}
-                    title={headerTitle?.AddYourVideo} />
+                    title={t("AddYourVideo")} />
                 <View style={styles.childWrapper}>
-                    <Text style={[F50012.main, F50012.fontStyleVideo, colorBackGround(darkModeTheme)]}>{commonString?.Addvideolink}</Text>
+                    <Text style={[F50012.main, F50012.fontStyleVideo, colorBackGround(darkModeTheme)]}>{t("Addvideolink")}</Text>
                     <View style={styles.link}>
                         <InputComponent
                             value={addVideoUrl}
@@ -75,20 +76,20 @@ export const AddVideo = () => {
                                 setVideoUrl(value)
                             }}
                             viewStyle={styles.inputStyle}
-                            placeholder={commonString?.pasteyourvideolinkhere}
+                            placeholder={t("pasteyourvideolinkhere")}
                         />
                     </View>
                     <View style={styles.button}>
                         <ButtonComponent
                             disable={(addVideoUrl?.length > 0) ? false : true}
                             wrapperStyle={styles.buttonWrap}
-                            buttonTitle={commonString.Addnow}
+                            buttonTitle={t("Addnow")}
                             onPrees={() => { onAddVideo() }}
                         />
                     </View>
                     <View style={styles.discretion}>
                         <Text style={[F60016.textStyle, F60016.campaign, F60016.bold, colorBackGround(darkModeTheme)]}>
-                            {commonString.createContain}
+                            {t("createContain")}
                         </Text>
                         <View style={styles.disWrap}>
                             {addVideoText?.length > 0 && addVideoText?.map((item: { text: string }, index: number) => {
@@ -96,7 +97,7 @@ export const AddVideo = () => {
                                     <View key={index.toString()}
                                         style={styles.vertical}>
                                         <Text style={[F40012.main, F40012.contain, { textAlign: "auto" }, colorBackGround(darkModeTheme)]}>
-                                            {item?.text}
+                                            {t(item?.text)}
                                         </Text>
                                     </View>
                                 )
@@ -107,11 +108,11 @@ export const AddVideo = () => {
             </View>
             {isVisibleModal &&
                 <CamptionConformationModel
-                    titleText={'Whoops!'}
-                    descriptionText={`Entered video url looks invalid. Please make sure you've entered correct video url`}
+                    titleText={t('Whoops')}
+                    descriptionText={t("InvalidURL")}
                     isVisible={isVisibleModal}
                     setIsVisible={setIsVisibleModal}
-                    actionTitle={"Close"}
+                    actionTitle={t("Close")}
                     onPress={() => {
                         setIsVisibleModal(false)
                     }
@@ -120,11 +121,11 @@ export const AddVideo = () => {
             }
             {isDuplicateUrl &&
                 <CamptionConformationModel
-                    titleText={'Warning!!'}
-                    descriptionText={String?.commonString?.CampaignAlert}
+                    titleText={t('Warning')}
+                    descriptionText={t("CampaignAlert")}
                     isVisible={isDuplicateUrl}
                     setIsVisible={setIsDuplicateUrl}
-                    actionTitle={"Close"}
+                    actionTitle={t("Close")}
                     onPress={() => {
                         setIsDuplicateUrl(false)
                     }

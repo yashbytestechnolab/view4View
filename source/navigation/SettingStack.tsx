@@ -6,6 +6,7 @@ import { SettingLanding } from '../modules/Setting/SettingLanding';
 import { InviteFriend } from '../modules/EarnCoin';
 import { EditProfile } from '../modules/Setting/SettingLanding/EditProfile';
 import { ChangePassword } from '../modules/Setting/SettingLanding/ChangePassword';
+import { Languages } from '../modules/Setting/SettingLanding/languages';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,10 @@ export const SettingStack = () => {
        <Stack.Screen
         name={ROUTES?.CHANGEPASSWORD}
         component={ChangePassword}
+      />
+      <Stack.Screen
+        name={ROUTES?.LANGUAGE}
+        component={Languages}
       />
     </Stack.Navigator>
   );

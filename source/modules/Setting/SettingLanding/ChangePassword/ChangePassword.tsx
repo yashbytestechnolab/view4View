@@ -10,9 +10,11 @@ import { handleFirebaseError } from '../../../../services';
 import { style } from './style';
 import { darkBackGround } from '../../../../Theme';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useTranslation } from 'react-i18next';
 
 export const ChangePassword = () => {
     const navigation = useNavigation();
+    const { t } = useTranslation()
     const [loading, setLoading] = useState(false)
     /**
      * Context to give userinput data and error message
@@ -41,19 +43,19 @@ export const ChangePassword = () => {
             ((isNotValidForm = true),
                 dispatchHandler(
                     type.OLD_PASSWORD_ERROR,
-                    String.commonString.OldPasswordError,
+                    t("OldPasswordError"),
                 ));
         (newPassword?.length <= 0 || newPassword?.length < 6) &&
             ((isNotValidForm = true),
                 dispatchHandler(
                     type.NEW_PASSWORD_ERROR,
-                    String.commonString.NewPAsswordError,
+                    t("NewPAsswordError"),
                 ));
         newPassword !== confirmPassword &&
             ((isNotValidForm = true),
                 dispatchHandler(
                     type.CONFIRM_PASSWORD_ERROR,
-                    String.commonString.ConfirmPasswordErrorMsg,
+                    t("ConfirmPasswordErrorMsg"),
                 ));
         !isNotValidForm &&
             ChangePassword(userInput?.oldPassword, userInput?.newPassword);
@@ -77,11 +79,9 @@ export const ChangePassword = () => {
                 setLoading(false)
                 let user: any = firebase.auth().currentUser;
                 user.updatePassword(newPassword)
-                    .then(res => {
-                        console.log("res2", res);
-
+                    .then((res: any) => {
                         setLoading(false)
-                        handleFirebaseError('ChangePasswordSuccess');
+                        handleFirebaseError('ChangePasswordSuccess', t);
                         dispatch({ type: type.EMPTY_STATE });
                         setTimeout(() => {
                             navigation?.navigate(ROUTES?.SETTING_LANDING);
@@ -90,14 +90,14 @@ export const ChangePassword = () => {
                     })
                     .catch(error => {
                         setLoading(false)
-                        handleFirebaseError(error.code);
+                        handleFirebaseError(error.code, t);
                     })
             })
             .catch(error => {
                 setLoading(false)
                 console.log("error.codeerror.code", error.code);
 
-                handleFirebaseError(error.code);
+                handleFirebaseError(error.code, t);
             }).finally(() => {
                 setLoading(false)
             })
@@ -121,7 +121,7 @@ export const ChangePassword = () => {
             <SafeAreaView style={style.safeArea} />
             <View style={[style.mainWrapper, darkBackGround(darkModeTheme)]}>
                 <Header
-                    title={String?.headerTitle?.changePassword}
+                    title={t("changePassword")}
                     showCoin={false}
                     showBacKIcon={true}
                     onPrees={() => {
@@ -139,8 +139,8 @@ export const ChangePassword = () => {
                     scrollEnabled={true}
                     contentContainerStyle={[style.scrollContain, darkBackGround(darkModeTheme)]}>
                     <InputComponent
-                        placeholder={String.commonString.enterOldPwd}
-                        inputTitle={String.commonString.oldPassword}
+                        placeholder={t("enterOldPwd")}
+                        inputTitle={t("oldPassword")}
                         value={userInput?.oldPassword}
                         onChangeText={value => {
                             dispatch({ type: type.OLDPASSWORD, payload: value });
@@ -163,8 +163,8 @@ export const ChangePassword = () => {
                         errorMessage={userInputError?.oldPasswoedError}
                     />
                     <InputComponent
-                        placeholder={String.commonString.enterNewPwd}
-                        inputTitle={String.commonString.newPassword}
+                        placeholder={t("enterNewPwd")}
+                        inputTitle={t("newPassword")}
                         value={userInput?.newPassword}
                         onChangeText={value => {
                             if (userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) {
@@ -187,8 +187,8 @@ export const ChangePassword = () => {
                         errorMessage={userInputError?.newPasswordError}
                     />
                     <InputComponent
-                        placeholder={String.commonString.Enterconfirmpassword}
-                        inputTitle={String.commonString.ConfirmPassword}
+                        placeholder={t("Enterconfirmpassword")}
+                        inputTitle={t("ConfirmPassword")}
                         value={userInput?.confirmPassword}
                         onChangeText={value => {
                             if (userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) {
@@ -222,7 +222,7 @@ export const ChangePassword = () => {
                             HandleChangePassword()
                         }}
                         disable={(userInput?.oldPassword?.length > 0 && userInput?.newPassword?.length > 0 && userInput?.confirmPassword?.length > 0) ? false : true}
-                        buttonTitle={String.commonString.submit}
+                        buttonTitle={t("submit")}
                     />
                 </KeyboardAwareScrollView>
             </View>

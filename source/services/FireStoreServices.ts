@@ -3,7 +3,6 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { referral_coupon_genrator } from './refeeral_coupon_genrate';
 import { notificationSend } from './notificationSend';
-import { person } from '../modules/View/increment';
 import { String } from '../constants';
 import { Anaylitics } from '../constants/analytics';
 import { updatCampaignData } from '../modules/View/interface';
@@ -99,7 +98,7 @@ export const updateProfile = async (payload: editProfile) => {
 }
 
 export const createCampaign = async (payload: createCampaignRequest) => {
-  const { addVideoUrl = "", splitUrl = "", timeSecond = 0, views = 0, totalCost = 0, thumbnail_url = "", title = "", token = "" } = payload
+  const { addVideoUrl = "", splitUrl = "", timeSecond = 0, views = 0, totalCost = 0, thumbnail_url = "", title = "", token = "", purchaseCoin = false } = payload
 
   let uniqID = getUniqID();
   let userID = getUserID()
@@ -118,7 +117,8 @@ export const createCampaign = async (payload: createCampaignRequest) => {
     video_url: addVideoUrl,
     video_title: title,
     thumbnail_url: thumbnail_url,
-    user_views: [userID]
+    user_views: [userID],
+    purchase_campaign: purchaseCoin
   }
   await WatchVideoList.doc(uniqID).set(updateObj)
   return updateObj
@@ -131,6 +131,14 @@ export const payCoin = async (payload: string) => {
     coin: parseInt(payload) - 10,
   })
 };
+
+export const purchaseCoin = async (payload: number | string) => {
+  const userId = getUserID()?.toString()
+  return await userTable?.doc(userId)?.update({
+    coin: payload,
+  })
+};
+
 export const EarnCoin = async (payload: rewardShare) => {
   const { getBalance = 0, adsCount = 0, reward = 0 }: rewardShare = payload
   const userId = getUserID()?.toString()
@@ -161,7 +169,8 @@ export const bytesVideoListData = async (params: Array<any>) => {
 }
 
 export const GetVideoCampaign = async () => {
-  return await WatchVideoList?.orderBy("created", "desc")?.where("upload_by", "==", getUserID()?.toString())?.get()
+  return await WatchVideoList?.orderBy("created", "desc")?.where("upload_by", "==", getUserID()?.toString())?.get().catch((err) => console.log(err)
+  )
 }
 
 export const GetCurrentPlayCampaign = async (id: number | string, isBytesVideoLoading: boolean) => {
@@ -209,7 +218,6 @@ export const newAddWatchUrl = async (coin: number | string, countVideo: number |
 //     return await WatchVideoList?.orderBy("created", "asc")?.limit(5).get()
 //   }
 // }
-
 export const getUnkonwnCampaign = async (docId: any) => {
   if (Object.keys(docId)?.length > 0) {
     return await WatchVideoList?.orderBy("created", "asc").startAfter(docId).limit(5)?.get()
@@ -246,24 +254,6 @@ export const updateCampaignViews = async (params: updatCampaignData) => {
   }
 }
 
-// export const getNewUpdatedViewCount = async (...params: Array<string | [] | undefined | object | number | any>) => {
-//   // prams[0]:id,prams[1] :remaining_view ,prams[2]:consumed_view,prams[3] :expected_view ,prams[4]:videoData:prams[5] :isBytesVideoLoading ,params[6]:token
-//   let updateTable = params[5] ? bytesVideoList : WatchVideoList;
-//   if (params[1] != 1) {
-//     return await updateTable
-//       .doc(params[0]).update({
-//         remaining_view: params[1] - 1,
-//         consumed_view: parseInt(params[2]) + 1,
-//       })
-//   }
-//   else {
-//     const history = { ...params[4], consumed_view: params[3], remaining_view: 0 }
-//     await WatchVideoList.doc(params[0]).delete()
-//     await deleteRemainingVideo(history)
-//   }
-// }
-
-
 export const updateUserWallet = async (payload: number) => {
   let userID = getUserID()?.toString()
   userTableLogin.doc(userID).update({
@@ -299,4 +289,43 @@ export const firebaseAccountDelete = async () => {
   let userID = getUserID()
   Anaylitics("delete_account_user", { delete_id: userID })
   await userTable.doc(userID).delete()
+}
+
+const currentDate = () => {
+  const today = new Date();
+  const year = today.getFullYear().toString().slice(-2);
+  const month = (today.getMonth() + 1).toString().padStart(2, '0');
+  const day = today.getDate().toString().padStart(2, '0');
+  return `${year}/${day}/${month}`;
+}
+
+export const purchaseVideoListQuery = async (docOS: string | object | any) => {
+  if (Object.values(docOS).length > 0) {
+    return (await WatchVideoList.where("purchase_campaign", "==", true).startAfter(docOS).limit(5).get()).docs
+  } else {
+    return (await WatchVideoList.where("purchase_campaign", "==", true).limit(5).get()).docs
+  }
+}
+
+export const buyMemberShip = async (price: string | any, coin: string | any) => {
+  console.log({ price, coin });
+
+  const userId = getUserID()?.toString()
+  const { purchaseDetail: { purchaseDateList = [] } = {} }: any = (await userTable.doc(userId).get()).data()
+  return await userTable.doc(userId).set({
+    purchaseDetail: {
+      lastPurchaseDate: firestore.FieldValue.serverTimestamp(),
+      memberShipPurchase: true,
+      price: price,
+      coin: coin,
+      purchaseDateList: [...purchaseDateList, currentDate()]
+    }
+  }, { mergeFields: ["purchaseDetail"] })
+}
+
+export const expireMemberShip = () => {
+  const userId = getUserID()?.toString()
+  return userTable.doc(userId).update({
+    "purchaseDetail.memberShipPurchase": false
+  })
 }
