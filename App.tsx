@@ -9,7 +9,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { rewardCoinsDefaultValue, rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import { person } from './source/modules/View/increment';
+import { ENV, person } from './source/modules/View/increment';
 import { Platform, Appearance } from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { NoInternetConnect } from './source/services/NoInternetConnect';
@@ -36,7 +36,7 @@ export default function App() {
     remoteAdsValue()
     getLangauagePreference()
   }, [])
-  
+
   useEffect(() => {
     getDarkModeUI()
     getReward()
@@ -88,8 +88,13 @@ export default function App() {
 
 
   const showInterstitialAd = () => {
+    console.log(person.environment() == ENV.dev);
+
     const interstitialAd = InterstitialAd.createForAdRequest(
-      TestIds.INTERSTITIAL,
+      person.environment() == ENV.dev ?
+        TestIds.INTERSTITIAL : Platform.OS == "android" ?
+          "ca-app-pub-4027493771242043/9934993245" :
+          "ca-app-pub-4027493771242043/5321848866"
     );
     interstitialAd.load();
     interstitialAd.onAdEvent((type, error) => {
@@ -101,8 +106,6 @@ export default function App() {
 
   const remoteAdsValue = async () => {
     let interstitial_ads_config = await interstitial_ads()
-    console.log("interstitial_ads_config", interstitial_ads_config);
-
     interstitial_ads_config && showInterstitialAd()
   }
 

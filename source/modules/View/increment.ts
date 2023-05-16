@@ -35,7 +35,7 @@ class increment {
         this.routesName = params
     }
     environment() {
-        return ENV.dev
+        return ENV.production
     }
     getHomeConfigData(params: boolean | any) {
         return this.home_ads = params
