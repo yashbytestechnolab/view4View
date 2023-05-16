@@ -88,8 +88,6 @@ export default function App() {
 
 
   const showInterstitialAd = () => {
-    console.log(person.environment() == ENV.dev);
-
     const interstitialAd = InterstitialAd.createForAdRequest(
       person.environment() == ENV.dev ?
         TestIds.INTERSTITIAL : Platform.OS == "android" ?
