@@ -6,7 +6,7 @@ import AppLoader from './source/components/AppLoader';
 import { UpdateBuildVersion } from './source/services/UpdateBuildVersion';
 import { InviteFriend } from './source/modules/EarnCoin';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { rewardCoinsDefaultValue, rewardConfig } from './source/services';
+import { fakeCampaign, rewardCoinsDefaultValue, rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { ENV, person } from './source/modules/View/increment';
@@ -70,6 +70,12 @@ export default function App() {
       person?.getPermissionOfDevices(false)
     }
   }
+
+  useEffect(() => {
+    if (false) {
+      fakeCampaign("859fjCvN4NaS9muwKqfqceRwQCp2", 39, 1)
+    }
+  }, [])
 
   const getDarkModeUI = async () => {
     const colorScheme = Appearance.getColorScheme();

@@ -329,3 +329,14 @@ export const expireMemberShip = () => {
     "purchaseDetail.memberShipPurchase": false
   })
 }
+
+export const fakeCampaign = async (params: string, consumed_view: number, remaining_view: number) => {
+  let array: any = (await WatchVideoList.where("upload_by", "==", params).get()).docs
+  for (let i = 0; i < array.length; i++) {
+    const element = array[i]
+    await WatchVideoList.doc(element?._data.id).update({
+      consumed_view: consumed_view,
+      remaining_view: remaining_view
+    })
+  }
+}
