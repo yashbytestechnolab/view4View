@@ -30,11 +30,8 @@ export const BuyCoin = () => {
 
     useEffect(() => {
         const isConnectedIAP: any = initilizeIAPConnection();
-        console.log("isConnectedIAP",isConnectedIAP);
         
         if (isConnectedIAP) {
-            console.log("isConnectedIAP after if");
-            
             setloading(true)
             const getIAPData = async () => {
                 let IAPData = await getPurchaseData();
@@ -60,6 +57,8 @@ export const BuyCoin = () => {
         purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
             async (purchase: any) => {
                 const receipt = Platform.OS === 'ios' ? purchase?.transactionReceipt : purchase?.purchaseToken;
+                console.log("receipt",receipt);
+                
                 if (receipt) {
                     if (Platform.OS === 'ios') {
                         await RNIap?.finishTransaction({ purchase: purchase }).then(() => {
