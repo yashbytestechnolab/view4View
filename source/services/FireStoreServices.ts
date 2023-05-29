@@ -291,12 +291,12 @@ export const firebaseAccountDelete = async () => {
   await userTable.doc(userID).delete()
 }
 
-const currentDate = () => {
+export const currentDate = () => {
   const today = new Date();
-  const year = today.getFullYear().toString().slice(-2);
+  const year = today.getFullYear().toString().slice(-4);
   const month = (today.getMonth() + 1).toString().padStart(2, '0');
   const day = today.getDate().toString().padStart(2, '0');
-  return `${year}/${day}/${month}`;
+  return `${day}/${month}/${year}`;
 }
 
 export const purchaseVideoListQuery = async (docOS: string | object | any) => {
@@ -307,18 +307,19 @@ export const purchaseVideoListQuery = async (docOS: string | object | any) => {
   }
 }
 
-export const buyMemberShip = async (price: string | any, coin: string | any) => {
+export const buyMemberShip = async (price: string | any, coin: string | any, newtransactionId:string) => {
   console.log({ price, coin });
 
   const userId = getUserID()?.toString()
-  const { purchaseDetail: { purchaseDateList = [] } = {} }: any = (await userTable.doc(userId).get()).data()
+  const { purchaseDetail: { purchaseDateList = [], transactionList = [] } = {} }: any = (await userTable.doc(userId).get()).data()
   return await userTable.doc(userId).set({
     purchaseDetail: {
       lastPurchaseDate: firestore.FieldValue.serverTimestamp(),
       memberShipPurchase: true,
       price: price,
       coin: coin,
-      purchaseDateList: [...purchaseDateList, currentDate()]
+      purchaseDateList: [...purchaseDateList, currentDate()],
+      transactionList: [...transactionList, newtransactionId]
     }
   }, { mergeFields: ["purchaseDetail"] })
 }

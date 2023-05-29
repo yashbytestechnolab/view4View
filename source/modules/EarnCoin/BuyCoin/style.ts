@@ -47,8 +47,11 @@ export const style = StyleSheet.create({
     selectRB: { height: 10, width: 10, borderRadius: 8, backgroundColor: Colors.primaryRed, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' },
     loaderHead: {
         position: 'absolute',
-        top: Height / 2.8,
-        left: Width / 2.3,
-        zIndex: 999
+        justifyContent:'center',
+        alignItems:'center',
+        zIndex: 999,
+        height:'100%',
+        width:'100%'
+        
     }
 })

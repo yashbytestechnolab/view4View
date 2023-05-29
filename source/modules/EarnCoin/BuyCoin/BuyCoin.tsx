@@ -63,19 +63,17 @@ export const BuyCoin = () => {
                 if (receipt) {
                     if (Platform.OS === 'ios') {
                         await RNIap?.finishTransaction({ purchase: purchase }).then(() => {
-                            onRewardCoins(purchase?.productId)
+                            onRewardCoins(purchase?.productId, purchase?.transactionId)
                             RNIap.clearTransactionIOS()
                         }).catch(err => {
                             _onError(err.message)
                         });
                     }
                     if (Platform.OS === 'android') {
-                        console.log(" 'android'", purchase);
-                        RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(async () => {
-                            RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then(async () => {
-                                await onRewardCoins(purchase?.productId);
+                        RNIap.acknowledgePurchaseAndroid({ token: purchase?.purchaseToken }).then(async (resTest) => {
+                            RNIap?.finishTransaction({ purchase: purchase, isConsumable: true }).then(async (res) => {
+                                await onRewardCoins(purchase?.productId, purchase?.transactionId);
                             }).catch(err => {
-                                console.log("err", err);
                                 _onError(err.message)
                             });
                         })
@@ -132,11 +130,11 @@ export const BuyCoin = () => {
         navigation.goBack()
     }
 
-    const onRewardCoins = async (rewardId: any) => {
+    const onRewardCoins = async (rewardId: any, transactionId: string) => {
         let redeemCoin: any = onGetCoinAmount(rewardId);
         let price = onGetPriceAmount(rewardId)
         if (redeemCoin) {
-            await buyMemberShip(price, redeemCoin)
+            await buyMemberShip(price, redeemCoin, transactionId)
             await purchaseCoin(getBalance + redeemCoin)?.then((res: any) => {
                 dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + redeemCoin, memberShipPurchase: true })
                 showMessage({
@@ -146,9 +144,8 @@ export const BuyCoin = () => {
                 })
                 setloading(false)
                 navigation.goBack()
-                Anaylitics("Coin added @buyCoin", { getBalance })
+                Anaylitics("buy_coin", { getBalance })
             }).catch((err: any) => {
-                console.log("purchase Error", err);
                 setloading(false)
                 // showMessage({
                 //     message: t("errorMsg"),
