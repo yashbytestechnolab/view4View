@@ -283,7 +283,7 @@ export const ViewLanding = () => {
             setRemainingAutoPlayTime(remainingAutoPlayTime - 1);
           }
         }
-      }, 1000);
+      }, 700);
     } else {
       clearInterval(controlRef.current);
     }
@@ -345,7 +345,7 @@ export const ViewLanding = () => {
           setVideoWatchUpdateCount(videoWatchUpdateCount + 1)
           //add condition
           if (isAutoPlayEnable) {
-            await setAutoPlayAndTime(isAutoPlayEnable, remainingAutoPlayTime)
+            // await setAutoPlayAndTime(isAutoPlayEnable, remainingAutoPlayTime)
             debounce()
             Anaylitics("autoplay_next_video_click", {
               user_balance: getBalance,
