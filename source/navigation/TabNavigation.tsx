@@ -32,9 +32,9 @@ export const TabNavigation = () => {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      AdsClass.loadAds();
-    }, 2000);
+    // setTimeout(() => {
+    //   AdsClass.loadAds();
+    // }, 2000);
   }, [AdsClass.isLoadead])
 
   const onShowAdsHome = async () => {
@@ -43,7 +43,7 @@ export const TabNavigation = () => {
   }
 
   useEffect(() => {
-    onShowAdsHome()
+    // onShowAdsHome()
     adsCheckFnc()
   }, [person?.home_ads])
 

@@ -169,10 +169,10 @@ export const ViewLanding = () => {
       .then(async (res: any) => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
         res._docs?.filter((res: any) => {
-          if (!res?._data?.user_views?.includes(getUserID()) && res?._data?.upload_by !== getUserID()) {
+          // if (!res?._data?.user_views?.includes(getUserID()) && res?._data?.upload_by !== getUserID()) {
             add_Video_Url.push(res?._data)
             return res?._data
-          }
+          // }
         });
         if (add_Video_Url?.length > 0) {
           let modifiyArry: any = result(add_Video_Url)
@@ -324,7 +324,7 @@ export const ViewLanding = () => {
         await GetCurrentPlayCampaign(id, isBytesVideoLoading).then(async (res: any) => {
           const totalAmount = getBalance + (coin / expected_view);
           let getAppendUserId: Array<string | any> = (res?._data?.user_views == undefined) ? [getUserID()] : [...res?._data?.user_views, getUserID()]
-          await newAddWatchUrl(totalAmount, videoWatchUpdateCount)
+          // await newAddWatchUrl(totalAmount, videoWatchUpdateCount)
           const { remaining_view, consumed_view, upload_by } = res?._data;
           let updatCampaignData: updatCampaignData = {
             addFiled: res?._data?.user_views == undefined,

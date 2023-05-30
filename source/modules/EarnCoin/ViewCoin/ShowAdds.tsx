@@ -17,7 +17,7 @@ export const ShowAdds = () => {
     const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
 
     useEffect(() => {
-        showRewardAd()
+        // showRewardAd()
     }, [])
 
     const showRewardAd = () => {
@@ -42,7 +42,7 @@ export const ShowAdds = () => {
                 // navigation.goBack()
             }
         });
-        rewardAd.load();
+        // rewardAd.load();
     }
 
     return (

@@ -31,7 +31,7 @@ export const EarnCoinLanding = () => {
   }
 
   useEffect(() => {
-    remotValue()
+    // remotValue()
   }, [maxAdsShow])
 
   /**
@@ -43,26 +43,26 @@ export const EarnCoinLanding = () => {
    * showRewardAd is load the ad and show ad
    */
   const rewardCoin = () => {
-    let adsObj = {
-      dataTime: new Date().toDateString(),
-      adsCount: (adsWatchCount?.adsCount || 0) + 1,
-    }
-    let rewarShare: rewardShare = { reward: (reward?.adsReward || 100), adsCount, getBalance }
+    // let adsObj = {
+    //   dataTime: new Date().toDateString(),
+    //   adsCount: (adsWatchCount?.adsCount || 0) + 1,
+    // }
+    // let rewarShare: rewardShare = { reward: (reward?.adsReward || 100), adsCount, getBalance }
 
-    EarnCoin(rewarShare)?.then((res) => {
-      setAdsCount(adsCount + 1)
-      dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
-      Anaylitics("earn_coin_show_ads_completed", {
-        current_user_balance: getBalance + (reward?.adsReward || 100)
-      })
-      LocalStorage.setValue(LocalStorageKeys.adsDetail, adsObj)
-      setAdsWatchCount(adsObj)
-    }).catch((err) => {
-      Anaylitics("earn_coin_show_ads_error", {
-        current_user_balance: getBalance
-      })
-      navigation.goBack()
-    })
+    // EarnCoin(rewarShare)?.then((res) => {
+    //   setAdsCount(adsCount + 1)
+    //   dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + (reward?.adsReward || 100) })
+    //   Anaylitics("earn_coin_show_ads_completed", {
+    //     current_user_balance: getBalance + (reward?.adsReward || 100)
+    //   })
+    //   LocalStorage.setValue(LocalStorageKeys.adsDetail, adsObj)
+    //   setAdsWatchCount(adsObj)
+    // }).catch((err) => {
+    //   Anaylitics("earn_coin_show_ads_error", {
+    //     current_user_balance: getBalance
+    //   })
+    //   navigation.goBack()
+    // })
 
   }
 
@@ -93,10 +93,11 @@ export const EarnCoinLanding = () => {
                 lightBackGround(darkModeTheme),
                 { shadowColor: darkModeTheme ? Colors.black : Colors.cardshadow, elevation: darkModeTheme ? 0 : 8 }]}
                 activeOpacity={1}
-                onPress={() => {
-                  item?.onPress == "SHOWADDS" ? showRewardAd() :
-                    navigation.navigate(item?.onPress)
-                }}>
+                // onPress={() => {
+                //   item?.onPress == "SHOWADDS" ? showRewardAd() :
+                //     navigation.navigate(item?.onPress)
+                // }}
+                >
                 <View style={style.leftRow}>
                   <item.svg />
                   <View style={style.textWrapper}>

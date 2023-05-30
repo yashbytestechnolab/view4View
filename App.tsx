@@ -33,7 +33,7 @@ export default function App() {
   const [darkModeTheme, setDarkModeTheme] = useState(false)
 
   useEffect(() => {
-    remoteAdsValue()
+    // remoteAdsValue()
     getLangauagePreference()
   }, [])
 
@@ -132,7 +132,7 @@ export default function App() {
           isInternetBack={isInternetBack}
           setIsInternetBack={setIsInternetBack} />
         <NavigationContainer theme={MyTheme}  >
-          {updateAlert ?
+          {!updateAlert ?
             <InviteFriend notifyUpdate={updateAlert} /> :
             <>
               <RootNavigation />
