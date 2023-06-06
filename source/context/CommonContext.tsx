@@ -24,8 +24,8 @@ interface input {
 
 const intialState: input = {
     fullName: "",
-    email: "",
-    password: "",
+    email: "admin21@gmail.com",
+    password: "Test@123",
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",

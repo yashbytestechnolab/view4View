@@ -4,7 +4,7 @@ import YoutubePlayer, { getYoutubeMeta } from 'react-native-youtube-iframe';
 import { ButtonComponent, Header } from '../../components';
 import { getNotificationToken, LocalStorageKeys, String } from '../../constants';
 import { styles } from './style';
-import { bytesVideoListData, setAutoPlay, setAutoPlayAndTime, EarnCoin, GetCurrentPlayCampaign, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, newAddWatchUrl, updateCampaignViews, getUnkonwnCampaign, deleteAccoutCampaign, setAutoPlayAndTimeForAds, purchaseVideoListQuery, expireMemberShip } from '../../services/FireStoreServices';
+import { bytesVideoListData, setAutoPlay, setAutoPlayAndTime, EarnCoin, GetCurrentPlayCampaign, getUserID, get_coins, userDeatil, userSession, setSessionAndAutoPlay, newAddWatchUrl, updateCampaignViews, getUnkonwnCampaign, deleteAccoutCampaign, setAutoPlayAndTimeForAds, purchaseVideoListQuery, expireMemberShip, getCampaign } from '../../services/FireStoreServices';
 import { colorBackGround, Colors, darkBackGround, F40014, F60024 } from '../../Theme';
 import { CoinIcon, SecondsIcon } from '../../assets/icons';
 import { handleFirebaseError } from '../../services';
@@ -94,7 +94,8 @@ export const ViewLanding = () => {
       setAdsCount(res?._data?.ads_watch || 0)
       setVideoWatchUpdateCount(res?._data?.video_watch_count || 0)
       dispatchCoin({ types: type.GET_CURRENT_COIN, payload: res?._data?.coin, memberShipPurchase })
-      getPurchaseVideoList()
+      // getPurchaseVideoList()
+      GetLiveVideoList("Params", [])
       Anaylitics("get_user_detail", { current_balance: res?._data?.coin })
     });
   };
@@ -146,7 +147,7 @@ export const ViewLanding = () => {
       }
     }
     catch (error) {
-      dispatchWrap
+      dispatchWrap()
     }
   }
 
@@ -170,8 +171,8 @@ export const ViewLanding = () => {
         res?._docs?.length >= 5 ? person.getInc() : (person.increment3())
         res._docs?.filter((res: any) => {
           // if (!res?._data?.user_views?.includes(getUserID()) && res?._data?.upload_by !== getUserID()) {
-            add_Video_Url.push(res?._data)
-            return res?._data
+          add_Video_Url.push(res?._data)
+          return res?._data
           // }
         });
         if (add_Video_Url?.length > 0) {
@@ -183,6 +184,7 @@ export const ViewLanding = () => {
           if (person.retryCount >= 6) {
             dispatchVideoLandingData({ types: type.BYTESVIDEO_LOAD, payload: true })
             !isBytesVideoLoading && getBytesVideoList("")
+            // GetLiveVideoList("isRender", []);
           }
           else {
             person?.retryDoc(res?._docs[res?._docs?.length - 1])
@@ -283,7 +285,7 @@ export const ViewLanding = () => {
             setRemainingAutoPlayTime(remainingAutoPlayTime - 1);
           }
         }
-      }, 700);
+      }, 500);
     } else {
       clearInterval(controlRef.current);
     }
@@ -521,7 +523,7 @@ export const ViewLanding = () => {
   }
 
   const connectInit = async () => {
-    const isConnectedIAP: any =await initilizeIAPConnection();
+    const isConnectedIAP: any = await initilizeIAPConnection();
     console.log("isConnectedIAP", isConnectedIAP);
 
     setIsLoading(true)
