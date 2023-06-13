@@ -72,8 +72,8 @@ export default function App() {
   }
 
   useEffect(() => {
-    if (true) {
-      // fake_campaign_4800(70, 1)
+    if (false) {
+      // fake_campaign_4800(39, 1)
       // fakePurchase()
       // fakeCampaign("JgNfMAI96jOVgPBONZ8wIMb5RCW2", 39, 1)
     }
