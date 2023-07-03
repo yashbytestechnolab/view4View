@@ -32,6 +32,10 @@ export const TabNavigation = () => {
   }
 
   useEffect(() => {
+    AdsClass.addObserver();
+  },[]);
+
+  useEffect(() => {
     setTimeout(() => {
       AdsClass.loadAds();
     }, 2000);

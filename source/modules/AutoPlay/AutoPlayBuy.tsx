@@ -161,7 +161,7 @@ export const AutoPlayScreen = ({ watchAdsHandler, onPressBuyAutoPlay, bottomRef 
     {/* <BuyCoinIcon /> */ }
 
     return (
-        <View style={{ flex: 1, }}>
+        <View style={[{ flex: 1}, darkBackGround(darkModeTheme)]}>
             <View style={[styles.modelView, darkBackGround(darkModeTheme)]}>
                 <Text style={[F60016.textStyle, F60016.semiBolt, { fontSize: 22 }, colorBackGround(darkModeTheme)]}>
                     {'Oops!!'}

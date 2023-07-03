@@ -1,10 +1,10 @@
 {
   "name": "view4view",
-  "displayName": "view4view"
-    // "react-native-google-mobile-ads": {
-    //   "android_app_id": "ca-app-pub-4027493771242043~7424377066",
-    //   "ios_app_id": "ca-app-pub-4027493771242043~8680495280",
-    //   "user_tracking_usage_description": "This identifier will be used to deliver personalized ads to you."
-    // }
+  "displayName": "view4view",
+    "react-native-google-mobile-ads": {
+      "android_app_id": "ca-app-pub-4027493771242043~1951435401",
+      "ios_app_id": "ca-app-pub-4027493771242043~8680495280",
+      "user_tracking_usage_description": "This identifier will be used to deliver personalized ads to you."
+    }
   
 }

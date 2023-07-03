@@ -517,7 +517,9 @@ export const ViewLanding = () => {
     })
     AdsClass.showAds(() => {
       setIsAlertDisplay(true);
-    }, rewardMin);
+    }, () => {
+      rewardMin()
+    });
   }
 
   const connectInit = async () => {
@@ -846,7 +848,9 @@ export const ViewLanding = () => {
                   })
                   AdsClass.showAds(() => {
                     setIsAlertDisplay(true);
-                  }, rewardCoin);
+                  }, () => {
+                    rewardCoin();
+                  });
                 }}
                 wrapperStyle={styles.marginTop}
                 buttonTitle={t(rewardText(reward?.adsReward))} />}

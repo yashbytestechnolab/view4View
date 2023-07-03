@@ -6,55 +6,56 @@ import { InputContextProvide } from '../../../context/CommonContext';
 import { purchaseCoin } from '../../../services';
 import { Colors, darkBackGround } from '../../../Theme';
 import { style } from './style';
-import { TestIds, RewardedAd, RewardedAdEventType } from '@react-native-firebase/admob';
+import { TestIds, RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads';
 import { type as keys } from '../../../constants/types';
 
 
 
 export const ShowAdds = () => {
-    const [loaded, setLoaded]: any = useState(true);
-    const navigation = useNavigation()
-    const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
+    // const [loaded, setLoaded]: any = useState(true);
+    // const navigation = useNavigation()
+    // const { storeCreator: { coinBalance: { getBalance }, dispatchCoin, darkModeTheme } }: any = useContext(InputContextProvide)
 
-    useEffect(() => {
-        showRewardAd()
-    }, [])
+    // useEffect(() => {
+    //     // showRewardAd()
+    // }, [])
 
-    const showRewardAd = () => {
-        const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
-        rewardAd.onAdEvent((type, error) => {
+    // const showRewardAd = () => {
+    //     const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
 
-            if (type === RewardedAdEventType.LOADED) {
-                setLoaded(false)
-                rewardAd.show();
-            }
+    //     rewardAd.addAdEventsListener(({type, payload}) => {
 
-            if (type === RewardedAdEventType.EARNED_REWARD) {
-                purchaseCoin( getBalance + 100)?.then((res) => {
-                    dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + 100 })
-                }).catch((err) => {
-                    console.log("err", err);
-                    navigation.goBack()
-                })
-            }
+    //         if (type === RewardedAdEventType.LOADED) {
+    //             setLoaded(false)
+    //             rewardAd.show();
+    //         }
 
-            if (type === "closed") {
-                // navigation.goBack()
-            }
-        });
-        rewardAd.load();
-    }
+    //         if (type === RewardedAdEventType.EARNED_REWARD) {
+    //             purchaseCoin( getBalance + 100)?.then((res) => {
+    //                 dispatchCoin({ types: keys.GET_CURRENT_COIN, payload: getBalance + 100 })
+    //             }).catch((err) => {
+    //                 console.log("err", err);
+    //                 navigation.goBack()
+    //             })
+    //         }
 
-    return (
-        <>
-            <SafeAreaView style={style.safearea} />
-            <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
-            <SafeAreaView style={[style.main, darkBackGround(darkModeTheme)]}>
-                <Header title={"Adds"} showCoin={false} showBacKIcon={true} />
-                {loaded && <ActivityIndicator style={{ alignSelf: 'center', flex: 1 }} />}
+    //         if (type === "closed") {
+    //             // navigation.goBack()
+    //         }
+    //     });
+    //     rewardAd.load();
+    // }
 
-            </SafeAreaView>
-        </>
+    // return (
+    //     <>
+    //         {/* <SafeAreaView style={style.safearea} />
+    //         <StatusBar backgroundColor={Colors?.gradient1} barStyle={String?.StatusBar?.lightContent} />
+    //         <SafeAreaView style={[style.main, darkBackGround(darkModeTheme)]}>
+    //             <Header title={"Adds"} showCoin={false} showBacKIcon={true} />
+    //             {loaded && <ActivityIndicator style={{ alignSelf: 'center', flex: 1 }} />}
 
-    )
+    //         </SafeAreaView> */}
+    //     </>
+
+    // )
 }

@@ -71,9 +71,12 @@ export const EarnCoinLanding = () => {
       Anaylitics("earn_coin_show_ads_press", {
         current_user_balance: getBalance
       })
+      AdsClass.loadAds();
       AdsClass.showAds(() => {
         setIsAlertDisplay(true);
-      }, rewardCoin);
+      }, () => {
+        rewardCoin();
+      });
     } else {
       setMaxLimitAds(true);
     }

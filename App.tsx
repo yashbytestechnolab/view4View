@@ -16,7 +16,7 @@ import { NoInternetConnect } from './source/services/NoInternetConnect';
 import { LocalStorageKeys } from './source/constants';
 import * as LocalStorage from './source/services/LocalStorage';
 import { Colors } from './source/Theme';
-import { AdEventType, InterstitialAd, TestIds } from '@react-native-firebase/admob';
+import { AdEventType, InterstitialAd, TestIds } from 'react-native-google-mobile-ads';
 import { interstitial_ads } from './source/services/interstitial_ads';
 import i18next from 'i18next';
 import { locale } from './source/Language';
@@ -95,7 +95,7 @@ export default function App() {
           "ca-app-pub-4027493771242043/5321848866"
     );
     interstitialAd.load();
-    interstitialAd.onAdEvent((type, error) => {
+    interstitialAd.addAdEventsListener(({type, payload}) => {
       if (type === AdEventType.LOADED) {
         interstitialAd.show();
       }
