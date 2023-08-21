@@ -6,7 +6,7 @@ import AppLoader from './source/components/AppLoader';
 import { UpdateBuildVersion } from './source/services/UpdateBuildVersion';
 import { InviteFriend } from './source/modules/EarnCoin';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { fakeCampaign, fakePurchase, rewardCoinsDefaultValue, rewardConfig } from './source/services';
+import { fakeCampaign, fakePurchase, fake_campaign_4800, rewardCoinsDefaultValue, rewardConfig } from './source/services';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { ENV, person } from './source/modules/View/increment';
@@ -75,8 +75,9 @@ export default function App() {
     if (false) {
       // getFakePurchaseEntry()
       // fake4800()
+      // fake_campaign_4800(39, 1)
       // fakePurchase()
-      // fakeCampaign("859fjCvN4NaS9muwKqfqceRwQCp2", 39, 1)
+      // fakeCampaign("JgNfMAI96jOVgPBONZ8wIMb5RCW2", 39, 1)
     }
   }, [])
 

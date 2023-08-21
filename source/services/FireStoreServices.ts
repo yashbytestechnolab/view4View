@@ -539,3 +539,16 @@ await firestore()
         });
     })
  */
+
+export const fake_campaign_4800 = async (consumed_view: number,
+  remaining_view: number,) => {
+    let document: any = (await WatchVideoList.orderBy("coin", "desc").limit(70).get()).docs
+    console.log("document", document);
+    for (let i = 0; i < document.length; i++) {
+      const element = document[i];
+      await WatchVideoList.doc(element?._data.id).update({
+        consumed_view: consumed_view,
+        remaining_view: remaining_view,
+      });
+    }
+}
