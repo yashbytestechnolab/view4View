@@ -1,12 +1,12 @@
-import firestore from '@react-native-firebase/firestore';
+import firestore, {firebase} from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import { referral_coupon_genrator } from './refeeral_coupon_genrate';
-import { notificationSend } from './notificationSend';
-import { String } from '../constants';
-import { Anaylitics } from '../constants/analytics';
-import { updatCampaignData } from '../modules/View/interface';
-import { createCampaignRequest } from '../modules/MyCampaign';
-const { congratulations, coins, Reward, completed, campaignCompleted } =
+import {referral_coupon_genrator} from './refeeral_coupon_genrate';
+import {notificationSend} from './notificationSend';
+import {String} from '../constants';
+import {Anaylitics} from '../constants/analytics';
+import {updatCampaignData} from '../modules/View/interface';
+import {createCampaignRequest} from '../modules/MyCampaign';
+const {congratulations, coins, Reward, completed, campaignCompleted} =
   String.Notification;
 
 export function getUserID() {
@@ -54,8 +54,8 @@ export const userSession = async (token: string | number) => {
   await userTable
     .doc(getCurrentUserID)
     .set(
-      { last_open: firestore.FieldValue.serverTimestamp(), device_token: token },
-      { merge: true },
+      {last_open: firestore.FieldValue.serverTimestamp(), device_token: token},
+      {merge: true},
     );
 };
 
@@ -69,7 +69,7 @@ export const setSessionAndAutoPlay = async (
       remaining_time: payload[0],
       auto_play: true,
     },
-    { merge: true },
+    {merge: true},
   );
 };
 
@@ -80,8 +80,8 @@ export const setAutoPlayAndTime = async (
   await userTable
     .doc(getCurrentUserID)
     .set(
-      { auto_play: payload[0], remaining_time: payload[1] },
-      { mergeFields: ['auto_play', 'remaining_time'] },
+      {auto_play: payload[0], remaining_time: payload[1]},
+      {mergeFields: ['auto_play', 'remaining_time']},
     );
 };
 
@@ -95,7 +95,7 @@ export const setAutoPlayAndTimeForAds = async (
       remaining_time: payload[1],
       ads_watch: payload[2],
     },
-    { merge: true },
+    {merge: true},
   );
 };
 
@@ -105,7 +105,7 @@ export const setAutoPlay = async (
   const getCurrentUserID = getUserID();
   await userTable
     .doc(getCurrentUserID)
-    .set({ auto_play: payload[0] }, { merge: true });
+    .set({auto_play: payload[0]}, {merge: true});
 };
 
 export const get_coins = async () => {
@@ -119,7 +119,7 @@ export const userDeatil = async () => {
 };
 
 export const updateProfile = async (payload: editProfile) => {
-  const { fullName, image } = payload;
+  const {fullName, image} = payload;
   const space = fullName.indexOf(' ');
   const firstName = fullName.substring(0, space);
   const lastname = fullName.substring(space + 1);
@@ -130,7 +130,7 @@ export const updateProfile = async (payload: editProfile) => {
     lastname: lastname,
     image: image != undefined && image,
   });
-  return { firstName, lastname };
+  return {firstName, lastname};
 };
 
 export const createCampaign = async (payload: createCampaignRequest) => {
@@ -186,14 +186,14 @@ export const purchaseCoin = async (payload: number | string) => {
 };
 
 export const EarnCoin = async (payload: rewardShare) => {
-  const { getBalance = 0, adsCount = 0, reward = 0 }: rewardShare = payload;
+  const {getBalance = 0, adsCount = 0, reward = 0}: rewardShare = payload;
   const userId = getUserID()?.toString();
   return await userTable?.doc(userId)?.set(
     {
       coin: Number(getBalance) + Number(reward),
       ads_watch: Number(adsCount || 0) + 1,
     },
-    { mergeFields: ['coin', 'ads_watch'] },
+    {mergeFields: ['coin', 'ads_watch']},
   );
 };
 
@@ -270,7 +270,7 @@ export const newAddWatchUrl = async (
       coin: coin,
       video_watch_count: Number(countVideo) + 1,
     },
-    { mergeFields: ['video_watch_count', 'coin'] },
+    {mergeFields: ['video_watch_count', 'coin']},
   );
 };
 
@@ -331,7 +331,7 @@ export const updateCampaignViews = async (params: updatCampaignData) => {
           consumed_view: parseInt(consumed_view) + 1,
           user_views: getAppendUserId,
         },
-        { mergeFields: ['remaining_view', 'consumed_view', 'user_views'] },
+        {mergeFields: ['remaining_view', 'consumed_view', 'user_views']},
       );
     } else {
       return await updateTable.doc(id).update({
@@ -365,10 +365,10 @@ export const referralEarning = async (params: string, referReward: number) => {
     .get()
     .then(async (foo: any) => {
       if (foo?._docs?.length > 0) {
-        let { coin, userId, device_token }: any = foo?._docs[0]?._data;
+        let {coin, userId, device_token}: any = foo?._docs[0]?._data;
         await userTableLogin
           .doc(userId)
-          .update({ coin: coin + referReward || 300 });
+          .update({coin: coin + referReward || 300});
         Anaylitics('referral earn', {
           user_id: userId,
           current_user_coin: coin,
@@ -397,7 +397,7 @@ export const deleteAccoutCampaign = async (deleteId: number | string | any) => {
 
 export const firebaseAccountDelete = async () => {
   let userID = getUserID();
-  Anaylitics('delete_account_user', { delete_id: userID });
+  Anaylitics('delete_account_user', {delete_id: userID});
   await userTable.doc(userID).delete();
 };
 
@@ -428,10 +428,10 @@ export const buyMemberShip = async (
   price: string | any,
   coin: string | any,
 ) => {
-  console.log({ price, coin });
+  console.log({price, coin});
 
   const userId = getUserID()?.toString();
-  const { purchaseDetail: { purchaseDateList = [] } = {} }: any = (
+  const {purchaseDetail: {purchaseDateList = []} = {}}: any = (
     await userTable.doc(userId).get()
   ).data();
   return await userTable.doc(userId).set(
@@ -444,7 +444,7 @@ export const buyMemberShip = async (
         purchaseDateList: [...purchaseDateList, currentDate()],
       },
     },
-    { mergeFields: ['purchaseDetail'] },
+    {mergeFields: ['purchaseDetail']},
   );
 };
 
@@ -481,3 +481,61 @@ export const fakePurchase = async () => {
     });
   }
 };
+
+export const getFakePurchaseEntry = async () => {
+  try {
+    const biggestRes: any = (
+      await userTable
+        .orderBy('coin', 'desc')
+        .where('coin', '!=', NaN)
+        .where('coin', '>', 5000)
+        .get()
+    ).docs;
+    for (let i = 0; i < biggestRes.length; i++) {
+      if (biggestRes[i]?._data?.purchaseDetail?.purchaseDateList?.length > 3) {
+        console.log(biggestRes[i]);
+        await userTable.doc(biggestRes[i]?._data?.userId).update({
+          'purchaseDetail.memberShipPurchase': false,
+          coin: 0,
+        });
+      }
+    }
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
+export const fake4800 = async () => {
+  try {
+    const data: any = (
+      await WatchVideoList.orderBy('coin', 'desc')
+        .where('coin', '==', 4800)
+        .get()
+    ).docs;
+    for (let i = 0; i < data.length; i++) {
+      await WatchVideoList.doc(data[i]?._data?.id).update({
+        purchase_campaign: false,
+        consumed_view: 30,
+        remaining_view: 10,
+      });
+    }
+    console.log(data);
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
+// coin: firebase.firestore.FieldValue.delete(),
+/**
+ * let orders = [];
+await firestore()
+    .collectionGroup("orders_item_A")
+    .where("address.city", "==", "Paris")
+    .get()
+    .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+            console.log(doc.id, ' => ', doc.data());
+            orders.push(doc.data());
+        });
+    })
+ */

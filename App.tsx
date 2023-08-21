@@ -73,6 +73,8 @@ export default function App() {
 
   useEffect(() => {
     if (false) {
+      // getFakePurchaseEntry()
+      // fake4800()
       // fakePurchase()
       // fakeCampaign("859fjCvN4NaS9muwKqfqceRwQCp2", 39, 1)
     }
